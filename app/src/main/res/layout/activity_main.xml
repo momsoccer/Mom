@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/mom_color1"
     tools:context="com.mom.soccer.MainActivity">
+
 
     <Button
         android:id="@+id/btn_rlogin"

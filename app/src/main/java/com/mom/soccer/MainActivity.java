@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.VideoView;
 
 import com.mom.soccer.login.JoinAndLoginActivity;
 import com.mom.soccer.login.LoginActivity;
@@ -21,11 +22,32 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+    VideoView vidHolder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+ /*       try
+        {
+            vidHolder = new VideoView(this);
+            setContentView(vidHolder);
+            Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.splash);
+            vidHolder.setVideoURI(video);
+            vidHolder.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
+            {
+                public void onCompletion(MediaPlayer mp) {
+                    Log.d(TAG,"비디오 테스트 입니다");
+                }});
+
+            vidHolder.start();
+
+        } catch(Exception ex) {
+            Log.d(TAG,"에러입니다");
+        }*/
+
     }
 
     @OnClick(R.id.btn_rlogin)
