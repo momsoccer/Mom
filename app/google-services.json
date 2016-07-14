@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "262443400456",
+    "firebase_url": "https://momsoccer-20160714.firebaseio.com",
+    "project_id": "momsoccer-20160714",
+    "storage_bucket": "momsoccer-20160714.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262443400456:android:ccbd059a5253f8c2",
+        "android_client_info": {
+          "package_name": "com.mom.soccer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "262443400456-dlj7r0ekouno1qqd26n6a98f2r0fi3oi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mom.soccer",
+            "certificate_hash": "FA7B6CC5C0C0424E05ED0D9527BE3D2BDA471FFF"
+          }
+        },
+        {
+          "client_id": "262443400456-b3g6mo41g3ikbj7q1ldutchp2d4sp9d4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDP6vosNgSFp3m2K492uL9Wtmm-_UUFXVE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "262443400456-b3g6mo41g3ikbj7q1ldutchp2d4sp9d4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

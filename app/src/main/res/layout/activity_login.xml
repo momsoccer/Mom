@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/mom_color1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:layout_marginTop="100dp"
+        android:background="@drawable/backimage"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="350dp"
+        android:layout_weight="0"
+        android:gravity="center">
+
+        <TextView
+            android:text="@string/welcome"
+            android:textColor="@color/color6"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:font="custom1"
+            />
+
+        <ImageView
+            android:src="@drawable/mom_title"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:text="로그인"
+            android:textSize="20sp"
+            android:textColor="@color/color6"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/btnred"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:font="custom1"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

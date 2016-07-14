@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Mom</string>
+    <string name="kakao_app_key">4606473b4aec2daadfa87ff2cf730243</string>
+    <string name="facebook_id">1744592645788871</string>
+
+    <!--applicaiton-->
+    <string name="welcome">WelCome</string>
+    <string name="member_join">회원가입</string>
+    <string name="member_login">로그인</string>
+
+</resources>
