@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true"
-        android:drawable="@drawable/editon" />
+        android:drawable="@drawable/edit_on" />
     <item android:state_focused="true"
-        android:drawable="@drawable/editon" />
-    <item android:drawable="@drawable/editoff" />
+        android:drawable="@drawable/edit_on" />
+    <item android:drawable="@drawable/edit_off" />
 </selector>

@@ -17,17 +17,39 @@
         <item name="android:textColorHint">@color/color6</item>
         <item name="android:background">@drawable/edittext_background</item>
         <item name="android:textColor">@color/color6</item>
+        <item name="android:layout_width">270dp</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+
+
+    <style name="btnStylePaprika" parent="@android:style/Widget.Button">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:gravity">center</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">0.6</item>
+        <item name="android:background">@drawable/custom_btn_paprika</item>
+        <item name="android:padding">10dip</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="mom_red_button">
-        <item name="android:background">@drawable/btnred</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/color6</item>
-        <item name="android:layout_width">160dp</item>
+    <style name="btnStyleBlack" parent="@android:style/Widget.Button">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:gravity">center</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">0.6</item>
+        <item name="android:background">@drawable/custom_btn_black</item>
+        <item name="android:padding">10dip</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
 </resources>

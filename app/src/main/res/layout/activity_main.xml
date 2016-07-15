@@ -37,7 +37,6 @@
             android:textColor="@color/color6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:font="custom1"
             />
 
         <TextView
@@ -48,7 +47,6 @@
             android:textColor="@color/color6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:font="custom3"
             />
 
     </LinearLayout>
@@ -65,23 +63,19 @@
             android:id="@+id/btn_join_pre"
             android:textColor="@color/color6"
             android:text="@string/member_join"
-            android:background="@drawable/joinbtn"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:layout_marginRight="10dp"
-            app:font="custom1"
             />
 
         <Button
             android:id="@+id/btn_login_pre"
             android:textColor="@color/color6"
             android:text="@string/member_login"
-            android:background="@drawable/joinbtn"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            app:font="custom1"
             />
 
     </LinearLayout>
