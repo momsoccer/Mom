@@ -66,15 +66,10 @@
             </intent-filter>
         </service>
 
-        <activity
-            android:name=".login.LoginActivity"
+        <activity android:name=".login.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-        <activity android:name=".login.JoinAndLoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
+            ></activity>
     </application>
 
 </manifest>

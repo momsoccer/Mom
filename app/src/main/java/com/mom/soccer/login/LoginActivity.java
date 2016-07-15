@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.WindowManager;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -22,14 +22,11 @@ import com.kakao.util.helper.log.Logger;
 import com.mom.soccer.R;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.User;
-import com.mom.soccer.widget.VeteranToast;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import org.json.JSONObject;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -53,62 +50,19 @@ public class LoginActivity extends AppCompatActivity {
     private User user;
     private PrefUtil prefUtil;
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-        prefUtil = new PrefUtil(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
-
-    @OnClick(R.id.btn_login)
-    public void btn_login(){
-        //Toast.makeText(getApplicationContext(),"클릭함",Toast.LENGTH_LONG).show();
-        VeteranToast.makeToast(getApplicationContext(),"클릭했습니다", Toast.LENGTH_SHORT).show();
-        Log.d(TAG,"클릭했습니다");
-    }
-
-    /*
-    @OnClick(R.id.kakaologin)
-    public void kakaologin(){
-
-        Session.getCurrentSession().removeCallback(kakaoCallback);
-
-        //카카오세션 오픈
-        kakaoCallback = new SessionCallback();
-        Session.getCurrentSession().addCallback(kakaoCallback);
-
-        if(!Session.getCurrentSession().checkAndImplicitOpen()){
-            Session.getCurrentSession().open(AuthType.KAKAO_TALK_EXCLUDE_NATIVE_LOGIN, LoginActivity.this);
-        }
-
-    }
-
-    //페이스북 로그인 처리
-    @OnClick(R.id.facebooklogin)
-    public void facebooklogin(){
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-            }
-
-            @Override
-            public void onCancel() {
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                error.printStackTrace();
-            }
-        });
-    }
-    */
-
 
     public class SessionCallback implements ISessionCallback {
 
@@ -255,10 +209,5 @@ public class LoginActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Session.getCurrentSession().removeCallback(kakaoCallback);
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }

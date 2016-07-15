@@ -88,7 +88,10 @@ public class GlobalApplication extends Application {
 
         imageLoader = new ImageLoader(requestQueue, imageCache);
 
-        Typekit.getInstance().addCustom1(Typekit.createFromAsset(this, "NotoSansKR-Regular-Hestia.otf"));
+        Typekit.getInstance().addCustom1(Typekit.createFromAsset(this, "NotoSansCJKkr-Bold.otf"));
+        Typekit.getInstance().addCustom2(Typekit.createFromAsset(this, "NotoSansCJKkr-Medium.otf"));
+        Typekit.getInstance().addCustom3(Typekit.createFromAsset(this, "NotoSansCJKkr-Regular.otf"));
+        Typekit.getInstance().addCustom4(Typekit.createFromAsset(this, "NotoSansCJKkr-Thin.otf"));
     }
 
     /**

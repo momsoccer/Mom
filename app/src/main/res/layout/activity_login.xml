@@ -7,44 +7,68 @@
     android:background="@color/mom_color1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="MissingPrefix">
+    tools:ignore="MissingPrefix"
+    >
 
     <LinearLayout
-        android:layout_marginTop="100dp"
-        android:background="@drawable/backimage"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/signin"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_height="350dp"
+        android:layout_height="wrap_content"
         android:layout_weight="0"
         android:gravity="center">
-
-        <TextView
-            android:text="@string/welcome"
-            android:textColor="@color/color6"
-            android:textSize="18sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:font="custom1"
-            />
-
-        <ImageView
-            android:src="@drawable/mom_title"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <!--android:layout_marginBottom="10dp"-->
+        <!--app:font="custom3"-->
 
         <Button
-            android:id="@+id/btn_login"
-            android:text="로그인"
-            android:textSize="20sp"
-            android:textColor="@color/color6"
-            android:layout_marginTop="30dp"
+            android:id="@+id/btn_login_kakao"
             android:background="@drawable/btnred"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text="카카오톡으로 로그인"
+            style="@style/mom_red_button"
             app:font="custom1"
+            android:layout_marginBottom="10dp"
+            />
+
+        <Button
+            android:id="@+id/btn_login_facebook"
+            android:background="@drawable/btnred"
+            android:text="페이스북으로 로그인"
+            style="@style/mom_red_button"
+            app:font="custom1"
+            android:layout_marginBottom="10dp"
+            />
+
+        <Button
+            android:id="@+id/btn_login_email"
+            android:background="@drawable/btnred"
+            android:text="이메일로 로그인"
+            style="@style/mom_red_button"
+            app:font="custom1"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/login_email"
+            android:hint="  Useremail"
+            style="@style/mom_edit_text"
+            android:inputType="textVisiblePassword"
+            />
+
+        <EditText
+            android:id="@+id/login_password"
+            android:hint="  Password"
+            style="@style/mom_edit_text"
+            android:inputType="textVisiblePassword"
             />
 
     </LinearLayout>
+
 
 </LinearLayout>

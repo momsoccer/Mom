@@ -5,12 +5,29 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/color6</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="mom_edit_text">
+        <item name="android:textColorHint">@color/color6</item>
+        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:textColor">@color/color6</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="mom_red_button">
+        <item name="android:background">@drawable/btnred</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/color6</item>
+        <item name="android:layout_width">160dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
 </resources>
