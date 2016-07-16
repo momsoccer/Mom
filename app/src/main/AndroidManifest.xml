@@ -66,10 +66,17 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".login.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+        <activity
+            android:name=".login.LoginActivity"
             android:screenOrientation="portrait"
-            ></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".momactivity.Main_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".momactivity.Setup_Activity"/>
+
     </application>
 
 </manifest>

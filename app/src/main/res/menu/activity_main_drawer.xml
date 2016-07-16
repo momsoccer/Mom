@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/mn_item_home"
+            android:icon="@drawable/side_home"
+            android:title="홈"/>
+        <item
+            android:id="@+id/mn_item_fe"
+            android:icon="@drawable/side_feb"
+            android:title="즐겨찾기" />
+
+        <item
+            android:id="@+id/mn_item_gansim"
+            android:icon="@drawable/side_gansim"
+            android:title="관심영상" />
+
+        <item
+            android:id="@+id/mn_item_search"
+            android:icon="@drawable/side_search"
+            android:title="검색" />
+
+        <item
+            android:id="@+id/mn_item_mypage"
+            android:icon="@drawable/side_mypage"
+            android:title="마이페이지" />
+
+        <item
+            android:id="@+id/mn_item_coachreq"
+            android:icon="@drawable/side_coach_req"
+            android:title="코치신청" />
+
+        <item
+            android:id="@+id/mn_item_setup"
+            android:icon="@drawable/side_setup"
+            android:title="설정" />
+    </group>
+
+</menu>

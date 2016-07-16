@@ -26,7 +26,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.kakao.auth.KakaoSDK;
-import com.tsengvn.typekit.Typekit;
 
 /**
  * 이미지를 캐시를 앱 수준에서 관리하기 위한 애플리케이션 객체이다.
@@ -88,10 +87,12 @@ public class GlobalApplication extends Application {
 
         imageLoader = new ImageLoader(requestQueue, imageCache);
 
+        /*
         Typekit.getInstance().addCustom1(Typekit.createFromAsset(this, "NotoSansCJKkr-Bold.otf"));
         Typekit.getInstance().addCustom2(Typekit.createFromAsset(this, "NotoSansCJKkr-Medium.otf"));
         Typekit.getInstance().addCustom3(Typekit.createFromAsset(this, "NotoSansCJKkr-Regular.otf"));
         Typekit.getInstance().addCustom4(Typekit.createFromAsset(this, "NotoSansCJKkr-Thin.otf"));
+        */
     }
 
     /**

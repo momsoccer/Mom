@@ -8,6 +8,6 @@
     android:layout_height="wrap_content"
     android:minHeight="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
-    app:navigationIcon="?attr/homeAsUpIndicator"
+    app:navigationIcon="@drawable/homeindicator"
     app:title="기타설정"
     />

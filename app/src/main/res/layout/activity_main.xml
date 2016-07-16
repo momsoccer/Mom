@@ -38,7 +38,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
-
         <TextView
             android:layout_marginTop="10dp"
             android:text="정통축구부터 프리스타일까지 \n  다양한 스킬을 배워보세요"
@@ -48,7 +47,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
-
     </LinearLayout>
 
     <LinearLayout
@@ -58,12 +56,12 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         >
-
         <Button
             android:id="@+id/btn_join_pre"
             android:textColor="@color/color6"
             android:text="@string/member_join"
-            android:layout_width="140dp"
+            style="@style/btnStyleWhite"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:layout_marginRight="10dp"
@@ -71,13 +69,13 @@
 
         <Button
             android:id="@+id/btn_login_pre"
-            android:textColor="@color/color6"
             android:text="@string/member_login"
-            android:layout_width="140dp"
+            style="@style/btnStyleWhite"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
+            android:layout_marginBottom="10dp"
             />
-
     </LinearLayout>
 
 </LinearLayout>
