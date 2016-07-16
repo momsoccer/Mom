@@ -6,7 +6,8 @@ import android.os.Build;
  * Created by sungbo on 2016-05-27.
  */
 public class Common {
-    public static String SERVER_ADRESS = "http://192.168.0.50:8080";
+    public static String SERVER_ADRESS = "http://192.168.10.6:8080";
+            //"http://192.168.0.50:8080";
     public static String SERVER_USER_IMGFILEADRESS = SERVER_ADRESS + "/resources/userimg/";
     public static String SERVER_INS_IMGFILEADRESS = SERVER_ADRESS + "/resources/instructorimg/";
     public static String SERVER_TEAM_IMGFILEADRESS = SERVER_ADRESS + "/resources/teamimg/";
@@ -33,5 +34,6 @@ public class Common {
     public static void setUpflag(boolean upflag) {
         Common.upflag = upflag;
     }
+
 
 }

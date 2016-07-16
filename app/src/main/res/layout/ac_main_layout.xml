@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
-    tools:context=".momactivity.Main_Activity">
+    tools:context=".momactivity.MomMainActivity">
 
 
     <include
@@ -21,11 +21,11 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer"
         app:itemIconTint="@color/color6"
         app:itemTextColor="@color/color6"
         android:background="@color/mom_color2"
+        app:headerLayout="@layout/nav_header_main"
+        app:menu="@menu/activity_main_drawer"
         >
     </android.support.design.widget.NavigationView>
 

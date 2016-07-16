@@ -17,8 +17,9 @@ import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.FcmToken;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.login.JoinActivity;
 import com.mom.soccer.login.LoginActivity;
-import com.mom.soccer.momactivity.Main_Activity;
+import com.mom.soccer.momactivity.MomMainActivity;
 import com.mom.soccer.trservice.FcmTokenTRService;
 
 import java.security.MessageDigest;
@@ -56,12 +57,15 @@ public class MainActivity extends AppCompatActivity {
 
         if (!Compare.isEmpty(user.getUseremail())){
             Log.d(TAG,"로그인 유저입니다.. 메인 화면으로 이동합니다");
-            Intent intent = new Intent(MainActivity.this, Main_Activity.class); //유저라면 메인 화면으로 이동시킨다
+            Intent intent = new Intent(MainActivity.this, MomMainActivity.class); //유저라면 메인 화면으로 이동시킨다
             startActivity(intent);
+            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         }else{
             //비로그인유저
             Log.d(TAG,"로그인 필요");
         }
+
+        getAppKeyHash();
     }
 
     @Override
@@ -94,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (!Compare.isEmpty(user.getUseremail())){
             Log.d(TAG,"로그인 유저입니다.. 메인 화면으로 이동합니다");
-            Intent intent = new Intent(this, Main_Activity.class); //유저라면 메인 화면으로 이동시킨다
+            Intent intent = new Intent(this, MomMainActivity.class); //유저라면 메인 화면으로 이동시킨다
             startActivity(intent);
         }else{
             //비로그인유저
@@ -108,12 +112,23 @@ public class MainActivity extends AppCompatActivity {
      *
      * */
 
-
     @OnClick(R.id.btn_login_pre)
     public void login(){
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
+
+    @OnClick(R.id.btn_join_pre)
+    public void joinMom(){
+        Intent intent = new Intent(this, JoinActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+    }
+
+    /***************************************************
+     * 기타 참고 사항 및 설정
+     */
 
     //해쉬태그
     private void getAppKeyHash() {
@@ -126,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
                 String something = new String(Base64.encode(md.digest(), 0));
-                Log.d(TAG,"HASH KEY : =====================" + something);
+                Log.d(TAG,"해시키값확인 : "+ something);
                 hasykey=something;
             }
         } catch (Exception e) {

@@ -14,8 +14,14 @@ import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -30,12 +36,14 @@ import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
-import com.mom.soccer.momactivity.Main_Activity;
+import com.mom.soccer.momactivity.MomMainActivity;
 import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
 
 import org.json.JSONObject;
+
+import java.util.Arrays;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -107,15 +115,51 @@ public class LoginActivity extends AppCompatActivity {
         SERVERUSER = new User(); //서버로 부터 받은 유저정보
     }
 
+    @OnClick(R.id.btn_kakao_login)
+    public void kakaoLogin(){
+
+        //카카오 세션을 초기화 해준다
+        Session.getCurrentSession().removeCallback(kakaoCallback);
+
+        kakaoCallback = new SessionCallback();
+        Session.getCurrentSession().addCallback(kakaoCallback);
+
+        if(!Session.getCurrentSession().checkAndImplicitOpen()){
+            Session.getCurrentSession().open(AuthType.KAKAO_TALK_EXCLUDE_NATIVE_LOGIN, LoginActivity.this);
+        }
+        Log.d(TAG, "카카오 로그인 시도");
+    }
+
+    @OnClick(R.id.btn_facebook_login)
+    public void faceBoookLogin(){
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                error.printStackTrace();
+            }
+        });
+    }
+
     public class SessionCallback implements ISessionCallback {
-
-
         @Override
         public void onSessionOpened() {
             Log.d(TAG, "카카오 SessionCallback");
             kakaoMeCallbackInfo();
         }
-
         @Override
         public void onSessionOpenFailed(KakaoException exception) {
             if(exception != null) {
@@ -126,9 +170,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         Log.d(TAG, "---------------------onActivityResult---------------------");
-
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             return;
         }
@@ -140,15 +182,12 @@ public class LoginActivity extends AppCompatActivity {
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     public void facebookMeCallbackInfo(){
-
         GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
-
                 try{
 
                     snstype ="facebook";
@@ -162,6 +201,8 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG,"SNS  이름 : " + snsname);
                     Log.d(TAG,"SNS Id : " + snsid);
                     Log.d(TAG,"이미지는 : " + profileImgUrl);
+
+                    validateSnsUserID(snstype, snsid,"","");
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -181,20 +222,19 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UserProfile userProfile) {
 
-                Log.d(TAG, "카카오 회원 정보가져오기");
-
                 snstype = "kakao";
                 username = userProfile.getNickname();
                 snsname = userProfile.getNickname();
                 //useremail = 카카오는 정책상 메일을 제공하지 않는다
                 snsid = String.valueOf(userProfile.getId());
                 profileImgUrl = userProfile.getProfileImagePath();
-
                 Log.d(TAG,"카카오 로그인 정보 가져오기 ======================================================");
                 Log.d(TAG,"닉네임 : " + username);
                 Log.d(TAG,"SNS  이름 : " + snsname);
                 Log.d(TAG,"SNS Id : " + snsid);
                 Log.d(TAG,"이미지는 : " + profileImgUrl);
+
+                validateSnsUserID(snstype, snsid,"","");
             }
 
             @Override
@@ -220,8 +260,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     @Override
     protected void onStart() {
@@ -267,8 +305,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /****************************************************************
      * 각 버튼에 대한 이벤트
-     */
-
+     ************************/
     @OnClick(R.id.btn_login)
     public void btnLogin(){
         if(!Compare.checkEmail(et_Login_Email.getText().toString())) {
@@ -278,15 +315,19 @@ public class LoginActivity extends AppCompatActivity {
             VeteranToast.makeToast(getApplicationContext(),getString(R.string.valid_password),Toast.LENGTH_SHORT).show();
             return;
         }else{
-
             user.setUseremail(et_Login_Email.getText().toString());
             user.setPassword(et_Login_password.getText().toString());
-
             tempEmail = et_Login_Email.getText().toString();
-
             //서버에서 아이디와 비번 검증
             userLogin();
         }
+    }
+
+    @OnClick(R.id.btn_join)
+    public void momJoin(){
+        Intent intent = new Intent(this, JoinActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
 
     public void userLogin(){
@@ -307,9 +348,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
 
                     Log.d(TAG, "서버 조회 결과 성공");
-
                     ServerResult serverResult = response.body();
-
                     Log.d(TAG, "서버 조회 결과 값은 : " + serverResult.getResult());
                     dialog.dismiss();
 
@@ -377,10 +416,74 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("User Info", "PW : " + SERVERUSER.getPassword());
         Log.d("User Info", "************************************************");
 
-        Intent intent = new Intent(getApplicationContext(), Main_Activity.class);
+        Intent intent = new Intent(getApplicationContext(), MomMainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
+        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         finish();
+
+    }
+
+    //SNS전용
+    public void validateSnsUserID(
+            String type, //snstype
+            String id,  //snsid
+            String pw,  //password
+            String email //useremail
+    ){
+
+        final ProgressDialog dialog;
+        dialog = ProgressDialog.show(this, "",getString(R.string.network_valid_user), true);
+        dialog.show();
+
+        UserService userService = ServiceGenerator.createService(UserService.class);
+        final Call<User> getUserInfo = userService.getUser(type, id, pw, email);
+
+
+        getUserInfo.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "서버 조회 결과 성공");
+
+                    SERVERUSER = response.body();
+
+                    if (SERVERUSER.getUseremail().equals("null@co.com")) {
+                        Log.d(TAG, "우리 서버에 처음 오신분 입니다. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+                        //처음이면 가입 페이지로 이동 시킨다
+/*                      Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.putExtra("snstype", snstype);
+                        intent.putExtra("username", username);
+                        intent.putExtra("snsname", snsname);
+                        intent.putExtra("useremail", useremail);
+                        intent.putExtra("snsid", snsid);
+                        intent.putExtra("profileImgUrl", profileImgUrl);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);*/
+
+                    } else {
+                        //처음이 아니라면 MomMain으로 이동 시킨다
+                        userExist();
+                    }
+
+                } else {
+                    Log.d(TAG, "조회 결과 실패 ===");
+
+                }
+
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG, "환경 구성 확인 서버와 통신 불가" + t.getMessage());
+                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
+                t.printStackTrace();
+                dialog.dismiss();
+            }
+        });
 
     }
 

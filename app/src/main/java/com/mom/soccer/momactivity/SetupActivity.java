@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.mom.soccer.R;
 
-public class Setup_Activity extends AppCompatActivity {
+public class SetupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
