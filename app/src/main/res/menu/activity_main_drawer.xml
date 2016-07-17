@@ -4,11 +4,13 @@
         <item
             android:id="@+id/mn_item_home"
             android:icon="@drawable/side_home"
-            android:title="홈"/>
+            android:title="홈"
+            />
         <item
             android:id="@+id/mn_item_fe"
             android:icon="@drawable/side_feb"
-            android:title="즐겨찾기" />
+            android:title="즐겨찾기"
+            />
 
         <item
             android:id="@+id/mn_item_gansim"
@@ -27,7 +29,7 @@
 
         <item
             android:id="@+id/mn_item_coachreq"
-            android:icon="@drawable/side_coach_req"
+            android:icon="@drawable/side_coach"
             android:title="코치신청" />
 
         <item

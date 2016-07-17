@@ -29,7 +29,10 @@ public class SettingVideoUploadActivity extends PreferenceActivity {
 
         LinearLayout root = (LinearLayout)findViewById(android.R.id.list).getParent().getParent().getParent();
         Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
+        root.setBackgroundColor(getResources().getColor(R.color.mom_color2));
         root.addView(bar, 0);
+
+
         bar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +69,55 @@ public class SettingVideoUploadActivity extends PreferenceActivity {
                 return true;
             }
         });
-
     }
+
+    /*
+
+        //기타 설정 값 가져오기 주석 처리 상태
+        // 프리퍼런스 화면에서 array.xml로 값을 설정한 예제
+        /*
+        mPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        //자동업데이트 기능을 유저가 설정 했는지 알아본다
+        Log.d("TestActivity","업데이트 설정 : " + mPref.getBoolean("autoUpdate", false));
+        Log.d("TestActivity", "업데이트 후 알람 : " + mPref.getBoolean("useUpdateNofiti", false));
+
+        String[] array = getResources().getStringArray(R.array.userNameOpen);
+
+        int index = getArrayIndex(R.array.userNameOpen_values, mPref.getString("userNameOpen", "0"));
+
+        Log.d("TestActivity","설정한 배열값은  : " + index);
+
+        if (index != -1) {
+            String userNameOpenString = array[index];
+            Log.d("TestActivity"," 설정 한 값은 : "+ userNameOpenString);
+        }
+
+
+    //와이파이 연결 설정 여부 확인
+    cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+    mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+    wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+    btngent = (Button) findViewById(R.id.btngent);
+
+    btngent.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            if (mobile.isConnected()) {
+                Log.d(TAG,"통신사 연결 되어 있습니다");
+            }else{
+                Log.d(TAG,"통신사 연결이 안되어 있습니다");
+            }
+
+            if(wifi.isConnected()){
+                Log.d(TAG,"WIFI 연결 되어 있습니다");
+            }else{
+                Log.d(TAG,"WIFI 연결 안되어 있습니다");
+            }
+        }
+    });
+
+     */
 }

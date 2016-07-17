@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mom_color1">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@color/color2"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_weight="1"
+        />
+    <LinearLayout
+        android:id="@+id/layoutDots"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        ></LinearLayout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="122dp"
+        android:layout_weight="1"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingRight="5px" >
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="300px"
+                android:background="#FF0000"
+                android:text="TextView 1" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="300px"
+                android:background="#FF00ff00"
+                android:text="TextView 1" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="300px"
+                android:background="#FF00ff"
+                android:text="TextView 1" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <com.mom.soccer.tablayout.TabNaviComplaintBase
+        android:id="@+id/PageNavigationView"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    </com.mom.soccer.tablayout.TabNaviComplaintBase>
+
+</LinearLayout>

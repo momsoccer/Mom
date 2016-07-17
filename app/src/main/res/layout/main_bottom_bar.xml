@@ -2,50 +2,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="wrap_content"
     android:background="@color/mom_color1"
     >
 
-    <ImageView
-        android:src="@drawable/bottom_home"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:background="@color/mom_color1"
-        />
     <ImageButton
-        android:src="@drawable/bootom_user"
+        android:src="@drawable/bt_click_home"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_gravity="center"
         android:background="@color/mom_color1"
-        />
-    <ImageView
-        android:src="@drawable/bottom_ball"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:background="@color/mom_color1"
-        />
-    <ImageView
-        android:src="@drawable/bottom_sh"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:background="@color/mom_color1"
+        android:layout_margin="8dp"
         />
 
-    <ImageView
-        android:src="@drawable/bottom_setup"
+    <ImageButton
+        android:src="@drawable/bt_click_user"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_gravity="center"
         android:background="@color/mom_color1"
+        android:layout_margin="8dp"
         />
+
+    <ImageButton
+        android:src="@drawable/bt_click_ball"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:background="@color/mom_color1"
+        android:layout_margin="8dp"
+        />
+    <ImageButton
+        android:src="@drawable/bt_click_search"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:background="@color/mom_color1"
+        android:layout_margin="8dp"
+        />
+
+    <ImageButton
+        android:src="@drawable/bt_click_setup"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:background="@color/mom_color1"
+        android:layout_margin="8dp"
+        />
+
 
 </LinearLayout>

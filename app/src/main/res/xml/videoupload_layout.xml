@@ -5,15 +5,11 @@
     android:title="동영상 업로드 설정"
     >
 
-    <PreferenceCategory
-        android:key="keyvideo_upload"
-        android:title="동영상 업로드 설정"
-        >
-
+    <com.mom.soccer.common.MyPreferenceCategory>
         <SwitchPreference
             android:defaultValue="false"
             android:key="complex_upload"
-            android:summary="모바일 데이터 및 WiFi 연결시 업로드 허용"
+            android:title="모바일 데이터 및 WiFi 연결시 업로드 허용"
             android:switchTextOff="OFF"
             android:switchTextOn="ON"
             />
@@ -21,12 +17,11 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="wifi_upload"
-            android:summary="WiFi 연결 시에만"
+            android:title="WiFi 연결 시에만"
             android:switchTextOff="OFF"
             android:switchTextOn="ON"
             android:background="#ff0"
             />
-
-    </PreferenceCategory>
+    </com.mom.soccer.common.MyPreferenceCategory>
 
 </PreferenceScreen>

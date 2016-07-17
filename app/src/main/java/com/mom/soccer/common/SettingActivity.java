@@ -26,6 +26,7 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         LinearLayout root = (LinearLayout)findViewById(android.R.id.list).getParent().getParent().getParent();
         Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
         root.addView(bar, 0); // insert at top
+        root.setBackgroundColor(getResources().getColor(R.color.mom_color2));
 
         bar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +44,9 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         keycontact.setOnPreferenceClickListener(this);
         keyagree.setOnPreferenceClickListener(this);
         keyappversion.setOnPreferenceClickListener(this);
+
+        Preference keyMaildev = (Preference)findPreference("keyMaildev");
+
     }
 
 

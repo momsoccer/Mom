@@ -36,4 +36,13 @@
     <string name="cancel">취소</string>
     <string name="ok">확인</string>
 
+    <string name="slide_1_title">첫번째 슬라이딩 화면</string>
+    <string name="slide_1_desc">첫번째 콘텐트 설명</string>
+    <string name="slide_2_title">두번째 슬라이딩 화면</string>
+    <string name="slide_2_desc">두번째 콘텐트 설명</string>
+    <string name="slide_3_title">세번째 슬라이딩 화면</string>
+    <string name="slide_3_desc">세번째 콘텐트 설명</string>
+    <string name="slide_4_title">네번째 슬라이딩 화면</string>
+    <string name="slide_4_desc">네번째 콘텐트 설명</string>
+
 </resources>
