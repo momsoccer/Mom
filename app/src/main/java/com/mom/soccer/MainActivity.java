@@ -17,7 +17,6 @@ import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.FcmToken;
 import com.mom.soccer.dto.User;
-import com.mom.soccer.login.JoinActivity;
 import com.mom.soccer.login.LoginActivity;
 import com.mom.soccer.momactivity.MomMainActivity;
 import com.mom.soccer.trservice.FcmTokenTRService;
@@ -34,9 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.btn_login_pre)
     Button btnLogin;
-
-    @Bind(R.id.btn_join_pre)
-    Button btnJoin;
 
     private User user;
     private PrefUtil prefUtil;
@@ -119,12 +115,6 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
 
-    @OnClick(R.id.btn_join_pre)
-    public void joinMom(){
-        Intent intent = new Intent(this, JoinActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-    }
 
     /***************************************************
      * 기타 참고 사항 및 설정

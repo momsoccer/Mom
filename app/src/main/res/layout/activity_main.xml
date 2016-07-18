@@ -56,23 +56,13 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         >
-        <Button
-            android:id="@+id/btn_join_pre"
-            android:textColor="@color/color6"
-            android:text="@string/member_join"
-            style="@style/btnStyleWhite"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:layout_marginRight="10dp"
-            />
 
         <Button
             android:id="@+id/btn_login_pre"
-            android:text="@string/member_login"
+            android:text="@string/member_pass"
             style="@style/btnStyleWhite"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30sp"
             android:layout_weight="0"
             android:layout_marginBottom="10dp"
             />

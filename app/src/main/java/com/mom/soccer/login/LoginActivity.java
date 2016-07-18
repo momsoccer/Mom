@@ -453,7 +453,7 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "우리 서버에 처음 오신분 입니다. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
                         //처음이면 가입 페이지로 이동 시킨다
-/*                      Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), JoinActivity.class);
                         intent.putExtra("snstype", snstype);
                         intent.putExtra("username", username);
                         intent.putExtra("snsname", snsname);
@@ -461,7 +461,7 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("snsid", snsid);
                         intent.putExtra("profileImgUrl", profileImgUrl);
                         startActivity(intent);
-                        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);*/
+                        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
                     } else {
                         //처음이 아니라면 MomMain으로 이동 시킨다
