@@ -1,0 +1,9 @@
+1.딜레이를 줄때
+new Handler().postDelayed(new Runnable()
+{
+	@Override
+	public void run()
+	{
+		//여기에 딜레이 후 시작할 작업들을 입력
+	}
+}, 500);// 0.5초 정도 딜레이를 준 후 시작

@@ -34,9 +34,6 @@ public interface UserService {
             @Query("snstype") String snstype,
             @Query("email") String email);
 
-    @GET("/all/usertest")
-    Call<User> getUserTest();
-
     //유저사진 업데이트
     @Multipart
     @POST("/api/user/fileupload")
@@ -46,5 +43,8 @@ public interface UserService {
             @Part("profileimgurl") RequestBody profileimgurl,
             @Part MultipartBody.Part file
     );
+
+    @POST("/api/user/updateUserSetup")
+    Call<ServerResult> updateUser(@Body User user);
 
 }

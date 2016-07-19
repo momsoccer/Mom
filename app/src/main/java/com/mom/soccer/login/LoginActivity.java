@@ -3,6 +3,7 @@ package com.mom.soccer.login;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
@@ -58,6 +59,10 @@ public class LoginActivity extends AppCompatActivity {
     //회원가입추가 정보를 받아온다.
     final static int FACEBOOK_RESULT=64206; //페이스북
 
+    TextInputLayout layoutUserEmail;
+    TextInputLayout layoutPassword;
+
+
     //kakao callback
     private SessionCallback kakaoCallback;
     //facebook calback
@@ -101,6 +106,9 @@ public class LoginActivity extends AppCompatActivity {
         String strId = getString(R.string.member_text_id);
         String strPw = getString(R.string.member_text_pw);
 
+        layoutUserEmail = (TextInputLayout) findViewById(R.id.layout_login_email);
+        layoutPassword = (TextInputLayout) findViewById(R.id.layout_login_password);
+
         textView_find_id = (TextView) findViewById(R.id.tx_find_id);
         textView_find_pw = (TextView) findViewById(R.id.tx_find_pw);
         textView_find_id.setText(Html.fromHtml("<u>" + strId + "</u>"));
@@ -113,76 +121,76 @@ public class LoginActivity extends AppCompatActivity {
         user.setSnsid(Common.VETERAN_SNSID);
 
         SERVERUSER = new User(); //서버로 부터 받은 유저정보
+
     }
 
-    @OnClick(R.id.btn_kakao_login)
-    public void kakaoLogin(){
+        @OnClick(R.id.btn_kakao_login)
+        public void kakaoLogin(){
+            Session.getCurrentSession().removeCallback(kakaoCallback);
+            //카카오 세션을 초기화 해준다
+            kakaoCallback = new SessionCallback();
+            Session.getCurrentSession().addCallback(kakaoCallback);
 
-        //카카오 세션을 초기화 해준다
-        Session.getCurrentSession().removeCallback(kakaoCallback);
 
-        kakaoCallback = new SessionCallback();
-        Session.getCurrentSession().addCallback(kakaoCallback);
-
-        if(!Session.getCurrentSession().checkAndImplicitOpen()){
-            Session.getCurrentSession().open(AuthType.KAKAO_TALK_EXCLUDE_NATIVE_LOGIN, LoginActivity.this);
+            if(!Session.getCurrentSession().checkAndImplicitOpen()){
+                Session.getCurrentSession().open(AuthType.KAKAO_TALK_EXCLUDE_NATIVE_LOGIN, LoginActivity.this);
+            }
+            Log.d(TAG, "카카오 로그인 시도");
         }
-        Log.d(TAG, "카카오 로그인 시도");
-    }
 
-    @OnClick(R.id.btn_facebook_login)
-    public void faceBoookLogin(){
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        @OnClick(R.id.btn_facebook_login)
+        public void faceBoookLogin(){
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            callbackManager = CallbackManager.Factory.create();
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
+            LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+
+                @Override
+                public void onError(FacebookException error) {
+                    error.printStackTrace();
+                }
+            });
+        }
+
+        public class SessionCallback implements ISessionCallback {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-
+            public void onSessionOpened() {
+                Log.d(TAG, "카카오 SessionCallback");
+                kakaoMeCallbackInfo();
             }
-
             @Override
-            public void onCancel() {
-
+            public void onSessionOpenFailed(KakaoException exception) {
+                if(exception != null) {
+                    Logger.e(exception);
+                }
             }
+        }
 
-            @Override
-            public void onError(FacebookException error) {
-                error.printStackTrace();
-            }
-        });
-    }
-
-    public class SessionCallback implements ISessionCallback {
         @Override
-        public void onSessionOpened() {
-            Log.d(TAG, "카카오 SessionCallback");
-            kakaoMeCallbackInfo();
-        }
-        @Override
-        public void onSessionOpenFailed(KakaoException exception) {
-            if(exception != null) {
-                Logger.e(exception);
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            Log.d(TAG, "---------------------onActivityResult---------------------");
+            if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+                return;
             }
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+            switch (requestCode){
+                case FACEBOOK_RESULT:
+                    Log.d(TAG, "페이스북 로그인 처리 onActivityResult()");
+                    facebookMeCallbackInfo();
+                    break;
+            }
+            super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "---------------------onActivityResult---------------------");
-        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            return;
-        }
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case FACEBOOK_RESULT:
-                Log.d(TAG, "페이스북 로그인 처리 onActivityResult()");
-                facebookMeCallbackInfo();
-                break;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     public void facebookMeCallbackInfo(){
         GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
@@ -265,7 +273,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart() ========================================");
-        Session.getCurrentSession().removeCallback(kakaoCallback);
     }
 
     @Override
@@ -309,12 +316,16 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.btn_login)
     public void btnLogin(){
         if(!Compare.checkEmail(et_Login_Email.getText().toString())) {
-            VeteranToast.makeToast(getApplicationContext(),getString(R.string.valid_useremail),Toast.LENGTH_SHORT).show();
+            layoutUserEmail.setError("이메일 형식이 맞지 않습니다");
             return;
         }else if (!Compare.validatePassword(et_Login_password.getText().toString())) {
-            VeteranToast.makeToast(getApplicationContext(),getString(R.string.valid_password),Toast.LENGTH_SHORT).show();
+            layoutPassword.setError("비밀번호는 5자 이상 입력해주세요");
             return;
         }else{
+            //밸리데이션 초기화
+            layoutUserEmail.setError(null);
+            layoutPassword.setError(null);
+
             user.setUseremail(et_Login_Email.getText().toString());
             user.setPassword(et_Login_password.getText().toString());
             tempEmail = et_Login_Email.getText().toString();
@@ -326,6 +337,7 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.btn_join)
     public void momJoin(){
         Intent intent = new Intent(this, JoinActivity.class);
+        intent.putExtra("app_action_flag","email_user");  //email_user, sns_user
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
@@ -391,10 +403,15 @@ public class LoginActivity extends AppCompatActivity {
         getUserInfo.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                SERVERUSER = response.body();
-                SERVERUSER.setPassword(user.getPassword());
-                dialog.dismiss();
-                userExist();
+                if(response.isSuccessful()){
+                    SERVERUSER = response.body();
+                    SERVERUSER.setPassword(user.getPassword());
+                    dialog.dismiss();
+                    userExist();
+                }else{
+                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                }
             }
 
             @Override
@@ -454,6 +471,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         //처음이면 가입 페이지로 이동 시킨다
                         Intent intent = new Intent(getApplicationContext(), JoinActivity.class);
+                        intent.putExtra("app_action_flag","sns_user");  //email_user, sns_user
                         intent.putExtra("snstype", snstype);
                         intent.putExtra("username", username);
                         intent.putExtra("snsname", snsname);

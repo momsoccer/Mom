@@ -1,11 +1,13 @@
 package com.mom.soccer.momactivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
@@ -36,11 +38,17 @@ import com.mom.soccer.MainActivity;
 import com.mom.soccer.R;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.common.SettingActivity;
+import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.retrofitdao.MomComService;
+import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
 
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MomMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
@@ -179,6 +187,9 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     }
 
     public void logOut(){
+
+
+
         if(user.getSnstype().equals("facebook")){
             Log.d(TAG,"페이스북 회원가입 유저 로그아웃을 합니다");
 
@@ -192,15 +203,54 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         }else if(user.getSnstype().equals("app")){
             Log.d(TAG,"자체 회원가입 유저 로그아웃을 합니다");
         }
-
         prefUtil.clearPrefereance();
 
-        VeteranToast.makeToast(getApplicationContext(),getString(R.string.app_logout), Toast.LENGTH_SHORT).show();
+        final ProgressDialog dialog;
+        dialog = ProgressDialog.show(this, "",getString(R.string.network_logout_user), true);
+        dialog.show();
 
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-        finish();
+        //서버 세션을 초기화해준다.
+        MomComService momComService = ServiceGenerator.createService(MomComService.class,this,user);
+        final Call<ServerResult> logOutCall = momComService.logOut();
+
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                logOutCall.enqueue(new Callback<ServerResult>() {
+                    @Override
+                    public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                        if(response.isSuccessful()) {
+                            dialog.dismiss();
+                            VeteranToast.makeToast(getApplicationContext(),getString(R.string.app_logout), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intent);
+                            finish();
+                        }else{
+                            VeteranToast.makeToast(getApplicationContext(),getString(R.string.app_logout), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intent);
+                            finish();
+                            dialog.dismiss();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<ServerResult> call, Throwable t) {
+                        Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
+                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.app_logout), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                        finish();
+                        dialog.dismiss();
+                    }
+                });
+            }
+        }, 1000);
+
     }
 
     //카카오 세션 끈기 메소드

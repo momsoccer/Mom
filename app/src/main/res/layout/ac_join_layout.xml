@@ -27,6 +27,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         >
 
         <Button
@@ -41,74 +42,141 @@
             android:layout_gravity="center"
             />
 
-        <EditText
+        <TextView
             android:id="@+id/joingmail"
-            android:hint=" G-mail"
-            android:textColorHighlight="@color/click_edit_word_hint"
-            style="@style/mom_edit_text"
-            android:inputType="textEmailAddress"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center"
-            android:focusable="false"
-            />
-
-        <EditText
-            android:id="@+id/join_email"
-            android:hint=" E-mail"
-            style="@style/mom_edit_text"
-            android:inputType="textEmailAddress"
-            android:layout_marginBottom="5dp"
-            android:layout_gravity="center"
-            />
-        <TextView
-            android:text="8-16자 영문 대소문자,숫자,특수문자 입력"
+            android:background="@drawable/xml_boder"
+            android:text=""
+            android:textSize="16sp"
+            android:textStyle="bold"
             android:textColor="@color/color2"
+            android:layout_width="270dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/layout_join_email"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            >
+
+            <EditText
+                android:id="@+id/join_email"
+                style="@style/mom_m_edit_text"
+                android:hint=" E-mail(ID)"
+                android:inputType="textEmailAddress"
+                android:textColorHint="@color/color6"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/li_pw"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            />
+            android:gravity="center"
+            android:visibility="visible"
+            >
 
-        <EditText
-            android:id="@+id/join_password"
-            android:hint=" 비밀번호"
-            style="@style/mom_edit_text"
-            android:inputType="textPassword"
-            android:layout_marginBottom="10dp"
-            android:maxLength="40"
-            android:singleLine="true"
-            android:layout_gravity="center"
-            android:enabled="true"
-            />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/layout_join_password"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                >
 
-        <EditText
-            android:id="@+id/join_password_confirm"
-            android:hint=" 비밀번호 재입력"
-            style="@style/mom_edit_text"
-            android:inputType="textPassword"
-            android:layout_marginBottom="5dp"
-            android:maxLength="40"
-            android:singleLine="true"
-            android:layout_gravity="center"
-            android:enabled="true"
-            />
+                <EditText
+                    android:id="@+id/join_password"
+                    style="@style/mom_m_edit_text"
+                    android:hint=" 비밀번호"
+                    android:inputType="textPassword"
+                    android:textColorHint="@color/color6"
+                    />
+            </android.support.design.widget.TextInputLayout>
 
-        <TextView
-            android:text="8-16자 영문 대소문자,숫자,특수문자 입력"
-            android:textColor="@color/color2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="40dp"
-            />
+<!--            <TextView
+                android:id="@+id/txhintpassword"
+                android:text="8-16자 영문 대소문자,숫자,특수문자 입력"
+                android:textColor="@color/color2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                />-->
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/layout_join_password_confirm"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                >
+
+                <EditText
+                    android:id="@+id/join_password_confirm"
+                    style="@style/mom_m_edit_text"
+                    android:hint=" 비밀번호 재입력"
+                    android:inputType="textPassword"
+                    android:textColorHint="@color/color6"
+                    />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+        <!--        <TextView
+                    android:id="@+id/joingmail"
+                    android:textColor="@color/color2"
+                    android:text="gmail.com"
+                    android:layout_width="270dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <EditText
+                    android:id="@+id/join_email"
+                    android:hint=" E-mail"
+                    style="@style/mom_edit_text"
+                    android:inputType="textEmailAddress"
+                    android:layout_marginBottom="5dp"
+                    android:layout_gravity="center"
+                    />
+                <TextView
+                    android:text="8-16자 영문 대소문자,숫자,특수문자 입력"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <EditText
+                    android:id="@+id/join_password"
+                    android:hint=" 비밀번호"
+                    style="@style/mom_edit_text"
+                    android:inputType="textPassword"
+                    android:layout_marginBottom="10dp"
+                    android:maxLength="40"
+                    android:singleLine="true"
+                    android:layout_gravity="center"
+                    android:enabled="true"
+                    />
+
+                <EditText
+                    android:id="@+id/join_password_confirm"
+                    android:hint=" 비밀번호 재입력"
+                    style="@style/mom_edit_text"
+                    android:inputType="textPassword"
+                    android:layout_marginBottom="5dp"
+                    android:maxLength="40"
+                    android:singleLine="true"
+                    android:layout_gravity="center"
+                    android:enabled="true"
+                    />-->
 
         <Button
             android:id="@+id/btn_join"
             style="@style/btnStylePaprika"
-            android:text="@string/member_login"
+            android:text="@string/member_join"
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="30dp"
             />
 

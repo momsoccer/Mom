@@ -78,10 +78,14 @@
             android:name=".momactivity.SetupActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".login.JoinActivity"
+        <activity
+            android:name=".login.JoinActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".bottommenu.UserProfile"
+            android:screenOrientation="portrait" />
+        <activity android:name=".bottommenu.SearchActivity"></activity>
     </application>
 
 </manifest>

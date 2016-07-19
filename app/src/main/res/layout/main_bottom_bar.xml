@@ -7,6 +7,7 @@
     >
 
     <ImageButton
+        android:id="@+id/ib_appbar_home"
         android:src="@drawable/bt_click_home"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -17,6 +18,7 @@
         />
 
     <ImageButton
+        android:id="@+id/ib_appbar_profile"
         android:src="@drawable/bt_click_user"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -27,6 +29,7 @@
         />
 
     <ImageButton
+        android:id="@+id/ib_appbar_ball"
         android:src="@drawable/bt_click_ball"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -36,6 +39,7 @@
         android:layout_margin="8dp"
         />
     <ImageButton
+        android:id="@+id/ib_appbar_search"
         android:src="@drawable/bt_click_search"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -46,6 +50,7 @@
         />
 
     <ImageButton
+        android:id="@+id/ib_appbar_setup"
         android:src="@drawable/bt_click_setup"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

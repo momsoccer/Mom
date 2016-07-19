@@ -2,11 +2,14 @@ package com.mom.soccer.trservice;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.widget.Toast;
 
+import com.mom.soccer.R;
 import com.mom.soccer.dto.FcmToken;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.retrofitdao.FcmTokenService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.widget.VeteranToast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,8 +42,13 @@ public class FcmTokenTRService {
         call.enqueue(new Callback<ServerResult>() {
             @Override
             public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                ServerResult result = response.body();
-                dialog.dismiss();
+                if(response.isSuccessful()) {
+                    ServerResult result = response.body();
+                    dialog.dismiss();
+                }else{
+                    VeteranToast.makeToast(context,context.getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                }
             }
 
             @Override

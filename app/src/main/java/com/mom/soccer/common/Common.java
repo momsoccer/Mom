@@ -1,6 +1,12 @@
 package com.mom.soccer.common;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Build;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 
 /**
  * Created by sungbo on 2016-05-27.
@@ -36,5 +42,24 @@ public class Common {
         Common.upflag = upflag;
     }
 
+    public static Bitmap blur(Context context, Bitmap sentBitmap, int radius) {
+
+        Bitmap bitmap;
+
+        //if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+            bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
+
+            final RenderScript rs = RenderScript.create(context);
+            final Allocation input = Allocation.createFromBitmap(rs, sentBitmap, Allocation.MipmapControl.MIPMAP_NONE,
+                    Allocation.USAGE_SCRIPT);
+            final Allocation output = Allocation.createTyped(rs, input.getType());
+            final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+            script.setRadius(radius); //0.0f ~ 25.0f
+            script.setInput(input);
+            script.forEach(output);
+            output.copyTo(bitmap);
+            return bitmap;
+        //}
+    }
 
 }
