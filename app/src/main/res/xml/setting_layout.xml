@@ -4,6 +4,11 @@
     <com.mom.soccer.common.MyPreferenceCategory>
 
         <Preference
+            android:key="userprofile"
+            android:title="프로필">
+        </Preference>
+
+        <Preference
             android:title="영상업로드 설정">
                  <intent android:targetClass="com.mom.soccer.common.SettingVideoUploadActivity"
             android:targetPackage="com.mom.soccer" />

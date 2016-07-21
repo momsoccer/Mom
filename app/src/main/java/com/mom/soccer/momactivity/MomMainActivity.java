@@ -36,6 +36,7 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.mom.soccer.MainActivity;
 import com.mom.soccer.R;
+import com.mom.soccer.adapter.MomMainAdapter;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.common.SettingActivity;
 import com.mom.soccer.dto.ServerResult;
@@ -65,6 +66,11 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
+
+    private MomMainAdapter momMainAdapter;
+
+    //@Bind(R.id.grid_view)
+    //public GridView mGridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,8 +127,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         layouts = new int[]{
                 R.layout.mom_main_slide1,
                 R.layout.mom_main_slide2,
-                R.layout.mom_main_slide3,
-                R.layout.mom_main_slide4};
+                R.layout.mom_main_slide3};
 
         addBottomDots(0);
         changeStatusBarColor();
@@ -131,6 +136,48 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         viewPager.setAdapter(momViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
+        /*
+        List<MainTypeListVo> listVos = new ArrayList<MainTypeListVo>();
+        listVos.add(new MainTypeListVo(1,"첫번째","설명","그림주소","Y"));
+        listVos.add(new MainTypeListVo(2,"두번째","설명2","그림주소2","Y"));
+        listVos.add(new MainTypeListVo(3,"세번째","설명3","그림주소3","Y"));
+        momMainAdapter = new MomMainAdapter(getApplicationContext(), R.layout.mom_main_list_item_layout,listVos);
+        mGridView.setAdapter(momMainAdapter);
+
+
+        //통신을 해서 메인 미션 타입리스트를 가져온다
+        DataService dataService = ServiceGenerator.createService(DataService.class,this,user);
+        Call<List<MainTypeListVo>> listCall = dataService.getMisstionTypeList();
+
+        final ProgressDialog dialog;
+
+        dialog = ProgressDialog.show(this, "", "메인화면 정보를 서버에서 읽는 중입니다", true);
+        dialog.show();
+
+        listCall.enqueue(new Callback<List<MainTypeListVo>>() {
+            @Override
+            public void onResponse(Call<List<MainTypeListVo>> call, Response<List<MainTypeListVo>> response) {
+                if(response.isSuccessful()){
+
+                    List<MainTypeListVo> listVos = response.body();
+                    //가져온 데이터 리스트를 매핑시킨다
+                    momMainAdapter = new MomMainAdapter(getApplicationContext(), R.layout.mom_main_list_item_layout,listVos);
+                    mGridView.setAdapter(momMainAdapter);
+                    dialog.dismiss();
+                }else{
+                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MainTypeListVo>> call, Throwable t) {
+                Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
+                t.printStackTrace();
+                dialog.dismiss();
+            }
+        });
+        */
     }
 
     @Override
@@ -395,6 +442,12 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         public void destroyItem(ViewGroup container, int position, Object object) {
             View view = (View) object;
             container.removeView(view);
+        }
+    }
+
+    //각 타입 별로 이동
+    public void mOnClick(View v){
+        switch (v.getId()){
         }
     }
 }

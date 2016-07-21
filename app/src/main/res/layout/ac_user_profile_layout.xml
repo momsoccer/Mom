@@ -8,7 +8,6 @@
     tools:context=".bottommenu.UserProfile">
 
     <LinearLayout
-        android:id="@+id/back_image"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:background="@color/mom_color2"
@@ -17,11 +16,14 @@
         android:layout_margin="5dp"
         >
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+
+            <ImageView
+                android:scaleType="fitXY"
+                android:id="@+id/back_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/profile_back"
+                />
 
             <ImageView
                 android:id="@+id/image_user_image"
@@ -33,15 +35,9 @@
                 android:maxWidth="100dp"
                 android:maxHeight="100dp"
                 android:onClick="imageOnClick"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="-50dp"
                 />
-        </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/modify_picture"
@@ -56,7 +52,6 @@
 
         </LinearLayout>
 
-    </LinearLayout>
 
     <LinearLayout
         android:layout_gravity="center"

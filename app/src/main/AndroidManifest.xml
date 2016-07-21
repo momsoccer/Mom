@@ -85,6 +85,7 @@
         <activity
             android:name=".bottommenu.UserProfile"
             android:screenOrientation="portrait" />
+
         <activity android:name=".bottommenu.SearchActivity"></activity>
     </application>
 

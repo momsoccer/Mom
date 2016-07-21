@@ -10,8 +10,8 @@
     <string name="welcome">WelCome</string>
     <string name="member_join">회원가입</string>
     <string name="member_login">로그인</string>
-    <string name="member_btn_facebook">페이스북으로 로그인</string>
-    <string name="member_btn_kakao">카카오톡으로 로그인</string>
+    <string name="member_btn_facebook">페이스북으로 로그인/가입</string>
+    <string name="member_btn_kakao">카카오톡으로 로그인/가입</string>
     <string name="member_btn_email">이메일로 로그인</string>
     <string name="member_text_id">아이디찾기</string>
     <string name="member_text_pw">비밀번호찾기</string>

@@ -1,5 +1,6 @@
 package com.mom.soccer.common;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.mom.soccer.R;
+import com.mom.soccer.bottommenu.UserProfile;
 import com.mom.soccer.widget.VeteranToast;
 
 
@@ -39,11 +41,13 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         Preference keycontact = (Preference)findPreference("keycontact");
         Preference keyagree = (Preference)findPreference("keyagree");
         Preference keyappversion = (Preference)findPreference("keyappversion");
+        Preference userprofile = (Preference)findPreference("userprofile");
 
         keyhelp.setOnPreferenceClickListener(this);
         keycontact.setOnPreferenceClickListener(this);
         keyagree.setOnPreferenceClickListener(this);
         keyappversion.setOnPreferenceClickListener(this);
+        userprofile.setOnPreferenceClickListener(this);
 
         Preference keyMaildev = (Preference)findPreference("keyMaildev");
 
@@ -67,6 +71,10 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         }
         else if(preference.getKey().equals("keycontact")) {
             VeteranToast.makeToast(getApplicationContext(),"고객센터 연결", Toast.LENGTH_SHORT).show();
+        }else if(preference.getKey().equals("userprofile")) {
+            Intent intent = new Intent(this, UserProfile.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         }
         return false;
     }

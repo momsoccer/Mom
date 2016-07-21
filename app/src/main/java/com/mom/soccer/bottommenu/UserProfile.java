@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -68,7 +67,7 @@ public class UserProfile extends AppCompatActivity {
     @Bind(R.id.et_phone)
     EditText et_phone;
 
-    LinearLayout backImage;
+    ImageView backImage;
 
     private Uri mImageCaptureUri;
     private String absoultePath;
@@ -102,13 +101,13 @@ public class UserProfile extends AppCompatActivity {
                     .load(user.getProfileimgurl())
                     .into(user_image);
 
-            backImage = (LinearLayout) findViewById(R.id.back_image);
+            backImage = (ImageView) findViewById(R.id.back_image);
 
             //리니어 레이아웃에 블러드 효과 주기
            Glide.with(UserProfile.this)
                     .load(user.getProfileimgurl())
                     .asBitmap().transform(new MyTransformation(this))
-                    .into(new LinearLayoutTarget(this.getApplicationContext(), (LinearLayout) backImage));
+                    .into(backImage);
 
         }
 
@@ -341,7 +340,7 @@ public class UserProfile extends AppCompatActivity {
         Glide.with(UserProfile.this)
                 .load(user.getProfileimgurl())
                 .asBitmap().transform(new MyTransformation(this))
-                .into(new LinearLayoutTarget(this.getApplicationContext(), (LinearLayout) backImage));
+                .into(backImage);
 
     }
 
