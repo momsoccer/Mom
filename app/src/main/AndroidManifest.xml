@@ -86,7 +86,15 @@
             android:name=".bottommenu.UserProfile"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".bottommenu.SearchActivity"></activity>
+        <activity android:name=".bottommenu.SearchActivity"
+            android:screenOrientation="portrait"
+            />
+
+        <activity android:name=".bottommenu.MyPageActivity"
+            android:screenOrientation="portrait"
+            >
+
+        </activity>
     </application>
 
 </manifest>

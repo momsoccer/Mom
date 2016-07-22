@@ -1,5 +1,6 @@
 package com.mom.soccer.momactivity;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,29 +23,37 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.mom.soccer.MainActivity;
 import com.mom.soccer.R;
-import com.mom.soccer.adapter.MomMainAdapter;
+import com.mom.soccer.adapter.MainRankingAdapter;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.common.SettingActivity;
+import com.mom.soccer.dataDto.RankingVo;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -59,19 +68,24 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
 
     private User user;
     private PrefUtil prefUtil;
-
-
     private ViewPager viewPager;
     private MomViewPagerAdapter momViewPagerAdapter;
+    private MainRankingAdapter mainRankingAdapter;
+
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
 
-    private MomMainAdapter momMainAdapter;
+    View header;
 
     //@Bind(R.id.grid_view)
     //public GridView mGridView;
 
+    //네비게이션 상단 아이템
+    TextView navHeaderUserName,navHeaderUserEmail,navHeaderCoachName,navHeaderTeamName;
+    ImageView navHeaderImage;
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +96,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
-
-        Log.d(TAG,"로그인 유저 정보 확인" + user.toString());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -113,6 +125,23 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //네비 상단 정보
+        header = navigationView.getHeaderView(0);
+        navHeaderUserName = (TextView) header.findViewById(R.id.nav_header_username);
+        navHeaderUserEmail = (TextView) header.findViewById(R.id.nav_header_useremail);
+        navHeaderCoachName = (TextView) header.findViewById(R.id.nav_header_coachname);
+        navHeaderTeamName = (TextView) header.findViewById(R.id.nav_header_teamname);
+        navHeaderImage  = (ImageView) header.findViewById(R.id.nav_header_image);
+        navHeaderUserName.setText(user.getUsername());
+        navHeaderUserEmail.setText(user.getUseremail());
+
+        Glide.with(MomMainActivity.this)
+                .load(user.getProfileimgurl())
+                .into(navHeaderImage);
+
+
+
+        //팀명 셋팅 조건이 필요
 
         /*****************************************************************************
          * 뷰 페이저 설정 부분
@@ -133,10 +162,24 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         changeStatusBarColor();
 
         momViewPagerAdapter = new MomViewPagerAdapter();
+
         viewPager.setAdapter(momViewPagerAdapter);
+
+
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
-        /*
+
+        //스크롤 안에 뷰페이저 처리
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
+
+        /* 메인 미션 메뉴를 네트워크를 이용할 경우
         List<MainTypeListVo> listVos = new ArrayList<MainTypeListVo>();
         listVos.add(new MainTypeListVo(1,"첫번째","설명","그림주소","Y"));
         listVos.add(new MainTypeListVo(2,"두번째","설명2","그림주소2","Y"));
@@ -178,6 +221,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             }
         });
         */
+
     }
 
     @Override
@@ -353,6 +397,8 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         return super.onKeyDown(keyCode, event);
     }
 
+
+
     /*
     아이콘 관련 디테일하게 꾸미기
     http://stackoverflow.com/questions/31097716/how-to-style-the-design-support-librarys-navigationview
@@ -425,6 +471,39 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             View view = layoutInflater.inflate(layouts[position],container,false);
             container.addView(view);
 
+            if(position == 0){
+
+                ListView listView = (ListView) container.findViewById(R.id.list_total_ranking);
+                List<RankingVo> listVos = new ArrayList<RankingVo>();
+                listVos.add(new RankingVo(1,"1",user.getProfileimgurl(),user.getUsername(),"서울FC","67","24,320","골드메달"));
+                listVos.add(new RankingVo(2,"2",user.getProfileimgurl(),"토탈랭킹1","서울FC","20","57,320","골드메달"));
+                listVos.add(new RankingVo(2,"3",user.getProfileimgurl(),"토탈랭킹2","서울FC","20","45,320","골드메달"));
+
+                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
+                listView.setAdapter(mainRankingAdapter);
+
+            }else if(position==1){
+
+                ListView listView = (ListView) container.findViewById(R.id.list_friend_ranking);
+                List<RankingVo> listVos = new ArrayList<RankingVo>();
+                listVos.add(new RankingVo(2,"2",user.getProfileimgurl(),"친구랭킹1","서울FC","40","24,320","골드메달"));
+                listVos.add(new RankingVo(2,"3",user.getProfileimgurl(),"친구랭킹2","서울FC","1","24,320","골드메달"));
+
+                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
+                listView.setAdapter(mainRankingAdapter);
+
+            }else if(position==2){
+
+                ListView listView = (ListView) container.findViewById(R.id.list_team_ranking);
+                List<RankingVo> listVos = new ArrayList<RankingVo>();
+                listVos.add(new RankingVo(1,"1",user.getProfileimgurl(),user.getUsername(),"서울FC","34","24,320","골드메달"));
+                listVos.add(new RankingVo(2,"2",user.getProfileimgurl(),"111111111팀랭킹1","서울FC","23","24,320","골드메달"));
+                listVos.add(new RankingVo(3,"3",user.getProfileimgurl(),"팀랭킹2","서울FC","14","24,320","골드메달"));
+
+                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
+                listView.setAdapter(mainRankingAdapter);
+            }
+
             return view;
         }
 
@@ -450,4 +529,29 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         switch (v.getId()){
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //만약 앱을 연 상태에서 설정을 했다면 다시 불러오기
+        if(user.getUseremail() != null){
+
+            Glide.with(MomMainActivity.this)
+                    .load(user.getProfileimgurl())
+                    .into(navHeaderImage);
+
+            navHeaderUserName = (TextView) header.findViewById(R.id.nav_header_username);
+            navHeaderUserEmail = (TextView) header.findViewById(R.id.nav_header_useremail);
+            navHeaderCoachName = (TextView) header.findViewById(R.id.nav_header_coachname);
+            navHeaderTeamName = (TextView) header.findViewById(R.id.nav_header_teamname);
+            navHeaderImage  = (ImageView) header.findViewById(R.id.nav_header_image);
+            navHeaderUserName.setText(user.getUsername());
+            navHeaderUserEmail.setText(user.getUseremail());
+
+        }
+
+    }
+
+
 }

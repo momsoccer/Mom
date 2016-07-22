@@ -1,119 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mom_color1">
+    android:background="@color/mom_color1"
+    tools:ignore="MissingPrefix">
 
-    <LinearLayout
+    <ScrollView
         android:layout_marginTop="55dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@color/mom_color1"
-        >
+        android:layout_weight="11"
+        android:layout_height="0dp"
+        android:id="@+id/scrollView">
+        <include layout="@layout/main_content_view_layout"/>
+    </ScrollView>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color2"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutDots"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:orientation="horizontal"
-        ></LinearLayout>
 
     <LinearLayout
         android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
         >
-        <LinearLayout
-            android:orientation="horizontal"
+        <com.mom.soccer.tablayout.TabNaviComplaintBase
+            android:id="@+id/PageNavigationView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            >
-
-            <Button
-                android:layout_margin="1dp"
-                android:id="@+id/main_btn_drible"
-                android:background="@drawable/main_page_drible"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="mOnClick"/>
-
-            <Button
-                android:layout_margin="1dp"
-                android:id="@+id/main_btn_trapping"
-                android:background="@drawable/main_page_traping"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="mOnClick"/>
-
-            <Button
-                android:layout_margin="1dp"
-                android:id="@+id/main_btn_lifting"
-                android:background="@drawable/main_page_lifting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="mOnClick"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            >
-
-            <Button
-                android:layout_margin="1dp"
-                android:id="@+id/main_btn_around"
-                android:background="@drawable/main_page_around"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="mOnClick"
-                />
-
-            <Button
-                android:layout_margin="1dp"
-                android:id="@+id/main_btn_flick"
-                android:background="@drawable/main_page_flib"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="mOnClick"/>
-
-            <Button
-                android:layout_margin="1dp"
-                android:id="@+id/main_btn_crosbar"
-                android:background="@drawable/main_page_cross"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="mOnClick" />
-        </LinearLayout>
-
+            android:layout_height="wrap_content">
+        </com.mom.soccer.tablayout.TabNaviComplaintBase>
     </LinearLayout>
-
-
-    <com.mom.soccer.tablayout.TabNaviComplaintBase
-        android:id="@+id/PageNavigationView"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-    </com.mom.soccer.tablayout.TabNaviComplaintBase>
 
 </LinearLayout>

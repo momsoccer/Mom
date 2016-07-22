@@ -81,7 +81,7 @@ public class UserProfile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ac_user_profile_layout);
+        setContentView(R.layout.ac_bottom_userprofile_layout);
         ButterKnife.bind(this);
 
         getSupportActionBar().setTitle("프로필 편집");

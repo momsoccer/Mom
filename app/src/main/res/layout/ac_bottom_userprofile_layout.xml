@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mom_color1"
+    android:orientation="vertical"
+    tools:context=".bottommenu.UserProfile">
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="@color/mom_color2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        >
+
+
+            <ImageView
+                android:scaleType="fitXY"
+                android:id="@+id/back_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/profile_back"
+                />
+
+            <ImageView
+                android:id="@+id/image_user_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/userimg"
+                android:layout_gravity="center"
+                android:maxWidth="100dp"
+                android:maxHeight="100dp"
+                android:onClick="imageOnClick"
+                android:layout_marginTop="-50dp"
+                />
+
+
+            <Button
+                android:id="@+id/modify_picture"
+                style="@style/btnStyleBlack"
+                android:text="@string/app_button"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/layout_user_nicname"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/color6"
+            >
+
+            <EditText
+                android:id="@+id/et_nicname"
+                style="@style/mom_m_edit_text"
+                android:hint="닉네임"
+                android:layout_marginTop="30dp"
+                android:inputType="textPersonName"
+                android:layout_marginBottom="10dp"
+                android:maxLength="40"
+                android:singleLine="true"
+                android:textColorHint="@color/color6"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/layout_user_phone"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/color6"
+            >
+
+            <EditText
+                android:id="@+id/et_phone"
+                style="@style/mom_m_edit_text"
+                android:hint="휴대번 번호(-제외)"
+                android:layout_marginTop="30dp"
+                android:inputType="textPhonetic"
+                android:maxLength="40"
+                android:singleLine="true"
+                android:textColorHint="@color/color6"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_user_save"
+            style="@style/btnStylePaprika"
+            android:text="@string/app_save"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

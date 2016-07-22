@@ -8,16 +8,16 @@ import com.mom.soccer.R;
 
 import butterknife.ButterKnife;
 
-public class SearchActivity extends AppCompatActivity {
+public class MyPageActivity extends AppCompatActivity {
 
-    private static final String TAG = "SearchActivity";
+    private static final String TAG = "MyPageActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ac_bottom_search_layout);
+        setContentView(R.layout.ac_bottom_mypage_layout);
         ButterKnife.bind(this);
-        getSupportActionBar().setTitle("검색");
+        getSupportActionBar().setTitle("마이페이지");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setLogo(R.drawable.mom_hd_mk);
