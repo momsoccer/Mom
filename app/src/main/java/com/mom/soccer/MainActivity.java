@@ -1,14 +1,18 @@
 package com.mom.soccer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -20,6 +24,7 @@ import com.mom.soccer.dto.User;
 import com.mom.soccer.login.LoginActivity;
 import com.mom.soccer.momactivity.MomMainActivity;
 import com.mom.soccer.trservice.FcmTokenTRService;
+import com.mom.soccer.widget.VeteranToast;
 
 import java.security.MessageDigest;
 
@@ -36,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
 
     private User user;
     private PrefUtil prefUtil;
+
+
+    //인터넷 연결 상태 확인
+    ConnectivityManager cManager;
+    NetworkInfo mobile;
+    NetworkInfo wifi;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +73,17 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG,"로그인 필요");
         }
 
-        getAppKeyHash();
+        //getAppKeyHash();
+
+        cManager=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        mobile = cManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        wifi = cManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if(!mobile.isConnected() && !wifi.isConnected()){
+            VeteranToast.makeToast(getApplication(),getString(R.string.donotinternet), Toast.LENGTH_LONG).show();
+        }
+
+
     }
 
     @Override

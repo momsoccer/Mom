@@ -93,6 +93,8 @@ dependencies {
 
     //font
     compile 'com.tsengvn:Typekit:1.0.0'
+
+    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

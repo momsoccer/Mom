@@ -1,9 +1,594 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mom_color1"
-    tools:context="com.mom.soccer.bottommenu.MyPageActivity">
+    tools:context="com.mom.soccer.bottommenu.MyPageActivity"
+    tools:ignore="MissingPrefix"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_weight="11"
+        android:layout_height="0dp"
+        android:id="@+id/scrollView">
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:background="@color/mom_color2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            >
+
+
+            <ImageView
+                android:scaleType="fitXY"
+                android:id="@+id/mypage_back_image"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                />
+
+            <ImageView
+                android:id="@+id/mypage_image_user_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/userimg"
+                android:layout_gravity="center"
+                android:maxWidth="100dp"
+                android:maxHeight="100dp"
+                android:layout_marginTop="-50dp"
+                />
+
+            <TextView
+                android:id="@+id/mypage_user_name"
+                android:text="이름"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/color6"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                >
+
+                <TextView
+                    android:text="지정코치 : "
+                    android:textSize="16sp"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/mypage_coachname"
+                    android:text="강사명"
+                    android:textSize="16sp"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:layout_marginLeft="30dp"
+                    android:text="팀 : "
+                    android:textSize="16sp"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/mypage_teamname"
+                    android:text="팀명(서울FC)"
+                    android:textSize="16sp"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:gravity="center"
+                >
+
+                <TextView
+                    android:text="전체랭킹 : "
+                    android:textSize="16sp"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/mypage_total_ranking"
+                    android:text="6,400"
+                    android:textSize="16sp"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/mypage_total_count"
+                    android:text="/53,000"
+                    android:textSize="16sp"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:gravity="center"
+                >
+
+                <TextView
+                    android:text="친구랭킹 : "
+                    android:textSize="16sp"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/mypage_friend_ranking"
+                    android:text="200"
+                    android:textSize="16sp"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/mypage_friend_count"
+                    android:text="/230"
+                    android:textSize="16sp"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                >
+
+                <TextView
+                    android:text="팀내랭킹 : "
+                    android:textSize="16sp"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/mypage_team_ranking"
+                    android:text="200"
+                    android:textSize="16sp"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/mypage_team_count"
+                    android:text="/54"
+                    android:textSize="16sp"
+                    android:textColor="@color/color2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/color2"
+                />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/mom_color1"
+                android:layout_marginBottom="10dp"
+                >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    >
+
+                    <TextView
+                        android:text="팔로워"
+                        android:textSize="14sp"
+                        android:textColor="@color/color2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/mypage_fllower"
+                        android:text="200"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    >
+                    <TextView
+                        android:text="팔로잉"
+                        android:textSize="14sp"
+                        android:textColor="@color/color2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/mypage_fllowing"
+                        android:text="320"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/color2"
+                />
+
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                >
+
+                <ImageView
+                    android:src="@drawable/main_page_lifting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="5dp"
+                    >
+
+                    <TextView
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/color6"
+                        android:text="@string/lifting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/mypage_lifting_level"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/color6"
+                        android:text="Lv 3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/mypage_lifting_score"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:text="누적점수:506"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:src="@drawable/main_page_around"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="5dp"
+                    >
+                    <TextView
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/color6"
+                        android:text="@string/around"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/mypage_around_level"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/color6"
+                        android:text="Lv 4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/mypage_around_score"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:text="누적점수:000"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                >
+
+                <ImageView
+                    android:src="@drawable/main_page_traping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="5dp"
+                    >
+
+                    <TextView
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/color6"
+                        android:text="@string/trapping"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/mypage_trapping_level"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/color6"
+                        android:text="Lv 3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/mypage_trapping_socre"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:text="누적점수:506"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:src="@drawable/main_page_flib"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="5dp"
+                    >
+                    <TextView
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/color6"
+                        android:text="@string/flick"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/mypage_flib_level"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/color6"
+                        android:text="Lv 4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/mypage_flib_score"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:text="누적점수:000"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                >
+
+                <ImageView
+                    android:src="@drawable/main_page_drible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="5dp"
+                    >
+
+                    <TextView
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/color6"
+                        android:text="@string/drrible"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/mypage_drible_level"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/color6"
+                        android:text="Lv 3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/mypage_drible_score"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:text="누적점수:506"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:src="@drawable/main_page_cross"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="5dp"
+                    >
+                    <TextView
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/color6"
+                        android:text="@string/crossbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/mypage_crosba_level"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/color6"
+                        android:text="Lv 4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/mypage_crosba_score"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:text="누적점수:000"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/color2"
+                />
+
+            <TextView
+                android:text="@string/app_myvideo_view"
+                android:textColor="@color/color6"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/color2"
+                />
+
+            <GridView
+                android:layout_marginTop="10dp"
+                android:id="@+id/mypage_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="2"
+                android:gravity="center"
+                >
+
+
+            </GridView>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        >
+        <com.mom.soccer.tablayout.TabNaviComplaintBase
+            android:id="@+id/PageNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.mom.soccer.tablayout.TabNaviComplaintBase>
+    </LinearLayout>
 
 </LinearLayout>

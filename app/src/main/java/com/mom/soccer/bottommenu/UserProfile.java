@@ -24,9 +24,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
-import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.mom.soccer.R;
+import com.mom.soccer.common.BlurTransformation;
 import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
@@ -106,7 +105,7 @@ public class UserProfile extends AppCompatActivity {
             //리니어 레이아웃에 블러드 효과 주기
            Glide.with(UserProfile.this)
                     .load(user.getProfileimgurl())
-                    .asBitmap().transform(new MyTransformation(this))
+                    .asBitmap().transform(new BlurTransformation(this, 25))
                     .into(backImage);
 
         }
@@ -120,26 +119,6 @@ public class UserProfile extends AppCompatActivity {
             et_phone.setText(user.getPhone());
         }
 
-    }
-
-    private static class MyTransformation extends BitmapTransformation {
-
-        public MyTransformation(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected Bitmap transform(BitmapPool pool, Bitmap toTransform,
-                                   int outWidth, int outHeight) {
-            Log.e("MyTransformation", "toTransform width=" + toTransform.getWidth() + ", height=" + toTransform.getHeight()
-                    + "; outWidth=" + outWidth + ", outHeight=" + outHeight);
-            return toTransform;
-        }
-
-        @Override
-        public String getId() {
-            return "MyTransformation";
-        }
     }
 
     //이미지 클릭시
@@ -339,7 +318,7 @@ public class UserProfile extends AppCompatActivity {
         //리니어 레이아웃에 블러드 효과 주기
         Glide.with(UserProfile.this)
                 .load(user.getProfileimgurl())
-                .asBitmap().transform(new MyTransformation(this))
+                .asBitmap().transform(new BlurTransformation(this, 25))
                 .into(backImage);
 
     }
