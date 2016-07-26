@@ -93,8 +93,13 @@
         <activity android:name=".bottommenu.MyPageActivity"
             android:screenOrientation="portrait"
             >
-
         </activity>
+
+        <activity android:name=".mission.MissionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            ></activity>
+
     </application>
 
 </manifest>

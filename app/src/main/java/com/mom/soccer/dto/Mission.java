@@ -6,6 +6,7 @@ public class Mission {
     private int missionid;
     private int categoryid;
     private int typeid;
+    private String typename;
     private int sequence;
     private String missionname;
     private String description;
@@ -24,10 +25,11 @@ public class Mission {
 
     public Mission(){}
 
-    public Mission(int missionid, int categoryid, int typeid, int sequence, String missionname, String description, String precon, String videoaddr, String fullyoutubeaddr, String youtubeaddr, String enabled, String feetype, int grade, int passgrade, String creationdate, String updatedate, String change_creationdate, String change_updatedate) {
+    public Mission(int missionid, int categoryid, int typeid, String typename, int sequence, String missionname, String description, String precon, String videoaddr, String fullyoutubeaddr, String youtubeaddr, String enabled, String feetype, int grade, int passgrade, String creationdate, String updatedate, String change_creationdate, String change_updatedate) {
         this.missionid = missionid;
         this.categoryid = categoryid;
         this.typeid = typeid;
+        this.typename = typename;
         this.sequence = sequence;
         this.missionname = missionname;
         this.description = description;
@@ -45,28 +47,12 @@ public class Mission {
         this.change_updatedate = change_updatedate;
     }
 
-    @Override
-    public String toString() {
-        return "Mission{" +
-                "missionid=" + missionid +
-                ", categoryid=" + categoryid +
-                ", typeid=" + typeid +
-                ", sequence=" + sequence +
-                ", missionname='" + missionname + '\'' +
-                ", description='" + description + '\'' +
-                ", precon='" + precon + '\'' +
-                ", videoaddr='" + videoaddr + '\'' +
-                ", fullyoutubeaddr='" + fullyoutubeaddr + '\'' +
-                ", youtubeaddr='" + youtubeaddr + '\'' +
-                ", enabled='" + enabled + '\'' +
-                ", feetype='" + feetype + '\'' +
-                ", grade=" + grade +
-                ", passgrade=" + passgrade +
-                ", creationdate='" + creationdate + '\'' +
-                ", updatedate='" + updatedate + '\'' +
-                ", change_creationdate='" + change_creationdate + '\'' +
-                ", change_updatedate='" + change_updatedate + '\'' +
-                '}';
+    public String getTypename() {
+        return typename;
+    }
+
+    public void setTypename(String typename) {
+        this.typename = typename;
     }
 
     public int getMissionid() {
@@ -211,5 +197,30 @@ public class Mission {
 
     public void setChange_updatedate(String change_updatedate) {
         this.change_updatedate = change_updatedate;
+    }
+
+    @Override
+    public String toString() {
+        return "Mission{" +
+                "missionid=" + missionid +
+                ", categoryid=" + categoryid +
+                ", typeid=" + typeid +
+                ", typename='" + typename + '\'' +
+                ", sequence=" + sequence +
+                ", missionname='" + missionname + '\'' +
+                ", description='" + description + '\'' +
+                ", precon='" + precon + '\'' +
+                ", videoaddr='" + videoaddr + '\'' +
+                ", fullyoutubeaddr='" + fullyoutubeaddr + '\'' +
+                ", youtubeaddr='" + youtubeaddr + '\'' +
+                ", enabled='" + enabled + '\'' +
+                ", feetype='" + feetype + '\'' +
+                ", grade=" + grade +
+                ", passgrade=" + passgrade +
+                ", creationdate='" + creationdate + '\'' +
+                ", updatedate='" + updatedate + '\'' +
+                ", change_creationdate='" + change_creationdate + '\'' +
+                ", change_updatedate='" + change_updatedate + '\'' +
+                '}';
     }
 }

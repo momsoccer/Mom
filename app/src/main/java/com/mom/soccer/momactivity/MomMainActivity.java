@@ -47,6 +47,8 @@ import com.mom.soccer.common.SettingActivity;
 import com.mom.soccer.dataDto.RankingVo;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.mission.MissionActivity;
+import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.DialogBuilder;
@@ -553,5 +555,44 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
 
     }
 
+
+    /******************************
+     * Mission Activity choose
+     ******************************/
+
+    public void OnClickMission(View v){
+
+        Intent intent = new Intent(this, MissionActivity.class);
+
+        switch (v.getId()){
+
+            case R.id.main_btn_drible:
+                intent.putExtra(MissionCommon.MISSIONTYPE,"DRIBLE");
+                break;
+
+            case R.id.main_btn_trapping:
+                intent.putExtra(MissionCommon.MISSIONTYPE,"TRAPING");
+                break;
+
+            case R.id.main_btn_lifting:
+                intent.putExtra(MissionCommon.MISSIONTYPE,"LIFTING");
+                break;
+
+            case R.id.main_btn_around:
+                intent.putExtra(MissionCommon.MISSIONTYPE,"AROUND");
+                break;
+
+            case R.id.main_btn_flick:
+                intent.putExtra(MissionCommon.MISSIONTYPE,"FLICK");
+                break;
+
+            case R.id.main_btn_crosbar:
+                intent.putExtra(MissionCommon.MISSIONTYPE,"COMPLEX");
+                break;
+
+        }
+
+        startActivity(intent);
+    }
 
 }

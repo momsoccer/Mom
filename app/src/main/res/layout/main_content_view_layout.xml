@@ -38,13 +38,13 @@
             >
 
             <ImageButton
-                android:layout_margin="1dp"
                 android:id="@+id/main_btn_drible"
+                android:layout_margin="1dp"
                 android:background="@drawable/main_page_drible"
                 android:layout_width="105dp"
                 android:layout_height="110dp"
                 android:scaleType="fitCenter"
-                android:onClick="mOnClick"/>
+                android:onClick="OnClickMission"/>
 
             <ImageButton
                 android:layout_margin="1dp"
@@ -53,7 +53,7 @@
                 android:layout_width="105dp"
                 android:layout_height="110dp"
                 android:scaleType="fitCenter"
-                android:onClick="mOnClick"/>
+                android:onClick="OnClickMission"/>
 
             <ImageButton
                 android:layout_margin="1dp"
@@ -62,7 +62,7 @@
                 android:layout_width="105dp"
                 android:layout_height="110dp"
                 android:scaleType="fitCenter"
-                android:onClick="mOnClick"/>
+                android:onClick="OnClickMission"/>
 
         </LinearLayout>
 
@@ -80,7 +80,7 @@
                 android:layout_width="105dp"
                 android:layout_height="110dp"
                 android:scaleType="fitCenter"
-                android:onClick="mOnClick"
+                android:onClick="OnClickMission"
                 />
 
             <ImageButton
@@ -90,7 +90,7 @@
                 android:layout_width="105dp"
                 android:layout_height="110dp"
                 android:scaleType="fitCenter"
-                android:onClick="mOnClick"/>
+                android:onClick="OnClickMission"/>
 
             <ImageButton
                 android:layout_margin="1dp"
@@ -99,7 +99,7 @@
                 android:layout_width="105dp"
                 android:layout_height="110dp"
                 android:scaleType="fitCenter"
-                android:onClick="mOnClick" />
+                android:onClick="OnClickMission" />
         </LinearLayout>
 
     </LinearLayout>
