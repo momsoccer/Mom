@@ -6,5 +6,7 @@ package com.mom.soccer.mission;
 public class MissionCommon {
 
     public static String MISSIONTYPE = "MISSIONTYPE";
+    public static String MISSIONID = "MISSIONID";
+    public static String OBJECT = "OBJECT";
 
 }

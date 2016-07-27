@@ -15,4 +15,5 @@ public interface DataService {
     @GET("/api/data/typeList")
     Call<List<MainTypeListVo>> getMisstionTypeList();
 
+
 }

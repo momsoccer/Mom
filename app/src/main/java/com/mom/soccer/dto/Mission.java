@@ -1,7 +1,9 @@
 package com.mom.soccer.dto;
 
 
-public class Mission {
+import java.io.Serializable;
+
+public class Mission implements Serializable{
 
     private int missionid;
     private int categoryid;
@@ -24,6 +26,16 @@ public class Mission {
     private String change_updatedate;
 
     public Mission(){}
+
+    public Mission(int missionid, String typename, String missionname, String description, String precon, int grade, int passgrade) {
+        this.missionid = missionid;
+        this.typename = typename;
+        this.missionname = missionname;
+        this.description = description;
+        this.precon = precon;
+        this.grade = grade;
+        this.passgrade = passgrade;
+    }
 
     public Mission(int missionid, int categoryid, int typeid, String typename, int sequence, String missionname, String description, String precon, String videoaddr, String fullyoutubeaddr, String youtubeaddr, String enabled, String feetype, int grade, int passgrade, String creationdate, String updatedate, String change_creationdate, String change_updatedate) {
         this.missionid = missionid;

@@ -16,26 +16,22 @@
 
 package com.mom.soccer.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mom.soccer.R;
 import com.mom.soccer.dto.Mission;
-import com.mom.soccer.retrofitdao.MissionService;
-import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.VeteranToast;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.mom.soccer.mission.MissionCommon;
+import com.mom.soccer.mission.MissionMainActivity;
 
 /**
  * Created by Bartosz Lipinski
@@ -50,22 +46,23 @@ public class MainMissionFragment extends Fragment {
     public static final String MISSION_ID = "MISSION_ID";
 
     private static int mPage;
-    private int misstion_id;
-    private String missionType;
 
-    private Mission queryMission = new Mission();
+    private Mission mission = new Mission();
 
     RelativeLayout mMainLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mPage = getArguments().getInt(ARG_PAGE);
-        misstion_id = getArguments().getInt(MISSION_ID);
-        missionType = getArguments().getString(MISSIONTYPE);
+        mission = (Mission) getArguments().getSerializable(MissionCommon.OBJECT);
+
+        Log.d(TAG,"미션 객체 값 : " + mission.toString());
     }
 
-    public static MainMissionFragment newInstance(int page,int missionid,String missionType) {
+    public static MainMissionFragment newInstance(int page,
+                                                  Mission mission) {
 
         MainMissionFragment fragment = new MainMissionFragment();
         //각 프래그먼트에 넘길 함수
@@ -73,61 +70,60 @@ public class MainMissionFragment extends Fragment {
         Bundle bdl = new Bundle();
 
         bdl.putInt(ARG_PAGE,page);
-        bdl.putInt(MISSION_ID,missionid);
-        bdl.putString(MISSIONTYPE,missionType);
+        //mission 객체에 담기
+        bdl.putSerializable(MissionCommon.OBJECT,mission);
         fragment.setArguments(bdl);
 
         return fragment;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View v = inflater.inflate(R.layout.fragment_dummy, container, false);
+        View view = null;
 
-        queryMission.setMissionid(misstion_id);
-        mMainLayout = (RelativeLayout) v.findViewById(R.id.mission_layout);
+        if(mission.getTypename().equals("DRIBLE")){
+            view = inflater.inflate(R.layout.fr_drible_layout, container, false);
+        }else if(mission.getTypename().equals("LIFTING")){
+            view = inflater.inflate(R.layout.fr_lifting_layout, container, false);
+        }else if(mission.getTypename().equals("TRAPING")){
+            view = inflater.inflate(R.layout.fr_traping_layout, container, false);
+        }else if(mission.getTypename().equals("AROUND")){
+            view = inflater.inflate(R.layout.fr_around_layout, container, false);
+        }else if(mission.getTypename().equals("FLICK")){
+            view = inflater.inflate(R.layout.fr_flick_layout, container, false);
+        }else if(mission.getTypename().equals("COMPLEX")){
+            view = inflater.inflate(R.layout.fr_complex_layout, container, false);
+        }
 
-        final TextView tx_mission_level = (TextView) v.findViewById(R.id.tx_mission_level);
-        final TextView tx_mission_name = (TextView) v.findViewById(R.id.tx_mission_name);
-        final TextView tx_mission_disp = (TextView) v.findViewById(R.id.tx_mission_description);
-        final TextView tx_mission_precon = (TextView) v.findViewById(R.id.tx_mission_precon);
-        final TextView tx_mission_point = (TextView) v.findViewById(R.id.tx_mission_point);
+        mMainLayout = (RelativeLayout) view.findViewById(R.id.mission_layout);
 
-        MissionService missionService = ServiceGenerator.createService(MissionService.class);
-        Call<Mission> call = missionService.getMission(queryMission);
-        call.enqueue(new Callback<Mission>() {
-            @Override
-            public void onResponse(Call<Mission> call, Response<Mission> response) {
-                if(response.isSuccessful()){
-                    Mission reqMissionVo = response.body();
-                    tx_mission_level.setText("Lv."+reqMissionVo.getSequence());
-                    tx_mission_name.setText(reqMissionVo.getMissionname());
-                    tx_mission_disp.setText(reqMissionVo.getDescription());
-                    tx_mission_precon.setText(reqMissionVo.getPrecon());
+        final TextView tx_mission_level = (TextView) view.findViewById(R.id.tx_mission_level);
+        final TextView tx_mission_name = (TextView) view.findViewById(R.id.tx_mission_name);
+        final TextView tx_mission_disp = (TextView) view.findViewById(R.id.tx_mission_description);
+        final TextView tx_mission_precon = (TextView) view.findViewById(R.id.tx_mission_precon);
+        final TextView tx_mission_point = (TextView) view.findViewById(R.id.tx_mission_point);
 
-                    //미션 포인트 또는 획득점수, 도전 소비 포인트
+        tx_mission_level.setText("Lv."+mission.getSequence());
+        tx_mission_name.setText(mission.getMissionname());
+        tx_mission_disp.setText(mission.getDescription());
+        tx_mission_precon.setText(mission.getPrecon());
 
-                }else{
 
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Mission> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-
-        Button startBtn = (Button) v.findViewById(R.id.btn_mission_start);
-        startBtn.setOnClickListener(new View.OnClickListener() {
+        final Button missionStartBtn = (Button) view.findViewById(R.id.btn_mission_start);
+        missionStartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                VeteranToast.makeToast(getContext(),"미션을 시작합니다", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(),MissionMainActivity.class);
+
+                intent.putExtra(MissionCommon.OBJECT,mission);
+
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
             }
         });
 
-        return v;
+        return view;
     }
 
 

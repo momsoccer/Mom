@@ -591,8 +591,8 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                 break;
 
         }
-
         startActivity(intent);
+        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
 
 }

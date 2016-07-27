@@ -18,6 +18,7 @@
     <color name="color8">#4A4A4C</color>
     <color name="color9">#BDD1DC</color>
 
+    <color name="line_color1">#666666</color>
 
     <color name="edit_tx_on">#FFFFFF</color>
     <color name="edit_tx_off">#AEAEAE</color>

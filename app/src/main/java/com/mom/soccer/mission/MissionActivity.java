@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.bartoszlipinski.flippablestackview.FlippableStackView;
@@ -55,6 +56,9 @@ public class MissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_mission_layout);
 
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Log.d(TAG,"onCreate() ===========================================");
         ButterKnife.bind(this);
 
@@ -63,8 +67,27 @@ public class MissionActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         missionType = intent.getExtras().getString(MissionCommon.MISSIONTYPE);
+
+        Log.d(TAG,"onCreate() missiontype : " + missionType);
+
+        if(missionType.equals("DRIBLE")){
+            getSupportActionBar().setTitle(getString(R.string.drrible));
+        }else if(missionType.equals("LIFTING")){
+            getSupportActionBar().setTitle(getString(R.string.lifting));
+        }else if(missionType.equals("TRAPING")){
+            getSupportActionBar().setTitle(getString(R.string.trapping));
+        }else if(missionType.equals("AROUND")){
+            getSupportActionBar().setTitle(getString(R.string.around));
+        }else if(missionType.equals("FLICK")){
+            getSupportActionBar().setTitle(getString(R.string.flick));
+        }else if(missionType.equals("COMPLEX")){
+            getSupportActionBar().setTitle(getString(R.string.crossbar));
+        }
+
+
         getMissionList(missionType);
 
+        //언어 설정 값
         Locale locale = getResources().getConfiguration().locale;
         String lang = locale.getLanguage();
 
@@ -76,17 +99,15 @@ public class MissionActivity extends AppCompatActivity {
         Log.d(TAG,"이곳은 createViewPagerFragments()");
         mViewPagerFragments = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_FRAGMENTS; ++i) {
-            mViewPagerFragments.add(MainMissionFragment.newInstance(i,missionList.get(i).getMissionid(),missionList.get(i).getTypename()));
+            mViewPagerFragments.add(MainMissionFragment.newInstance(i, missionList.get(i)));
         }
     }
-
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG,"onStart()===========================================");
     }
-
 
     public void getMissionList(String missiontype){
 
@@ -96,7 +117,7 @@ public class MissionActivity extends AppCompatActivity {
 
         MissionService missionService = ServiceGenerator.createService(MissionService.class,this,user);
 
-        final Call<List<Mission>> call = missionService.getMissionList("7",null,null,null);
+        final Call<List<Mission>> call = missionService.getMissionList(missiontype);
 
         call.enqueue(new Callback<List<Mission>>() {
             @Override
@@ -107,17 +128,20 @@ public class MissionActivity extends AppCompatActivity {
                     Log.d(TAG,"이곳은 missionService()");
                     dialog.dismiss();
 
-                    NUMBER_OF_FRAGMENTS = missionList.size();
-
-                    createViewPagerFragments();
-                    mPageAdapter = new MissionFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
-                    boolean portrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-                    mFlippableStack = (FlippableStackView) findViewById(R.id.flippable_stack_view);
-                    mFlippableStack.initStack(NUMBER_OF_FRAGMENTS, portrait ?
-                            StackPageTransformer.Orientation.VERTICAL :
-                            StackPageTransformer.Orientation.HORIZONTAL);
-                    mFlippableStack.setAdapter(mPageAdapter);
-
+                    if(missionList.size()==0){
+                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.valid_mission_nodata_found),Toast.LENGTH_SHORT).show();
+                        noDataPage();
+                    }else{
+                        NUMBER_OF_FRAGMENTS = missionList.size();
+                        createViewPagerFragments();
+                        mPageAdapter = new MissionFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
+                        boolean portrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+                        mFlippableStack = (FlippableStackView) findViewById(R.id.flippable_stack_view);
+                        mFlippableStack.initStack(NUMBER_OF_FRAGMENTS, portrait ?
+                                StackPageTransformer.Orientation.VERTICAL :
+                                StackPageTransformer.Orientation.HORIZONTAL);
+                        mFlippableStack.setAdapter(mPageAdapter);
+                    }
                 }else{
                     NUMBER_OF_FRAGMENTS = missionList.size();
                     VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
@@ -129,9 +153,50 @@ public class MissionActivity extends AppCompatActivity {
             public void onFailure(Call<List<Mission>> call, Throwable t) {
                 Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
                 dialog.dismiss();
-                t.printStackTrace();
+                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                noDataPage();
             }
         });
+    }
+
+    public void noDataPage(){
+        //네트워크 오류로 간단히 샘플을 보여준다
+        missionList = new ArrayList<Mission>();
+
+        for(int i=0; i < 5 ; i++ ){
+            Mission mission = new Mission();
+            mission.setTypename(missionType);
+            mission.setMissionid(900);
+            mission.setSequence(0);
+            mission.setMissionname(getString(R.string.dermy_missionname));
+            mission.setDescription(getString(R.string.dermy_disp));
+            mission.setPrecon(getString(R.string.dermy_precon));
+            mission.setGrade(100);
+            mission.setPassgrade(100);
+            missionList.add(mission);
+        }
+
+        NUMBER_OF_FRAGMENTS = missionList.size();
+
+        createViewPagerFragments();
+        mPageAdapter = new MissionFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
+        boolean portrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+        mFlippableStack = (FlippableStackView) findViewById(R.id.flippable_stack_view);
+        mFlippableStack.initStack(NUMBER_OF_FRAGMENTS, portrait ?
+                StackPageTransformer.Orientation.VERTICAL :
+                StackPageTransformer.Orientation.HORIZONTAL);
+        mFlippableStack.setAdapter(mPageAdapter);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        //홈버튼클릭시
+        if (id == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

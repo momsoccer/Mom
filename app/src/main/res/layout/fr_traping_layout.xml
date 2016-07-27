@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mission_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mom_color2"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:background="@drawable/trappring_back"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+        <TextView
+            android:id="@+id/tx_mission_level"
+            android:text="@string/default_mission_level"
+            android:textColor="@color/color6"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="160dp"
+            android:layout_marginTop="18dp" />
+
+        <ImageButton
+            android:id="@+id/star"
+            android:background="@color/mom_color1"
+            android:src="@drawable/star_enabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="320dp" />
+
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:id="@+id/tx_mission_name"
+            android:textSize="22sp"
+            android:text="@string/default_mission_name"
+            android:textColor="@color/color6"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:background="@drawable/mission_back_boder"
+            android:orientation="vertical"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            >
+
+            <TextView
+                android:id="@+id/tx_mission_description"
+                android:text="@string/default_mission_disp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/color6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_gravity="center_horizontal"
+                />
+
+
+            <TextView
+                android:id="@+id/tx_mission_precon"
+                android:text="@string/default_mission_precon"
+                android:textSize="16sp"
+                android:textColor="@color/color2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="20dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/mission_back_boder"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:id="@+id/tx_mission_point"
+                android:text="@string/default_mission_getpoint"
+                android:textSize="18sp"
+                android:textColor="@color/color6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_mission_start"
+            android:layout_marginTop="30dp"
+            style="@style/btnStylePaprika"
+            android:text="@string/mission_start"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="100dp"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+

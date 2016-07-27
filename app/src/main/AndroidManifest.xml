@@ -85,21 +85,28 @@
         <activity
             android:name=".bottommenu.UserProfile"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".bottommenu.SearchActivity"
+        <activity
+            android:name=".bottommenu.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".bottommenu.MyPageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mission.MissionActivity"
             android:screenOrientation="portrait"
             />
-
-        <activity android:name=".bottommenu.MyPageActivity"
+        <activity
+            android:name=".mission.MissionMainActivity"
             android:screenOrientation="portrait"
-            >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".mission.MissionActivity"
+        <service
+            android:name=".uploadyutube.UploadService"
+            android:exported="true" />
+
+        <activity android:name=".mission.ReviewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
             ></activity>
-
     </application>
 
 </manifest>

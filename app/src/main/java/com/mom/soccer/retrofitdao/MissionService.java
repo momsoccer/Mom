@@ -17,10 +17,7 @@ public interface MissionService {
 
     @GET("/api/mission/getMissionList")
     Call<List<Mission>> getMissionList(
-            @Query("categoryid") String categoryid,
-            @Query("typeid") String typeid,
-            @Query("enabled") String enabled,
-            @Query("youtubeaddr") String youtubeaddr
+            @Query("typename") String typename
     );
 
     @POST("/api/mission/getMission")
