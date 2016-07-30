@@ -98,6 +98,9 @@ dependencies {
 
     //card View
     compile 'com.bartoszlipinski.flippablestackview:library:1.2.1'
+
+    //diarlog
+    compile 'com.github.d-max:spots-dialog:0.4@aar'
 }
 
 apply plugin: 'com.google.gms.google-services'

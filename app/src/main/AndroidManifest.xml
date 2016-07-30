@@ -38,6 +38,7 @@
 
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -93,8 +94,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".mission.MissionActivity"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".mission.MissionMainActivity"
             android:screenOrientation="portrait"
@@ -104,9 +104,25 @@
             android:name=".uploadyutube.UploadService"
             android:exported="true" />
 
-        <activity android:name=".mission.ReviewActivity"
+        <activity
+            android:name=".mission.ReviewActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".test.TestActivity" />
+
+        <service
+            android:name=".test.TestService"
+            android:exported="true" />
+
+        <activity
+            android:name=".test.TestGridActivity"
+            android:label="@string/title_activity_test_grid"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".mission.UserMissionActivity"
             android:screenOrientation="portrait"
-            ></activity>
+            >
+
+        </activity>
     </application>
 
 </manifest>

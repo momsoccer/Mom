@@ -83,7 +83,7 @@ public class UserProfile extends AppCompatActivity {
         setContentView(R.layout.ac_bottom_userprofile_layout);
         ButterKnife.bind(this);
 
-        getSupportActionBar().setTitle("프로필 편집");
+        getSupportActionBar().setTitle(R.string.toolbar_page_profile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         layoutUserNicname = (TextInputLayout) findViewById(R.id.layout_user_nicname);
@@ -315,11 +315,6 @@ public class UserProfile extends AppCompatActivity {
         pre.commit();
         Log.d(TAG,"User Upload End ===================================================================");
 
-        //리니어 레이아웃에 블러드 효과 주기
-        Glide.with(UserProfile.this)
-                .load(user.getProfileimgurl())
-                .asBitmap().transform(new BlurTransformation(this, 25))
-                .into(backImage);
 
     }
 
@@ -375,5 +370,18 @@ public class UserProfile extends AppCompatActivity {
                 .show();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+        Log.d(TAG,"온 스타트==============================");
+
+        if(!Compare.isEmpty(user.getProfileimgurl())){
+            Glide.with(UserProfile.this)
+                    .load(user.getProfileimgurl())
+                    .asBitmap().transform(new BlurTransformation(this, 25))
+                    .into(backImage);
+        }
+
+    }
 }

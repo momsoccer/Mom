@@ -8,5 +8,7 @@ public class MissionCommon {
     public static String MISSIONTYPE = "MISSIONTYPE";
     public static String MISSIONID = "MISSIONID";
     public static String OBJECT = "OBJECT";
+    public static String USER_MISSTION_OBJECT = "USER_MISSTION_OBJECT";
+    public static String USER_OBJECT = "USER_OBJECT";
 
 }

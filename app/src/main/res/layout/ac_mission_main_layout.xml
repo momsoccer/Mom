@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_marginBottom="5dp"
         >
 
         <LinearLayout
@@ -23,7 +24,7 @@
                 android:id="@+id/main_mission_rlayout"
                 android:background="@drawable/drible_back"
                 android:layout_width="match_parent"
-                android:layout_height="490dp">
+                android:layout_height="520dp">
 
                 <ImageButton
                     android:id="@+id/main_mission_start"
@@ -74,6 +75,7 @@
                     android:layout_below="@id/youtube_view"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:text="@string/default_mission_disp"
                     android:textColor="@color/color6"
                     android:textSize="16sp"
@@ -85,6 +87,7 @@
                     android:layout_below="@id/tx_main_mission_disp"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:text="@string/default_mission_precon"
                     android:textColor="@color/color2"
                     android:textSize="16sp"
@@ -96,6 +99,7 @@
                     android:layout_below="@id/tx_main_mission_precon"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:text="@string/default_mission_getpoint"
                     android:textColor="@color/color6"
                     android:textSize="16sp"
@@ -105,7 +109,6 @@
             </RelativeLayout>
 
             <View
-                android:id="@+id/mission_line"
                 android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
@@ -121,14 +124,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <GridView
+            <View
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color1" />
+
+            <com.mom.soccer.common.ExpandableHeightGridView
                 android:id="@+id/main_mission_gridview"
                 android:layout_marginTop="10dp"
                 android:numColumns="2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            </GridView>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:horizontalSpacing="2dp"
+                android:isScrollContainer="false"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="20dp"
+                >
+            </com.mom.soccer.common.ExpandableHeightGridView>
 
         </LinearLayout>
 
@@ -136,11 +149,13 @@
     </ScrollView>
 
     <Button
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         android:id="@+id/btn_mission_upload"
         style="@style/btnStylePaprika"
         android:text="@string/mission_upload"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="40dp" />
 
 </LinearLayout>

@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import com.mom.soccer.R;
 import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.bottommenu.SearchActivity;
+import com.mom.soccer.momactivity.MomMainActivity;
 
 import butterknife.Bind;
 
@@ -54,6 +55,12 @@ public class TabNaviComplaintBase extends RelativeLayout {
         imageBtnHome.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(context,MomMainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(intent);
+                if (context instanceof Activity) {
+                    ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
+                }
             }
         });
 

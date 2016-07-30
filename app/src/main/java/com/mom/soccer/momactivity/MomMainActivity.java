@@ -51,6 +51,7 @@ import com.mom.soccer.mission.MissionActivity;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.test.TestGridActivity;
 import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
 
@@ -224,6 +225,8 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         });
         */
 
+        Log.d(TAG, "onCreate ===========================================================" + user.getProfileimgurl());
+
     }
 
     @Override
@@ -242,7 +245,10 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         int id = item.getItemId();
 
         if (id == R.id.mn_item_home) {
-            VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this,MomMainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
         }else if(id == R.id.mn_item_fe){
             VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
 
@@ -358,7 +364,11 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     public void OnClickHeader(View v){
         switch (v.getId()){
             case R.id.mom_hd_mk:
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
+                //VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(this,TestGridActivity.class);
+                startActivity(intent);
+
                 break;
             case R.id.hd_bell:
                 VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation) + "벨",Toast.LENGTH_SHORT).show();
@@ -535,6 +545,9 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG,"on Start ======================================================");
+
+        user = prefUtil.getUser();
 
         //만약 앱을 연 상태에서 설정을 했다면 다시 불러오기
         if(user.getUseremail() != null){
@@ -552,9 +565,20 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             navHeaderUserEmail.setText(user.getUseremail());
 
         }
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG,"onResume ======================================================");
+        Log.d(TAG, "onResume ===========================================================" + user.getProfileimgurl());
+
+        user = prefUtil.getUser();
+        Glide.with(MomMainActivity.this)
+                .load(user.getProfileimgurl())
+                .into(navHeaderImage);
+
+    }
 
     /******************************
      * Mission Activity choose

@@ -7,11 +7,13 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.MediaController;
 import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     NetworkInfo mobile;
     NetworkInfo wifi;
 
+    MediaController mc;
+    MyVideoView videoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG,"유저 정보 : " + user.toString());
 
         FirebaseMessaging.getInstance().subscribeToTopic("news");
+
 
         if (!Compare.isEmpty(user.getUseremail())){
             Log.d(TAG,"로그인 유저입니다.. 메인 화면으로 이동합니다");
@@ -84,12 +89,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        videoView = (MyVideoView) findViewById(R.id.mainvideoview);
+        //videoView.setVideoPath("http://192.168.0.50:8080/resources/media/intro.mp4");
+
+        Uri path = Uri.parse("android.resource://" + getPackageName() + "/raw/splash");
+        videoView.setVideoURI(path);
+        videoView.start();
+
+        //버튼 색상 알파
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart ===========================================================");
+        videoView.start();
         user = prefUtil.getUser();
         String shToken = prefUtil.getFcmToken();
 
@@ -129,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
      * 버튼 이벤트 로직 시작
      *
      * */
+
 
     @OnClick(R.id.btn_login_pre)
     public void login(){

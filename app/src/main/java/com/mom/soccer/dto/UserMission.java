@@ -1,6 +1,8 @@
 package com.mom.soccer.dto;
 
-public class UserMission {
+import java.io.Serializable;
+
+public class UserMission implements Serializable {
 
 	private int usermissionid;
 	private int missionid;

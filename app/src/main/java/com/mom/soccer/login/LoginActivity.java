@@ -348,12 +348,8 @@ public class LoginActivity extends AppCompatActivity {
         dialog = ProgressDialog.show(this, "",getString(R.string.network_valid_user), true);
         dialog.show();
 
-
         UserService userService = ServiceGenerator.createService(UserService.class,this,user);
-
         final Call<ServerResult> getUserInfo = userService.getUserCheck(user.getSnstype(),user.getUseremail());
-
-
         getUserInfo.enqueue(new Callback<ServerResult>() {
             @Override
             public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {

@@ -11,91 +11,123 @@
     android:background="@color/mom_color1"
     >
 
-    <FrameLayout
-        android:id="@+id/detail_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <ScrollView
         android:layout_weight="1"
-        >
-
-        <VideoView
-            android:id="@+id/videoView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            />
-    </FrameLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/mom_color1"
+        android:layout_marginBottom="5dp"
         >
 
-        <TextView
-            android:id="@+id/box_text"
-            android:text="@string/mission_upload_box"
-            android:textSize="16sp"
-            android:textColor="@color/color6"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-        <EditText
-            android:id="@+id/upload_mission_content"
-            android:textSize="13sp"
-            android:textColor="@color/color6"
-            android:padding="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="6"
-            android:lines="6"
-            android:background="@drawable/xml_boder"
-            />
-
         <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/xml_boder"
-            >
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:text="예비 버튼이 올자리"
-            android:textSize="16sp"
-            android:textColor="@color/color6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            />
+            <TextView
+                android:layout_marginTop="20dp"
+                android:text="@string/page_subject_upload"
+                android:textColor="@color/color6"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                />
 
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color1" />
+
+            <VideoView
+                android:id="@+id/videoView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                />
+
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color1" />
+
+            <TextView
+                android:id="@+id/box_text1"
+                android:text="@string/mission_upload_box1"
+                android:textSize="16sp"
+                android:textColor="@color/color6"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <EditText
+                android:id="@+id/upload_mission_subject"
+                android:maxLength="30"
+                android:singleLine="true"
+                android:textSize="15sp"
+                android:textColor="@color/color6"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/xml_boder"
+                android:hint="@string/user_mission_subject"
+                android:textColorHint="@color/line_color1"
+                />
+
+            <TextView
+                android:id="@+id/box_text2"
+                android:text="@string/mission_upload_box2"
+                android:textSize="15sp"
+                android:textColor="@color/color6"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <EditText
+                android:id="@+id/upload_mission_content"
+                android:textSize="15sp"
+                android:textColor="@color/color6"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="6"
+                android:lines="6"
+                android:background="@drawable/xml_boder"
+                android:gravity="top"
+                android:hint="@string/user_mission_cotent"
+                android:textColorHint="@color/line_color1"
+                />
         </LinearLayout>
-        <Button
-            android:id="@+id/btn_mission_uploadi"
-            style="@style/btnStylePaprika"
-            android:text="@string/mission_upload_start"
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/btn_mission_upload"
-            style="@style/btnStylePaprika"
-            android:text="@string/mission_upload_start"
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    </ScrollView>
 
-    </LinearLayout>
+    <Button
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/btn_upload"
+        style="@style/btnStylePaprika"
+        android:text="@string/mission_upload_start"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
 
 </LinearLayout>

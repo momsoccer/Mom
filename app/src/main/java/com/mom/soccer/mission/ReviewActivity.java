@@ -1,63 +1,64 @@
 package com.mom.soccer.mission;
 
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GooglePlayServicesAvailabilityIOException;
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.Channel;
-import com.google.api.services.youtube.model.ChannelListResponse;
-import com.google.api.services.youtube.model.PlaylistItem;
-import com.google.api.services.youtube.model.PlaylistItemListResponse;
-import com.google.api.services.youtube.model.Video;
-import com.google.api.services.youtube.model.VideoListResponse;
+import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.youtube.YouTubeScopes;
 import com.mom.soccer.R;
 import com.mom.soccer.common.Auth;
-import com.mom.soccer.common.Constants;
 import com.mom.soccer.common.GoogleAuth;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.Mission;
+import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
-import com.mom.soccer.uploadyutube.VideoData;
+import com.mom.soccer.dto.UserMission;
+import com.mom.soccer.retrofitdao.UserMissionService;
+import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.uploadyutube.UploadService;
 import com.mom.soccer.widget.VeteranToast;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReviewActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener {
 
@@ -67,9 +68,11 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
     private Uri mFileUri;
     private MediaController mc;
     private Mission mission;
+    private CastRemoteDisplayLocalService.Callbacks mCallbacks;
 
-    User user;
-    PrefUtil prefUtil;
+    private User user;
+    private PrefUtil prefUtil;
+    private UserMission userMission;
 
     private UploadBroadcastReceiver broadcastReceiver;
 
@@ -83,8 +86,17 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
     private static final int REQUEST_ACCOUNT_PICKER = 2;
     private static final int REQUEST_AUTHORIZATION = 3;
 
-    public static final String REQUEST_AUTHORIZATION_INTENT = "com.google.example.yt.RequestAuth";
-    public static final String REQUEST_AUTHORIZATION_INTENT_PARAM = "com.google.example.yt.RequestAuth.param";
+    public static final String REQUEST_AUTHORIZATION_INTENT = "com.mom.soccer.RequestAuth";
+    public static final String REQUEST_AUTHORIZATION_INTENT_PARAM = "com.mom.soccer.RequestAuth.param";
+
+    public static boolean uploadPossibility = false;
+
+    //화면의 정보들
+    @Bind(R.id.upload_mission_content)
+    EditText et_content;
+
+    @Bind(R.id.upload_mission_subject)
+    EditText et_subject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +114,8 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
         mFileUri = intent.getData();
         mission = (Mission) intent.getSerializableExtra(MissionCommon.OBJECT);
 
+        Log.d(TAG,"미션 객체 정보는 : " + mission.toString());
+
         mVideoView = (VideoView) findViewById(R.id.videoView);
         reviewVideo(mFileUri);
 
@@ -110,10 +124,124 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
         GoogleAuth googleAuth = new GoogleAuth(this,credential, Auth.accountName);
         credential = googleAuth.setYutubeCredential();
         googleAPI();
+
         mGoogleApiClient.connect();
+
+        credential = GoogleAccountCredential.usingOAuth2(
+                getApplicationContext(), Arrays.asList(Auth.SCOPES));
+
+        credential = GoogleAccountCredential.usingOAuth2(getApplicationContext(), YouTubeScopes.all());
+        credential.setBackOff(new ExponentialBackOff());
+
+        credential.setSelectedAccountName(Auth.accountName);
+
+        //Plus.AccountApi.getAccountName(mGoogleApiClient);
 
         new Async(getApplicationContext()).execute();
 
+        Log.d(TAG,"onCreate ++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+    }
+
+
+    //구글 토큰값 확인해보기
+    public void getAccessToken(Context mContext) {
+
+        try {
+            String token = credential.getToken();
+            Log.d(TAG, "구글 토큰값은 : " + token);
+            uploadPossibility = true;
+
+            //토큰을 저장해놓는다.
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor pre = sp.edit();
+            pre.putString("googletoken", token);
+            pre.commit();
+
+        } catch (UserRecoverableAuthException e) {
+            Log.d(TAG, "업로드가 가능하지 않습니다. 토큰이 없습니다");
+            startActivityForResult(e.getIntent(), REQUEST_ACCOUNT_PICKER);
+            uploadPossibility = false;
+
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+
+        }
+
+    }
+
+    @OnClick(R.id.btn_upload)
+    public void uploadVideo(){
+
+        if(!uploadPossibility){
+            VeteranToast.makeToast(getApplicationContext(),getString(R.string.need_google_auth),Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (mFileUri != null) {
+            final Intent uploadIntent = new Intent(this, UploadService.class);
+            uploadIntent.putExtra(MissionCommon.OBJECT,mission);
+            uploadIntent.setData(mFileUri);
+
+            userMission = new UserMission();
+            userMission.setSubject(et_subject.getText().toString());
+            userMission.setMissionid(mission.getMissionid());
+            userMission.setUid(user.getUid());
+            userMission.setDescroption(et_content.getText().toString());
+            userMission.setUploadflag("Y");
+            userMission.setPassflag("N");
+            userMission.setFilename(getFileName(mFileUri));
+            userMission.setGrade(mission.getGrade());
+
+            Log.d(TAG,"업로드 유저 미션 정보는 : " + userMission.toString());
+
+            uploadIntent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMission);
+            uploadIntent.putExtra(MissionCommon.USER_OBJECT,user);
+
+            //서버 검증 작업을 한 후에 자료를 업로드 하게 해준다
+            UserMissionService service = ServiceGenerator.createService(UserMissionService.class,getApplicationContext(),user);
+            Call<ServerResult> call = service.videoValidate(userMission);
+
+            call.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                    if(response.isSuccessful()){
+                        ServerResult result = response.body();
+
+                        if(result.getResult().equals("F")){
+                            Log.d(TAG,"동일한 파일 명.....");
+                            VeteranToast.makeToast(getApplicationContext(),getString(R.string.upload_duplicate_validate),Toast.LENGTH_SHORT).show();
+                            return;
+                        }else{
+                            VeteranToast.makeToast(getApplicationContext(),getString(R.string.upload_disp),Toast.LENGTH_SHORT).show();
+                            Log.d(TAG,"정상 작업.....");
+                            startService(uploadIntent);
+                            finish();
+                        }
+
+                    }else{
+                        Log.d(TAG,"오류");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+
+        }
+    }
+
+    private String getFileName(Uri uri)
+    {
+        String[] projection = { MediaStore.Images.ImageColumns.DISPLAY_NAME };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DISPLAY_NAME);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 
     @Override
@@ -138,16 +266,6 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
         } catch (Exception e) {
             Log.e(this.getLocalClassName(), e.toString());
         }
-    }
-
-    private String getName(Uri uri)
-    {
-        String[] projection = { MediaStore.Images.ImageColumns.DISPLAY_NAME };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DISPLAY_NAME);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
     }
 
     public void googleAPI(){
@@ -209,125 +327,6 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
         }
     }
 
-
-    @OnClick(R.id.btn_mission_uploadi)
-    public void test(){
-        googleAPI();
-        mGoogleApiClient.connect();
-        loadUploadedVideos();
-    }
-
-    @OnClick(R.id.btn_mission_upload)
-    public void uploadVideo(){
-
-        googleAPI();
-        mGoogleApiClient.connect();
-        chooseAccount();
-
-/*        if (mFileUri != null) {
-            Intent uploadIntent = new Intent(this, UploadService.class);
-            uploadIntent.setData(mFileUri);
-            mission = (Mission) uploadIntent.getSerializableExtra(MissionCommon.OBJECT);
-            startService(uploadIntent);
-            finish();
-        }*/
-    }
-
-    private void loadUploadedVideos() {
-
-        setProgressBarIndeterminateVisibility(true);
-
-        new AsyncTask<Void, Void, List<VideoData>>() {
-
-            @Override
-            protected List<VideoData> doInBackground(Void... voids) {
-
-                Log.d(TAG,"데이터 가져오기 진입");
-
-                YouTube youtube = new YouTube.Builder(transport, jsonFactory,
-                        credential).setApplicationName(Constants.APP_NAME)
-                        .build();
-
-                try {
-                    ChannelListResponse clr = youtube.channels()
-                            .list("contentDetails").setMine(true).execute();
-
-                    List<Channel> channelsList =  clr.getItems();
-
-                    // Get the user's uploads playlist's id from channel list
-                    // response
-                    String uploadsPlaylistId = clr.getItems().get(0)
-                            .getContentDetails().getRelatedPlaylists()
-                            .getUploads();
-
-                    List<VideoData> videos = new ArrayList<VideoData>();
-
-
-                    // Get videos from user's upload playlist with a playlist
-                    // items list request
-                    PlaylistItemListResponse pilr = youtube.playlistItems()
-                            .list("id,contentDetails")
-                            .setPlaylistId(uploadsPlaylistId)
-                            .setMaxResults(20l).execute();
-
-                    List<String> videoIds = new ArrayList<String>();
-
-                    // Iterate over playlist item list response to get uploaded
-                    // videos' ids.
-                    for (PlaylistItem item : pilr.getItems()) {
-                        videoIds.add(item.getContentDetails().getVideoId());
-                    }
-
-                    // Get details of uploaded videos with a videos list
-                    // request.
-                    VideoListResponse vlr = youtube.videos()
-                            .list("id,snippet,status")
-                            .setId(TextUtils.join(",", videoIds)).execute();
-
-                    // Add only the public videos to the local videos list.
-                    for (Video video : vlr.getItems()) {
-                        if ("public".equals(video.getStatus()
-                                .getPrivacyStatus())) {
-                            VideoData videoData = new VideoData();
-                            videoData.setVideo(video);
-                            videos.add(videoData);
-
-                            Log.d(TAG,"비디오 목록 은 : " + videoData.getTitle());
-
-                        }
-                    }
-
-                    Log.d(TAG,"가져오기 성공");
-
-                    return videos;
-
-                } catch (final GooglePlayServicesAvailabilityIOException availabilityException) {
-
-                    Log.d(TAG,"GooglePlayServicesAvailabilityIOException : " + availabilityException.getMessage());
-                    availabilityException.printStackTrace();
-                } catch (UserRecoverableAuthIOException e) {
-                    e.printStackTrace();
-                    Log.d(TAG,"이곳이 재 실행 되는 것인가요");
-                    startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
-                } catch (IOException e) {
-                    Log.d(TAG,"IOException : " + e.getMessage());
-                    e.printStackTrace();
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(List<VideoData> videos) {
-                setProgressBarIndeterminateVisibility(false);
-
-                if (videos == null) {
-                    return;
-                }
-            }
-        }.execute((Void) null);
-    }
-
     class Async extends AsyncTask<Void, Void, Void> {
 
         Context credential = null;
@@ -343,20 +342,6 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
             return null;
         }
 
-    }
-
-    //구글 토큰값 확인해보기
-    public void getAccessToken(Context mContext) {
-
-        try {
-
-            //String token = credential.getToken();
-            //Log.d(TAG, "구글 토큰값은 : "+token);
-
-        } catch (Exception e) {
-            e.getMessage();
-            e.printStackTrace();
-        }
     }
 
 
@@ -380,18 +365,18 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
                 }
                 break;
             case REQUEST_ACCOUNT_PICKER:
-                if (resultCode == Activity.RESULT_OK && data != null
-                        && data.getExtras() != null) {
-                    String accountName = data.getExtras().getString(AccountManager.KEY_ACCOUNT_NAME);
-                    if (accountName != null) {
-                        Auth.accountName = accountName;
-                        credential.setSelectedAccountName(accountName);
-                    }
+                if (resultCode == Activity.RESULT_OK && data != null && data.getExtras() != null) {
+                        Log.d(TAG,"유저가 OAuth 동의를 했습니다");
+                        Auth.accountName = user.getGoogleemail();
+                        Log.d(TAG,"인증 유저 아이디는 : " + Auth.accountName);
+                        uploadPossibility=true;
+                }else{
+                    Log.d(TAG,"유저가 OAuth 동의를 하지 않았습니다");
+                        uploadPossibility=false;
                 }
                 break;
         }
     }
-
 
     private void chooseAccount() {
         startActivityForResult(credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
@@ -401,8 +386,17 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
     ///인증문제.....
 
     @Override
+    public void onPause() {
+        super.onPause();
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+
+        mGoogleApiClient.connect();
+
         if (broadcastReceiver == null)
             broadcastReceiver = new UploadBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter(

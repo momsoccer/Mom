@@ -1,16 +1,12 @@
 package com.mom.soccer.mission;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.GridView;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,14 +17,20 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.mom.soccer.R;
+import com.mom.soccer.adapter.GridMissionAdapter;
 import com.mom.soccer.common.Auth;
+import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dataDto.MomMessage;
 import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.retrofitdao.MomComService;
+import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,7 +46,7 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
     private int seedMissionId = 0;
 
 
-    private User user;
+    private User user = new User();
     private PrefUtil prefUtil;
     private YouTubePlayerView youTubeView;
 
@@ -73,8 +75,8 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
     @Bind(R.id.tx_main_mission_potin)
     TextView tx_missionPoint;
 
-    @Bind(R.id.main_mission_gridview)
-    GridView videoGridView;
+
+    ExpandableHeightGridView videoGridView;
 
     /**************************************************
      * google uplaod define
@@ -82,12 +84,18 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
     private Uri mFileURI = null;
 
     private static final int RESULT_PICK_IMAGE_CROP = 4;
+    private GridMissionAdapter gridMissionAdapter;
+
+    List<UserMission> userMissionList;
+    UserMission qUserMission = new UserMission();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_mission_main_layout);
         ButterKnife.bind(this);
+
+        Log.d(TAG,"onCreate() =====================================");
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
@@ -97,8 +105,6 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
 
         youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(Auth.KEY, this);
-
-        Log.d(TAG,"미션 객체의 값은 : " + mission.toString());
 
         if (mission.getYoutubeaddr()==null){
             setNet = true;
@@ -129,8 +135,27 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
 
         tx_missionPoint.setText(advance);
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(uploadReceiver, new IntentFilter("uploadReceiver"));
+        //LocalBroadcastManager.getInstance(this).registerReceiver(uploadReceiver, new IntentFilter("uploadReceiver"));
 
+        videoGridView = (ExpandableHeightGridView) findViewById(R.id.main_mission_gridview);
+        videoGridView.setExpanded(true);
+
+        //조회 조건 <나를 제외한 같은 미션 영상을 업로드한 리스트>
+        //qUserMission.setMissionid(mission.getMissionid());
+        qUserMission.setUid(user.getUid());
+
+        userGrid_MissionList(qUserMission);
+
+        videoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                Intent userMissionListIntent = new Intent(getApplicationContext(),UserMissionActivity.class);
+                userMissionListIntent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMissionList.get(position));
+                startActivity(userMissionListIntent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+            }
+        });
     }
 
     @Override
@@ -200,32 +225,53 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-    private String getName(Uri uri)
-    {
-        String[] projection = { MediaStore.Images.ImageColumns.DISPLAY_NAME };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DISPLAY_NAME);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
+        Log.d(TAG,"onResume() =====================================");
+
     }
 
+    /*
     BroadcastReceiver uploadReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String uploadMessage = intent.getStringExtra("uploadMessage");
             String upflag = intent.getStringExtra("upflag");
 
-            Log.d(TAG,"uploadMessage : "+uploadMessage);
-            Log.d(TAG,"upflag : " +upflag);
-
         }
     };
+    */
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    public void userGrid_MissionList(UserMission userMission){
+        final ProgressDialog dialog;
+        dialog = ProgressDialog.show(this, "", getString(R.string.network_get_list), true);
+
+        UserMissionService userMissionService = ServiceGenerator.createService(UserMissionService.class,getApplicationContext(),user);
+        Call<List<UserMission>> call = userMissionService.uMissionList(userMission);
+
+        call.enqueue(new Callback<List<UserMission>>() {
+            @Override
+            public void onResponse(Call<List<UserMission>> call, Response<List<UserMission>> response) {
+
+                if(response.isSuccessful()){
+                    userMissionList = response.body();
+                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissionList);
+                    videoGridView.setAdapter(gridMissionAdapter);
+                    dialog.dismiss();
+                }else{
+                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            }
+            @Override
+            public void onFailure(Call<List<UserMission>> call, Throwable t) {
+                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+                dialog.dismiss();
+            }
+        });
     }
 
 

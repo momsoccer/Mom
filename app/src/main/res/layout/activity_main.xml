@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:background="@color/mom_color1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="MissingPrefix"
+    android:background="@color/mom_color1"
     >
 
-    <ImageView
+<!--    <ImageView
         android:src="@drawable/spmark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,6 +64,40 @@
             android:layout_weight="0"
             android:layout_marginBottom="10dp"
             />
-    </LinearLayout>
+    </LinearLayout>-->
 
-</LinearLayout>
+
+
+
+    <com.mom.soccer.MyVideoView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mainvideoview">
+    </com.mom.soccer.MyVideoView>
+
+    <ImageView
+        android:src="@drawable/spmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/imageView"
+        android:layout_marginBottom="70dp"
+        android:layout_gravity="center_horizontal"
+        />
+
+
+    <Button
+        android:id="@+id/btn_login_pre"
+        android:text="@string/member_pass"
+        android:background="@drawable/main_border"
+        android:layout_width="150dp"
+        android:layout_height="30sp"
+        android:layout_weight="0"
+        android:layout_marginBottom="41dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

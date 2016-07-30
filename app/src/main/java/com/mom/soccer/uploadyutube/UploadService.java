@@ -1,16 +1,11 @@
 package com.mom.soccer.uploadyutube;
 
 import android.app.IntentService;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -22,10 +17,13 @@ import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.YouTubeScopes;
 import com.google.common.collect.Lists;
-import com.mom.soccer.R;
 import com.mom.soccer.common.Auth;
+import com.mom.soccer.common.Common;
 import com.mom.soccer.dto.Mission;
+import com.mom.soccer.dto.User;
+import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.mission.MissionCommon;
+import com.mom.soccer.trservice.UserMissionTRService;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,46 +34,38 @@ import java.io.InputStream;
  */
 public class UploadService extends IntentService {
 
+    private static final String TAG = "UploadService";
 
     final HttpTransport transport = AndroidHttp.newCompatibleTransport();
     final JsonFactory jsonFactory = new GsonFactory();
     GoogleAccountCredential credential;
 
-
     private int mUploadAttemptCount;
     private static final int MAX_RETRY = 3;
     private static final int UPLOAD_REATTEMPT_DELAY_SEC = 60;
-    private static final String TAG = "UploadService";
     private Mission mission;
+    private UserMission userMission;
 
-    private YoutubeUploadVo youtubeUploadVo;
-
-    String videoId = null;
+    private String videoId = null;
+    private User user;
 
     public UploadService() {
         super("UploadService");
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d(TAG, "IntentService onCreate  ========================================");
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "IntentService onStartCommand  ========================================");
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-
-
-    @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG, "IntentService onHandleIntent ========================================");
 
         Uri fileUri = intent.getData();
-        mission = (Mission) intent.getSerializableExtra(MissionCommon.OBJECT);
+
+        //inetnt service 파라미터 변수는 번들로 받아야 한다
+        Bundle extras = intent.getExtras();
+        if(extras != null) {
+            mission = (Mission) extras.getSerializable(MissionCommon.OBJECT);
+            userMission = (UserMission) extras.getSerializable(MissionCommon.USER_MISSTION_OBJECT);
+            user = (User) extras.getSerializable(MissionCommon.USER_OBJECT);
+        }
 
         String chosenAccountName = Auth.accountName;
 
@@ -113,7 +103,7 @@ public class UploadService extends IntentService {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
 
-            videoId = ResumableUpload.upload(youtube, fileInputStream, fileSize, mFileUri, cursor.getString(column_index), getApplicationContext());
+            videoId = ResumableUpload.upload(youtube, fileInputStream, fileSize, mFileUri, cursor.getString(column_index), getApplicationContext(),mission,userMission);
 
         } catch (FileNotFoundException e) {
             Log.d(TAG,"여기서 에러가 나는가요 1");
@@ -166,6 +156,44 @@ public class UploadService extends IntentService {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "IntentService onCreate  ========================================");
+
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "IntentService onStartCommand  ========================================");
+
+
+
+        //mission = (Mission) intent.getSerializableExtra(MissionCommon.OBJECT);
+        //Log.d(TAG, "미션 객체 정보는 : " + mission.toString());
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "IntentService onDestroy  ========================================");
+        userMission.setYoutubeaddr(videoId);
+        userMission.setVideoaddr(Common.YOUTUBE_ADDR + videoId);
+
+        Log.d(TAG,"업 미션 정보 : " + userMission.toString());
+        Log.d(TAG,"유저 정보는? 가능? : " + user.toString());
+
+        //서버에 데이터를 생성 또는 업데이트를 해준다
+        UserMissionTRService trService = new UserMissionTRService(getApplicationContext(),userMission,user);
+        trService.createUserMission();
+    }
+
+
+
+
+    /*
+    @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "IntentService onDestroy  ========================================");
@@ -174,10 +202,9 @@ public class UploadService extends IntentService {
         final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
         intent.putExtra("uploadMessage","업로드가 종료 되었습니다");
         intent.putExtra("upflag",videoId);
-
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.mainmark)
                 .setContentTitle("업로드 알림")
                 .setContentText("업로드가 정상적으로 이루어 졌습니다")
                 .setColor(Color.BLUE)
@@ -188,10 +215,8 @@ public class UploadService extends IntentService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notificationBuilder.build());
-
         broadcastManager.sendBroadcast(intent);
-
     }
-
+*/
 }
 

@@ -1,10 +1,10 @@
 package com.mom.soccer.trservice;
 
-
-import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.mom.soccer.R;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
@@ -17,85 +17,47 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by sungbo on 2016-06-13.
+ * Created by sungbo on 2016-07-28.
  */
 public class UserMissionTRService {
 
-    private static final String TAG = "PointQueryService";
+    private static final String TAG = "UserMissionTRService";
 
-    private Activity activity;
+    private Context context;
     private User user;
+    private UserMission userMission;
 
-    private int usermissionid = 0 ;
-    private String resultCode="";
-
-
-    public UserMissionTRService(Activity activity, User user) {
-        this.activity = activity;
+    public UserMissionTRService(Context context, UserMission userMission, User user) {
+        this.context = context;
+        this.userMission = userMission;
         this.user = user;
     }
 
-    public void createUserMission(UserMission userMission){
+    public void createUserMission(){
 
-        final ProgressDialog dialog;
+        UserMissionService userMissionService = ServiceGenerator.createService(UserMissionService.class,context,user);
+        Call<ServerResult> call = userMissionService.createUserMission(userMission);
 
-        dialog = ProgressDialog.show(activity, "서버와 통신", "셀프 포인트를 조회합니다", true);
-        dialog.show();
-
-
-        UserMissionService userMissionService = ServiceGenerator.createService(UserMissionService.class,activity,user);
-
-        final Call<ServerResult> createMission = userMissionService.createUserMission(userMission);
-
-        createMission.enqueue(new Callback<ServerResult>() {
+        call.enqueue(new Callback<ServerResult>() {
             @Override
             public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                ServerResult serverResult = response.body();
+                if(response.isSuccessful()){
 
-                Log.d(TAG, "서버에서 생성된 유저미션아이디는  : " + serverResult.getCount() +"  :  "+serverResult.getResult() );
+                    ServerResult result = response.body();
 
-                dialog.dismiss();
-            }
+                    Log.d(TAG,"result : " + result.toString());
 
-            @Override
-            public void onFailure(Call<ServerResult> call, Throwable t) {
-                Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
-                t.printStackTrace();
-                usermissionid = -1;
-                dialog.dismiss();
-            }
-        });
-    }
-
-    //유저가 동영상 업로드 후, 다시 찍었을 경우 업데이트 메서드를 이용한다
-    public void updateUserMisssion(int userMissionId,
-                                   int uId,
-                                   String youTubeaddr){
-
-        UserMissionService userMissionService = ServiceGenerator.createService(UserMissionService.class,activity,user);
-        final Call<ServerResult> updateUserMission = userMissionService.updateUserMission(userMissionId,uId,youTubeaddr);
-
-        updateUserMission.enqueue(new Callback<ServerResult>() {
-            @Override
-            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-
-                ServerResult serverResult = response.body();
-                Log.d(TAG,"서버요청 결과 값은 " + serverResult.toString());
-
-                if(resultCode.equals("update")){
-                    VeteranToast.makeToast(activity,"유저미션이 업데이트 되었습니다", Toast.LENGTH_LONG).show();
                 }else{
-                    VeteranToast.makeToast(activity,"유저미션 업데이트 도중 에러가 발생했습니다. 관리자에게 문의해주세요", Toast.LENGTH_LONG).show();
+                    VeteranToast.makeToast(context,context.getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ServerResult> call, Throwable t) {
-                Log.d(TAG,"Error : " + t.getMessage());
+                Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
+                VeteranToast.makeToast(context,context.getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
                 t.printStackTrace();
             }
         });
     }
-
-
 }

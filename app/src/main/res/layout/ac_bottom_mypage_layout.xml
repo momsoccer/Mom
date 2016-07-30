@@ -13,7 +13,9 @@
         android:layout_width="match_parent"
         android:layout_weight="11"
         android:layout_height="0dp"
-        android:id="@+id/scrollView">
+        android:id="@+id/scrollView"
+        android:fillViewport="true"
+        >
 
         <LinearLayout
             android:gravity="center_horizontal"
@@ -284,7 +286,8 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     >
 
                     <TextView
@@ -327,7 +330,8 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     >
                     <TextView
                         android:textStyle="bold"
@@ -376,7 +380,8 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     >
 
                     <TextView
@@ -419,7 +424,8 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     >
                     <TextView
                         android:textStyle="bold"
@@ -468,7 +474,8 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     >
 
                     <TextView
@@ -511,7 +518,8 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     >
                     <TextView
                         android:textStyle="bold"
@@ -542,39 +550,51 @@
             </LinearLayout>
 
             <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/color2"
-                />
+                android:id="@+id/mission_line"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color1" />
 
             <TextView
                 android:text="@string/app_myvideo_view"
+                android:layout_marginTop="20dp"
                 android:textColor="@color/color6"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/color2"
-                />
 
-            <GridView
+            <com.mom.soccer.common.ExpandableHeightGridView
                 android:layout_marginTop="10dp"
                 android:id="@+id/mypage_gridview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:numColumns="2"
                 android:gravity="center"
+                android:horizontalSpacing="2dp"
+                android:isScrollContainer="false"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="20dp"
                 >
 
+            </com.mom.soccer.common.ExpandableHeightGridView>
 
-            </GridView>
-
+            <TextView
+                android:id="@+id/mypage_no_data_found"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp"
+                android:textColor="@color/color6"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_marginBottom="10dp"
+                />
 
         </LinearLayout>
+
     </ScrollView>
 
     <LinearLayout

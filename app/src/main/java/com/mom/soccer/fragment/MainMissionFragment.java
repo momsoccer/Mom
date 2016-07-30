@@ -25,7 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mom.soccer.R;
@@ -49,7 +49,7 @@ public class MainMissionFragment extends Fragment {
 
     private Mission mission = new Mission();
 
-    RelativeLayout mMainLayout;
+    LinearLayout mMainLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,22 +81,22 @@ public class MainMissionFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = null;
+        view = inflater.inflate(R.layout.fr_mission_layout, container, false);
+        mMainLayout = (LinearLayout) view.findViewById(R.id.li_mission_back);
 
         if(mission.getTypename().equals("DRIBLE")){
-            view = inflater.inflate(R.layout.fr_drible_layout, container, false);
+            mMainLayout.setBackground(getResources().getDrawable(R.drawable.drible_back));
         }else if(mission.getTypename().equals("LIFTING")){
-            view = inflater.inflate(R.layout.fr_lifting_layout, container, false);
+            mMainLayout.setBackground(getResources().getDrawable(R.drawable.lifting_back));
         }else if(mission.getTypename().equals("TRAPING")){
-            view = inflater.inflate(R.layout.fr_traping_layout, container, false);
+            mMainLayout.setBackground(getResources().getDrawable(R.drawable.trappring_back));
         }else if(mission.getTypename().equals("AROUND")){
-            view = inflater.inflate(R.layout.fr_around_layout, container, false);
+            mMainLayout.setBackground(getResources().getDrawable(R.drawable.around_back));
         }else if(mission.getTypename().equals("FLICK")){
-            view = inflater.inflate(R.layout.fr_flick_layout, container, false);
+            mMainLayout.setBackground(getResources().getDrawable(R.drawable.flick_back));
         }else if(mission.getTypename().equals("COMPLEX")){
-            view = inflater.inflate(R.layout.fr_complex_layout, container, false);
+            mMainLayout.setBackground(getResources().getDrawable(R.drawable.complex_back));
         }
-
-        mMainLayout = (RelativeLayout) view.findViewById(R.id.mission_layout);
 
         final TextView tx_mission_level = (TextView) view.findViewById(R.id.tx_mission_level);
         final TextView tx_mission_name = (TextView) view.findViewById(R.id.tx_mission_name);

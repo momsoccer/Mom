@@ -21,8 +21,7 @@
                 android:scaleType="fitXY"
                 android:id="@+id/back_image"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/profile_back"
+                android:layout_height="150dp"
                 />
 
             <ImageView
@@ -105,7 +104,7 @@
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             />
 
     </LinearLayout>

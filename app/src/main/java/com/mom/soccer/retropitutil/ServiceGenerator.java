@@ -15,6 +15,7 @@ import java.io.IOException;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -134,12 +135,11 @@ public class ServiceGenerator {
             Common.NETWORK_COOKIE = true;
         }
 
-        /*****************************************************************************
          HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
          loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
          //로그 인터셉터
-         httpClient.addInterceptor(loggingInterceptor);
+         //httpClient.addInterceptor(loggingInterceptor);
 
 
          //서버에 값을 보낼때 설정
@@ -159,7 +159,7 @@ public class ServiceGenerator {
         return chain.proceed(request);
         }
         });
-         *****************************************************************************/
+        */
 
         okhttp3.OkHttpClient client = httpClient.build();
 

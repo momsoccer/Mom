@@ -1,7 +1,9 @@
 package com.mom.soccer.dto;
 
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
 
 	private int uid;
 	private String useremail;
