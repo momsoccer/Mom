@@ -121,8 +121,10 @@
         <activity android:name=".mission.UserMissionActivity"
             android:screenOrientation="portrait"
             >
-
         </activity>
+
+
+
     </application>
 
 </manifest>

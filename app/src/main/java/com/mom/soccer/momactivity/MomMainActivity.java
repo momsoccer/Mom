@@ -51,7 +51,6 @@ import com.mom.soccer.mission.MissionActivity;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.test.TestGridActivity;
 import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
 
@@ -365,10 +364,9 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         switch (v.getId()){
             case R.id.mom_hd_mk:
                 //VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(this,TestGridActivity.class);
-                startActivity(intent);
-
+                //Intent intent = new Intent(this,TestGridActivity.class);
+                //startActivity(intent);
+                VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation) + "벨",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.hd_bell:
                 VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation) + "벨",Toast.LENGTH_SHORT).show();
