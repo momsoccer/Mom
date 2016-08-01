@@ -31,6 +31,7 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
     LayoutInflater inflater = null;
     private int layout = 0;
     private List<UserMission> misstionVos = null;
+    private String receiveFlag;
 
     static class VideoHolder{
 
@@ -47,11 +48,12 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
     }
 
 
-    public GridMissionAdapter(Context c, int l, List<UserMission> misstionVos) {
+    public GridMissionAdapter(Context c, int l, List<UserMission> misstionVos,String receiveFlag) {
         this.mContext = c;
         this.layout = l;
         this.misstionVos = misstionVos;
         this.inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.receiveFlag = receiveFlag;
         mLoaders = new HashMap<View, YouTubeThumbnailLoader>();
     }
 
@@ -89,7 +91,18 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
             holder.imageview_clear_marck = (ImageView) currentRow.findViewById(R.id.image_clear_marck);
             holder.text_subject = (TextView) currentRow.findViewById(R.id.tx_subject);
 
+            holder.text_ninck_name.setText(misstionVos.get(position).getUsername());
+            holder.text_subject.setText(misstionVos.get(position).getSubject());
+            holder.text_hart.setText(String.valueOf(misstionVos.get(position).getBookmarkcount()));
+
             holder.thumb.setTag(misstionVos.get(position).getYoutubeaddr());
+
+            if(misstionVos.get(position).getMycheck()==0){
+                holder.imageview_iv_hart.setImageResource(R.drawable.ic_white_hart);
+            }else{
+                holder.imageview_iv_hart.setImageResource(R.drawable.ic_hart_red);
+            }
+
             currentRow.setTag(holder);
             holder.thumb.initialize(Auth.KEY,this);
 

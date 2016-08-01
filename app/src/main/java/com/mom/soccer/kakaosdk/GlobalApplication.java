@@ -19,7 +19,9 @@ package com.mom.soccer.kakaosdk;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.multidex.MultiDex;
 import android.support.v4.util.LruCache;
 
 import com.android.volley.RequestQueue;
@@ -111,4 +113,12 @@ public class GlobalApplication extends Application {
         super.onTerminate();
         instance = null;
     }
+
+    //set 65K(65,536) limeted
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
 }

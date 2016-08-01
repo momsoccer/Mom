@@ -140,11 +140,6 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
         videoGridView = (ExpandableHeightGridView) findViewById(R.id.main_mission_gridview);
         videoGridView.setExpanded(true);
 
-        //조회 조건 <나를 제외한 같은 미션 영상을 업로드한 리스트>
-        //qUserMission.setMissionid(mission.getMissionid());
-        qUserMission.setUid(user.getUid());
-
-        userGrid_MissionList(qUserMission);
 
         videoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -233,6 +228,17 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart() =====================================");
+
+        //조회 조건 <나를 제외한 같은 미션 영상을 업로드한 리스트>
+        qUserMission.setMissionid(mission.getMissionid());
+        qUserMission.setUid(user.getUid());
+        userGrid_MissionList(qUserMission);
+    }
+
     /*
     BroadcastReceiver uploadReceiver = new BroadcastReceiver() {
         @Override
@@ -257,7 +263,7 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
 
                 if(response.isSuccessful()){
                     userMissionList = response.body();
-                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissionList);
+                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissionList,"YOU");
                     videoGridView.setAdapter(gridMissionAdapter);
                     dialog.dismiss();
                 }else{

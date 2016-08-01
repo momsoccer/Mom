@@ -42,6 +42,7 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.mom.soccer.MainActivity;
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.MainRankingAdapter;
+import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.common.SettingActivity;
 import com.mom.soccer.dataDto.RankingVo;
@@ -137,9 +138,17 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         navHeaderUserName.setText(user.getUsername());
         navHeaderUserEmail.setText(user.getUseremail());
 
-        Glide.with(MomMainActivity.this)
-                .load(user.getProfileimgurl())
-                .into(navHeaderImage);
+        //일반 회원 가입시 이미지가 없기 때문에..초기 셋팅
+        if(!Compare.isEmpty(user.getProfileimgurl())){
+            Glide.with(MomMainActivity.this)
+                    .load(user.getProfileimgurl())
+                    .into(navHeaderImage);
+
+        Log.d(TAG,"유저 이미지 있다면... : " + user.getProfileimgurl());
+        }else {
+            Log.d(TAG,"유저 이미지 없다면...: " + user.getProfileimgurl());
+        }
+
 
 
 
@@ -550,10 +559,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         //만약 앱을 연 상태에서 설정을 했다면 다시 불러오기
         if(user.getUseremail() != null){
 
-            Glide.with(MomMainActivity.this)
-                    .load(user.getProfileimgurl())
-                    .into(navHeaderImage);
-
             navHeaderUserName = (TextView) header.findViewById(R.id.nav_header_username);
             navHeaderUserEmail = (TextView) header.findViewById(R.id.nav_header_useremail);
             navHeaderCoachName = (TextView) header.findViewById(R.id.nav_header_coachname);
@@ -563,6 +568,13 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             navHeaderUserEmail.setText(user.getUseremail());
 
         }
+
+        if(!Compare.isEmpty(user.getProfileimgurl())){
+            Glide.with(MomMainActivity.this)
+                    .load(user.getProfileimgurl())
+                    .into(navHeaderImage);
+        }
+
     }
 
     @Override
@@ -617,4 +629,8 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
 
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+    }
 }

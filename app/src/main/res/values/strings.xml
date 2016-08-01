@@ -69,6 +69,11 @@
     <string name="file_upload_progress_title">진행도 : </string>
     <string name="file_upload_progress_content">영상 업로드 진행 상태 정보</string>
 
+    <string name="user_team_yet_join">팀 비소속</string>
+
+
+    <string name="user_video_like_cancel">관심 영상을 해제 합니다</string>
+    <string name="user_video_like_ok">관심 영상으로 등록 합니다</string>
 
     <!--통신프로그레스에 사용될 값들-->
     <string name="network_valid_user">회원 검증을 진행하는 중입니다</string>
@@ -87,6 +92,7 @@
 
     <string name="toolbar_page_mypage">마이페이지</string>
     <string name="toolbar_page_profile">프로파일 편집</string>
+    <string name="toolbar_video">미션영상</string>
 
     <!--다이얼 로그 문의 창-->
     <string name="cancel">취소</string>

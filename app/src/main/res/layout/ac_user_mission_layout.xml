@@ -68,6 +68,7 @@
                 android:layout_width="120dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
+                android:visibility="invisible"
                 />
 
         </LinearLayout>
@@ -96,7 +97,7 @@
             <TextView
                 android:id="@+id/ac_user_mission_video_pickcount"
                 android:layout_marginLeft="5dp"
-                android:text="20"
+                android:text="0"
                 android:textColor="@color/color6"
                 android:textSize="12sp"
                 android:layout_width="wrap_content"
@@ -114,7 +115,7 @@
             <TextView
                 android:id="@+id/ac_user_mission_video_commentcount"
                 android:layout_marginLeft="5dp"
-                android:text="45"
+                android:text="0"
                 android:textColor="@color/color6"
                 android:textSize="12sp"
                 android:layout_width="wrap_content"

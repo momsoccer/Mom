@@ -1,15 +1,19 @@
 package com.mom.soccer.mission;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
@@ -22,6 +26,7 @@ import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.fragment.YoutubeFragment;
 import com.mom.soccer.retrofitdao.PickService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.widget.VeteranToast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -81,6 +86,19 @@ public class UserMissionActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userMission = (UserMission) intent.getSerializableExtra(MissionCommon.USER_MISSTION_OBJECT);
 
+        getSupportActionBar().setTitle(getString(R.string.toolbar_video)+"("+userMission.getUsername() +")");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+        //정보 적용
+        text_userName.setText(userMission.getUsername());
+        if(userMission.getTeamname() == null){
+            text_teamName.setText(getString(R.string.user_team_yet_join));
+        }else{
+            text_teamName.setText(userMission.getTeamname());
+        }
+        textView_pickupCount.setText(String.valueOf(userMission.getBookmarkcount()));
+
 
         YoutubeFragment youtubeFragment = new YoutubeFragment(this,userMission.getYoutubeaddr());
         FragmentManager fm = getSupportFragmentManager();
@@ -88,16 +106,30 @@ public class UserMissionActivity extends AppCompatActivity {
         tc.add(R.id.youtube_frame_layout,youtubeFragment,"");
         tc.commit();
 
-        if(!Compare.isEmpty(user.getProfileimgurl())) {
+        if(!Compare.isEmpty(userMission.getProfileimgurl())) {
             Glide.with(this)
-                    .load(user.getProfileimgurl())
+                    .load(userMission.getProfileimgurl())
                     .into(image_user);
         }
 
-        initialPickCheck();
+        if(user.getUid() == userMission.getUid()){
+            btnFllow.setVisibility(View.INVISIBLE);
+        }else{
+            btnFllow.setVisibility(View.VISIBLE);
+        }
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        //홈버튼클릭시
+        if (id == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @OnClick(R.id.ac_user_mission_video_pickup)
     public void imageButton_pickup(){
@@ -113,18 +145,23 @@ public class UserMissionActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                     if (response.isSuccessful()) {
+                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.user_video_like_cancel),Toast.LENGTH_LONG).show();
                         ServerResult serverResult = response.body();
-                        Log.d(TAG, "정상");
                         imageButton_pickup.setImageResource(R.drawable.ic_white_hart);
                         pickUpFlag = "N";
+
+                        int likeCount = Integer.parseInt(textView_pickupCount.getText().toString());
+                        likeCount = likeCount - 1;
+                        textView_pickupCount.setText(String.valueOf(likeCount));
+
                     } else {
-                        Log.d(TAG, "비정상");
+                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    Log.d(TAG, "정상");
+                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
                     t.printStackTrace();
                 }
             });
@@ -138,17 +175,26 @@ public class UserMissionActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                     if (response.isSuccessful()) {
+                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.user_video_like_ok),Toast.LENGTH_LONG).show();
                         ServerResult serverResult = response.body();
                         imageButton_pickup.setImageResource(R.drawable.ic_hart_red);
                         pickUpFlag = "Y";
+
+                        int likeCount = Integer.parseInt(textView_pickupCount.getText().toString());
+                        likeCount = likeCount + 1;
+                        textView_pickupCount.setText(String.valueOf(likeCount));
+
                     } else {
+                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
+                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
                     t.printStackTrace();
                 }
+
             });
         }
     }
@@ -173,6 +219,12 @@ public class UserMissionActivity extends AppCompatActivity {
     }
 
     public void initialPickCheck(){
+
+        final ProgressDialog dialog;
+        dialog = ProgressDialog.show(this, "",getString(R.string.network_get_list), true);
+        dialog.show();
+
+
         PickService pickService = ServiceGenerator.createService(PickService.class, this, user);
         Call<ServerResult> call = pickService.getPickCount(user.getUid(),userMission.getUsermissionid());
         call.enqueue(new Callback<ServerResult>() {
@@ -187,14 +239,19 @@ public class UserMissionActivity extends AppCompatActivity {
                         pickUpFlag="Y";
                         imageButton_pickup.setImageResource(R.drawable.ic_hart_red);
                     }
+                    dialog.dismiss();
                 }else{
-
+                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
+                    dialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<ServerResult> call, Throwable t) {
+                Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
+                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
                 t.printStackTrace();
+                dialog.dismiss();
             }
         });
     }

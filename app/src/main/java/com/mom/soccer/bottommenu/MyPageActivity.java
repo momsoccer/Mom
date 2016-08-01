@@ -1,6 +1,7 @@
 package com.mom.soccer.bottommenu;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -19,6 +20,8 @@ import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
+import com.mom.soccer.mission.MissionCommon;
+import com.mom.soccer.mission.UserMissionActivity;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
@@ -61,7 +64,6 @@ public class MyPageActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.toolbar_page_mypage));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.mom_hd_mk);
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
@@ -81,17 +83,27 @@ public class MyPageActivity extends AppCompatActivity {
 
         videoGridView = (ExpandableHeightGridView) findViewById(R.id.mypage_gridview);
         videoGridView.setExpanded(true);
-        //조회 조건 <내영상 리스트>
-        qUserMission.setUid(user.getUid());
-        userGrid_MissionList(qUserMission);
+
 
         videoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                VeteranToast.makeToast(getApplicationContext(),"아이디는 : "+ userMissions.get(i).getUsermissionid(), Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Intent userMissionListIntent = new Intent(getApplicationContext(),UserMissionActivity.class);
+                userMissionListIntent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMissions.get(position));
+                startActivity(userMissionListIntent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //조회 조건 <내영상 리스트>
+        qUserMission.setUid(user.getUid());
+        userGrid_MissionList(qUserMission);
     }
 
     @Override
@@ -124,7 +136,7 @@ public class MyPageActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()){
                     userMissions = response.body();
-                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissions);
+                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissions,"ME");
                     videoGridView.setAdapter(gridMissionAdapter);
                     dialog.dismiss();
 
