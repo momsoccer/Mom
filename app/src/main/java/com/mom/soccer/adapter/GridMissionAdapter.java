@@ -94,6 +94,7 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
             holder.text_ninck_name.setText(misstionVos.get(position).getUsername());
             holder.text_subject.setText(misstionVos.get(position).getSubject());
             holder.text_hart.setText(String.valueOf(misstionVos.get(position).getBookmarkcount()));
+            holder.text_comment.setText(misstionVos.get(position).getBoardcount());
 
             holder.thumb.setTag(misstionVos.get(position).getYoutubeaddr());
 
@@ -119,6 +120,20 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
                     //The loader is already initialised
                     loader.setVideo(misstionVos.get(position).getVideoaddr());
                 }
+
+                holder.text_ninck_name.setText(misstionVos.get(position).getUsername());
+                holder.text_subject.setText(misstionVos.get(position).getSubject());
+                holder.text_hart.setText(String.valueOf(misstionVos.get(position).getBookmarkcount()));
+                holder.text_comment.setText(misstionVos.get(position).getBoardcount());
+
+                holder.thumb.setTag(misstionVos.get(position).getYoutubeaddr());
+
+                if(misstionVos.get(position).getMycheck()==0){
+                    holder.imageview_iv_hart.setImageResource(R.drawable.ic_white_hart);
+                }else{
+                    holder.imageview_iv_hart.setImageResource(R.drawable.ic_hart_red);
+                }
+
             }
         }
 

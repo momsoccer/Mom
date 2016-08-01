@@ -18,25 +18,32 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:ellipsize="end"
         android:maxLines="2"
         />
 
-    <ImageView
-        android:id="@+id/main_ranking_img"
-        android:src="@drawable/userimg"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginLeft="10dp"
-        />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/main_ranking_img"
+            android:src="@drawable/userimg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            />
+    </LinearLayout>
+
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="85dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="20dp"
         >
 
         <TextView
@@ -49,19 +56,20 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:maxLength="5"
+            android:maxLength="10"
             />
 
         <TextView
             android:id="@+id/main_ranking_teamname"
             android:text="푸른하늘 축구팀"
             android:textSize="12dp"
-            android:textColor="@color/color2"
+            android:textColor="@color/line_color1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
             android:maxLength="10"
+            android:layout_marginTop="5dp"
             />
 
     </LinearLayout>
@@ -73,19 +81,6 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="30dp"
         >
-
-        <TextView
-            android:id="@+id/main_ranking_level"
-            android:text="Lv 57"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:textColor="@color/color6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:maxLength="5"
-            />
 
         <TextView
             android:id="@+id/main_ranking_score"
@@ -100,13 +95,5 @@
             />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/main_ranking_medal"
-        android:src="@drawable/medal"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        />
 
 </LinearLayout>

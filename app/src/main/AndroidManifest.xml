@@ -117,14 +117,14 @@
             android:name=".test.TestGridActivity"
             android:label="@string/title_activity_test_grid"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".mission.UserMissionActivity"
+        <activity
+            android:name=".mission.UserMissionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".board.BoardMainActivity"
             android:screenOrientation="portrait"
-            >
-        </activity>
-
-
-
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".Ranking.UserRankingActivity"></activity>
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ public class UserMission implements Serializable {
 	private String profileimgurl;
 	private String teamname;
 	private String bookmarkcount;
+	private String boardcount;
 	private int mycheck;
 	private String subject;
 	private String descroption;
@@ -199,6 +200,14 @@ public class UserMission implements Serializable {
 		this.mycheck = mycheck;
 	}
 
+	public String getBoardcount() {
+		return boardcount;
+	}
+
+	public void setBoardcount(String boardcount) {
+		this.boardcount = boardcount;
+	}
+
 	@Override
 	public String toString() {
 		return "UserMission{" +
@@ -209,6 +218,7 @@ public class UserMission implements Serializable {
 				", profileimgurl='" + profileimgurl + '\'' +
 				", teamname='" + teamname + '\'' +
 				", bookmarkcount='" + bookmarkcount + '\'' +
+				", boardcount='" + boardcount + '\'' +
 				", mycheck=" + mycheck +
 				", subject='" + subject + '\'' +
 				", descroption='" + descroption + '\'' +

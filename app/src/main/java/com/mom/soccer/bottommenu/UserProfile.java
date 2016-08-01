@@ -103,7 +103,7 @@ public class UserProfile extends AppCompatActivity {
             backImage = (ImageView) findViewById(R.id.back_image);
 
             //리니어 레이아웃에 블러드 효과 주기
-           Glide.with(UserProfile.this)
+            Glide.with(UserProfile.this)
                     .load(user.getProfileimgurl())
                     .asBitmap().transform(new BlurTransformation(this, 25))
                     .into(backImage);
@@ -314,7 +314,6 @@ public class UserProfile extends AppCompatActivity {
         pre.putString("profileImgUrl", profileimgurl);
         pre.commit();
         Log.d(TAG,"User Upload End ===================================================================");
-
 
     }
 

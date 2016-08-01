@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
+import com.mom.soccer.board.BoardMainActivity;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.MyBookMark;
@@ -25,6 +26,7 @@ import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.fragment.YoutubeFragment;
 import com.mom.soccer.retrofitdao.PickService;
+import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
 
@@ -86,7 +88,7 @@ public class UserMissionActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userMission = (UserMission) intent.getSerializableExtra(MissionCommon.USER_MISSTION_OBJECT);
 
-        getSupportActionBar().setTitle(getString(R.string.toolbar_video)+"("+userMission.getUsername() +")");
+        getSupportActionBar().setTitle(R.string.toolbar_board_page);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
 
@@ -98,6 +100,7 @@ public class UserMissionActivity extends AppCompatActivity {
             text_teamName.setText(userMission.getTeamname());
         }
         textView_pickupCount.setText(String.valueOf(userMission.getBookmarkcount()));
+        textView_commentCount.setText(userMission.getBoardcount());
 
 
         YoutubeFragment youtubeFragment = new YoutubeFragment(this,userMission.getYoutubeaddr());
@@ -117,6 +120,7 @@ public class UserMissionActivity extends AppCompatActivity {
         }else{
             btnFllow.setVisibility(View.VISIBLE);
         }
+
 
     }
 
@@ -203,7 +207,32 @@ public class UserMissionActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG,"onStart() ============================================ ");
+
+        UserMissionService userMissionService = ServiceGenerator.createService(UserMissionService.class,this,user);
+        UserMission quserMission = new UserMission();
+        quserMission.setUsermissionid(userMission.getUsermissionid());
+        Call<UserMission> call = userMissionService.getUserMission(quserMission);
+        call.enqueue(new Callback<UserMission>() {
+            @Override
+            public void onResponse(Call<UserMission> call, Response<UserMission> response) {
+                if(response.isSuccessful()){
+                    userMission = response.body();
+                    textView_commentCount.setText(userMission.getBoardcount());
+                }else{
+                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserMission> call, Throwable t) {
+                Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
+                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
+                t.printStackTrace();
+            }
+        });
+
         initialPickCheck();
+
     }
 
     @Override
@@ -255,5 +284,16 @@ public class UserMissionActivity extends AppCompatActivity {
             }
         });
     }
+
+    @OnClick(R.id.ac_user_mission_video_comment)
+    public void boardMain(){
+        Intent intent = new Intent(this, BoardMainActivity.class);
+        intent.putExtra("usermissionid",userMission.getUsermissionid());
+        intent.putExtra("missionuid",userMission.getUid());
+        startActivity(intent);
+        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+    }
+
+
 
 }

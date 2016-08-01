@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -41,21 +42,22 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.mom.soccer.MainActivity;
 import com.mom.soccer.R;
+import com.mom.soccer.Ranking.UserRankingActivity;
 import com.mom.soccer.adapter.MainRankingAdapter;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.common.SettingActivity;
-import com.mom.soccer.dataDto.RankingVo;
+import com.mom.soccer.dataDto.UserRangkinVo;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionActivity;
 import com.mom.soccer.mission.MissionCommon;
+import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -190,48 +192,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         });
 
 
-        /* 메인 미션 메뉴를 네트워크를 이용할 경우
-        List<MainTypeListVo> listVos = new ArrayList<MainTypeListVo>();
-        listVos.add(new MainTypeListVo(1,"첫번째","설명","그림주소","Y"));
-        listVos.add(new MainTypeListVo(2,"두번째","설명2","그림주소2","Y"));
-        listVos.add(new MainTypeListVo(3,"세번째","설명3","그림주소3","Y"));
-        momMainAdapter = new MomMainAdapter(getApplicationContext(), R.layout.mom_main_list_item_layout,listVos);
-        mGridView.setAdapter(momMainAdapter);
-
-
-        //통신을 해서 메인 미션 타입리스트를 가져온다
-        DataService dataService = ServiceGenerator.createService(DataService.class,this,user);
-        Call<List<MainTypeListVo>> listCall = dataService.getMisstionTypeList();
-
-        final ProgressDialog dialog;
-
-        dialog = ProgressDialog.show(this, "", "메인화면 정보를 서버에서 읽는 중입니다", true);
-        dialog.show();
-
-        listCall.enqueue(new Callback<List<MainTypeListVo>>() {
-            @Override
-            public void onResponse(Call<List<MainTypeListVo>> call, Response<List<MainTypeListVo>> response) {
-                if(response.isSuccessful()){
-
-                    List<MainTypeListVo> listVos = response.body();
-                    //가져온 데이터 리스트를 매핑시킨다
-                    momMainAdapter = new MomMainAdapter(getApplicationContext(), R.layout.mom_main_list_item_layout,listVos);
-                    mGridView.setAdapter(momMainAdapter);
-                    dialog.dismiss();
-                }else{
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
-                    dialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<MainTypeListVo>> call, Throwable t) {
-                Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
-                t.printStackTrace();
-                dialog.dismiss();
-            }
-        });
-        */
 
         Log.d(TAG, "onCreate ===========================================================" + user.getProfileimgurl());
 
@@ -484,43 +444,58 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
 
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(final ViewGroup container, int position) {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(layouts[position],container,false);
             container.addView(view);
 
+            DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
+
             if(position == 0){
+                final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(3);
 
-                ListView listView = (ListView) container.findViewById(R.id.list_total_ranking);
-                List<RankingVo> listVos = new ArrayList<RankingVo>();
-                listVos.add(new RankingVo(1,"1",user.getProfileimgurl(),user.getUsername(),"서울FC","67","24,320","골드메달"));
-                listVos.add(new RankingVo(2,"2",user.getProfileimgurl(),"토탈랭킹1","서울FC","20","57,320","골드메달"));
-                listVos.add(new RankingVo(2,"3",user.getProfileimgurl(),"토탈랭킹2","서울FC","20","45,320","골드메달"));
+                call.enqueue(new Callback<List<UserRangkinVo>>() {
+                    @Override
+                    public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
+                        if(response.isSuccessful()){
+                            List<UserRangkinVo> listVos = response.body();
+                            MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
+                            ListView listView = (ListView) container.findViewById(R.id.list_total_ranking);
+                            listView.setAdapter(mainRankingAdapter);
+                        }else{
+                            VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+                        }
+                    }
 
-                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
-                listView.setAdapter(mainRankingAdapter);
+                    @Override
+                    public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
+                        Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
+                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                        t.printStackTrace();
+                    }
+                });
+
+                Button button = (Button) container.findViewById(R.id.btn_more_total_ranking);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(),UserRankingActivity.class);
+                        intent.putExtra("pageparam","total");
+                        startActivity(intent);
+                    }
+                });
 
             }else if(position==1){
 
-                ListView listView = (ListView) container.findViewById(R.id.list_friend_ranking);
-                List<RankingVo> listVos = new ArrayList<RankingVo>();
-                listVos.add(new RankingVo(2,"2",user.getProfileimgurl(),"친구랭킹1","서울FC","40","24,320","골드메달"));
-                listVos.add(new RankingVo(2,"3",user.getProfileimgurl(),"친구랭킹2","서울FC","1","24,320","골드메달"));
 
-                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
-                listView.setAdapter(mainRankingAdapter);
+
+                ListView listView = (ListView) container.findViewById(R.id.list_friend_ranking);
 
             }else if(position==2){
 
-                ListView listView = (ListView) container.findViewById(R.id.list_team_ranking);
-                List<RankingVo> listVos = new ArrayList<RankingVo>();
-                listVos.add(new RankingVo(1,"1",user.getProfileimgurl(),user.getUsername(),"서울FC","34","24,320","골드메달"));
-                listVos.add(new RankingVo(2,"2",user.getProfileimgurl(),"111111111팀랭킹1","서울FC","23","24,320","골드메달"));
-                listVos.add(new RankingVo(3,"3",user.getProfileimgurl(),"팀랭킹2","서울FC","14","24,320","골드메달"));
 
-                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
-                listView.setAdapter(mainRankingAdapter);
+                ListView listView = (ListView) container.findViewById(R.id.list_team_ranking);
             }
 
             return view;
@@ -633,4 +608,8 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     protected void onResumeFragments() {
         super.onResumeFragments();
     }
+
+
+
+
 }
