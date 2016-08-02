@@ -60,6 +60,7 @@ public class ResumableUpload {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
         Intent notificationIntent = new Intent(context, MissionMainActivity.class);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         notificationIntent.putExtra(MissionCommon.OBJECT,mission);
         notificationIntent.setAction(Intent.ACTION_VIEW);
 
@@ -207,6 +208,9 @@ public class ResumableUpload {
         } catch (IOException e) {
             Log.e(TAG, "IOException", e);
             notifyFailedUpload(context, "업로드를 재시도 합니다", notifyManager, builder);
+
+            //IOException 에러시 웹뷰를 연결 유투브 계정 initial 시킨다
+
         } catch (CancellationException e){
             Log.e(TAG, "사용자 에러를 발생 시켰습니다");
             return "uploadCancel";

@@ -3,15 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/mom_color1"
     android:orientation="vertical"
-    tools:context="com.mom.soccer.bottommenu.SearchActivity">
+    android:background="@color/mom_color1"
+    tools:context="com.mom.soccer.bookmark.MyBookMarkActivity">
 
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/search_toolbar"
+        android:id="@+id/book_toolbar"
         app:titleTextColor="@color/color6"
         android:background="@color/mom_color1"
         android:layout_width="match_parent"
@@ -19,18 +18,18 @@
         >
 
         <TextView
-            android:id="@+id/toolbar_title"
+            android:id="@+id/book_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="검색"
+            android:text="@string/toolbar_book_page"
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="@color/color6"
             android:layout_gravity="center"
-             />
+            />
 
         <ImageButton
-            android:id="@+id/search_bell"
+            android:id="@+id/book_bell"
             android:src="@drawable/bell"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,38 +39,48 @@
             />
     </android.support.v7.widget.Toolbar>
 
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
 
-        <com.astuetz.PagerSlidingTabStrip
-            android:id="@+id/search_tabs"
-            app:pstsShouldExpand="true"
-            app:pstsTextAllCaps="true"
-            app:pstsDividerColor="@color/enabled_red"
-            app:pstsIndicatorHeight="2dp"
-            app:pstsUnderlineHeight="1dp"
+        <GridView
+            android:id="@+id/book_grid_view"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            />
+            android:layout_height="match_parent"
+            android:numColumns="3"
+            android:verticalSpacing="1dp"
+            android:horizontalSpacing="1dp"
+            android:gravity="center"
+            >
+        </GridView>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/search_viewpager"
+        <TextView
+            android:id="@+id/book_no_data_found"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:textColor="@color/color6"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:visibility="invisible"
+            android:layout_marginBottom="10dp"
             />
-
 
     </LinearLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <com.mom.soccer.tablayout.TabNaviComplaintBase
+            android:id="@+id/PageNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.mom.soccer.tablayout.TabNaviComplaintBase>
+    </LinearLayout>
 
 </LinearLayout>

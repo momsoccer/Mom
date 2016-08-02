@@ -8,7 +8,37 @@
     tools:context="com.mom.soccer.bottommenu.MyPageActivity"
     tools:ignore="MissingPrefix"
     >
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/uprofile_toolbar"
+        app:titleTextColor="@color/color6"
+        android:background="@color/mom_color1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
+        <TextView
+            android:id="@+id/book_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/toolbar_page_mypage"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/color6"
+            android:layout_gravity="center"
+            />
+
+        <ImageButton
+            android:id="@+id/book_bell"
+            android:src="@drawable/bell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:background="@color/mom_color1"
+            />
+    </android.support.v7.widget.Toolbar>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_weight="11"

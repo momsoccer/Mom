@@ -8,10 +8,12 @@
     tools:context="com.mom.soccer.board.BoardMainActivity">
 
     <LinearLayout
+        android:layout_marginTop="15dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginBottom="5dp"
         >
         <ListView
             android:id="@+id/board_list_view"
@@ -27,9 +29,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:background="@color/mom_color2"
         >
 
-        <EditText
+<!--        <EditText
             android:id="@+id/et_board_contnet"
             android:maxLength="300"
             android:singleLine="true"
@@ -44,6 +49,19 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
             android:gravity="center_vertical"
+            />-->
+
+        <EditText
+            android:id="@+id/et_board_contnet"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/mom_color1"
+            android:background="@color/color6"
+            android:layout_width="260dp"
+            android:layout_height="32dp"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            android:gravity="center_vertical"
             />
 
         <Button
@@ -53,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="5dp"
             android:gravity="center" />
 
     </LinearLayout>

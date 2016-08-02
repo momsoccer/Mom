@@ -47,18 +47,25 @@ public class UserRankingActivity extends AppCompatActivity {
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
-
-        listView = (ListView) findViewById(R.id.rankingpage_total_ranking);
-        getList();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.i(TAG,"onStart() ===============================================");
+
+        if(pageFlag.equals("total")){
+            listView = (ListView) findViewById(R.id.rankingpage_total_ranking);
+            getTotalRankingList();
+        }else if((pageFlag.equals("team"))){
+
+        }else if(pageFlag.equals("friend")){
+
+        }
+
     }
 
-    public void getList(){
+    public void getTotalRankingList(){
 
         DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
         final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(10);

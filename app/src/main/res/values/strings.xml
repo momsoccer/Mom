@@ -85,15 +85,20 @@
     <string name="network_create_comment">댓글을 등록합니다</string>
     <string name="network_create_complete">댓글이 등록 되었습니다. 댓글 리스트를 갱신 합니다</string>
 
+    <string name="network_nodata_found_user">입력하신 검색어에 맞는 \n 유저가 존재하지 않습니다</string>
+    <string name="network_nodata_found_coach">입력하신 검색어에 맞는 \n 코치가 존재하지 않습니다</string>
+
+    <!--툴바-->
     <string name="page_subject_upload">선택하신 영상</string>
     <string name="user_mission_subject">영상제목(40자 까지 입력 가능)</string>
     <string name="user_mission_cotent">영상 내용</string>
-
 
     <string name="toolbar_page_mypage">마이페이지</string>
     <string name="toolbar_page_profile">프로파일 편집</string>
     <string name="toolbar_video">미션영상</string>
     <string name="toolbar_board_page">댓글</string>
+    <string name="toolbar_search_page">검색</string>
+    <string name="toolbar_book_page">관심영상</string>
 
     <!--다이얼 로그 문의 창-->
     <string name="cancel">취소</string>
@@ -137,7 +142,15 @@
     <string name="title_activity_test_grid">TestGridActivity</string>
 
     <!--layout text-->
-    <string name="grid_user_name_title">유저명 : </string>
+    <string name="grid_user_name_title">유저명:</string>
+    <string name="search_coarch_field">코치명</string>
+    <string name="search_user_field">유저명</string>
+    <string name="search_btn">검색</string>
+    <string name="search_team">팀명</string>
+    <string name="search_choose">선택</string>
+
+    <string name="tab_coach">코치</string>
+    <string name="tab_user">유저</string>
 
     <!--board-->
     <string name="board_createbtn">작성</string>

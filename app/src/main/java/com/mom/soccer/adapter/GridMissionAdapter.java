@@ -136,7 +136,6 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
 
             }
         }
-
         return currentRow;
     }
 

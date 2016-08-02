@@ -88,10 +88,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".bottommenu.SearchActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".bottommenu.MyPageActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mission.MissionActivity"
             android:screenOrientation="portrait" />
@@ -124,7 +127,10 @@
             android:name=".board.BoardMainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".Ranking.UserRankingActivity"></activity>
+        <activity android:name=".Ranking.UserRankingActivity" />
+        <activity android:name=".bookmark.MyBookMarkActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            ></activity>
     </application>
 
 </manifest>

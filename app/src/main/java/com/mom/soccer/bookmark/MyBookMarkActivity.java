@@ -1,29 +1,27 @@
-package com.mom.soccer.bottommenu;
+package com.mom.soccer.bookmark;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.GridMissionAdapter;
-import com.mom.soccer.common.BlurTransformation;
-import com.mom.soccer.common.Compare;
-import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
+import com.mom.soccer.dto.MyBookMark;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.mission.UserMissionActivity;
-import com.mom.soccer.retrofitdao.UserMissionService;
+import com.mom.soccer.retrofitdao.PickService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
 
@@ -36,35 +34,30 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyPageActivity extends AppCompatActivity {
+/**
+ * Created by sungbo on 2016-08-02.
+ */
+public class MyBookMarkActivity extends AppCompatActivity {
 
-    private static final String TAG = "MyPageActivity";
-
-
-    @Bind(R.id.mypage_image_user_image)
-    ImageView mypageImage;
-
-    @Bind(R.id.mypage_back_image)
-    ImageView mypageBackImage;
-
-    @Bind(R.id.mypage_no_data_found)
-    TextView noData_textView;
-
-    private User user = new User();
-    private PrefUtil prefUtil;
+    private static final String TAG = "MyBookMarkActivity";
 
     GridMissionAdapter gridMissionAdapter;
-    ExpandableHeightGridView videoGridView;
-    UserMission qUserMission = new UserMission();
+    GridView videoGridView;
     List<UserMission> userMissions;
+
+    User user;
+    PrefUtil prefUtil;
+
+    @Bind(R.id.book_no_data_found)
+    TextView book_no_data_found;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ac_bottom_mypage_layout);
+        setContentView(R.layout.ac_bookmarck_layout);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.uprofile_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.book_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -73,34 +66,23 @@ public class MyPageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(R.drawable.back_arrow);
 
-
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
 
-        if(!Compare.isEmpty(user.getProfileimgurl())) {
-            Glide.with(MyPageActivity.this)
-                    .load(user.getProfileimgurl())
-                    .into(mypageImage);
-
-
-            //리니어 레이아웃에 블러드 효과 주기
-            Glide.with(MyPageActivity.this)
-                    .load(user.getProfileimgurl())
-                    .asBitmap().transform(new BlurTransformation(this, 25))
-                    .into(mypageBackImage);
-        }
-
-        videoGridView = (ExpandableHeightGridView) findViewById(R.id.mypage_gridview);
-        videoGridView.setExpanded(true);
-
+        videoGridView = (GridView) findViewById(R.id.book_grid_view);
 
         videoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                Log.d(TAG,"포지션 아이디는 : " +position);
+
+
                 Intent userMissionListIntent = new Intent(getApplicationContext(),UserMissionActivity.class);
                 userMissionListIntent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMissions.get(position));
                 startActivity(userMissionListIntent);
                 overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+
             }
         });
 
@@ -109,10 +91,7 @@ public class MyPageActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        //조회 조건 <내영상 리스트>
-        qUserMission.setUid(user.getUid());
-        userGrid_MissionList(qUserMission);
+        myBookMarkList();
     }
 
     @Override
@@ -127,40 +106,37 @@ public class MyPageActivity extends AppCompatActivity {
     }
 
 
-    public void userGrid_MissionList(final UserMission userMission){
+    public void myBookMarkList(){
 
         final ProgressDialog dialog;
         dialog = ProgressDialog.show(this, "", getString(R.string.network_get_list), true);
 
-        /*
-        final AlertDialog dialog = new SpotsDialog(this, R.style.Custom);
-        dialog.show();
-        */
+        MyBookMark myBookMark = new MyBookMark();
+        myBookMark.setUid(user.getUid());
 
-        UserMissionService userMissionService = ServiceGenerator.createService(UserMissionService.class,getApplicationContext(),user);
-        Call<List<UserMission>> call = userMissionService.getUserMissionList(userMission);
+        PickService pickService = ServiceGenerator.createService(PickService.class,getApplicationContext(),user);
+        Call<List<UserMission>> call = pickService.getMyBookMark(myBookMark);
         call.enqueue(new Callback<List<UserMission>>() {
             @Override
             public void onResponse(Call<List<UserMission>> call, Response<List<UserMission>> response) {
 
                 if(response.isSuccessful()){
                     userMissions = response.body();
-                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissions,"ME");
+                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_book_mark_layout,userMissions,"ME");
                     videoGridView.setAdapter(gridMissionAdapter);
                     dialog.dismiss();
 
                     if(userMissions.size()==0){
-                        noData_textView.setVisibility(View.VISIBLE);
-                        noData_textView.setText("등록된 영상이 없습니다");
+                        book_no_data_found.setVisibility(View.VISIBLE);
+                        book_no_data_found.setText("등록된 영상이 없습니다");
                     }else{
-                        noData_textView.setVisibility(View.INVISIBLE);
+                        book_no_data_found.setVisibility(View.INVISIBLE);
                     }
 
                 }else{
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
-
             }
 
             @Override
@@ -172,10 +148,8 @@ public class MyPageActivity extends AppCompatActivity {
         });
     }
 
-
     @OnClick(R.id.book_bell)
-    public void uprofile_bell(){
-        VeteranToast.makeToast(getApplicationContext(),"준비중",Toast.LENGTH_SHORT).show();
+    public void book_bell(){
+        VeteranToast.makeToast(getApplicationContext(),"준비중", Toast.LENGTH_SHORT).show();
     }
-
 }

@@ -44,6 +44,9 @@ import com.mom.soccer.MainActivity;
 import com.mom.soccer.R;
 import com.mom.soccer.Ranking.UserRankingActivity;
 import com.mom.soccer.adapter.MainRankingAdapter;
+import com.mom.soccer.bookmark.MyBookMarkActivity;
+import com.mom.soccer.bottommenu.MyPageActivity;
+import com.mom.soccer.bottommenu.SearchActivity;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.common.SettingActivity;
@@ -221,13 +224,24 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
 
         }else if(id == R.id.mn_item_gansim){
-            VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(),MyBookMarkActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
         }else if(id == R.id.mn_item_search){
-            VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getApplicationContext(),SearchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //스택에 쌓이는 것을 방지 한다. 필수
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
         }else if(id == R.id.mn_item_mypage){
-            VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getApplicationContext(),MyPageActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
         }else if(id == R.id.mn_item_coachreq){
             VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();

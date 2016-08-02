@@ -1,46 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     tools:context=".momactivity.MomMainActivity">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/barlayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/mom_color1"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:elevation="0dp"
-            >
-            <ImageButton
-                android:id="@+id/mom_hd_mk"
-                android:src="@drawable/mom_hd_mk"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="80dp"
-                android:onClick="OnClickHeader"
-                android:background="@color/mom_color1"
-                />
-
-            <ImageButton
-                android:id="@+id/hd_bell"
-                android:src="@drawable/top_click_bell"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
-                android:background="@color/mom_color1"
-                android:onClick="OnClickHeader"
-                />
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/mom_main_content"/>
 

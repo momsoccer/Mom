@@ -22,6 +22,7 @@ public class User implements Serializable{
 	private String serialnumber;
 	private String creationdate;
 	private String change_creationdate;
+	private String teamname;
 
 	//DB
 	private String fcmToken;
@@ -53,6 +54,14 @@ public class User implements Serializable{
 		this.creationdate = creationdate;
 		this.change_creationdate = change_creationdate;
 		this.fcmToken = fcmToken;
+	}
+
+	public String getTeamname() {
+		return teamname;
+	}
+
+	public void setTeamname(String teamname) {
+		this.teamname = teamname;
 	}
 
 	public String getFcmToken() {
@@ -219,6 +228,7 @@ public class User implements Serializable{
 				", serialnumber='" + serialnumber + '\'' +
 				", creationdate='" + creationdate + '\'' +
 				", change_creationdate='" + change_creationdate + '\'' +
+				", teamname='" + teamname + '\'' +
 				", fcmToken='" + fcmToken + '\'' +
 				'}';
 	}

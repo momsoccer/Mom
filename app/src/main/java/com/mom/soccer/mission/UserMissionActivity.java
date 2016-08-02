@@ -88,6 +88,8 @@ public class UserMissionActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userMission = (UserMission) intent.getSerializableExtra(MissionCommon.USER_MISSTION_OBJECT);
 
+        Log.i(TAG,"유저 미션 정보는 : " + userMission.toString());
+
         getSupportActionBar().setTitle(R.string.toolbar_board_page);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -142,7 +144,7 @@ public class UserMissionActivity extends AppCompatActivity {
         myBookMark.setUsermissionid(userMission.getUsermissionid());
 
         if(pickUpFlag=="Y"){
-            PickService pickService = ServiceGenerator.createService(PickService.class, this, user);
+            pickService = ServiceGenerator.createService(PickService.class, this, user);
             //플래그가 Y일 경우 좋아요 한 상태입니다.
             Call<ServerResult> call = pickService.pickCancel(myBookMark);
             call.enqueue(new Callback<ServerResult>() {
@@ -172,7 +174,7 @@ public class UserMissionActivity extends AppCompatActivity {
 
         }else {
             //플래그가 N일 경우 좋아요 안한 상태입.
-            PickService pickService = ServiceGenerator.createService(PickService.class, this, user);
+            pickService = ServiceGenerator.createService(PickService.class, this, user);
             Log.d(TAG, "보낸 값 : " + myBookMark.toString());
             Call<ServerResult> call = pickService.pickVideo(myBookMark);
             call.enqueue(new Callback<ServerResult>() {
@@ -254,7 +256,7 @@ public class UserMissionActivity extends AppCompatActivity {
         dialog.show();
 
 
-        PickService pickService = ServiceGenerator.createService(PickService.class, this, user);
+        pickService = ServiceGenerator.createService(PickService.class, this, user);
         Call<ServerResult> call = pickService.getPickCount(user.getUid(),userMission.getUsermissionid());
         call.enqueue(new Callback<ServerResult>() {
             @Override

@@ -3,6 +3,8 @@ package com.mom.soccer.retrofitdao;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -46,5 +48,8 @@ public interface UserService {
 
     @POST("/api/user/updateUserSetup")
     Call<ServerResult> updateUser(@Body User user);
+
+    @POST("/api/user/getusersearchlist")
+    Call<List<User>> getUserSearList(@Body User user);
 
 }
