@@ -18,8 +18,10 @@ package com.mom.soccer.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -35,12 +37,15 @@ import android.widget.Toast;
 import com.mom.soccer.R;
 import com.mom.soccer.dto.FavoriteMission;
 import com.mom.soccer.dto.Mission;
+import com.mom.soccer.dto.MissionHistory;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.mission.MissionMainActivity;
 import com.mom.soccer.retrofitdao.FavoriteMissionService;
+import com.mom.soccer.retrofitdao.MissionHistoryService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
 
 import retrofit2.Call;
@@ -62,6 +67,8 @@ public class MainMissionFragment extends Fragment {
     private static int mPage;
 
     private Mission mission = new Mission();
+
+    private static final int REQUEST_MISSION_OPEN = 0;
 
     LinearLayout mMainLayout;
 
@@ -97,6 +104,7 @@ public class MainMissionFragment extends Fragment {
         bdl.putSerializable(MissionCommon.USER_OBJECT,pramUser);
         fragment.setArguments(bdl);
 
+
         return fragment;
     }
 
@@ -128,12 +136,57 @@ public class MainMissionFragment extends Fragment {
         final TextView tx_mission_name = (TextView) view.findViewById(R.id.tx_mission_name);
         final TextView tx_mission_disp = (TextView) view.findViewById(R.id.tx_mission_description);
         final TextView tx_mission_precon = (TextView) view.findViewById(R.id.tx_mission_precon);
-        final TextView tx_mission_point = (TextView) view.findViewById(R.id.tx_mission_point);
+
+        final TextView tx_mission_open = (TextView) view.findViewById(R.id.tx_mission_open);
+        final TextView tx_mission_upload = (TextView) view.findViewById(R.id.tx_mission_upload);
+        final TextView tx_mission_pass = (TextView) view.findViewById(R.id.tx_mission_pass);
+        final TextView tx_mission_cash_point = (TextView) view.findViewById(R.id.tx_mission_cash_point);
 
         tx_mission_level.setText("Lv."+mission.getSequence());
+
+        Log.i(TAG,"=====================" + mission.getSequence());
+
         tx_mission_name.setText(mission.getMissionname());
         tx_mission_disp.setText(mission.getDescription());
         tx_mission_precon.setText(mission.getPrecon());
+
+        final LinearLayout li_lock_close = (LinearLayout) view.findViewById(R.id.li_lock_close);
+        final LinearLayout li_lock_open = (LinearLayout) view.findViewById(R.id.li_lock_open);
+
+        //포인트관련
+        final String mission_open_point = String.valueOf(mission.getEscapepoint());
+        String mission_score = String.valueOf(mission.getGrade());
+        String mission_pass = String.valueOf(mission.getPassgrade());
+        String mission_point = String.valueOf(mission.getGetpoint());
+
+        final Button missionStartBtn = (Button) view.findViewById(R.id.btn_mission_start);
+
+        if(mission.getOpencount()==0){
+            //미션을 도전하지 않은 상태 레이아웃 변경
+            li_lock_close.setVisibility(View.VISIBLE);
+            li_lock_open.setVisibility(View.GONE);
+
+            tx_mission_open.setText(getString(R.string.mission_require_point)+" : "+mission_open_point+"P");
+            tx_mission_upload.setText(getString(R.string.mission_get_upload_score)+" : "+mission_score+"점");
+            tx_mission_pass.setText(getString(R.string.mission_clear_score)+" : "+mission_pass +"점");
+            tx_mission_cash_point.setText(getString(R.string.mission_clear_point)+" : "+mission_point+"P");
+            missionStartBtn.setText(getString(R.string.mission_open));
+        }else{
+            //미션을 도전한 상태 상태 레이아웃 변경
+            li_lock_close.setVisibility(View.GONE);
+            li_lock_open.setVisibility(View.VISIBLE);
+            missionStartBtn.setText(getString(R.string.mission_start));
+        }
+
+        /*
+        if(mission.getUploadcount()!=0){
+
+        }
+
+        if(mission.getMissionpasscount()!=0){
+
+        }
+        */
 
         final ImageButton imageButton = (ImageButton) view.findViewById(R.id.gansim_star);
         favoriteTransaction(user.getUid(),mission.getMissionid(),"getCount",imageButton);
@@ -141,7 +194,6 @@ public class MainMissionFragment extends Fragment {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //VeteranToast.makeToast(getContext(),"즐겨찾기 : " + mission.getMissionid(), Toast.LENGTH_SHORT).show();
 
                 if(favoriteCount==0){
                     favoriteTransaction(user.getUid(),mission.getMissionid(),"create",imageButton);
@@ -154,16 +206,75 @@ public class MainMissionFragment extends Fragment {
             }
         });
 
-        final Button missionStartBtn = (Button) view.findViewById(R.id.btn_mission_start);
         missionStartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(),MissionMainActivity.class);
 
-                intent.putExtra(MissionCommon.OBJECT,mission);
+                if(mission.getOpencount()==0){
+                    new DialogBuilder(getContext())
+                            //.setTitle("Title")
+                            .setMessage(" "+mission_open_point + getString(R.string.mission_dialg_mission_open)) //500P 가 차감됩니다...미션을 오픈 하시겠습니까?
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                                    final ProgressDialog mdialog;
+                                    mdialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
+                                    mdialog.show();
+
+                                    MissionHistoryService service = ServiceGenerator.createService(MissionHistoryService.class,getContext(),user);
+                                    MissionHistory missionHistory = new MissionHistory(user.getUid(),mission.getMissionid(),mission.getEscapepoint(),"each");
+                                    final Call<ServerResult> resultCall = service.saveMissionHistory(missionHistory);
+                                    resultCall.enqueue(new Callback<ServerResult>() {
+                                        @Override
+                                        public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                                            if(response.isSuccessful()){
+                                                ServerResult serverResult = response.body();
+                                                VeteranToast.makeToast(getContext(),getString(R.string.mission_open_message),Toast.LENGTH_SHORT).show();
+                                                new Handler().postDelayed(new Runnable()
+                                                {
+                                                    @Override
+                                                    public void run()
+                                                    {
+                                                        mdialog.dismiss();
+                                                        Intent intent = new Intent(getContext(),MissionMainActivity.class);
+                                                        intent.putExtra(MissionCommon.OBJECT,mission);
+                                                        startActivity(intent);
+                                                        getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                                                    }
+                                                }, 500);
+                                            }else{
+                                                mdialog.dismiss();
+                                                VeteranToast.makeToast(getContext(),"Mission History Error : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<ServerResult> call, Throwable t) {
+                                            mdialog.dismiss();
+                                            VeteranToast.makeToast(getContext(),"Mission History Error : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                                            t.printStackTrace();
+                                        }
+                                    });
+
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create().show();
+                }else{
+                    Intent intent = new Intent(getContext(),MissionMainActivity.class);
+                    intent.putExtra(MissionCommon.OBJECT,mission);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                }
+
             }
         });
 
@@ -171,10 +282,32 @@ public class MainMissionFragment extends Fragment {
     }
 
 
+/*    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_MISSION_OPEN:
+                if (requestCode == Activity.RESULT_OK) {
+                    Log.d(TAG,"OK================");
+                } else {
+                    Log.d(TAG,"NO================");
+                }
+                break;
+        }
+    }*/
+
     @Override
     public void onStart() {
         super.onStart();
         Log.i(TAG,"onStart() ======================");
+
+        mPage = getArguments().getInt(ARG_PAGE);
+        mission = (Mission) getArguments().getSerializable(MissionCommon.OBJECT);
+        user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
+
+        Log.i(TAG," onStart 미션 객체 값 : " + mission.toString());
+        Log.i(TAG," onStart 유저 객체 값 : " + user.toString());
+
     }
 
     @Override
@@ -187,6 +320,7 @@ public class MainMissionFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Log.i(TAG,"onPause() ======================");
+
     }
 
     public void favoriteTransaction(int uId, int missionId, String typeMethod, final ImageButton imageButton){
@@ -289,4 +423,5 @@ public class MainMissionFragment extends Fragment {
 
         }
     }
+
 }

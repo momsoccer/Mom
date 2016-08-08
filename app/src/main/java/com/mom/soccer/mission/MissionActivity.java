@@ -123,7 +123,8 @@ public class MissionActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG,"onStart()===========================================");
+        Log.i(TAG,"onStart()===========================================");
+        getMissionList(missionType);
     }
 
     public void getMissionList(String missiontype){
@@ -134,7 +135,7 @@ public class MissionActivity extends AppCompatActivity {
 
         MissionService missionService = ServiceGenerator.createService(MissionService.class,this,user);
 
-        final Call<List<Mission>> call = missionService.getMissionList(missiontype);
+        final Call<List<Mission>> call = missionService.getMissionList(missiontype,user.getUid());
 
         call.enqueue(new Callback<List<Mission>>() {
             @Override
@@ -144,6 +145,10 @@ public class MissionActivity extends AppCompatActivity {
                     missionList = response.body();
                     Log.d(TAG,"이곳은 missionService()");
                     dialog.dismiss();
+
+
+                    Log.i(TAG,"=="+missionList.get(0).toString());
+                    Log.i(TAG,"=="+missionList.get(1).toString());
 
                     if(missionList.size()==0){
                         VeteranToast.makeToast(getApplicationContext(),getString(R.string.valid_mission_nodata_found),Toast.LENGTH_SHORT).show();
@@ -160,7 +165,7 @@ public class MissionActivity extends AppCompatActivity {
                         mFlippableStack.setAdapter(mPageAdapter);
                     }
                 }else{
-                    NUMBER_OF_FRAGMENTS = missionList.size();
+                    //NUMBER_OF_FRAGMENTS = missionList.size();
                     VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 }

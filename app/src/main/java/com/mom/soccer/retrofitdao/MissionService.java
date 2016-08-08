@@ -17,7 +17,8 @@ public interface MissionService {
 
     @GET("/api/mission/getMissionList")
     Call<List<Mission>> getMissionList(
-            @Query("typename") String typename
+            @Query("typename") String typename,
+            @Query("uid") int uid
     );
 
     @POST("/api/mission/getMission")
