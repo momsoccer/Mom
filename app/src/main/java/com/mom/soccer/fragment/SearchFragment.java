@@ -76,26 +76,26 @@ public class SearchFragment extends Fragment {
 
         if (mPage == 1) {
             if(mFlag.equals("NO")){
-                getUserList("NO");
+                getUserList("NO",user.getUid());
             }
             search_word.setHint(getString(R.string.search_user_field));
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getUserList(search_word.getText().toString());
+                    getUserList(search_word.getText().toString(),user.getUid());
                     mFlag="Y";
                 }
             });
         }else{
 
             if(mFlag.equals("NO")){
-                getUserList("NO");
+                getUserList("NO",user.getUid());
             }
             search_word.setHint(getString(R.string.search_coarch_field));
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getUserList(search_word.getText().toString());
+                    getUserList(search_word.getText().toString(),user.getUid());
                     mFlag="Y";
                 }
             });
@@ -105,7 +105,7 @@ public class SearchFragment extends Fragment {
     }
 
 
-    public void getUserList(String searchWord){
+    public void getUserList(String searchWord,int uid){
         final ProgressDialog dialog;
         dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_user), true);
         dialog.show();
@@ -116,6 +116,8 @@ public class SearchFragment extends Fragment {
         if(!searchWord.equals("NO")){
             user.setUsername(searchWord);
         }
+
+        user.setUid(uid); //자신은 빼고 조회한다
 
         Call<List<User>> call = userService.getUserSearList(user);
         call.enqueue(new Callback<List<User>>() {

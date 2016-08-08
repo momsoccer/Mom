@@ -43,12 +43,13 @@
     <string name="donotinternet">인터넷 연결이 해제 되어 있습니다 \n 앱이 정상 작동 하지 않음을 알려드립니다</string>
     <string name="app_myvideo_view">내 영상 보기</string>
 
-    <string name="lifting">리프팅</string>
-    <string name="drrible">드리블</string>
-    <string name="around">어라운드</string>
-    <string name="crossbar">크로스바</string>
-    <string name="trapping">트래핑</string>
-    <string name="flick">플릭</string>
+    <string name="mission_toolbar_title">스테이지</string>
+    <string name="lifting">(리프팅)</string>
+    <string name="drrible">(드리블)</string>
+    <string name="around">(어라운드)</string>
+    <string name="crossbar">(크로스바)</string>
+    <string name="trapping">(트래핑)</string>
+    <string name="flick">(플릭)</string>
     <string name="mission_start">시작하기</string>
     <string name="mission_upload">나의 실습 영상 선택</string>
     <string name="mission_upload_start">업로드</string>
@@ -99,6 +100,14 @@
     <string name="toolbar_board_page">댓글</string>
     <string name="toolbar_search_page">검색</string>
     <string name="toolbar_book_page">관심영상</string>
+    <string name="toolbar_favorite_page">즐겨찾기</string>
+    <string name="toolbar_point_page">포인트</string>
+
+    <string name="toolbar_ranking_all">랭킹 전체</string>
+    <string name="toolbar_ranking_friend">랭킹 친구</string>
+    <string name="toolbar_ranking_team">랭킹 팀</string>
+
+    <string name="toolbar_apply_coach">코치신청</string>
 
     <!--다이얼 로그 문의 창-->
     <string name="cancel">취소</string>
@@ -149,10 +158,28 @@
     <string name="search_team">팀명</string>
     <string name="search_choose">선택</string>
 
+    <string name="friedn_follow">팔로우</string>
+    <string name="friedn_follow_cancel">팔로우취소</string>
+
     <string name="tab_coach">코치</string>
     <string name="tab_user">유저</string>
 
     <!--board-->
     <string name="board_createbtn">작성</string>
     <string name="board_validation_word_empty">내용을 입력해주세요</string>
+
+    <!--nav menu-->
+    <string name="nav_header_name">닉네임</string>
+    <string name="nav_header_email">메일주소</string>
+
+    <string name="nav_header_assgin_coach">지정 코치 : </string>
+    <string name="nav_header_assgin_team">대표 소속 팀 : </string>
+    <string name="nav_header_not_assgin">미지정</string>
+    <string name="nav_header_not_assgin_team">소속 전</string>
+
+    <string name="no_data_video">수집하신 관심 영상이 없습니다</string>
+
+    <!--follow-->
+    <string name="follow_start"> 님을 팔로우 합니다</string>
+    <string name="follow_end"> 님 팔로우를 해지 합니다</string>
 </resources>

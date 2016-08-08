@@ -127,8 +127,9 @@ public class MyBookMarkActivity extends AppCompatActivity {
                     dialog.dismiss();
 
                     if(userMissions.size()==0){
+                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.no_data_video),Toast.LENGTH_SHORT).show();
                         book_no_data_found.setVisibility(View.VISIBLE);
-                        book_no_data_found.setText("등록된 영상이 없습니다");
+                        book_no_data_found.setText(R.string.no_data_video);
                     }else{
                         book_no_data_found.setVisibility(View.INVISIBLE);
                     }

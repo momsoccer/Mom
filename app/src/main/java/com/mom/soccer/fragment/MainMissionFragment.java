@@ -16,6 +16,8 @@
 
 package com.mom.soccer.fragment;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,13 +27,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mom.soccer.R;
+import com.mom.soccer.dto.FavoriteMission;
 import com.mom.soccer.dto.Mission;
+import com.mom.soccer.dto.ServerResult;
+import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.mission.MissionMainActivity;
+import com.mom.soccer.retrofitdao.FavoriteMissionService;
+import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.widget.VeteranToast;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Bartosz Lipinski
@@ -51,18 +65,26 @@ public class MainMissionFragment extends Fragment {
 
     LinearLayout mMainLayout;
 
+    int favoriteCount = 0;
+    User user;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.i(TAG,"onCreate() ======================");
+
         mPage = getArguments().getInt(ARG_PAGE);
         mission = (Mission) getArguments().getSerializable(MissionCommon.OBJECT);
+        user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
 
-        Log.d(TAG,"미션 객체 값 : " + mission.toString());
+        Log.i(TAG,"미션 객체 값 : " + mission.toString());
+        Log.i(TAG,"유저 객체 값 : " + user.toString());
     }
 
     public static MainMissionFragment newInstance(int page,
-                                                  Mission mission) {
+                                                  Mission mission,
+                                                  User pramUser) {
 
         MainMissionFragment fragment = new MainMissionFragment();
         //각 프래그먼트에 넘길 함수
@@ -72,6 +94,7 @@ public class MainMissionFragment extends Fragment {
         bdl.putInt(ARG_PAGE,page);
         //mission 객체에 담기
         bdl.putSerializable(MissionCommon.OBJECT,mission);
+        bdl.putSerializable(MissionCommon.USER_OBJECT,pramUser);
         fragment.setArguments(bdl);
 
         return fragment;
@@ -80,9 +103,12 @@ public class MainMissionFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        Log.i(TAG,"onCreateView() ======================");
+
         View view = null;
         view = inflater.inflate(R.layout.fr_mission_layout, container, false);
         mMainLayout = (LinearLayout) view.findViewById(R.id.li_mission_back);
+        Context context = getContext();
 
         if(mission.getTypename().equals("DRIBLE")){
             mMainLayout.setBackground(getResources().getDrawable(R.drawable.drible_back));
@@ -109,6 +135,24 @@ public class MainMissionFragment extends Fragment {
         tx_mission_disp.setText(mission.getDescription());
         tx_mission_precon.setText(mission.getPrecon());
 
+        final ImageButton imageButton = (ImageButton) view.findViewById(R.id.gansim_star);
+        favoriteTransaction(user.getUid(),mission.getMissionid(),"getCount",imageButton);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //VeteranToast.makeToast(getContext(),"즐겨찾기 : " + mission.getMissionid(), Toast.LENGTH_SHORT).show();
+
+                if(favoriteCount==0){
+                    favoriteTransaction(user.getUid(),mission.getMissionid(),"create",imageButton);
+                    favoriteCount=1;
+                }else{
+                    favoriteTransaction(user.getUid(),mission.getMissionid(),"delete",imageButton);
+                    favoriteCount=0;
+                }
+
+            }
+        });
 
         final Button missionStartBtn = (Button) view.findViewById(R.id.btn_mission_start);
         missionStartBtn.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +171,122 @@ public class MainMissionFragment extends Fragment {
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG,"onStart() ======================");
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG,"onResume() ======================");
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG,"onPause() ======================");
+    }
+
+    public void favoriteTransaction(int uId, int missionId, String typeMethod, final ImageButton imageButton){
+
+        FavoriteMissionService service = ServiceGenerator.createService(FavoriteMissionService.class,getContext(),user);
+        FavoriteMission favoriteMission = new FavoriteMission();
+        favoriteMission.setUid(uId);
+        favoriteMission.setMissionid(missionId);
+
+        final ProgressDialog dialog;
+        dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
+        dialog.show();
+
+        if(typeMethod.equals("getCount")){
+            Call<ServerResult> callBack = service.getCountFavoriteMission(favoriteMission);
+            callBack.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+
+                    if(response.isSuccessful()){
+                        dialog.dismiss();
+                        ServerResult result = response.body();
+                        favoriteCount = result.getCount();
+
+                        if(favoriteCount != 0){
+                            imageButton.setImageResource(R.drawable.star);
+                        }else{
+                            imageButton.setImageResource(R.drawable.star_enabled);
+                        }
+
+                    }else{
+                        dialog.dismiss();
+                        VeteranToast.makeToast(getContext(),"Favorite Info Error(1) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    dialog.dismiss();
+                    VeteranToast.makeToast(getContext(),"Favorite Info Error(2) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+
+        }else if(typeMethod.equals("create")){
+
+            Call<ServerResult> callBack = service.saveFavoriteMission(favoriteMission);
+            callBack.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+
+                    if(response.isSuccessful()){
+                        dialog.dismiss();
+                        VeteranToast.makeToast(getContext(),"즐겨찾기에 추가했습니다", Toast.LENGTH_SHORT).show();
+                        imageButton.setImageResource(R.drawable.star);
+                        favoriteCount = 1;
+                    }else{
+                        dialog.dismiss();
+                        VeteranToast.makeToast(getContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        imageButton.setImageResource(R.drawable.star_enabled);
+                        favoriteCount = 0;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    dialog.dismiss();
+                    VeteranToast.makeToast(getContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+
+        }else if(typeMethod.equals("delete")){
+
+            Call<ServerResult> callBack = service.deleteFavoriteMission(favoriteMission);
+            callBack.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+
+                    if(response.isSuccessful()){
+                        dialog.dismiss();
+                        VeteranToast.makeToast(getContext(),"즐겨찾기에서 제외 했습니다", Toast.LENGTH_SHORT).show();
+                        imageButton.setImageResource(R.drawable.star_enabled);
+                        favoriteCount = 0;
+                    }else{
+                        dialog.dismiss();
+                        VeteranToast.makeToast(getContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        imageButton.setImageResource(R.drawable.star);
+                        favoriteCount = 1;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    dialog.dismiss();
+                    VeteranToast.makeToast(getContext(),"Favorite Info Error(6) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+
+        }
+    }
 }

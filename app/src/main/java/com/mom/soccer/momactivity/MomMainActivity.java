@@ -44,6 +44,8 @@ import com.mom.soccer.MainActivity;
 import com.mom.soccer.R;
 import com.mom.soccer.Ranking.UserRankingActivity;
 import com.mom.soccer.adapter.MainRankingAdapter;
+import com.mom.soccer.besideactivity.ApplyCoachActivity;
+import com.mom.soccer.besideactivity.FavoriteMissionActivity;
 import com.mom.soccer.bookmark.MyBookMarkActivity;
 import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.bottommenu.SearchActivity;
@@ -220,9 +222,10 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
-        }else if(id == R.id.mn_item_fe){
-            VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
-
+        }else if(id == R.id.mn_item_favorite){
+            Intent intent = new Intent(this,FavoriteMissionActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         }else if(id == R.id.mn_item_gansim){
             Intent intent = new Intent(getApplicationContext(),MyBookMarkActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -239,21 +242,16 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         }else if(id == R.id.mn_item_mypage){
 
             Intent intent = new Intent(getApplicationContext(),MyPageActivity.class);
+            intent.putExtra("pageflag","me");
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
         }else if(id == R.id.mn_item_coachreq){
-            VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
-
-        }else if(id == R.id.mn_item_mypage){
-            VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
-
-        }else if(id == R.id.mn_item_coachreq){
-            VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
-
+            Intent intent = new Intent(this,ApplyCoachActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         }else if(id == R.id.mn_item_setup){
-
             Intent intent = new Intent(this,SettingActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
@@ -502,14 +500,32 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
 
             }else if(position==1){
 
-
-
                 ListView listView = (ListView) container.findViewById(R.id.list_friend_ranking);
+
+                Button button = (Button) container.findViewById(R.id.btn_more_friend_ranking);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(),UserRankingActivity.class);
+                        intent.putExtra("pageparam","friend");
+                        startActivity(intent);
+                    }
+                });
 
             }else if(position==2){
 
 
                 ListView listView = (ListView) container.findViewById(R.id.list_team_ranking);
+
+                Button button = (Button) container.findViewById(R.id.btn_more_team_ranking);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(),UserRankingActivity.class);
+                        intent.putExtra("pageparam","team");
+                        startActivity(intent);
+                    }
+                });
             }
 
             return view;

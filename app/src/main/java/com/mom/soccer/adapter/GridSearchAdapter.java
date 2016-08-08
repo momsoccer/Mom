@@ -1,6 +1,8 @@
 package com.mom.soccer.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,12 +10,11 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
+import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.dto.User;
-import com.mom.soccer.widget.VeteranToast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -80,6 +81,8 @@ public class GridSearchAdapter extends BaseAdapter {
 
             Glide.with(mContext)
                     .load(userList.get(i).getProfileimgurl())
+                    .override(180, 120)
+                    .centerCrop()
                     .into(listHolder.user_imag);
 
             currentRow.setTag(listHolder);
@@ -105,7 +108,12 @@ public class GridSearchAdapter extends BaseAdapter {
         listHolder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VeteranToast.makeToast(mContext,i +": 클릭 : " + listHolder.user_name.getText(), Toast.LENGTH_SHORT).show();
+                //VeteranToast.makeToast(mContext,i +": 클릭 : " + listHolder.user_name.getText(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, MyPageActivity.class);
+                intent.putExtra("pageflag","friend");
+                intent.putExtra("frienduid",userList.get(i).getUid());
+                mContext.startActivity(intent);
+                ((Activity) mContext).overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
             }
         });
 

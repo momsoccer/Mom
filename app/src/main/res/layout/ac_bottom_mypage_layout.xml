@@ -19,7 +19,7 @@
         >
 
         <TextView
-            android:id="@+id/book_title"
+            android:id="@+id/mypage_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/toolbar_page_mypage"
@@ -30,7 +30,7 @@
             />
 
         <ImageButton
-            android:id="@+id/book_bell"
+            android:id="@+id/mypage_bell"
             android:src="@drawable/bell"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -225,6 +225,18 @@
                     android:layout_height="match_parent" />
             </LinearLayout>
 
+
+            <Button
+                android:id="@+id/friend_btn_follow"
+                android:layout_marginTop="5dp"
+                style="@style/btnStylePaprika"
+                android:text="@string/friedn_follow"
+                android:layout_width="100dp"
+                android:layout_height="38dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="invisible"
+                />
+
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
@@ -265,6 +277,8 @@
 
 
                 </LinearLayout>
+
+
 
                 <LinearLayout
                     android:orientation="vertical"

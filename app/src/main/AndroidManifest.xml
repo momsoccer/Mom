@@ -97,7 +97,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mission.MissionActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mission.MissionMainActivity"
             android:screenOrientation="portrait"
@@ -127,8 +128,19 @@
             android:name=".board.BoardMainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".Ranking.UserRankingActivity" />
-        <activity android:name=".bookmark.MyBookMarkActivity"
+        <activity
+            android:name=".Ranking.UserRankingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".bookmark.MyBookMarkActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".point.PointMainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".besideactivity.FavoriteMissionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".besideactivity.ApplyCoachActivity"
             android:theme="@style/AppTheme.NoActionBar"
             ></activity>
     </application>

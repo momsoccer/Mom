@@ -20,4 +20,6 @@ public interface DataService {
     @GET("/api/data/getTotalRanking")
     Call<List<UserRangkinVo>> getTotalRanking(@Query("sequence") int sequence);
 
+
+
 }

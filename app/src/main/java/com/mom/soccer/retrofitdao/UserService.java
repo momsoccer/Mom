@@ -52,4 +52,8 @@ public interface UserService {
     @POST("/api/user/getusersearchlist")
     Call<List<User>> getUserSearList(@Body User user);
 
+    @GET("/api/user/getProfileUser")
+    Call<User> getProfileUser(
+            @Query("uid") int uid);
+
 }

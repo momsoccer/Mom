@@ -3,8 +3,11 @@ package com.mom.soccer.Ranking;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mom.soccer.R;
@@ -18,7 +21,9 @@ import com.mom.soccer.widget.VeteranToast;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,6 +39,9 @@ public class UserRankingActivity extends AppCompatActivity {
     User user;
     PrefUtil prefUtil;
 
+    @Bind(R.id.ranking_title)
+    TextView textView_ranking_title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +55,24 @@ public class UserRankingActivity extends AppCompatActivity {
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.ranking_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //빽버튼?
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.back_arrow);
+
+        if(pageFlag.equals("total")){
+            textView_ranking_title.setText(R.string.toolbar_ranking_all);
+        }else if((pageFlag.equals("team"))){
+            textView_ranking_title.setText(R.string.toolbar_ranking_friend);
+        }else if(pageFlag.equals("friend")){
+            textView_ranking_title.setText(R.string.toolbar_ranking_team);
+        }
+
     }
 
     @Override
@@ -89,6 +115,22 @@ public class UserRankingActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+    }
+
+    @OnClick(R.id.ranking_bell)
+    public void btnBell(){
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        //홈버튼클릭시
+        if (id == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

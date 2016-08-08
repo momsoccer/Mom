@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bartoszlipinski.flippablestackview.FlippableStackView;
@@ -19,6 +22,7 @@ import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.fragment.MainMissionFragment;
+import com.mom.soccer.point.PointMainActivity;
 import com.mom.soccer.retrofitdao.MissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
@@ -27,7 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,16 +57,27 @@ public class MissionActivity extends AppCompatActivity {
     private User user;
     private PrefUtil prefUtil;
 
+    @Bind(R.id.mission_title)
+    TextView textViewTitle;
+
+    @Bind(R.id.mission_point)
+    TextView tx_mission_point;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_mission_layout);
-
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ButterKnife.bind(this);
 
         Log.d(TAG,"onCreate() ===========================================");
-        ButterKnife.bind(this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.mission_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //빽버튼?
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.back_arrow);
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
@@ -71,17 +88,17 @@ public class MissionActivity extends AppCompatActivity {
         Log.d(TAG,"onCreate() missiontype : " + missionType);
 
         if(missionType.equals("DRIBLE")){
-            getSupportActionBar().setTitle(getString(R.string.drrible));
+            textViewTitle.setText(getString(R.string.mission_toolbar_title)+getString(R.string.drrible));
         }else if(missionType.equals("LIFTING")){
-            getSupportActionBar().setTitle(getString(R.string.lifting));
+            textViewTitle.setText(getString(R.string.mission_toolbar_title)+getString(R.string.lifting));
         }else if(missionType.equals("TRAPING")){
-            getSupportActionBar().setTitle(getString(R.string.trapping));
+            textViewTitle.setText(getString(R.string.mission_toolbar_title)+getString(R.string.trapping));
         }else if(missionType.equals("AROUND")){
-            getSupportActionBar().setTitle(getString(R.string.around));
+            textViewTitle.setText(getString(R.string.mission_toolbar_title)+getString(R.string.around));
         }else if(missionType.equals("FLICK")){
-            getSupportActionBar().setTitle(getString(R.string.flick));
+            textViewTitle.setText(getString(R.string.mission_toolbar_title)+getString(R.string.flick));
         }else if(missionType.equals("COMPLEX")){
-            getSupportActionBar().setTitle(getString(R.string.crossbar));
+            textViewTitle.setText(getString(R.string.mission_toolbar_title)+getString(R.string.crossbar));
         }
 
 
@@ -99,7 +116,7 @@ public class MissionActivity extends AppCompatActivity {
         Log.d(TAG,"이곳은 createViewPagerFragments()");
         mViewPagerFragments = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_FRAGMENTS; ++i) {
-            mViewPagerFragments.add(MainMissionFragment.newInstance(i, missionList.get(i)));
+            mViewPagerFragments.add(MainMissionFragment.newInstance(i, missionList.get(i),user));
         }
     }
 
@@ -197,6 +214,17 @@ public class MissionActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.mission_bell)
+    public void mission_bell(){
+
+    }
+
+    public void poinOnClick(View v){
+        Intent intent = new Intent(this, PointMainActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
 
 }

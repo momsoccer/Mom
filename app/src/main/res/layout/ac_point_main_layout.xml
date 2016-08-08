@@ -4,14 +4,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mom.soccer.Ranking.UserRankingActivity"
     android:background="@color/mom_color1"
-    >
+    tools:context="com.mom.soccer.besideactivity.FavoriteMissionActivity">
 
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/ranking_toolbar"
+        android:id="@+id/point_toolbar"
         app:titleTextColor="@color/color6"
         android:background="@color/mom_color1"
         android:layout_width="match_parent"
@@ -19,10 +18,10 @@
         >
 
         <TextView
-            android:id="@+id/ranking_title"
+            android:id="@+id/point_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="즐겨찾기"
+            android:text="포인트"
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="@color/color6"
@@ -30,7 +29,7 @@
             />
 
         <ImageButton
-            android:id="@+id/ranking_bell"
+            android:id="@+id/point_bell"
             android:src="@drawable/bell"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,33 +39,21 @@
             />
     </android.support.v7.widget.Toolbar>
 
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_height="wrap_content"
         >
-
-        <ListView
-            android:layout_marginTop="10dp"
-            android:id="@+id/rankingpage_total_ranking"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:dividerHeight="1dp"
-            android:divider="@color/line_color1"
-            />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
         >
-
         <com.mom.soccer.tablayout.TabNaviComplaintBase
             android:id="@+id/PageNavigationView"
             android:layout_width="wrap_content"
@@ -74,6 +61,5 @@
             android:layout_gravity="bottom">
         </com.mom.soccer.tablayout.TabNaviComplaintBase>
     </LinearLayout>
-
 
 </LinearLayout>
