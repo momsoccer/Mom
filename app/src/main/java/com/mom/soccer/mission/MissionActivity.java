@@ -20,13 +20,16 @@ import com.mom.soccer.R;
 import com.mom.soccer.adapter.MissionFragmentAdapter;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.Mission;
+import com.mom.soccer.dto.SpBalanceHeader;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.fragment.MainMissionFragment;
 import com.mom.soccer.point.PointMainActivity;
 import com.mom.soccer.retrofitdao.MissionService;
+import com.mom.soccer.retrofitdao.PointService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -60,8 +63,14 @@ public class MissionActivity extends AppCompatActivity {
     @Bind(R.id.mission_title)
     TextView textViewTitle;
 
-    @Bind(R.id.mission_point)
+    @Bind(R.id.user_point)
     TextView tx_mission_point;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG,"onActivityResult() ===============================");
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,7 +111,7 @@ public class MissionActivity extends AppCompatActivity {
         }
 
 
-        getMissionList(missionType);
+        //getMissionList(missionType);
 
         //언어 설정 값
         Locale locale = getResources().getConfiguration().locale;
@@ -116,7 +125,12 @@ public class MissionActivity extends AppCompatActivity {
         Log.d(TAG,"이곳은 createViewPagerFragments()");
         mViewPagerFragments = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_FRAGMENTS; ++i) {
+
+            //MainMissionFragment mainMissionFragment = new MainMissionFragment(user,missionList.get(i),i);
+            //mViewPagerFragments.add(mainMissionFragment);
+
             mViewPagerFragments.add(MainMissionFragment.newInstance(i, missionList.get(i),user));
+
         }
     }
 
@@ -125,6 +139,33 @@ public class MissionActivity extends AppCompatActivity {
         super.onStart();
         Log.i(TAG,"onStart()===========================================");
         getMissionList(missionType);
+        getUserPoint(user.getUid());
+    }
+
+
+    public void getUserPoint(int uid){
+        PointService pointService = ServiceGenerator.createService(PointService.class,this,user);
+        Call<SpBalanceHeader> call = pointService.getSelfAmt(uid);
+        call.enqueue(new Callback<SpBalanceHeader>() {
+            @Override
+            public void onResponse(Call<SpBalanceHeader> call, Response<SpBalanceHeader> response) {
+                if(response.isSuccessful()){
+                    SpBalanceHeader spBalanceHeader = response.body();
+
+                    NumberFormat numberFormat = NumberFormat.getInstance();
+                    tx_mission_point.setText(numberFormat.format(spBalanceHeader.getAmount()));
+                }else{
+                    VeteranToast.makeToast(getApplicationContext(),"getPoint "+getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SpBalanceHeader> call, Throwable t) {
+                Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
+                VeteranToast.makeToast(getApplicationContext(),"getPoint "+ getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                noDataPage();
+            }
+        });
     }
 
     public void getMissionList(String missiontype){
@@ -145,10 +186,6 @@ public class MissionActivity extends AppCompatActivity {
                     missionList = response.body();
                     Log.d(TAG,"이곳은 missionService()");
                     dialog.dismiss();
-
-
-                    Log.i(TAG,"=="+missionList.get(0).toString());
-                    Log.i(TAG,"=="+missionList.get(1).toString());
 
                     if(missionList.size()==0){
                         VeteranToast.makeToast(getApplicationContext(),getString(R.string.valid_mission_nodata_found),Toast.LENGTH_SHORT).show();
@@ -180,6 +217,9 @@ public class MissionActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
     public void noDataPage(){
         //네트워크 오류로 간단히 샘플을 보여준다

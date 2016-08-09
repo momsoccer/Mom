@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -35,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mom.soccer.R;
+import com.mom.soccer.dataDto.PointTrVo;
 import com.mom.soccer.dto.FavoriteMission;
 import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.MissionHistory;
@@ -44,6 +44,8 @@ import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.mission.MissionMainActivity;
 import com.mom.soccer.retrofitdao.FavoriteMissionService;
 import com.mom.soccer.retrofitdao.MissionHistoryService;
+import com.mom.soccer.retrofitdao.MissionService;
+import com.mom.soccer.retrofitdao.PointService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
@@ -65,15 +67,20 @@ public class MainMissionFragment extends Fragment {
     public static final String MISSION_ID = "MISSION_ID";
 
     private static int mPage;
+    private static int oPenCount = 0;
 
     private Mission mission = new Mission();
 
-    private static final int REQUEST_MISSION_OPEN = 0;
+    private static final int REQUEST_MISSION_OPEN = 768;
 
     LinearLayout mMainLayout;
 
     int favoriteCount = 0;
     User user;
+
+    //재갱신...
+    Mission queryMission;
+    Mission reflashMission = new Mission();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,9 +116,20 @@ public class MainMissionFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         Log.i(TAG,"onCreateView() ======================");
+
+        if(reflashMission.getMissionid()!=0){
+            mission = reflashMission;
+        }
+
+        Log.i(TAG,"Mission info : " + mission.toString());
 
         View view = null;
         view = inflater.inflate(R.layout.fr_mission_layout, container, false);
@@ -144,8 +162,6 @@ public class MainMissionFragment extends Fragment {
 
         tx_mission_level.setText("Lv."+mission.getSequence());
 
-        Log.i(TAG,"=====================" + mission.getSequence());
-
         tx_mission_name.setText(mission.getMissionname());
         tx_mission_disp.setText(mission.getDescription());
         tx_mission_precon.setText(mission.getPrecon());
@@ -162,27 +178,30 @@ public class MainMissionFragment extends Fragment {
         final Button missionStartBtn = (Button) view.findViewById(R.id.btn_mission_start);
 
         if(mission.getOpencount()==0){
+
             //미션을 도전하지 않은 상태 레이아웃 변경
             li_lock_close.setVisibility(View.VISIBLE);
             li_lock_open.setVisibility(View.GONE);
-
-            tx_mission_open.setText(getString(R.string.mission_require_point)+" : "+mission_open_point+"P");
-            tx_mission_upload.setText(getString(R.string.mission_get_upload_score)+" : "+mission_score+"점");
-            tx_mission_pass.setText(getString(R.string.mission_clear_score)+" : "+mission_pass +"점");
-            tx_mission_cash_point.setText(getString(R.string.mission_clear_point)+" : "+mission_point+"P");
             missionStartBtn.setText(getString(R.string.mission_open));
         }else{
             //미션을 도전한 상태 상태 레이아웃 변경
             li_lock_close.setVisibility(View.GONE);
             li_lock_open.setVisibility(View.VISIBLE);
             missionStartBtn.setText(getString(R.string.mission_start));
+
         }
 
-        /*
+        tx_mission_open.setText(getString(R.string.mission_require_point)+" : "+mission_open_point+"P");
+        tx_mission_upload.setText(getString(R.string.mission_get_upload_score)+" : "+mission_score+"점");
+        tx_mission_pass.setText(getString(R.string.mission_clear_score)+" : "+mission_pass +"점");
+        tx_mission_cash_point.setText(getString(R.string.mission_clear_point)+" : "+mission_point+"P");
+
+        /*  //업로드 했을 경우
         if(mission.getUploadcount()!=0){
 
         }
 
+           //미션을 클리어 했을 경우
         if(mission.getMissionpasscount()!=0){
 
         }
@@ -218,45 +237,37 @@ public class MainMissionFragment extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    final ProgressDialog mdialog;
-                                    mdialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
-                                    mdialog.show();
+                                    //2. 포인트를 차감한다
+                                    PointTrVo pointTrVo = new PointTrVo();
+                                    pointTrVo.setUid(user.getUid());
+                                    pointTrVo.setMissionid(mission.getMissionid());
+                                    pointTrVo.setTrType("G"); //R일때는 지급
+                                    pointTrVo.setTypecode("MISSION");
 
-                                    MissionHistoryService service = ServiceGenerator.createService(MissionHistoryService.class,getContext(),user);
-                                    MissionHistory missionHistory = new MissionHistory(user.getUid(),mission.getMissionid(),mission.getEscapepoint(),"each");
-                                    final Call<ServerResult> resultCall = service.saveMissionHistory(missionHistory);
-                                    resultCall.enqueue(new Callback<ServerResult>() {
+                                    PointService pointService = ServiceGenerator.createService(PointService.class,getContext(),user);
+                                    Call<ServerResult> call = pointService.pointTr(pointTrVo);
+
+                                    call.enqueue(new Callback<ServerResult>() {
                                         @Override
                                         public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                                             if(response.isSuccessful()){
-                                                ServerResult serverResult = response.body();
-                                                VeteranToast.makeToast(getContext(),getString(R.string.mission_open_message),Toast.LENGTH_SHORT).show();
-                                                new Handler().postDelayed(new Runnable()
-                                                {
-                                                    @Override
-                                                    public void run()
-                                                    {
-                                                        mdialog.dismiss();
-                                                        Intent intent = new Intent(getContext(),MissionMainActivity.class);
-                                                        intent.putExtra(MissionCommon.OBJECT,mission);
-                                                        startActivity(intent);
-                                                        getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                                                    }
-                                                }, 500);
+                                                ServerResult result = response.body();
+                                                if(result.getResult().equals("F")){
+                                                    VeteranToast.makeToast(getContext(),getString(R.string.lack_point),Toast.LENGTH_SHORT).show();
+                                                }else{
+                                                    openMission();
+                                                }
                                             }else{
-                                                mdialog.dismiss();
                                                 VeteranToast.makeToast(getContext(),"Mission History Error : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                                             }
                                         }
-
                                         @Override
                                         public void onFailure(Call<ServerResult> call, Throwable t) {
-                                            mdialog.dismiss();
-                                            VeteranToast.makeToast(getContext(),"Mission History Error : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                                            //mdialog.dismiss();
+                                            VeteranToast.makeToast(getContext(),"Mission History Error : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                                             t.printStackTrace();
                                         }
                                     });
-
                                     dialog.dismiss();
                                 }
                             })
@@ -282,31 +293,41 @@ public class MainMissionFragment extends Fragment {
     }
 
 
-/*    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQUEST_MISSION_OPEN:
-                if (requestCode == Activity.RESULT_OK) {
-                    Log.d(TAG,"OK================");
-                } else {
-                    Log.d(TAG,"NO================");
+        if(requestCode == REQUEST_MISSION_OPEN){
+            //오픈 후 되돌아 온다면 업데이트된 미션 적용
+
+            queryMission = new Mission();
+            queryMission.setUid(user.getUid());
+            queryMission.setMissionid(mission.getMissionid());
+
+            MissionService missionService = ServiceGenerator.createService(MissionService.class,getContext(),user);
+            Call<Mission> call = missionService.getMission(queryMission);
+            call.enqueue(new Callback<Mission>() {
+                @Override
+                public void onResponse(Call<Mission> call, Response<Mission> response) {
+                    if(response.isSuccessful()){
+                        reflashMission = response.body();
+                    }else{
+                        VeteranToast.makeToast(getContext(),"mission refrash error " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    }
                 }
-                break;
+
+                @Override
+                public void onFailure(Call<Mission> call, Throwable t) {
+                    VeteranToast.makeToast(getContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
         }
-    }*/
+    }
 
     @Override
     public void onStart() {
         super.onStart();
         Log.i(TAG,"onStart() ======================");
-
-        mPage = getArguments().getInt(ARG_PAGE);
-        mission = (Mission) getArguments().getSerializable(MissionCommon.OBJECT);
-        user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
-
-        Log.i(TAG," onStart 미션 객체 값 : " + mission.toString());
-        Log.i(TAG," onStart 유저 객체 값 : " + user.toString());
 
     }
 
@@ -330,18 +351,18 @@ public class MainMissionFragment extends Fragment {
         favoriteMission.setUid(uId);
         favoriteMission.setMissionid(missionId);
 
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
-        dialog.show();
-
         if(typeMethod.equals("getCount")){
             Call<ServerResult> callBack = service.getCountFavoriteMission(favoriteMission);
             callBack.enqueue(new Callback<ServerResult>() {
                 @Override
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
 
+                    //final ProgressDialog dialog;
+                    //dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
+                    //dialog.show();
+
                     if(response.isSuccessful()){
-                        dialog.dismiss();
+                        //dialog.dismiss();
                         ServerResult result = response.body();
                         favoriteCount = result.getCount();
 
@@ -352,21 +373,23 @@ public class MainMissionFragment extends Fragment {
                         }
 
                     }else{
-                        dialog.dismiss();
+                        //dialog.dismiss();
                         VeteranToast.makeToast(getContext(),"Favorite Info Error(1) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    dialog.dismiss();
-                    VeteranToast.makeToast(getContext(),"Favorite Info Error(2) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    //dialog.dismiss();
+                    VeteranToast.makeToast(getContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
             });
 
         }else if(typeMethod.equals("create")){
-
+            final ProgressDialog dialog;
+            dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
+            dialog.show();
             Call<ServerResult> callBack = service.saveFavoriteMission(favoriteMission);
             callBack.enqueue(new Callback<ServerResult>() {
                 @Override
@@ -388,13 +411,15 @@ public class MainMissionFragment extends Fragment {
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
                     dialog.dismiss();
-                    VeteranToast.makeToast(getContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    VeteranToast.makeToast(getContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
             });
 
         }else if(typeMethod.equals("delete")){
-
+            final ProgressDialog dialog;
+            dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
+            dialog.show();
             Call<ServerResult> callBack = service.deleteFavoriteMission(favoriteMission);
             callBack.enqueue(new Callback<ServerResult>() {
                 @Override
@@ -416,12 +441,44 @@ public class MainMissionFragment extends Fragment {
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
                     dialog.dismiss();
-                    VeteranToast.makeToast(getContext(),"Favorite Info Error(6) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    VeteranToast.makeToast(getContext(),"Favorite Info Error(6) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
             });
 
         }
+    }
+
+    public void openMission(){
+        MissionHistoryService service = ServiceGenerator.createService(MissionHistoryService.class,getContext(),user);
+        MissionHistory missionHistory = new MissionHistory(user.getUid(),mission.getMissionid(),mission.getEscapepoint(),"each");
+        final Call<ServerResult> resultCall = service.saveMissionHistory(missionHistory);
+        resultCall.enqueue(new Callback<ServerResult>() {
+            @Override
+            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                if(response.isSuccessful()){
+                    ServerResult serverResult = response.body();
+                    VeteranToast.makeToast(getContext(),getString(R.string.mission_open_message),Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getContext(),MissionMainActivity.class);
+                    intent.putExtra(MissionCommon.OBJECT,mission);
+                    startActivityForResult(intent,REQUEST_MISSION_OPEN);
+                    //startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+
+                }else{
+                    //mdialog.dismiss();
+                    VeteranToast.makeToast(getContext(),"Mission History Error : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResult> call, Throwable t) {
+                //mdialog.dismiss();
+                VeteranToast.makeToast(getContext(),"Mission History Error : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
     }
 
 }

@@ -3,6 +3,7 @@ package com.mom.soccer.point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.mom.soccer.R;
@@ -32,4 +33,16 @@ public class PointMainActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.back_arrow);
         textView_point_title.setText(R.string.toolbar_point_page);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        //홈버튼클릭시
+        if (id == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

@@ -7,6 +7,37 @@
     android:orientation="vertical"
     tools:context="com.mom.soccer.board.BoardMainActivity">
 
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/comment_toolbar"
+        app:titleTextColor="@color/color6"
+        android:background="@color/mom_color1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/comment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/color6"
+            android:layout_gravity="center"
+            />
+
+        <ImageButton
+            android:id="@+id/comment_bell"
+            android:src="@drawable/bell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:background="@color/mom_color1"
+            />
+    </android.support.v7.widget.Toolbar>
+
     <LinearLayout
         android:layout_marginTop="15dp"
         android:orientation="vertical"

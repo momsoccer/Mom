@@ -60,7 +60,8 @@ public class ResumableUpload {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
         Intent notificationIntent = new Intent(context, MissionMainActivity.class);
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         notificationIntent.putExtra(MissionCommon.OBJECT,mission);
         notificationIntent.setAction(Intent.ACTION_VIEW);
 
@@ -73,7 +74,7 @@ public class ResumableUpload {
         Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND);
 
         builder.setContentTitle(context.getString(R.string.upload_pre_title))
-                .setContentText(context.getString(R.string.upload_pre_title_content)+" : "+userMission.getSubject())
+                .setContentText( context.getString(R.string.upload_pre_title_content)+" : "+userMission.getSubject())
                 .setSmallIcon(R.drawable.noyimark).setContentIntent(contentIntent).setStyle(new NotificationCompat.BigPictureStyle().bigPicture(thumbnail));
                 ;
 

@@ -4,10 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mom.soccer.R;
@@ -47,6 +49,8 @@ public class BoardMainActivity extends AppCompatActivity {
     private int userMissionId = 0;
     private int missionuId = 0;
 
+    @Bind(R.id.comment_title)
+    TextView comment_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +66,16 @@ public class BoardMainActivity extends AppCompatActivity {
         user = prefUtil.getUser();
         Log.d(TAG,"user mission id : " + userMissionId);
 
-        getSupportActionBar().setTitle(getString(R.string.toolbar_board_page));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.comment_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //빽버튼?
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.back_arrow);
+        comment_title.setText(getString(R.string.toolbar_comment_page)+"("+user.getUsername()+")");
 
     }
 

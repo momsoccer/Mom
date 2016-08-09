@@ -123,10 +123,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mission.UserMissionActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".board.BoardMainActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".Ranking.UserRankingActivity"
@@ -140,9 +143,12 @@
         <activity
             android:name=".besideactivity.FavoriteMissionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".besideactivity.ApplyCoachActivity"
+        <activity
+            android:name=".besideactivity.ApplyCoachActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".mission.UserMissionDteail"
             android:theme="@style/AppTheme.NoActionBar"
-            ></activity>
+            />
     </application>
 
 </manifest>

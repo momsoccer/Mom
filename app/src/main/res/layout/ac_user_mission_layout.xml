@@ -7,6 +7,29 @@
     android:background="@color/mom_color1"
     tools:context="com.mom.soccer.mission.UserMissionActivity">
 
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/user_missionview_title_toolbar"
+        app:titleTextColor="@color/color6"
+        android:background="@color/mom_color1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/user_missionview_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:text="유저 미션영상"
+            android:textColor="@color/color6"
+            android:layout_gravity="center"
+            />
+
+    </android.support.v7.widget.Toolbar>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

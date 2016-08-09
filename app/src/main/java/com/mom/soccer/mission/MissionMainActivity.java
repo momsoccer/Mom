@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,15 +19,20 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.GridMissionAdapter;
 import com.mom.soccer.common.Auth;
 import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dataDto.MomMessage;
+import com.mom.soccer.dto.FavoriteMission;
 import com.mom.soccer.dto.Mission;
+import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
+import com.mom.soccer.retrofitdao.FavoriteMissionService;
 import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
@@ -39,16 +47,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MissionMainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
+public class MissionMainActivity extends YouTubeBaseActivity{
 
     private static final String TAG = "MissionMainActivity";
     private static final int RECOVERY_DIALOG_REQUEST = 1;
     private int seedMissionId = 0;
 
-
     private User user = new User();
     private PrefUtil prefUtil;
     private YouTubePlayerView youTubeView;
+    private YouTubeThumbnailView thumbnailView;
+    int favoriteCount = 0;
 
     private Mission mission = new Mission();
 
@@ -75,9 +84,37 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
     @Bind(R.id.tx_main_mission_potin)
     TextView tx_missionPoint;
 
+    @Bind(R.id.img_missiontab)
+    ImageView img_missiontab;
+
+    @Bind(R.id.li_mymittion)
+    LinearLayout linearLayout;
+
+    @Bind(R.id.tx_main_usermission)
+    TextView tx_main_usermission;
+
+    @Bind(R.id.view_l1)
+    View view_l1;
+    @Bind(R.id.view_l2)
+    View view_l2;
+
+    @Bind(R.id.usermission_iv_hart)
+    ImageView usermission_iv_hart;
+
+    @Bind(R.id.usermission_tx_hart)
+    TextView usermission_tx_hart;
+
+    @Bind(R.id.usermission_iv_comment)
+    ImageView usermission_iv_comment;
+
+    @Bind(R.id.usermission_tx_comment)
+    TextView usermission_tx_comment;
+
+    @Bind(R.id.btn_mission_upload)
+    Button btn_mission_upload;
 
     ExpandableHeightGridView videoGridView;
-
+    UserMission userMission;
     /**************************************************
      * google uplaod define
      **********************/
@@ -88,6 +125,15 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
 
     List<UserMission> userMissionList;
     UserMission qUserMission = new UserMission();
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        setResult(RESULT_OK);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +149,48 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
         Intent intent = getIntent();
         mission = (Mission) intent.getSerializableExtra(MissionCommon.OBJECT);
 
+
+        thumbnailView = (YouTubeThumbnailView) findViewById(R.id.youtybe_Thumbnail);
         youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
-        youTubeView.initialize(Auth.KEY, this);
+        youTubeView.initialize(Auth.KEY, new YouTubePlayer.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean wasRestored) {
+                if (!wasRestored) {
+                    if(!setNet){
+                        youTubePlayer.cueVideo(mission.getYoutubeaddr());
+                        //user_youtube_view
+
+                    }else{
+                        //유투브 주소가 없다면 문제. 이럴때는 몸싸커 메인 인트로를 보여준다
+
+                        MomComService service = ServiceGenerator.createService(MomComService.class,MissionMainActivity.this,user);
+                        Call<MomMessage> call = service.getCommonInfo("VIDEOERROR");
+                        call.enqueue(new Callback<MomMessage>() {
+                            @Override
+                            public void onResponse(Call<MomMessage> call, Response<MomMessage> response) {
+                                if(response.isSuccessful()){
+                                    MomMessage momMessage = response.body();
+                                    youTubePlayer.cueVideo(momMessage.getAttribute1());
+                                }else{
+                                    youTubePlayer.cueVideo("3v1SRgbGsV8");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<MomMessage> call, Throwable t) {
+                                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
+                                youTubePlayer.cueVideo("3v1SRgbGsV8");
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+            }
+        });
 
         if (mission.getYoutubeaddr()==null){
             setNet = true;
@@ -151,54 +237,22 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
                 overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
             }
         });
-    }
 
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean wasRestored) {
-
-        if (!wasRestored) {
-            if(!setNet){
-                youTubePlayer.cueVideo(mission.getYoutubeaddr());
-            }else{
-                //유투브 주소가 없다면 문제. 이럴때는 몸싸커 메인 인트로를 보여준다
-
-                MomComService service = ServiceGenerator.createService(MomComService.class,this,user);
-                Call<MomMessage> call = service.getCommonInfo("VIDEOERROR");
-                call.enqueue(new Callback<MomMessage>() {
-                    @Override
-                    public void onResponse(Call<MomMessage> call, Response<MomMessage> response) {
-                        if(response.isSuccessful()){
-                            MomMessage momMessage = response.body();
-                            youTubePlayer.cueVideo(momMessage.getAttribute1());
-                        }else{
-                            youTubePlayer.cueVideo("3v1SRgbGsV8");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<MomMessage> call, Throwable t) {
-                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
-                        youTubePlayer.cueVideo("3v1SRgbGsV8");
-                    }
-                });
+        thumbnailView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent miIntent = new Intent(MissionMainActivity.this,UserMissionDteail.class);
+                miIntent.putExtra(MissionCommon.OBJECT,mission);
+                miIntent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMission);
+                startActivity(miIntent);
             }
-        }
+        });
+
+
+        favoriteTransaction(user.getUid(),mission.getMissionid(),"getCount",btnStart);
 
     }
 
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
-    }
-
-
-    @OnClick(R.id.btn_mission_upload)
-    public void missionVideoUpload(){
-        //업로드
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("video/*");
-        startActivityForResult(intent, RESULT_PICK_IMAGE_CROP);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -233,6 +287,8 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
         super.onStart();
         Log.d(TAG,"onStart() =====================================");
 
+        //나의 미션 영상
+        getMyVideo();
         //조회 조건 <나를 제외한 같은 미션 영상을 업로드한 리스트>
         qUserMission.setMissionid(mission.getMissionid());
         qUserMission.setUid(user.getUid());
@@ -280,5 +336,213 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
         });
     }
 
+    public void getMyVideo(){
+        UserMission u = new UserMission();
+        u.setMissionid(mission.getMissionid());
+        u.setUid(user.getUid());
+        UserMissionService userMissionService = ServiceGenerator.createService(UserMissionService.class,this,user);
+        Call<UserMission> c = userMissionService.getUserMission(u);
+
+        c.enqueue(new Callback<UserMission>() {
+            @Override
+            public void onResponse(Call<UserMission> call, Response<UserMission> response) {
+                if(response.isSuccessful()){
+
+                    userMission = response.body();
+
+                    Log.i(TAG," 받아온 값은  : " + userMission.toString() );
+                    //좋아요 카운트
+                    usermission_tx_hart.setText(String.valueOf(userMission.getBookmarkcount()));
+                    usermission_tx_comment.setText(String.valueOf(userMission.getBoardcount()));
+
+                    if(userMission.getUid()==0){
+                        img_missiontab.setVisibility(View.GONE);
+                        linearLayout.setVisibility(View.GONE);
+                    }else{
+
+                        Log.i(TAG," Test View Start ############################################################");
+
+                        if(userMission.getPassflag().equals("Y")){
+                            Log.i(TAG,"===1" + userMission.getPassflag());
+                            img_missiontab.setVisibility(View.VISIBLE);
+                            view_l1.setVisibility(View.GONE);
+                            view_l2.setVisibility(View.GONE);
+                        }else if(userMission.getPassflag().equals("P")){
+
+                            Log.i(TAG,"===2" + userMission.getPassflag());
+                            img_missiontab.setVisibility(View.GONE);
+                            tx_main_usermission.setText(R.string.user_mission_p);
+                            btn_mission_upload.setText(R.string.user_mission_p);
+
+                            btn_mission_upload.setBackgroundResource(R.color.color8);
+
+
+                        }else if(userMission.getPassflag().equals("N")){
+                            Log.i(TAG,"===3" + userMission.getPassflag());
+                            img_missiontab.setVisibility(View.GONE);
+                            tx_main_usermission.setText(R.string.user_mission_n);
+
+                        }
+                        Log.i(TAG," Test View End ############################################################");
+
+
+                        //내가 좋아요를 했다면
+                        if(userMission.getMycheck()==0){
+                            usermission_iv_hart.setImageResource(R.drawable.ic_white_hart);
+                        }else{
+                            usermission_iv_hart.setImageResource(R.drawable.ic_hart_red);
+                        }
+
+                        linearLayout.setVisibility(View.VISIBLE);
+                        thumbnailView.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
+                            @Override
+                            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+                                youTubeThumbnailLoader.setVideo(userMission.getYoutubeaddr());
+                            }
+
+                            @Override
+                            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+
+                            }
+                        });
+                    }
+
+
+
+                }else{
+                    VeteranToast.makeToast(getApplicationContext(),"UserMission(1) "+getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserMission> call, Throwable t) {
+                VeteranToast.makeToast(getApplicationContext(),"UserMission(2) "+getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+
+    //버튼 컨트롤
+    @OnClick(R.id.btn_mission_upload)
+    public void missionVideoUpload(){
+
+        if(userMission.getUid()!=0){
+
+            if(userMission.getPassflag().equals("P")) {
+                VeteranToast.makeToast(getApplicationContext(), getString(R.string.user_mission_progress), Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("video/*");
+        startActivityForResult(intent, RESULT_PICK_IMAGE_CROP);
+    }
+
+    @OnClick(R.id.ic_tree)
+    public void ic_Btn(){
+        VeteranToast.makeToast(getApplicationContext(),"테스트",Toast.LENGTH_SHORT).show();
+    }
+
+    //즐겨찾기 컨트롤
+    public void favoriteTransaction(int uId, int missionId, String typeMethod, final ImageButton imageButton){
+
+        FavoriteMissionService service = ServiceGenerator.createService(FavoriteMissionService.class,this,user);
+        FavoriteMission favoriteMission = new FavoriteMission();
+        favoriteMission.setUid(uId);
+        favoriteMission.setMissionid(missionId);
+
+        if(typeMethod.equals("getCount")){
+            Call<ServerResult> callBack = service.getCountFavoriteMission(favoriteMission);
+            callBack.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+
+                    if(response.isSuccessful()){
+                        ServerResult result = response.body();
+                        favoriteCount = result.getCount();
+
+                        if(favoriteCount != 0){
+                            imageButton.setImageResource(R.drawable.star);
+                        }else{
+                            imageButton.setImageResource(R.drawable.star_enabled);
+                        }
+
+                    }else{
+                        VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(1) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+
+        }else if(typeMethod.equals("create")){
+
+            Call<ServerResult> callBack = service.saveFavoriteMission(favoriteMission);
+            callBack.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+
+                    if(response.isSuccessful()){
+                        VeteranToast.makeToast(getApplicationContext(),"즐겨찾기에 추가했습니다", Toast.LENGTH_SHORT).show();
+                        imageButton.setImageResource(R.drawable.star);
+                        favoriteCount = 1;
+                    }else{
+                        VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        imageButton.setImageResource(R.drawable.star_enabled);
+                        favoriteCount = 0;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+
+        }else if(typeMethod.equals("delete")){
+
+            Call<ServerResult> callBack = service.deleteFavoriteMission(favoriteMission);
+            callBack.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+
+                    if(response.isSuccessful()){
+                        VeteranToast.makeToast(getApplicationContext(),"즐겨찾기에서 제외 했습니다", Toast.LENGTH_SHORT).show();
+                        imageButton.setImageResource(R.drawable.star_enabled);
+                        favoriteCount = 0;
+                    }else{
+                        VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        imageButton.setImageResource(R.drawable.star);
+                        favoriteCount = 1;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(6) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+
+        }
+    }
+
+    @OnClick(R.id.main_mission_start)
+    public void btnStart(){
+        if(favoriteCount==0){
+            favoriteTransaction(user.getUid(),mission.getMissionid(),"create",btnStart);
+            favoriteCount=1;
+        }else{
+            favoriteTransaction(user.getUid(),mission.getMissionid(),"delete",btnStart);
+            favoriteCount=0;
+        }
+    }
 
 }

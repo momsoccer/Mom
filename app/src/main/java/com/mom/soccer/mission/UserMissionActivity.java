@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,6 +74,9 @@ public class UserMissionActivity extends AppCompatActivity {
 
     private String pickUpFlag = "N";
 
+    @Bind(R.id.user_missionview_title)
+    TextView user_missionview_title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,9 +94,15 @@ public class UserMissionActivity extends AppCompatActivity {
 
         Log.i(TAG,"유저 미션 정보는 : " + userMission.toString());
 
-        getSupportActionBar().setTitle(R.string.toolbar_board_page);
+        //getSupportActionBar().setTitle(R.string.toolbar_board_page);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.user_missionview_title_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.back_arrow);
+        user_missionview_title.setText(getString(R.string.toolbar_user_missionview_page)+"("+user.getUsername()+")");
 
         //정보 적용
         text_userName.setText(userMission.getUsername());
