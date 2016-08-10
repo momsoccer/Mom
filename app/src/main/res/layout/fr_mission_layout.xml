@@ -16,7 +16,6 @@
         android:layout_height="match_parent"
         >
 
-
         <TextView
             android:id="@+id/tx_mission_level"
             android:text="@string/default_mission_level"

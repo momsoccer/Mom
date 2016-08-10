@@ -11,8 +11,26 @@ public class UserRangkinVo {
     private String teamname;
     private String totalscore;
     private int sequence;
+    private int queryRow;
+    private String orderbytype;  // 대량목록 조회시 sort 순서 해당 컬럼에 한해서 사용
 
     public UserRangkinVo(){};
+
+    public int getQueryRow() {
+        return queryRow;
+    }
+
+    public void setQueryRow(int queryRow) {
+        this.queryRow = queryRow;
+    }
+
+    public String getOrderbytype() {
+        return orderbytype;
+    }
+
+    public void setOrderbytype(String orderbytype) {
+        this.orderbytype = orderbytype;
+    }
 
     public int getUid() {
         return uid;
@@ -62,7 +80,6 @@ public class UserRangkinVo {
         this.sequence = sequence;
     }
 
-
     @Override
     public String toString() {
         return "UserRangkinVo{" +
@@ -72,6 +89,8 @@ public class UserRangkinVo {
                 ", teamname='" + teamname + '\'' +
                 ", totalscore='" + totalscore + '\'' +
                 ", sequence=" + sequence +
+                ", queryRow=" + queryRow +
+                ", orderbytype='" + orderbytype + '\'' +
                 '}';
     }
 }

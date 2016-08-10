@@ -122,33 +122,39 @@
             android:label="@string/title_activity_test_grid"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mission.UserMissionActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-        <activity
             android:name=".board.BoardMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".Ranking.UserRankingActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".bookmark.MyBookMarkActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".point.PointMainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".besideactivity.FavoriteMissionActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".besideactivity.ApplyCoachActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".mission.UserMissionDteail"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+        <activity
+            android:name=".mission.UserMissionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".mission.UserMissionListActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_user_mission_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

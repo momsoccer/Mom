@@ -27,15 +27,6 @@
             android:layout_gravity="center"
             />
 
-        <ImageButton
-            android:id="@+id/comment_bell"
-            android:src="@drawable/bell"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="15dp"
-            android:background="@color/mom_color1"
-            />
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
@@ -46,11 +37,11 @@
         android:layout_weight="1"
         android:layout_marginBottom="5dp"
         >
+
         <ListView
             android:id="@+id/board_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
         </ListView>
 
     </LinearLayout>
@@ -64,23 +55,6 @@
         android:gravity="center"
         android:background="@color/mom_color2"
         >
-
-<!--        <EditText
-            android:id="@+id/et_board_contnet"
-            android:maxLength="300"
-            android:singleLine="true"
-            android:textSize="15sp"
-            android:textColor="@color/color6"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/xml_boder"
-            android:hint="댓글 입력(300자 입력 가능)"
-            android:textColorHint="@color/line_color1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
-            android:gravity="center_vertical"
-            />-->
 
         <EditText
             android:id="@+id/et_board_contnet"

@@ -75,8 +75,7 @@ public class MyBookMarkActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                Log.d(TAG,"포지션 아이디는 : " +position);
-
+                Log.i(TAG,"포지션 아이디는 : " +position);
 
                 Intent userMissionListIntent = new Intent(getApplicationContext(),UserMissionActivity.class);
                 userMissionListIntent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMissions.get(position));
@@ -122,6 +121,7 @@ public class MyBookMarkActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()){
                     userMissions = response.body();
+
                     gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_book_mark_layout,userMissions,"ME");
                     videoGridView.setAdapter(gridMissionAdapter);
                     dialog.dismiss();
@@ -131,18 +131,18 @@ public class MyBookMarkActivity extends AppCompatActivity {
                         book_no_data_found.setVisibility(View.VISIBLE);
                         book_no_data_found.setText(R.string.no_data_video);
                     }else{
-                        book_no_data_found.setVisibility(View.INVISIBLE);
+                        book_no_data_found.setVisibility(View.GONE);
                     }
 
                 }else{
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_SHORT).show();
+                    //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<List<UserMission>> call, Throwable t) {
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
                 dialog.dismiss();
             }

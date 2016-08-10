@@ -1,7 +1,6 @@
 package com.mom.soccer.bottommenu;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -139,9 +138,9 @@ public class UserProfile extends AppCompatActivity {
         user.setUsername(et_nicName.getText().toString());
         user.setPhone(et_phone.getText().toString());
 
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(this,"",getString(R.string.network_updating_user), true);
-        dialog.show();
+        //final ProgressDialog dialog;
+        //dialog = ProgressDialog.show(this,"",getString(R.string.network_updating_user), true);
+        //dialog.show();
 
         UserService userService = ServiceGenerator.createService(UserService.class,this,user);
         final Call<ServerResult> call = userService.updateUser(user);
@@ -155,9 +154,7 @@ public class UserProfile extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                         if(response.isSuccessful()){
-                            Log.d(TAG, "서버 조회 결과 성공");
                             ServerResult serverResult = response.body();
-                            Log.d(TAG, "서버 조회 결과 값은 : " + serverResult.getResult());
 
                             //유저사진을 쉐어퍼런스에 저장해준다(업데이트)
                             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(UserProfile.this);
@@ -165,22 +162,20 @@ public class UserProfile extends AppCompatActivity {
                             pre.putString("username", et_nicName.getText().toString());
                             pre.putString("phone", et_phone.getText().toString());
                             pre.commit();
-
-                            dialog.dismiss();
-
-
+                            VeteranToast.makeToast(getApplicationContext(),getString(R.string.user_profile_update), Toast.LENGTH_LONG).show();
+                            //dialog.dismiss();
                         }else{
-                            VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
-                            dialog.dismiss();
+                            //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+                            //dialog.dismiss();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ServerResult> call, Throwable t) {
                         Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
-                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
+                        //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
                         t.printStackTrace();
-                        dialog.dismiss();
+                        //dialog.dismiss();
                     }
                 });
             }

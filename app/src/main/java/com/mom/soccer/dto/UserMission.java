@@ -24,28 +24,26 @@ public class UserMission implements Serializable {
 	private int passgrade;      //미션클리어점수
 	private String creationdate;
 	private String change_creationdate;
+	private int queryRow;
+	private String orderbytype;  // 대량목록 조회시 sort 순서 해당 컬럼에 한해서 사용
+	private String missionname;
 
 	public UserMission(){}
 
-	public UserMission(int usermissionid, int missionid, int uid, String username, String profileimgurl, String teamname, String bookmarkcount, String subject, String descroption, String uploadflag, String youtubeaddr, String passflag, String videoaddr, String filename, int grade, int passgrade, String creationdate, String change_creationdate) {
-		this.usermissionid = usermissionid;
-		this.missionid = missionid;
-		this.uid = uid;
-		this.username = username;
-		this.profileimgurl = profileimgurl;
-		this.teamname = teamname;
-		this.bookmarkcount = bookmarkcount;
-		this.subject = subject;
-		this.descroption = descroption;
-		this.uploadflag = uploadflag;
-		this.youtubeaddr = youtubeaddr;
-		this.passflag = passflag;
-		this.videoaddr = videoaddr;
-		this.filename = filename;
-		this.grade = grade;
-		this.passgrade = passgrade;
-		this.creationdate = creationdate;
-		this.change_creationdate = change_creationdate;
+	public String getMissionname() {
+		return missionname;
+	}
+
+	public void setMissionname(String missionname) {
+		this.missionname = missionname;
+	}
+
+	public int getQueryRow() {
+		return queryRow;
+	}
+
+	public void setQueryRow(int queryRow) {
+		this.queryRow = queryRow;
 	}
 
 	public String getFilename() {
@@ -208,6 +206,14 @@ public class UserMission implements Serializable {
 		this.boardcount = boardcount;
 	}
 
+	public String getOrderbytype() {
+		return orderbytype;
+	}
+
+	public void setOrderbytype(String orderbytype) {
+		this.orderbytype = orderbytype;
+	}
+
 	@Override
 	public String toString() {
 		return "UserMission{" +
@@ -231,6 +237,9 @@ public class UserMission implements Serializable {
 				", passgrade=" + passgrade +
 				", creationdate='" + creationdate + '\'' +
 				", change_creationdate='" + change_creationdate + '\'' +
+				", queryRow=" + queryRow +
+				", orderbytype='" + orderbytype + '\'' +
+				", missionname='" + missionname + '\'' +
 				'}';
 	}
 }

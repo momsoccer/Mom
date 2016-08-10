@@ -8,80 +8,29 @@
 
 
 
-    <com.google.android.youtube.player.YouTubeThumbnailView
-        android:id="@+id/youtybe_Thumbnail"
-        android:layout_margin="5dp"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:background="@android:color/black"
-        android:layout_gravity="center"
-        />
-
 
     <LinearLayout
-        android:layout_alignBottom="@+id/grid_youtybe_Thumbnail"
-        android:layout_marginLeft="45dp"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayout">
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        >
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:gravity="center"
+        <TextView
+            android:id="@+id/tx_main_mission_subject"
+            android:text="@string/default_mission_subject"
+            android:textColor="@color/color6"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" />
 
-            <ImageView
-                android:id="@+id/usermission_iv_hart"
-                android:src="@drawable/ic_white_hart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/usermission_tx_hart"
-                android:text="0"
-                android:layout_marginLeft="5dp"
-                android:textSize="16sp"
-                android:textColor="@color/color6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/btnMainVideo"
+            android:background="@drawable/btn_video_list_click"
             android:layout_marginLeft="30dp"
-            >
-
-            <ImageView
-                android:id="@+id/usermission_iv_comment"
-                android:src="@drawable/coment_ic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/usermission_tx_comment"
-                android:text="0"
-                android:layout_marginLeft="5dp"
-                android:textSize="16sp"
-                android:textColor="@color/color6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <ImageButton
-                android:id="@+id/ic_tree"
-                android:layout_marginLeft="170dp"
-                android:src="@drawable/ic_three"
-                android:background="@color/mom_color1"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
     </LinearLayout>
 
 </LinearLayout>

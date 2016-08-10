@@ -386,9 +386,9 @@ public class MyPageActivity extends AppCompatActivity {
 
         FriendService friendService = ServiceGenerator.createService(FriendService.class,this,user);
 
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(this, "",getString(R.string.network_get_list), true);
-        dialog.show();
+        //final ProgressDialog dialog;
+        //dialog = ProgressDialog.show(this, "",getString(R.string.network_get_list), true);
+        //dialog.show();
 
         if(trFlag.equals("getCount")){
 
@@ -397,7 +397,7 @@ public class MyPageActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                     if(response.isSuccessful()){
-                        dialog.dismiss();
+                        //dialog.dismiss();
                         ServerResult result = response.body();
                         if(result.getCount()==0){
                             friend_btn_follow.setText(getString(R.string.friedn_follow));
@@ -409,16 +409,16 @@ public class MyPageActivity extends AppCompatActivity {
 
 
                     }else{
-                        dialog.dismiss();
-                        VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(1) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        //dialog.dismiss();
+                        //VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(1) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                         FollowCount=0;
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    dialog.dismiss();
-                    VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(2) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    //dialog.dismiss();
+                    //VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(2) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
             });
@@ -428,21 +428,21 @@ public class MyPageActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                     if(response.isSuccessful()){
-                        dialog.dismiss();
+                        //dialog.dismiss();
                         ServerResult result = response.body();
                         friend_btn_follow.setText(getString(R.string.friedn_follow_cancel));
                         FollowCount=1;
-                        VeteranToast.makeToast(getApplicationContext(), findUser.getUsername() + getString(R.string.follow_start),Toast.LENGTH_SHORT).show();
+                        //VeteranToast.makeToast(getApplicationContext(), findUser.getUsername() + getString(R.string.follow_start),Toast.LENGTH_SHORT).show();
                     }else{
-                        dialog.dismiss();
-                        VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        //dialog.dismiss();
+                        //VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    dialog.dismiss();
-                    VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    //dialog.dismiss();
+                    //VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
             });
@@ -452,21 +452,21 @@ public class MyPageActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                     if(response.isSuccessful()){
-                        dialog.dismiss();
+                        //dialog.dismiss();
                         ServerResult result = response.body();
                         friend_btn_follow.setText(getString(R.string.friedn_follow));
                         FollowCount=0;
-                        VeteranToast.makeToast(getApplicationContext(), findUser.getUsername() + getString(R.string.follow_end),Toast.LENGTH_SHORT).show();
+                        //VeteranToast.makeToast(getApplicationContext(), findUser.getUsername() + getString(R.string.follow_end),Toast.LENGTH_SHORT).show();
                     }else{
-                        dialog.dismiss();
-                        VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(5) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        //dialog.dismiss();
+                        //VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(5) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    dialog.dismiss();
-                    VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(6) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    //dialog.dismiss();
+                    //VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(6) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
             });

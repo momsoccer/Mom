@@ -1,6 +1,7 @@
 package com.mom.soccer.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
     static class VideoHolder{
 
         //내 영상은 누구의 영상인지 이름을 뺀다
-
+        TextView tx_missionname;
         YouTubeThumbnailView thumb;
         ImageView imageview_clear_marck;
         ImageView imageview_iv_hart;     //내가 좋아요를 눌렀다면...
@@ -45,6 +46,7 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
         TextView text_comment;
         TextView text_ninck_name;
         TextView text_subject;
+
     }
 
 
@@ -81,8 +83,11 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
         if(convertView==null){
             currentRow = inflater.inflate(layout, parent, false);
 
+            Log.i(TAG," 미션 명은 " + misstionVos.get(position).getMissionname());
+
             holder = new VideoHolder();
 
+            holder.tx_missionname = (TextView) currentRow.findViewById(R.id.tx_missionname);
             holder.thumb = (YouTubeThumbnailView) currentRow.findViewById(R.id.grid_youtybe_Thumbnail);
             holder.text_ninck_name = (TextView) currentRow.findViewById(R.id.tx_ninck_name);
             holder.text_hart = (TextView) currentRow.findViewById(R.id.tx_hart);
@@ -91,10 +96,11 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
             holder.imageview_clear_marck = (ImageView) currentRow.findViewById(R.id.image_clear_marck);
             holder.text_subject = (TextView) currentRow.findViewById(R.id.tx_subject);
 
-            holder.text_ninck_name.setText(misstionVos.get(position).getUsername());
-            holder.text_subject.setText(misstionVos.get(position).getSubject());
-            holder.text_hart.setText(String.valueOf(misstionVos.get(position).getBookmarkcount()));
-            holder.text_comment.setText(misstionVos.get(position).getBoardcount());
+            holder.tx_missionname.setText(misstionVos.get(position).getMissionname());  //미션명
+            holder.text_ninck_name.setText(misstionVos.get(position).getUsername());    //수행유저
+            holder.text_subject.setText(misstionVos.get(position).getSubject());    //유저미션 제목
+            holder.text_hart.setText(String.valueOf(misstionVos.get(position).getBookmarkcount())); //유저미션 좋아요 숫자
+            holder.text_comment.setText(misstionVos.get(position).getBoardcount()); //유저미션 댓글 등록수
 
             holder.thumb.setTag(misstionVos.get(position).getYoutubeaddr());
 
@@ -102,6 +108,12 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
                 holder.imageview_iv_hart.setImageResource(R.drawable.ic_white_hart);
             }else{
                 holder.imageview_iv_hart.setImageResource(R.drawable.ic_hart_red);
+            }
+
+            if(misstionVos.get(position).getPassflag().equals("Y")){
+                holder.imageview_clear_marck.setVisibility(View.VISIBLE);
+            }else{
+                holder.imageview_clear_marck.setVisibility(View.GONE);
             }
 
             currentRow.setTag(holder);
@@ -121,6 +133,7 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
                     loader.setVideo(misstionVos.get(position).getVideoaddr());
                 }
 
+                holder.tx_missionname.setText(misstionVos.get(position).getMissionname());  //미션명
                 holder.text_ninck_name.setText(misstionVos.get(position).getUsername());
                 holder.text_subject.setText(misstionVos.get(position).getSubject());
                 holder.text_hart.setText(String.valueOf(misstionVos.get(position).getBookmarkcount()));
@@ -132,6 +145,12 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
                     holder.imageview_iv_hart.setImageResource(R.drawable.ic_white_hart);
                 }else{
                     holder.imageview_iv_hart.setImageResource(R.drawable.ic_hart_red);
+                }
+
+                if(misstionVos.get(position).getPassflag().equals("Y")){
+                    holder.imageview_clear_marck.setVisibility(View.VISIBLE);
+                }else{
+                    holder.imageview_clear_marck.setVisibility(View.GONE);
                 }
 
             }

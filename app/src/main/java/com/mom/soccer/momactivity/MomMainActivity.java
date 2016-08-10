@@ -454,6 +454,10 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         public MomViewPagerAdapter() {
         }
 
+        @Override
+        public int getItemPosition(Object object) {
+            return super.getItemPosition(object);
+        }
 
         @Override
         public Object instantiateItem(final ViewGroup container, int position) {
@@ -462,10 +466,17 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             View view = layoutInflater.inflate(layouts[position],container,false);
             container.addView(view);
 
-            DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
-
             if(position == 0){
-                final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(3);
+
+                Log.i(TAG,"뷰 페이저 값을 갱신 합니다");
+
+                UserRangkinVo userRangkinVo = new UserRangkinVo();
+                userRangkinVo.setQueryRow(3);
+                userRangkinVo.setOrderbytype("totalscore");
+
+                DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
+
+                final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(userRangkinVo);
 
                 call.enqueue(new Callback<List<UserRangkinVo>>() {
                     @Override
@@ -476,14 +487,14 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                             ListView listView = (ListView) container.findViewById(R.id.list_total_ranking);
                             listView.setAdapter(mainRankingAdapter);
                         }else{
-                            VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+                            //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
                         Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
-                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                        //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                         t.printStackTrace();
                     }
                 });
@@ -513,7 +524,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                 });
 
             }else if(position==2){
-
 
                 ListView listView = (ListView) container.findViewById(R.id.list_team_ranking);
 
@@ -545,6 +555,11 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         public void destroyItem(ViewGroup container, int position, Object object) {
             View view = (View) object;
             container.removeView(view);
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
         }
     }
 
@@ -638,7 +653,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     protected void onResumeFragments() {
         super.onResumeFragments();
     }
-
 
 
 

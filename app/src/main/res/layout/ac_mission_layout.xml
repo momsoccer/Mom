@@ -21,19 +21,9 @@
             android:layout_height="wrap_content"
             android:text="Mission Stage"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/color6"
             android:layout_gravity="center"
-            />
-
-        <ImageButton
-            android:id="@+id/mission_bell"
-            android:src="@drawable/bell"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="15dp"
-            android:background="@color/mom_color1"
             />
     </android.support.v7.widget.Toolbar>
 
@@ -71,9 +61,10 @@
     </LinearLayout>
 
     <com.bartoszlipinski.flippablestackview.FlippableStackView
+        android:layout_marginTop="5dp"
         android:id="@+id/flippable_stack_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent" />
+
 
 </LinearLayout>

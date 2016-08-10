@@ -98,13 +98,19 @@
 
         <FrameLayout
             android:id="@+id/youtube_frame_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/color8"
+            android:layout_width="match_parent"
+            android:layout_height="190dp">
         </FrameLayout>
 
+
         <LinearLayout
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -143,18 +149,14 @@
                 android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
         </LinearLayout>
-
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-
         <com.mom.soccer.tablayout.TabNaviComplaintBase
             android:id="@+id/PageNavigationView"
             android:layout_width="wrap_content"

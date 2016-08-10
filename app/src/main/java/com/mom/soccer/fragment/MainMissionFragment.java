@@ -16,7 +16,6 @@
 
 package com.mom.soccer.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -81,6 +80,8 @@ public class MainMissionFragment extends Fragment {
     //재갱신...
     Mission queryMission;
     Mission reflashMission = new Mission();
+
+    String checkDuplicateFlag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -229,66 +230,100 @@ public class MainMissionFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(mission.getOpencount()==0){
-                    new DialogBuilder(getContext())
-                            //.setTitle("Title")
-                            .setMessage(" "+mission_open_point + getString(R.string.mission_dialg_mission_open)) //500P 가 차감됩니다...미션을 오픈 하시겠습니까?
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                //유저가 이미 지불했을 경우...만약의 경우를 위해 코딩한다.
+                final MissionHistoryService service = ServiceGenerator.createService(MissionHistoryService.class,getContext(),user);
+                MissionHistory history = new MissionHistory(user.getUid(),mission.getMissionid());
+                Call<MissionHistory> call = service.getMissionHistory(history);
+                call.enqueue(new Callback<MissionHistory>() {
+                    @Override
+                    public void onResponse(Call<MissionHistory> call, Response<MissionHistory> response) {
+                        if(response.isSuccessful()){
+                            MissionHistory missionHistory = response.body();
+                            Log.i(TAG,"1.결과값을 받았습니다 : " + missionHistory.toString());
+                            if(missionHistory.getUid() == user.getUid() && mission.getOpencount()==0) {
+                                //이미 결재를 했다면... 그런데...openCount가 0이라면...중복결재이기 때문에 넘긴다
+                                Intent intent = new Intent(getContext(),MissionMainActivity.class);
+                                intent.putExtra(MissionCommon.OBJECT,mission);
+                                startActivity(intent);
+                                getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                                checkDuplicateFlag = "duble" ;
+                            }else{
+                                checkDuplicateFlag = "initial" ;
 
-                                    //2. 포인트를 차감한다
-                                    PointTrVo pointTrVo = new PointTrVo();
-                                    pointTrVo.setUid(user.getUid());
-                                    pointTrVo.setMissionid(mission.getMissionid());
-                                    pointTrVo.setTrType("G"); //R일때는 지급
-                                    pointTrVo.setTypecode("MISSION");
+                                if(checkDuplicateFlag.equals("initial")){
+                                    if(mission.getOpencount()==0){
+                                        new DialogBuilder(getContext())
+                                                //.setTitle("Title")
+                                                .setMessage(" "+mission_open_point + getString(R.string.mission_dialg_mission_open)) //500P 가 차감됩니다...미션을 오픈 하시겠습니까?
+                                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
 
-                                    PointService pointService = ServiceGenerator.createService(PointService.class,getContext(),user);
-                                    Call<ServerResult> call = pointService.pointTr(pointTrVo);
+                                                        //2. 포인트를 차감한다
+                                                        PointTrVo pointTrVo = new PointTrVo();
+                                                        pointTrVo.setUid(user.getUid());
+                                                        pointTrVo.setMissionid(mission.getMissionid());
+                                                        pointTrVo.setTrType("G"); //R일때는 지급
+                                                        pointTrVo.setTypecode("MISSION");
 
-                                    call.enqueue(new Callback<ServerResult>() {
-                                        @Override
-                                        public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                                            if(response.isSuccessful()){
-                                                ServerResult result = response.body();
-                                                if(result.getResult().equals("F")){
-                                                    VeteranToast.makeToast(getContext(),getString(R.string.lack_point),Toast.LENGTH_SHORT).show();
-                                                }else{
-                                                    openMission();
-                                                }
-                                            }else{
-                                                VeteranToast.makeToast(getContext(),"Mission History Error : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                        @Override
-                                        public void onFailure(Call<ServerResult> call, Throwable t) {
-                                            //mdialog.dismiss();
-                                            VeteranToast.makeToast(getContext(),"Mission History Error : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
-                                            t.printStackTrace();
-                                        }
-                                    });
-                                    dialog.dismiss();
+                                                        final PointService pointService = ServiceGenerator.createService(PointService.class,getContext(),user);
+                                                        Call<ServerResult> call = pointService.pointTr(pointTrVo);
+
+                                                        call.enqueue(new Callback<ServerResult>() {
+                                                            @Override
+                                                            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                                                                if(response.isSuccessful()){
+                                                                    ServerResult result = response.body();
+                                                                    if(result.getResult().equals("F")){
+                                                                        VeteranToast.makeToast(getContext(),getString(R.string.lack_point),Toast.LENGTH_SHORT).show();
+                                                                    }else{
+                                                                        openMission();
+                                                                    }
+                                                                }else{
+                                                                    VeteranToast.makeToast(getContext(),"Mission History Error 1 : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            }
+                                                            @Override
+                                                            public void onFailure(Call<ServerResult> call, Throwable t) {
+                                                                //mdialog.dismiss();
+                                                                VeteranToast.makeToast(getContext(),"Mission History Error 2 : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                                                                t.printStackTrace();
+                                                            }
+                                                        });
+                                                        dialog.dismiss();
+                                                    }
+                                                })
+                                                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                        dialog.dismiss();
+                                                    }
+                                                })
+                                                .create().show();
+                                    }else{
+                                        Intent intent = new Intent(getContext(),MissionMainActivity.class);
+                                        intent.putExtra(MissionCommon.OBJECT,mission);
+                                        startActivity(intent);
+                                        getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                                    }
                                 }
-                            })
-                            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
 
-                                    dialog.dismiss();
-                                }
-                            })
-                            .create().show();
-                }else{
-                    Intent intent = new Intent(getContext(),MissionMainActivity.class);
-                    intent.putExtra(MissionCommon.OBJECT,mission);
-                    startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                }
+                            }
+                            Log.i(TAG,"2.결과값을 받았습니다 : " + checkDuplicateFlag);
+                        }else{
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MissionHistory> call, Throwable t) {
+
+                    }
+                });
 
             }
         });
-
         return view;
     }
 
@@ -311,13 +346,13 @@ public class MainMissionFragment extends Fragment {
                     if(response.isSuccessful()){
                         reflashMission = response.body();
                     }else{
-                        VeteranToast.makeToast(getContext(),"mission refrash error " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        VeteranToast.makeToast(getContext(),"mission refrash error 1 " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Mission> call, Throwable t) {
-                    VeteranToast.makeToast(getContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    VeteranToast.makeToast(getContext(),"mission refrash error 2 : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
             });
@@ -387,21 +422,21 @@ public class MainMissionFragment extends Fragment {
             });
 
         }else if(typeMethod.equals("create")){
-            final ProgressDialog dialog;
-            dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
-            dialog.show();
+            //final ProgressDialog dialog;
+            //dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
+            //dialog.show();
             Call<ServerResult> callBack = service.saveFavoriteMission(favoriteMission);
             callBack.enqueue(new Callback<ServerResult>() {
                 @Override
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
 
                     if(response.isSuccessful()){
-                        dialog.dismiss();
+                        //dialog.dismiss();
                         VeteranToast.makeToast(getContext(),"즐겨찾기에 추가했습니다", Toast.LENGTH_SHORT).show();
                         imageButton.setImageResource(R.drawable.star);
                         favoriteCount = 1;
                     }else{
-                        dialog.dismiss();
+                        //dialog.dismiss();
                         VeteranToast.makeToast(getContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                         imageButton.setImageResource(R.drawable.star_enabled);
                         favoriteCount = 0;
@@ -410,29 +445,29 @@ public class MainMissionFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    dialog.dismiss();
+                    //dialog.dismiss();
                     VeteranToast.makeToast(getContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
             });
 
         }else if(typeMethod.equals("delete")){
-            final ProgressDialog dialog;
-            dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
-            dialog.show();
+            //final ProgressDialog dialog;
+            //dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
+            //dialog.show();
             Call<ServerResult> callBack = service.deleteFavoriteMission(favoriteMission);
             callBack.enqueue(new Callback<ServerResult>() {
                 @Override
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
 
                     if(response.isSuccessful()){
-                        dialog.dismiss();
-                        VeteranToast.makeToast(getContext(),"즐겨찾기에서 제외 했습니다", Toast.LENGTH_SHORT).show();
+                        //dialog.dismiss();
+                        //VeteranToast.makeToast(getContext(),"즐겨찾기에서 제외 했습니다", Toast.LENGTH_SHORT).show();
                         imageButton.setImageResource(R.drawable.star_enabled);
                         favoriteCount = 0;
                     }else{
-                        dialog.dismiss();
-                        VeteranToast.makeToast(getContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        //dialog.dismiss();
+                        //VeteranToast.makeToast(getContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                         imageButton.setImageResource(R.drawable.star);
                         favoriteCount = 1;
                     }
@@ -440,8 +475,8 @@ public class MainMissionFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    dialog.dismiss();
-                    VeteranToast.makeToast(getContext(),"Favorite Info Error(6) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    //dialog.dismiss();
+                    //VeteranToast.makeToast(getContext(),"Favorite Info Error(6) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
             });
@@ -468,7 +503,7 @@ public class MainMissionFragment extends Fragment {
 
                 }else{
                     //mdialog.dismiss();
-                    VeteranToast.makeToast(getContext(),"Mission History Error : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    //VeteranToast.makeToast(getContext(),"Mission History Error : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                 }
             }
 

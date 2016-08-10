@@ -611,7 +611,7 @@
 
 
             <com.mom.soccer.common.ExpandableHeightGridView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/mypage_gridview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -620,9 +620,8 @@
                 android:horizontalSpacing="2dp"
                 android:isScrollContainer="false"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="20dp"
+                android:verticalSpacing="5dp"
                 >
-
             </com.mom.soccer.common.ExpandableHeightGridView>
 
             <TextView

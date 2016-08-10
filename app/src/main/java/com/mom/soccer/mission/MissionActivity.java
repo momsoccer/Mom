@@ -36,7 +36,6 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -155,7 +154,7 @@ public class MissionActivity extends AppCompatActivity {
                     NumberFormat numberFormat = NumberFormat.getInstance();
                     tx_mission_point.setText(numberFormat.format(spBalanceHeader.getAmount()));
                 }else{
-                    VeteranToast.makeToast(getApplicationContext(),"getPoint "+getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+                    //VeteranToast.makeToast(getApplicationContext(),"getPoint "+getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -198,7 +197,12 @@ public class MissionActivity extends AppCompatActivity {
                         mFlippableStack = (FlippableStackView) findViewById(R.id.flippable_stack_view);
                         mFlippableStack.initStack(NUMBER_OF_FRAGMENTS, portrait ?
                                 StackPageTransformer.Orientation.VERTICAL :
-                                StackPageTransformer.Orientation.HORIZONTAL);
+                                StackPageTransformer.Orientation.HORIZONTAL
+                                ,0.9f
+                                ,0.9f
+                                ,0.9f
+                                ,StackPageTransformer.Gravity.CENTER
+                        );
                         mFlippableStack.setAdapter(mPageAdapter);
                     }
                 }else{
@@ -244,9 +248,13 @@ public class MissionActivity extends AppCompatActivity {
         mPageAdapter = new MissionFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
         boolean portrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
         mFlippableStack = (FlippableStackView) findViewById(R.id.flippable_stack_view);
-        mFlippableStack.initStack(NUMBER_OF_FRAGMENTS, portrait ?
-                StackPageTransformer.Orientation.VERTICAL :
-                StackPageTransformer.Orientation.HORIZONTAL);
+        mFlippableStack.initStack(NUMBER_OF_FRAGMENTS,
+                portrait ? StackPageTransformer.Orientation.VERTICAL : StackPageTransformer.Orientation.HORIZONTAL
+                ,0.9f  //전체크기
+                ,0.9f
+                ,0.4f   //
+                ,StackPageTransformer.Gravity.CENTER
+        );
         mFlippableStack.setAdapter(mPageAdapter);
     }
 
@@ -261,10 +269,6 @@ public class MissionActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.mission_bell)
-    public void mission_bell(){
-
-    }
 
     public void poinOnClick(View v){
         Intent intent = new Intent(this, PointMainActivity.class);

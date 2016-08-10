@@ -15,6 +15,11 @@ public class MissionHistory {
     public MissionHistory() {
     }
 
+    public MissionHistory(int uid, int missionid) {
+        this.uid = uid;
+        this.missionid = missionid;
+    }
+
     public MissionHistory(int uid, int missionid, int escapepoint, String opentype) {
         this.uid = uid;
         this.missionid = missionid;

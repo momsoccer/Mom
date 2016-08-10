@@ -77,6 +77,8 @@ public class UserMissionActivity extends AppCompatActivity {
     @Bind(R.id.user_missionview_title)
     TextView user_missionview_title;
 
+    String pageTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,17 +94,19 @@ public class UserMissionActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userMission = (UserMission) intent.getSerializableExtra(MissionCommon.USER_MISSTION_OBJECT);
 
-        Log.i(TAG,"유저 미션 정보는 : " + userMission.toString());
-
-        //getSupportActionBar().setTitle(R.string.toolbar_board_page);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.user_missionview_title_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(R.drawable.back_arrow);
-        user_missionview_title.setText(getString(R.string.toolbar_user_missionview_page)+"("+user.getUsername()+")");
+
+        if(!Compare.isEmpty(user.getUsername())){
+            pageTitle = "(" + user.getUsername() +") " + getString(R.string.toolbar_user_missionview_page);
+        }else{
+            pageTitle = getString(R.string.toolbar_user_missionview_page);
+        }
+        user_missionview_title.setText(pageTitle);
 
         //정보 적용
         text_userName.setText(userMission.getUsername());
@@ -114,7 +118,7 @@ public class UserMissionActivity extends AppCompatActivity {
         textView_pickupCount.setText(String.valueOf(userMission.getBookmarkcount()));
         textView_commentCount.setText(userMission.getBoardcount());
 
-
+        //YoutubeFragment 유투브 플래그먼트
         YoutubeFragment youtubeFragment = new YoutubeFragment(this,userMission.getYoutubeaddr());
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction tc = fm.beginTransaction();
@@ -133,7 +137,6 @@ public class UserMissionActivity extends AppCompatActivity {
             btnFllow.setVisibility(View.VISIBLE);
         }
 
-
     }
 
     @Override
@@ -147,12 +150,14 @@ public class UserMissionActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //좋아요 클릭
     @OnClick(R.id.ac_user_mission_video_pickup)
     public void imageButton_pickup(){
 
         myBookMark.setUid(user.getUid());
         myBookMark.setUsermissionid(userMission.getUsermissionid());
 
+        //관심영상 체크
         if(pickUpFlag=="Y"){
             pickService = ServiceGenerator.createService(PickService.class, this, user);
             //플래그가 Y일 경우 좋아요 한 상태입니다.
@@ -171,13 +176,13 @@ public class UserMissionActivity extends AppCompatActivity {
                         textView_pickupCount.setText(String.valueOf(likeCount));
 
                     } else {
-                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+                        //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
+                    //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
                     t.printStackTrace();
                 }
             });
@@ -201,13 +206,13 @@ public class UserMissionActivity extends AppCompatActivity {
                         textView_pickupCount.setText(String.valueOf(likeCount));
 
                     } else {
-                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+                        //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
+                    //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
                     t.printStackTrace();
                 }
 
@@ -215,6 +220,7 @@ public class UserMissionActivity extends AppCompatActivity {
         }
     }
 
+    //댓글 남긴 정보 가져오기
     @Override
     protected void onStart() {
         super.onStart();
@@ -231,14 +237,14 @@ public class UserMissionActivity extends AppCompatActivity {
                     userMission = response.body();
                     textView_commentCount.setText(userMission.getBoardcount());
                 }else{
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
+                    //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<UserMission> call, Throwable t) {
                 Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
+                //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
                 t.printStackTrace();
             }
         });
@@ -259,6 +265,7 @@ public class UserMissionActivity extends AppCompatActivity {
         Log.d(TAG,"onDestroy() ============================================ ");
     }
 
+    //관심 영상 체크 상태 확인
     public void initialPickCheck(){
 
         final ProgressDialog dialog;
@@ -282,7 +289,7 @@ public class UserMissionActivity extends AppCompatActivity {
                     }
                     dialog.dismiss();
                 }else{
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
+                    //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
                     dialog.dismiss();
                 }
             }
@@ -290,13 +297,14 @@ public class UserMissionActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ServerResult> call, Throwable t) {
                 Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
+                //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
                 t.printStackTrace();
                 dialog.dismiss();
             }
         });
     }
 
+    //댓글쓰기
     @OnClick(R.id.ac_user_mission_video_comment)
     public void boardMain(){
         Intent intent = new Intent(this, BoardMainActivity.class);

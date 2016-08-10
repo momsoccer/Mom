@@ -94,7 +94,12 @@ public class UserRankingActivity extends AppCompatActivity {
     public void getTotalRankingList(){
 
         DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
-        final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(10);
+
+        UserRangkinVo userRangkinVo = new UserRangkinVo();
+        userRangkinVo.setQueryRow(30);
+        userRangkinVo.setOrderbytype("totalscore");
+
+        final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(userRangkinVo);
 
         call.enqueue(new Callback<List<UserRangkinVo>>() {
             @Override

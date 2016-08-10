@@ -1,9 +1,13 @@
 package com.mom.soccer.mission;
 
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,10 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
@@ -26,14 +27,13 @@ import com.mom.soccer.adapter.GridMissionAdapter;
 import com.mom.soccer.common.Auth;
 import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
-import com.mom.soccer.dataDto.MomMessage;
 import com.mom.soccer.dto.FavoriteMission;
 import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
+import com.mom.soccer.fragment.YoutubeSeedMissionFragment;
 import com.mom.soccer.retrofitdao.FavoriteMissionService;
-import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
@@ -47,7 +47,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MissionMainActivity extends YouTubeBaseActivity{
+public class MissionMainActivity extends AppCompatActivity {
 
     private static final String TAG = "MissionMainActivity";
     private static final int RECOVERY_DIALOG_REQUEST = 1;
@@ -55,7 +55,6 @@ public class MissionMainActivity extends YouTubeBaseActivity{
 
     private User user = new User();
     private PrefUtil prefUtil;
-    private YouTubePlayerView youTubeView;
     private YouTubeThumbnailView thumbnailView;
     int favoriteCount = 0;
 
@@ -113,6 +112,9 @@ public class MissionMainActivity extends YouTubeBaseActivity{
     @Bind(R.id.btn_mission_upload)
     Button btn_mission_upload;
 
+    @Bind(R.id.im_clear_marck)
+    ImageView im_clear_marck;
+
     ExpandableHeightGridView videoGridView;
     UserMission userMission;
     /**************************************************
@@ -125,8 +127,8 @@ public class MissionMainActivity extends YouTubeBaseActivity{
 
     List<UserMission> userMissionList;
     UserMission qUserMission = new UserMission();
-
-
+    Intent intent;
+    private static int UPLOAD_NOTIFICATION_ID = 1001;
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -146,51 +148,11 @@ public class MissionMainActivity extends YouTubeBaseActivity{
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
 
-        Intent intent = getIntent();
+        intent = getIntent();
         mission = (Mission) intent.getSerializableExtra(MissionCommon.OBJECT);
 
 
         thumbnailView = (YouTubeThumbnailView) findViewById(R.id.youtybe_Thumbnail);
-        youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
-        youTubeView.initialize(Auth.KEY, new YouTubePlayer.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean wasRestored) {
-                if (!wasRestored) {
-                    if(!setNet){
-                        youTubePlayer.cueVideo(mission.getYoutubeaddr());
-                        //user_youtube_view
-
-                    }else{
-                        //유투브 주소가 없다면 문제. 이럴때는 몸싸커 메인 인트로를 보여준다
-
-                        MomComService service = ServiceGenerator.createService(MomComService.class,MissionMainActivity.this,user);
-                        Call<MomMessage> call = service.getCommonInfo("VIDEOERROR");
-                        call.enqueue(new Callback<MomMessage>() {
-                            @Override
-                            public void onResponse(Call<MomMessage> call, Response<MomMessage> response) {
-                                if(response.isSuccessful()){
-                                    MomMessage momMessage = response.body();
-                                    youTubePlayer.cueVideo(momMessage.getAttribute1());
-                                }else{
-                                    youTubePlayer.cueVideo("3v1SRgbGsV8");
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<MomMessage> call, Throwable t) {
-                                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
-                                youTubePlayer.cueVideo("3v1SRgbGsV8");
-                            }
-                        });
-                    }
-                }
-            }
-
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
-            }
-        });
 
         if (mission.getYoutubeaddr()==null){
             setNet = true;
@@ -241,16 +203,21 @@ public class MissionMainActivity extends YouTubeBaseActivity{
         thumbnailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent miIntent = new Intent(MissionMainActivity.this,UserMissionDteail.class);
-                miIntent.putExtra(MissionCommon.OBJECT,mission);
+                Intent miIntent = new Intent(getApplicationContext(),UserMissionActivity.class);
                 miIntent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMission);
                 startActivity(miIntent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
             }
         });
 
 
         favoriteTransaction(user.getUid(),mission.getMissionid(),"getCount",btnStart);
+        //youTubeView.initialize(Auth.KEY,MissionMainActivity.this);
 
+        //업로드후 노티를 지워준다
+        NotificationManager nm =
+                (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        nm.cancel(UPLOAD_NOTIFICATION_ID);
     }
 
 
@@ -277,8 +244,10 @@ public class MissionMainActivity extends YouTubeBaseActivity{
     @Override
     protected void onResume() {
         super.onResume();
-
-        Log.d(TAG,"onResume() =====================================");
+        Log.i(TAG,"onResume() =====================================");
+        intent = getIntent();
+        String uploadflag = intent.getStringExtra("uploadflag");
+        Log.i(TAG,"받은 값은 : " + uploadflag);
 
     }
 
@@ -293,6 +262,14 @@ public class MissionMainActivity extends YouTubeBaseActivity{
         qUserMission.setMissionid(mission.getMissionid());
         qUserMission.setUid(user.getUid());
         userGrid_MissionList(qUserMission);
+
+        //YoutubeFragment 유투브 플래그먼트
+        YoutubeSeedMissionFragment youtubeFragment = new YoutubeSeedMissionFragment(this,mission.getYoutubeaddr());
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction tc = fm.beginTransaction();
+        tc.add(R.id.youtube_seed_frame_layout,youtubeFragment,"");
+        tc.commit();
+
     }
 
     /*
@@ -306,9 +283,12 @@ public class MissionMainActivity extends YouTubeBaseActivity{
     };
     */
 
+    //다른 사람들의 영상 목록
     public void userGrid_MissionList(UserMission userMission){
         final ProgressDialog dialog;
         dialog = ProgressDialog.show(this, "", getString(R.string.network_get_list), true);
+
+        userMission.setQueryRow(20);
 
         UserMissionService userMissionService = ServiceGenerator.createService(UserMissionService.class,getApplicationContext(),user);
         Call<List<UserMission>> call = userMissionService.uMissionList(userMission);
@@ -323,7 +303,7 @@ public class MissionMainActivity extends YouTubeBaseActivity{
                     videoGridView.setAdapter(gridMissionAdapter);
                     dialog.dismiss();
                 }else{
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    VeteranToast.makeToast(getApplicationContext(),"User Video List : "+getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
             }
@@ -336,6 +316,7 @@ public class MissionMainActivity extends YouTubeBaseActivity{
         });
     }
 
+    //내가 수행한 미션
     public void getMyVideo(){
         UserMission u = new UserMission();
         u.setMissionid(mission.getMissionid());
@@ -360,13 +341,14 @@ public class MissionMainActivity extends YouTubeBaseActivity{
                         linearLayout.setVisibility(View.GONE);
                     }else{
 
-                        Log.i(TAG," Test View Start ############################################################");
+                        Log.i(TAG," Test View Start ######" + userMission.toString());
 
                         if(userMission.getPassflag().equals("Y")){
                             Log.i(TAG,"===1" + userMission.getPassflag());
                             img_missiontab.setVisibility(View.VISIBLE);
                             view_l1.setVisibility(View.GONE);
                             view_l2.setVisibility(View.GONE);
+                            im_clear_marck.setVisibility(View.VISIBLE);
                         }else if(userMission.getPassflag().equals("P")){
 
                             Log.i(TAG,"===2" + userMission.getPassflag());
@@ -375,15 +357,15 @@ public class MissionMainActivity extends YouTubeBaseActivity{
                             btn_mission_upload.setText(R.string.user_mission_p);
 
                             btn_mission_upload.setBackgroundResource(R.color.color8);
-
+                            im_clear_marck.setVisibility(View.GONE);
 
                         }else if(userMission.getPassflag().equals("N")){
                             Log.i(TAG,"===3" + userMission.getPassflag());
                             img_missiontab.setVisibility(View.GONE);
                             tx_main_usermission.setText(R.string.user_mission_n);
-
+                            im_clear_marck.setVisibility(View.GONE);
                         }
-                        Log.i(TAG," Test View End ############################################################");
+                        Log.i(TAG," Test View End #####");
 
 
                         //내가 좋아요를 했다면
@@ -406,11 +388,9 @@ public class MissionMainActivity extends YouTubeBaseActivity{
                             }
                         });
                     }
-
-
-
                 }else{
                     VeteranToast.makeToast(getApplicationContext(),"UserMission(1) "+getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+
                 }
             }
 
@@ -470,13 +450,13 @@ public class MissionMainActivity extends YouTubeBaseActivity{
                         }
 
                     }else{
-                        VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(1) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        //VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(1) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    //VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(2) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
             });
@@ -493,7 +473,7 @@ public class MissionMainActivity extends YouTubeBaseActivity{
                         imageButton.setImageResource(R.drawable.star);
                         favoriteCount = 1;
                     }else{
-                        VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        //VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                         imageButton.setImageResource(R.drawable.star_enabled);
                         favoriteCount = 0;
                     }
@@ -501,7 +481,7 @@ public class MissionMainActivity extends YouTubeBaseActivity{
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    //VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
             });
@@ -518,7 +498,7 @@ public class MissionMainActivity extends YouTubeBaseActivity{
                         imageButton.setImageResource(R.drawable.star_enabled);
                         favoriteCount = 0;
                     }else{
-                        VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        //VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                         imageButton.setImageResource(R.drawable.star);
                         favoriteCount = 1;
                     }
@@ -526,7 +506,7 @@ public class MissionMainActivity extends YouTubeBaseActivity{
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(6) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    //VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(6) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
             });
@@ -545,4 +525,44 @@ public class MissionMainActivity extends YouTubeBaseActivity{
         }
     }
 
+    @OnClick(R.id.btnMainVideo)
+    public void userVideoList(){
+        Intent intent = new Intent(this,UserMissionListActivity.class);
+        startActivity(intent);
+    }
+
+/*    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean wasRestored) {
+        if (!wasRestored) {
+            if(!setNet){
+                youTubePlayer.cueVideo(mission.getYoutubeaddr());
+            }else{
+                //유투브 주소가 없다면 문제. 이럴때는 몸싸커 메인 인트로를 보여준다
+                MomComService service = ServiceGenerator.createService(MomComService.class,MissionMainActivity.this,user);
+                Call<MomMessage> call = service.getCommonInfo("VIDEOERROR");
+                call.enqueue(new Callback<MomMessage>() {
+                    @Override
+                    public void onResponse(Call<MomMessage> call, Response<MomMessage> response) {
+                        if(response.isSuccessful()){
+                            MomMessage momMessage = response.body();
+                            youTubePlayer.cueVideo(momMessage.getAttribute1());
+                        }else{
+                            youTubePlayer.cueVideo("3v1SRgbGsV8");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MomMessage> call, Throwable t) {
+                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
+                        youTubePlayer.cueVideo("3v1SRgbGsV8");
+                    }
+                });
+            }
+        }
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+        youTubeInitializationResult.isUserRecoverableError();
+    }*/
 }

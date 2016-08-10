@@ -60,9 +60,10 @@ public class ResumableUpload {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
         Intent notificationIntent = new Intent(context, MissionMainActivity.class);
-        //notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         notificationIntent.putExtra(MissionCommon.OBJECT,mission);
+        notificationIntent.putExtra("uploadflag","Y");
         notificationIntent.setAction(Intent.ACTION_VIEW);
 
 
@@ -79,6 +80,7 @@ public class ResumableUpload {
                 ;
 
         notifyManager.notify(UPLOAD_NOTIFICATION_ID, builder.build());
+
 
         /*******************************************************************/
 

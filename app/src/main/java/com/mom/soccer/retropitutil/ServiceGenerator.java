@@ -187,7 +187,7 @@ public class ServiceGenerator {
         final String basic =
                 "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
 
-        httpClient.addInterceptor(new Interceptor() {
+/*        httpClient.addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request original = chain.request();
@@ -200,7 +200,7 @@ public class ServiceGenerator {
                 Request request = requestBuilder.build();
                 return chain.proceed(request);
             }
-        });
+        });*/
 
         if(!Common.NETWORK_COOKIE){
 

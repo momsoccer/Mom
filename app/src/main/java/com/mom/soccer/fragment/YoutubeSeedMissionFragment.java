@@ -16,25 +16,23 @@ import com.mom.soccer.R;
 import com.mom.soccer.common.Auth;
 
 /**
- * Created by sungbo on 2016-07-29.
+ * Created by sungbo on 2016-08-10.
  */
-public class YoutubeFragment extends Fragment {
+public class YoutubeSeedMissionFragment extends Fragment {
 
     private static Context mContext;
-    private static  String addr;
+    private static  String youtubeVideoAddr;
 
-    public YoutubeFragment(){}
+    public YoutubeSeedMissionFragment(){}
 
     @SuppressLint("ValidFragment")
-    public YoutubeFragment(Context context,String addr) {
+    public YoutubeSeedMissionFragment(Context context,String youtubeVideoAddr) {
         mContext = context;
-        this.addr = addr;
+        this.youtubeVideoAddr = youtubeVideoAddr;
     }
 
-    public static YoutubeFragment newInstance(int page) {
-        //Bundle args = new Bundle();
-
-        YoutubeFragment fragment = new YoutubeFragment();
+    public static YoutubeSeedMissionFragment newInstance(int page) {
+        YoutubeSeedMissionFragment fragment = new YoutubeSeedMissionFragment();
         return fragment;
     }
 
@@ -46,18 +44,19 @@ public class YoutubeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootview = inflater.inflate(R.layout.youtubeview, container, false);
+        View rootview = inflater.inflate(R.layout.youtube_fragment_main_item, container, false);
 
 
         YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(R.id.youtube_layout, youTubePlayerFragment).commit();
+        transaction.add(R.id.youtube_player_layout, youTubePlayerFragment).commit();
 
         youTubePlayerFragment.initialize(Auth.KEY, new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 if (!b) {
-                    youTubePlayer.cueVideo(addr);
+                    //youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
+                    youTubePlayer.cueVideo(youtubeVideoAddr);
                 }
             }
 
@@ -69,5 +68,6 @@ public class YoutubeFragment extends Fragment {
 
         return rootview;
     }
+
 
 }

@@ -16,4 +16,7 @@ public interface MissionHistoryService {
 
     @POST("/api/mission/getMissionHistoryCount")
     Call<ServerResult> getMissionHistoryCount(@Body MissionHistory h);
+
+    @POST("/api/mission/getMissionHistory")
+    Call<MissionHistory> getMissionHistory(@Body MissionHistory h);
 }

@@ -79,6 +79,8 @@
     <string name="user_video_like_cancel">관심 영상을 해제 합니다</string>
     <string name="user_video_like_ok">관심 영상으로 등록 합니다</string>
 
+    <string name="user_profile_update">유저정보를 반영 했습니다</string>
+
     <!--통신프로그레스에 사용될 값들-->
     <string name="network_valid_user">회원 검증을 진행하는 중입니다</string>
     <string name="network_get_user">유저정보를 서버로부터 받고 있습니다</string>
@@ -104,16 +106,17 @@
     <string name="toolbar_board_page">댓글</string>
     <string name="toolbar_search_page">검색</string>
     <string name="toolbar_book_page">관심영상</string>
-    <string name="toolbar_favorite_page">즐겨찾기</string>
+    <string name="toolbar_favorite_page">즐겨찾기(미션)</string>
     <string name="toolbar_point_page">포인트</string>
     <string name="toolbar_comment_page">댓글</string>
-    <string name="toolbar_user_missionview_page">유저미션 영상</string>
+    <string name="toolbar_user_missionview_page">미션영상</string>
 
     <string name="toolbar_ranking_all">랭킹 전체</string>
     <string name="toolbar_ranking_friend">랭킹 친구</string>
     <string name="toolbar_ranking_team">랭킹 팀</string>
 
     <string name="toolbar_apply_coach">코치신청</string>
+    <string name="toolbar_umission_list_page_title">유저 미션 영상 리스트</string>
 
     <!--다이얼 로그 문의 창-->
     <string name="cancel">취소</string>
@@ -148,7 +151,7 @@
     <string name="default_mission_disp">Mision description</string>
     <string name="default_mission_precon">Mision precondition</string>
     <string name="default_mission_getpoint">When success, get 50 Point</string>
-    <string name="default_mission_subject">다른 사람 영상 보기</string>
+    <string name="default_mission_subject">다른 사람 미션영상(최근 등록 20개)</string>
     <string name="my_mission_subject">내 미션 영상</string>
 
     <!--mission-->
@@ -206,4 +209,7 @@
     <!--point-->
     <string name="lack_point">포인트가 부족합니다\n충전이 필요합니다 </string>
 
+    <!--유저미션영상 레이아웃-->
+    <string name="userdetail_page_title">미션 영상</string>
+    <string name="title_activity_user_mission_list">UserMissionListActivity</string>
 </resources>

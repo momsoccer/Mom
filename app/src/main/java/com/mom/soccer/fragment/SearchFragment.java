@@ -1,6 +1,5 @@
 package com.mom.soccer.fragment;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -106,9 +105,10 @@ public class SearchFragment extends Fragment {
 
 
     public void getUserList(String searchWord,int uid){
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_user), true);
-        dialog.show();
+
+        //final ProgressDialog dialog;
+        //dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_user), true);
+        //dialog.show();
 
         UserService userService = ServiceGenerator.createService(UserService.class,getContext(),user);
         User user = new User();
@@ -127,23 +127,23 @@ public class SearchFragment extends Fragment {
                     List<User> userList = response.body();
                     gridSearchAdapter = new GridSearchAdapter(getActivity(),userList,R.layout.ac_search_grid_item_layout);
                     search_grid_view.setAdapter(gridSearchAdapter);
-                    dialog.dismiss();
+                    //dialog.dismiss();
                     if(userList.size()==0){
                         VeteranToast.makeToast(getContext(),getString(R.string.network_nodata_found_user), Toast.LENGTH_SHORT).show();
                     }
 
                 }else{
-                    VeteranToast.makeToast(getContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
-                    dialog.dismiss();
+                    //VeteranToast.makeToast(getContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
+                    //dialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
                 Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
-                VeteranToast.makeToast(getContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
+                //VeteranToast.makeToast(getContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
                 t.printStackTrace();
-                dialog.dismiss();
+                //dialog.dismiss();
             }
         });
     }

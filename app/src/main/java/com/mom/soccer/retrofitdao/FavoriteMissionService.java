@@ -1,6 +1,7 @@
 package com.mom.soccer.retrofitdao;
 
 import com.mom.soccer.dto.FavoriteMission;
+import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.ServerResult;
 
 import java.util.List;
@@ -29,4 +30,7 @@ public interface FavoriteMissionService {
 
     @POST("/api/common/getFavorite")
     Call<FavoriteMission> getFavorite(@Body FavoriteMission f);
+
+    @POST("/api/common/getFavoriteMissionList")
+    Call<List<Mission>> getFavoriteMissionList(@Body Mission m);
 }
