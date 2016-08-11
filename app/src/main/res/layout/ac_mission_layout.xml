@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/mom_color1">
+    android:background="@color/mom_color1"
+    >
 
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,43 +29,103 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
-        android:layout_width="150dp"
-        android:layout_height="35dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/point_back_push"
-        android:onClick="poinOnClick"
         >
 
-        <ImageView
-            android:src="@drawable/ic_basic_mony"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/point_back_push"
+            android:onClick="poinOnClick"
+            android:id="@+id/li_point"
+            android:visibility="visible"
+            >
 
-        <TextView
-            android:id="@+id/user_point"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="00,000"
-            android:textSize="15sp"
-            android:textColor="@color/color6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <ImageView
+                android:src="@drawable/ic_basic_mony"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <ImageView
-            android:src="@drawable/plusbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/user_point"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="00,000"
+                android:textSize="15sp"
+                android:textColor="@color/color6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:src="@drawable/plusbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <com.bartoszlipinski.flippablestackview.FlippableStackView
+            android:layout_marginTop="5dp"
+            android:id="@+id/flippable_stack_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            />
+
+        <LinearLayout
+            android:id="@+id/li_no_data"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="gone"
+            >
+
+            <ImageView
+                android:src="@drawable/ic_wifi_notification"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:text="@string/network_nodata_error"
+                android:textColor="@color/color6"
+                android:textSize="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btn_refresh"
+                android:layout_marginTop="10dp"
+                android:text="@string/page_refresh"
+                style="@style/btnRefresh"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/li_no_regester"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="gone"
+            >
+
+            <TextView
+                android:text="@string/no_mission_noty"
+                android:textColor="@color/color6"
+                android:textSize="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-    <com.bartoszlipinski.flippablestackview.FlippableStackView
-        android:layout_marginTop="5dp"
-        android:id="@+id/flippable_stack_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
 </LinearLayout>

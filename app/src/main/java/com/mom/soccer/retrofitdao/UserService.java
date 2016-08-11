@@ -36,7 +36,7 @@ public interface UserService {
             @Query("snstype") String snstype,
             @Query("email") String email);
 
-    //유저사진 업데이트
+
     @Multipart
     @POST("/api/user/fileupload")
     Call<ServerResult> fileupload(

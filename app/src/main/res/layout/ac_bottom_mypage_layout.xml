@@ -61,7 +61,7 @@
                 android:scaleType="fitXY"
                 android:id="@+id/mypage_back_image"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="200dp"
                 />
 
             <ImageView
@@ -225,23 +225,36 @@
                     android:layout_height="match_parent" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/li_friend"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/friend_btn_follow"
-                android:layout_marginTop="5dp"
-                style="@style/btnStylePaprika"
-                android:text="@string/friedn_follow"
-                android:layout_width="100dp"
-                android:layout_height="38dp"
-                android:layout_marginBottom="10dp"
-                android:visibility="invisible"
-                />
+                <Button
+                    android:id="@+id/friend_btn_follow"
+                    android:layout_marginTop="5dp"
+                    style="@style/btnStylePaprika"
+                    android:text="@string/friedn_follow"
+                    android:layout_width="100dp"
+                    android:layout_height="38dp"
+                    android:layout_marginBottom="10dp"
+                    />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/color2"
-                />
+                <Button
+                    android:id="@+id/friend_btn"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    style="@style/btnStylePaprika"
+                    android:text="@string/friedn_friend_request"
+                    android:layout_width="100dp"
+                    android:layout_height="38dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -278,8 +291,6 @@
 
                 </LinearLayout>
 
-
-
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="0dp"
@@ -305,11 +316,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/color2"
-                />
+
 
             <LinearLayout
                 android:gravity="center"
@@ -594,7 +601,6 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/mission_line"
                 android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"

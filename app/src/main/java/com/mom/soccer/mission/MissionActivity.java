@@ -11,8 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bartoszlipinski.flippablestackview.FlippableStackView;
 import com.bartoszlipinski.flippablestackview.StackPageTransformer;
@@ -27,7 +28,6 @@ import com.mom.soccer.point.PointMainActivity;
 import com.mom.soccer.retrofitdao.MissionService;
 import com.mom.soccer.retrofitdao.PointService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.VeteranToast;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -36,6 +36,7 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,10 +66,31 @@ public class MissionActivity extends AppCompatActivity {
     @Bind(R.id.user_point)
     TextView tx_mission_point;
 
+    //네트워크 error
+    @Bind(R.id.li_point)
+    LinearLayout li_point;
+    @Bind(R.id.li_no_data)
+    LinearLayout li_no_data;
+
+    @Bind(R.id.li_no_regester)
+    LinearLayout li_no_regester;
+
+    @Bind(R.id.btn_refresh)
+    Button btn_refresh;
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.i(TAG,"onActivityResult() ===============================");
+    }
+
+    @OnClick(R.id.btn_refresh)
+    public void btn_refresh(){
+        Intent intent = new Intent(this,MissionActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
+        startActivity(intent);
     }
 
     @Override
@@ -124,12 +146,7 @@ public class MissionActivity extends AppCompatActivity {
         Log.d(TAG,"이곳은 createViewPagerFragments()");
         mViewPagerFragments = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_FRAGMENTS; ++i) {
-
-            //MainMissionFragment mainMissionFragment = new MainMissionFragment(user,missionList.get(i),i);
-            //mViewPagerFragments.add(mainMissionFragment);
-
             mViewPagerFragments.add(MainMissionFragment.newInstance(i, missionList.get(i),user));
-
         }
     }
 
@@ -154,15 +171,13 @@ public class MissionActivity extends AppCompatActivity {
                     NumberFormat numberFormat = NumberFormat.getInstance();
                     tx_mission_point.setText(numberFormat.format(spBalanceHeader.getAmount()));
                 }else{
-                    //VeteranToast.makeToast(getApplicationContext(),"getPoint "+getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<SpBalanceHeader> call, Throwable t) {
                 Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
-                VeteranToast.makeToast(getApplicationContext(),"getPoint "+ getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
-                noDataPage();
             }
         });
     }
@@ -177,6 +192,8 @@ public class MissionActivity extends AppCompatActivity {
 
         final Call<List<Mission>> call = missionService.getMissionList(missiontype,user.getUid());
 
+        mFlippableStack = (FlippableStackView) findViewById(R.id.flippable_stack_view);
+
         call.enqueue(new Callback<List<Mission>>() {
             @Override
             public void onResponse(Call<List<Mission>> call, Response<List<Mission>> response) {
@@ -187,14 +204,23 @@ public class MissionActivity extends AppCompatActivity {
                     dialog.dismiss();
 
                     if(missionList.size()==0){
-                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.valid_mission_nodata_found),Toast.LENGTH_SHORT).show();
-                        noDataPage();
+                        li_no_regester.setVisibility(View.VISIBLE);
+                        mFlippableStack.setVisibility(View.GONE);
+                        li_point.setVisibility(View.GONE);
+                        li_no_data.setVisibility(View.GONE);
                     }else{
                         NUMBER_OF_FRAGMENTS = missionList.size();
+
                         createViewPagerFragments();
+
                         mPageAdapter = new MissionFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
+
+                        mFlippableStack.setVisibility(View.VISIBLE);
+                        li_point.setVisibility(View.VISIBLE);
+                        li_no_data.setVisibility(View.GONE);
+
+
                         boolean portrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-                        mFlippableStack = (FlippableStackView) findViewById(R.id.flippable_stack_view);
                         mFlippableStack.initStack(NUMBER_OF_FRAGMENTS, portrait ?
                                 StackPageTransformer.Orientation.VERTICAL :
                                 StackPageTransformer.Orientation.HORIZONTAL
@@ -206,57 +232,25 @@ public class MissionActivity extends AppCompatActivity {
                         mFlippableStack.setAdapter(mPageAdapter);
                     }
                 }else{
-                    //NUMBER_OF_FRAGMENTS = missionList.size();
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
-                    dialog.dismiss();
+                    mFlippableStack.setVisibility(View.GONE);
+                    li_point.setVisibility(View.GONE);
+                    li_no_data.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Mission>> call, Throwable t) {
+
+                mFlippableStack.setVisibility(View.GONE);
+                li_point.setVisibility(View.GONE);
+                li_no_data.setVisibility(View.VISIBLE);
+
                 Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
                 dialog.dismiss();
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
-                noDataPage();
             }
         });
     }
 
-
-
-
-    public void noDataPage(){
-        //네트워크 오류로 간단히 샘플을 보여준다
-        missionList = new ArrayList<Mission>();
-
-        for(int i=0; i < 5 ; i++ ){
-            Mission mission = new Mission();
-            mission.setTypename(missionType);
-            mission.setMissionid(900);
-            mission.setSequence(0);
-            mission.setMissionname(getString(R.string.dermy_missionname));
-            mission.setDescription(getString(R.string.dermy_disp));
-            mission.setPrecon(getString(R.string.dermy_precon));
-            mission.setGrade(100);
-            mission.setPassgrade(100);
-            missionList.add(mission);
-        }
-
-        NUMBER_OF_FRAGMENTS = missionList.size();
-
-        createViewPagerFragments();
-        mPageAdapter = new MissionFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
-        boolean portrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-        mFlippableStack = (FlippableStackView) findViewById(R.id.flippable_stack_view);
-        mFlippableStack.initStack(NUMBER_OF_FRAGMENTS,
-                portrait ? StackPageTransformer.Orientation.VERTICAL : StackPageTransformer.Orientation.HORIZONTAL
-                ,0.9f  //전체크기
-                ,0.9f
-                ,0.4f   //
-                ,StackPageTransformer.Gravity.CENTER
-        );
-        mFlippableStack.setAdapter(mPageAdapter);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -22,27 +22,16 @@ public class Instructor {
     private String fcmtoken;
     private String creationdate;
     private String change_creationdate;
+    private int uid;
 
     public Instructor(){}
 
-    public Instructor(int instructorid, String email, String password, String name, String profileimgurl, String profile, String description, String phone, int location, int pointhistoryid, String feedbackflag, String apppushflag, int commontokenid, String serialnumber, String fcmtoken, String creationdate, String change_creationdate) {
-        this.instructorid = instructorid;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.profileimgurl = profileimgurl;
-        this.profile = profile;
-        this.description = description;
-        this.phone = phone;
-        this.location = location;
-        this.pointhistoryid = pointhistoryid;
-        this.feedbackflag = feedbackflag;
-        this.apppushflag = apppushflag;
-        this.commontokenid = commontokenid;
-        this.serialnumber = serialnumber;
-        this.fcmtoken = fcmtoken;
-        this.creationdate = creationdate;
-        this.change_creationdate = change_creationdate;
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
     public String getProfileimgurl() {
@@ -201,6 +190,7 @@ public class Instructor {
                 ", fcmtoken='" + fcmtoken + '\'' +
                 ", creationdate='" + creationdate + '\'' +
                 ", change_creationdate='" + change_creationdate + '\'' +
+                ", uid=" + uid +
                 '}';
     }
 }

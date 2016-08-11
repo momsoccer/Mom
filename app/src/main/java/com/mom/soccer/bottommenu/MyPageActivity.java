@@ -1,6 +1,7 @@
 package com.mom.soccer.bottommenu;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.FollowManage;
+import com.mom.soccer.dto.FriendApply;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
@@ -31,7 +34,9 @@ import com.mom.soccer.retrofitdao.FriendService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.List;
 
@@ -130,8 +135,15 @@ public class MyPageActivity extends AppCompatActivity {
     @Bind(R.id.mypage_crosba_score)
     TextView tx_crosbal_socre;
 
+    //친구요청 관련
     @Bind(R.id.friend_btn_follow)
     Button friend_btn_follow;
+
+    @Bind(R.id.friend_btn)
+    Button friend_btn;
+
+    @Bind(R.id.li_friend)
+    LinearLayout li_friend;
 
     private User user = new User();
     private User findUser = new User();
@@ -146,6 +158,10 @@ public class MyPageActivity extends AppCompatActivity {
     int youUid=0;
     private Intent getParamInt;
     int FollowCount = 0;
+
+    //친구요청 관련 변수
+    private String REQ_FRIEND = "N";
+    private FriendApply friendApply;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,15 +210,21 @@ public class MyPageActivity extends AppCompatActivity {
 
         if(pageFlag.equals("me")){
             findUser = user;
-            friend_btn_follow.setVisibility(View.INVISIBLE);
+            li_friend.setVisibility(View.GONE);
+
+
         }else{
             youUid = getParamInt.getExtras().getInt("frienduid");
             Log.i(TAG,"youUid : " + youUid );
             findUser.setUid(youUid);
-            friend_btn_follow.setVisibility(View.VISIBLE);
+            li_friend.setVisibility(View.VISIBLE);
+
+            //친구요청 중인지 아닌지 로직
+            getFriendStatus(friend_btn);
 
             //팔로우 버튼 설정
             getFollowTransaction(user.getUid(),youUid,"getCount");
+
         }
 
         getProfileUser(findUser.getUid());
@@ -472,4 +494,194 @@ public class MyPageActivity extends AppCompatActivity {
             });
         }
     }
+
+    /***************************************************************
+     *  친구 요청 관련 기능
+     * */
+
+    //DB 상태 조회
+    public void getFriendStatus(Button button){
+
+        Log.i(TAG,"친구 요청 이력을 가져 옵니다");
+
+        FriendApply qfriendApply = new FriendApply();
+        qfriendApply.setRequid(user.getUid());
+        qfriendApply.setResuid(youUid);
+
+        FriendService friendService = ServiceGenerator.createService(FriendService.class,this,user);
+        Call<FriendApply> call = friendService.getFriendApply(qfriendApply);
+
+        call.enqueue(new Callback<FriendApply>() {
+            @Override
+            public void onResponse(Call<FriendApply> call, Response<FriendApply> response) {
+                if(response.isSuccessful()){
+                    friendApply = response.body();
+                    Log.i(TAG,"친구 요청 이력을 가져 옵니다" + friendApply.toString());
+                    if(friendApply.getApplyid()==0){
+                        friend_btn.setText(getString(R.string.friedn_friend_request));
+                    }else{
+                        if(friendApply.getFlag().equals("REQUEST")){
+                            friend_btn.setText(getString(R.string.friedn_friend_request_process));
+                        }else if(friendApply.getFlag().equals("REJECT")){
+                            friend_btn.setText(getString(R.string.friedn_friend_reject));
+                        }else if(friendApply.getFlag().equals("FRIEND")){
+                            friend_btn.setText(getString(R.string.friedn_friend_cancel));
+                        }
+                    }
+
+                }else{
+                    Log.i(TAG,"에러 입니다");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FriendApply> call, Throwable t) {
+                Log.i(TAG,"에러 입니다");
+                t.printStackTrace();
+            }
+        });
+
+    }
+
+    // 친구요청하기
+    @OnClick(R.id.friend_btn)
+    public void friendBtn(){
+
+        new DialogBuilder(MyPageActivity.this)
+                //.setTitle("Title")
+                .setMessage(getString(R.string.preparation))
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
+        return;
+
+/*        if(friendApply.getApplyid()==0){
+
+            new DialogBuilder(MyPageActivity.this)
+                    //.setTitle("Title")
+                    .setMessage(getString(R.string.friedn_req))
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            requestFriend();
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        }else if(friendApply.getFlag().equals("REJECT")){ //친구요청을 거절한 상태
+            new DialogBuilder(MyPageActivity.this)
+                    //.setTitle("Title")
+                    .setMessage(getString(R.string.friedn_reject_req))
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            requestFriend();
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        }else if(friendApply.getFlag().equals("FRIEND")){ //이미친구 친구 끈기
+            new DialogBuilder(MyPageActivity.this)
+                    //.setTitle("Title")
+                    .setMessage(getString(R.string.friedn_stop_req))
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        }else if(friendApply.getFlag().equals("REQUEST")){ //친구요청 한 상태
+            new DialogBuilder(MyPageActivity.this)
+                    //.setTitle("Title")
+                    .setMessage(getString(R.string.friedn_alrady_req))
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+            return;
+        }*/
+    }
+
+    public void requestFriend(){
+        WaitingDialog.showWaitingDialog(this,false);
+        FriendApply friendApply = new FriendApply();
+        friendApply.setRequid(user.getUid());
+        friendApply.setResuid(youUid);
+        friendApply.setFlag("REQUEST"); // "REJECT","FRIEND"
+
+        FriendService friendService = ServiceGenerator.createService(FriendService.class,this,user);
+        Call<ServerResult> c = friendService.reqFriend(friendApply);
+        c.enqueue(new Callback<ServerResult>() {
+            @Override
+            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                if(response.isSuccessful()){
+                    ServerResult result = response.body();
+                    REQ_FRIEND = result.getResult();
+                    WaitingDialog.cancelWaitingDialog();
+                }else{
+                    WaitingDialog.cancelWaitingDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResult> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+            }
+        });
+    }
+
+    public void requestFriendStop(){
+        WaitingDialog.showWaitingDialog(this,false);
+        FriendApply friendApply = new FriendApply();
+        friendApply.setRequid(user.getUid());
+        friendApply.setResuid(youUid);
+
+        FriendService friendService = ServiceGenerator.createService(FriendService.class,this,user);
+        Call<ServerResult> c = friendService.reqFriend(friendApply);
+        c.enqueue(new Callback<ServerResult>() {
+            @Override
+            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                if(response.isSuccessful()){
+                    ServerResult result = response.body();
+                    REQ_FRIEND = result.getResult();
+                    WaitingDialog.cancelWaitingDialog();
+                }else{
+                    WaitingDialog.cancelWaitingDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResult> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+            }
+        });
+    }
+
 }

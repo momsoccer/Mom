@@ -62,6 +62,7 @@ import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.List;
 
@@ -350,7 +351,19 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                 VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation) + "벨",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.hd_bell:
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation) + "벨",Toast.LENGTH_SHORT).show();
+
+
+                WaitingDialog.showWaitingDialog(this, true, new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        VeteranToast.makeToast(getApplicationContext(),"최소를 하셨네요???",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                //WaitingDialog.cancelWaitingDialog();
+
+
+
                 break;
         }
     }
@@ -463,12 +476,15 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         public Object instantiateItem(final ViewGroup container, int position) {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            View view = layoutInflater.inflate(layouts[position],container,false);
+            final View view = layoutInflater.inflate(layouts[position],container,false);
             container.addView(view);
 
             if(position == 0){
 
                 Log.i(TAG,"뷰 페이저 값을 갱신 합니다");
+                final LinearLayout li_main_slid_ranking,li_main_slid_ranking_no_data;
+                li_main_slid_ranking = (LinearLayout) view.findViewById(R.id.li_main_slid_ranking);
+                li_main_slid_ranking_no_data = (LinearLayout) view.findViewById(R.id.li_main_slid_ranking_no_data);
 
                 UserRangkinVo userRangkinVo = new UserRangkinVo();
                 userRangkinVo.setQueryRow(3);
@@ -479,22 +495,33 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                 final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(userRangkinVo);
 
                 call.enqueue(new Callback<List<UserRangkinVo>>() {
+
+
                     @Override
                     public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
                         if(response.isSuccessful()){
+
+                            li_main_slid_ranking.setVisibility(View.VISIBLE);
+                            li_main_slid_ranking_no_data.setVisibility(View.GONE);
+
                             List<UserRangkinVo> listVos = response.body();
                             MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
                             ListView listView = (ListView) container.findViewById(R.id.list_total_ranking);
                             listView.setAdapter(mainRankingAdapter);
                         }else{
-                            //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+                            li_main_slid_ranking.setVisibility(View.GONE);
+                            li_main_slid_ranking_no_data.setVisibility(View.VISIBLE);
+                            btnMethodAllRanking(view);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
+                        li_main_slid_ranking.setVisibility(View.GONE);
+                        li_main_slid_ranking_no_data.setVisibility(View.VISIBLE);
+                        btnMethodAllRanking(view);
+
                         Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
-                        //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                         t.printStackTrace();
                     }
                 });
@@ -509,10 +536,10 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                     }
                 });
 
+
             }else if(position==1){
 
                 ListView listView = (ListView) container.findViewById(R.id.list_friend_ranking);
-
                 Button button = (Button) container.findViewById(R.id.btn_more_friend_ranking);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -539,6 +566,18 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             }
 
             return view;
+        }
+
+        public void btnMethodAllRanking(View view){
+            Button btn_refresh = (Button) view.findViewById(R.id.btn_refresh_ranking);
+            btn_refresh.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MomMainActivity.this,MomMainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            });
         }
 
         @Override

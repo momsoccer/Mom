@@ -1,6 +1,7 @@
 package com.mom.soccer.besideactivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +35,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,6 +64,22 @@ public class FavoriteMissionActivity extends AppCompatActivity {
 
     @Bind(R.id.fuser_point)
     TextView tx_mission_point;
+
+    //네트워크 error
+    @Bind(R.id.li_point)
+    LinearLayout li_point;
+    @Bind(R.id.li_no_data)
+    LinearLayout li_no_data;
+
+    @Bind(R.id.btn_refresh)
+    Button btn_refresh;
+
+    @OnClick(R.id.btn_refresh)
+    public void btn_refresh(){
+        Intent intent = new Intent(this,FavoriteMissionActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +138,8 @@ public class FavoriteMissionActivity extends AppCompatActivity {
         Mission mission = new Mission();
         mission.setUid(user.getUid());
 
+        mFlippableStack = (FlippableStackView) findViewById(R.id.user_flippable_stack_view);
+
         FavoriteMissionService fservice = ServiceGenerator.createService(FavoriteMissionService.class,this,user);
         final Call<List<Mission>> call = fservice.getFavoriteMissionList(mission);
 
@@ -138,7 +161,11 @@ public class FavoriteMissionActivity extends AppCompatActivity {
                         createViewPagerFragments();
                         mPageAdapter = new MissionFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
                         boolean portrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-                        mFlippableStack = (FlippableStackView) findViewById(R.id.user_flippable_stack_view);
+
+                        mFlippableStack.setVisibility(View.VISIBLE);
+                        li_point.setVisibility(View.VISIBLE);
+                        li_no_data.setVisibility(View.GONE);
+
                         mFlippableStack.initStack(NUMBER_OF_FRAGMENTS,
                                 portrait ? StackPageTransformer.Orientation.VERTICAL : StackPageTransformer.Orientation.HORIZONTAL
                                 ,0.9f  //전체크기
@@ -159,17 +186,21 @@ public class FavoriteMissionActivity extends AppCompatActivity {
                         mFlippableStack.setAdapter(mPageAdapter);
                     }
                 }else{
-                    //NUMBER_OF_FRAGMENTS = missionList.size();
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+                    mFlippableStack.setVisibility(View.GONE);
+                    li_point.setVisibility(View.GONE);
+                    li_no_data.setVisibility(View.VISIBLE);
+
                     dialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Mission>> call, Throwable t) {
+                mFlippableStack.setVisibility(View.GONE);
+                li_point.setVisibility(View.GONE);
+                li_no_data.setVisibility(View.VISIBLE);
                 Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
                 dialog.dismiss();
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
             }
         });
     }

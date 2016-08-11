@@ -4,6 +4,7 @@ package com.mom.soccer.retrofitdao;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.InstructorPointHistory;
 import com.mom.soccer.dto.ServerResult;
+import com.mom.soccer.ins.InsApplyVo;
 
 import java.util.List;
 
@@ -45,4 +46,17 @@ public interface InstructorService {
 
     @GET("/all/team/getInstructorList")
     Call<List<Instructor>> getInstructorList();
+
+    //강사신청
+    //@Multipart
+    @POST("/ins/insApply")
+    Call<ServerResult> insApply(
+            @Body InsApplyVo ins/*,
+            @Part("teamfilename") RequestBody teamfilename,
+            @Part("insfilename") RequestBody insfilename,
+            @Part("teamimgAddr") RequestBody teamimgAddr,
+            @Part("insimgAddr") RequestBody insimgAddr,
+            @Part MultipartBody.Part teamfile,*/
+    );
+
 }
