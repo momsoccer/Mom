@@ -62,7 +62,6 @@ import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
-import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.List;
 
@@ -351,18 +350,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                 VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation) + "벨",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.hd_bell:
-
-
-                WaitingDialog.showWaitingDialog(this, true, new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        VeteranToast.makeToast(getApplicationContext(),"최소를 하셨네요???",Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                //WaitingDialog.cancelWaitingDialog();
-
-
 
                 break;
         }

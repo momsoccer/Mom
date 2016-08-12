@@ -140,7 +140,7 @@
     <style name="TextLabel" parent="TextAppearance.AppCompat">
         <!-- Hint color and label color in FALSE state -->
         <item name="android:textColorHint">@color/color2</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">12sp</item>
         <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
         <item name="colorAccent">@color/enabled_red</item>
         <item name="colorControlNormal">@color/edit_tx_off</item>

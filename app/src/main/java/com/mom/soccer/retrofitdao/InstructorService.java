@@ -42,21 +42,31 @@ public interface InstructorService {
             @Part("instructorid") RequestBody instructorid,
             @Part("filename") RequestBody filename,
             @Part("profileimgurl") RequestBody profileimgurl,
-            @Part MultipartBody.Part file);
+            @Part MultipartBody.Part file   //꼭 명은 file로 해야만 간다 %%%%%%%%%%%%%%%%%%
+    );
 
     @GET("/all/team/getInstructorList")
     Call<List<Instructor>> getInstructorList();
 
-    //강사신청
-    //@Multipart
-    @POST("/ins/insApply")
-    Call<ServerResult> insApply(
-            @Body InsApplyVo ins/*,
-            @Part("teamfilename") RequestBody teamfilename,
-            @Part("insfilename") RequestBody insfilename,
-            @Part("teamimgAddr") RequestBody teamimgAddr,
-            @Part("insimgAddr") RequestBody insimgAddr,
-            @Part MultipartBody.Part teamfile,*/
+    @Multipart
+    @POST("/ins/insApplyfile")
+    Call<ServerResult> insApplyfile(
+            @Part("uid") RequestBody uid,
+            @Part("updateflag") RequestBody updateflag,
+            @Part("fileaddr") RequestBody fileaddr,
+            @Part("filename") RequestBody filename,
+            @Part MultipartBody.Part file //꼭 명은 file로 해야만 간다 %%%%%%%%%%%%%%%%%% teamfile,userfile 이렇게 하면 에러난다...
     );
 
+    @POST("ins/insApply")
+    Call<ServerResult> insApply(@Body InsApplyVo insApplyVo);
+
+    @POST("ins/getIns")
+    Call<InsApplyVo> getIns(@Body InsApplyVo insApplyVo);
+
+    @POST("ins/delete")
+    Call<ServerResult> delete(@Body InsApplyVo insApplyVo);
+
+    @POST("ins/updateIns")
+    Call<ServerResult> updateIns(@Body InsApplyVo insApplyVo);
 }

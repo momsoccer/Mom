@@ -30,14 +30,96 @@
             />
     </android.support.v7.widget.Toolbar>
 
+    <LinearLayout
+        android:id="@+id/li_confirm_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:visibility="visible"
+        >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:text="강사승인상태"
+                android:textSize="12sp"
+                android:textColor="@color/color6"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginLeft="30dp"
+                android:id="@+id/tx_request_status"
+                android:textSize="12sp"
+                android:textColor="@color/color6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            >
+
+            <TextView
+                android:text="강사신청일시"
+                android:textSize="12sp"
+                android:textColor="@color/color6"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginLeft="30dp"
+                android:id="@+id/tx_request_date"
+                android:textSize="12sp"
+                android:textColor="@color/color6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            >
+
+            <TextView
+                android:text="강사승인일시"
+                android:textSize="12sp"
+                android:textColor="@color/color6"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginLeft="30dp"
+                android:id="@+id/tx_approval_date"
+                android:textSize="12sp"
+                android:textColor="@color/color6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <LinearLayout
+        android:id="@+id/li_request_layout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="12"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
         >
 
         <LinearLayout
@@ -128,6 +210,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     >
+
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/layout_momteamname"
@@ -276,7 +359,7 @@
                         <EditText
                             android:id="@+id/ins_bankname"
                             android:hint="@string/coach_team_hint_bankname"
-                            android:inputType="number"
+                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             />
@@ -293,7 +376,7 @@
                         <EditText
                             android:id="@+id/ins_bankaccount"
                             android:hint="@string/coach_team_hint_bankaccount"
-                            android:inputType="number"
+                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             />
@@ -310,7 +393,7 @@
                         <EditText
                             android:id="@+id/ins_address"
                             android:hint="@string/coach_team_hint_addres"
-                            android:inputType="number"
+                            android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
@@ -402,13 +485,25 @@
                             />
                     </android.support.design.widget.TextInputLayout>
 
+
                     <Button
-                        android:id="@+id/btnApply"
-                        style="@style/btnStylePaprika"
-                        android:text="@string/coach_btn_apply"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        />
+                            android:id="@+id/btnApply"
+                            style="@style/btnStylePaprika"
+                            android:text="@string/coach_btn_apply"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            />
+
+                        <Button
+                            android:layout_marginTop="10dp"
+                            android:id="@+id/btnUpdate"
+                            style="@style/btnStylePaprika"
+                            android:text="@string/coach_page_title_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            />
+
+
 
                     <View
                         android:layout_marginTop="10dp"
@@ -426,9 +521,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        >
-
+        android:layout_weight="1">
         <com.mom.soccer.tablayout.TabNaviComplaintBase
             android:id="@+id/PageNavigationView"
             android:layout_width="wrap_content"

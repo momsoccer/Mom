@@ -1,11 +1,13 @@
 package com.mom.soccer.ins;
 
+import java.io.Serializable;
+
 /**
  * Created by sungbo on 2016-08-11.
  * 강사 신청 VO
  * instructor_apply
  */
-public class InsApplyVo {
+public class InsApplyVo implements Serializable {
 
     private int insid;
     private String name;
@@ -29,8 +31,17 @@ public class InsApplyVo {
     private String momappteamname;
     private String teamimg;
     private String email;
+    private String resume;
 
     public InsApplyVo(){}
+
+    public String getResume() {
+        return resume;
+    }
+
+    public void setResume(String resume) {
+        this.resume = resume;
+    }
 
     public String getEmail() {
         return email;
@@ -233,6 +244,7 @@ public class InsApplyVo {
                 ", momappteamname='" + momappteamname + '\'' +
                 ", teamimg='" + teamimg + '\'' +
                 ", email='" + email + '\'' +
+                ", resume='" + resume + '\'' +
                 '}';
     }
 }

@@ -9,6 +9,7 @@ import com.mom.soccer.common.Common;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.User;
 
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -83,13 +84,14 @@ public class ServiceGenerator {
 
         Log.d(TAG,"레트로핏 서비스 호출(유저인증용) =======================================");
 
-        //HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        //loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
 
 
         //로그 인터셉터
         //httpClient.addInterceptor(loggingInterceptor);
+
         /* 잠시막는다
         if (user.getUseremail() != null && user.getPassword() != null) {
 
