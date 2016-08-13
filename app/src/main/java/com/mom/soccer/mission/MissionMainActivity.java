@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
@@ -420,11 +421,6 @@ public class MissionMainActivity extends AppCompatActivity {
         startActivityForResult(intent, RESULT_PICK_IMAGE_CROP);
     }
 
-    @OnClick(R.id.ic_tree)
-    public void ic_Btn(){
-        VeteranToast.makeToast(getApplicationContext(),"테스트",Toast.LENGTH_SHORT).show();
-    }
-
     //즐겨찾기 컨트롤
     public void favoriteTransaction(int uId, int missionId, String typeMethod, final ImageButton imageButton){
 
@@ -531,38 +527,27 @@ public class MissionMainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-/*    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean wasRestored) {
-        if (!wasRestored) {
-            if(!setNet){
-                youTubePlayer.cueVideo(mission.getYoutubeaddr());
-            }else{
-                //유투브 주소가 없다면 문제. 이럴때는 몸싸커 메인 인트로를 보여준다
-                MomComService service = ServiceGenerator.createService(MomComService.class,MissionMainActivity.this,user);
-                Call<MomMessage> call = service.getCommonInfo("VIDEOERROR");
-                call.enqueue(new Callback<MomMessage>() {
-                    @Override
-                    public void onResponse(Call<MomMessage> call, Response<MomMessage> response) {
-                        if(response.isSuccessful()){
-                            MomMessage momMessage = response.body();
-                            youTubePlayer.cueVideo(momMessage.getAttribute1());
-                        }else{
-                            youTubePlayer.cueVideo("3v1SRgbGsV8");
-                        }
-                    }
 
+
+    @OnClick(R.id.ic_tree)
+    public void showSingleChoice() {
+        Log.i(TAG,"하이");
+
+        String[] strings = {"대표강사 요청","다른강사 요청","MoM에 요청"};
+
+        new MaterialDialog.Builder(this)
+                .title("피드백 요청")
+                .items(strings)
+                .itemsCallbackSingleChoice(2, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
-                    public void onFailure(Call<MomMessage> call, Throwable t) {
-                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
-                        youTubePlayer.cueVideo("3v1SRgbGsV8");
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+
+                        Log.i(TAG,"선택하신 목록은 : "+text);
+                        return true; // allow selection
                     }
-                });
-            }
-        }
+                })
+                .positiveText(R.string.md_choose_label)
+                .show();
     }
 
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-        youTubeInitializationResult.isUserRecoverableError();
-    }*/
 }
