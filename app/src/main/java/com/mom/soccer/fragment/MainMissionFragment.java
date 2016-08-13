@@ -80,7 +80,6 @@ public class MainMissionFragment extends Fragment {
     //재갱신...
     Mission queryMission;
     Mission reflashMission = new Mission();
-
     String checkDuplicateFlag;
 
     @Override
@@ -95,6 +94,8 @@ public class MainMissionFragment extends Fragment {
 
         Log.i(TAG,"미션 객체 값 : " + mission.toString());
         Log.i(TAG,"유저 객체 값 : " + user.toString());
+
+
     }
 
     public static MainMissionFragment newInstance(int page,
@@ -178,19 +179,21 @@ public class MainMissionFragment extends Fragment {
 
         final Button missionStartBtn = (Button) view.findViewById(R.id.btn_mission_start);
 
-        if(mission.getOpencount()==0){
 
-            //미션을 도전하지 않은 상태 레이아웃 변경
-            li_lock_close.setVisibility(View.VISIBLE);
-            li_lock_open.setVisibility(View.GONE);
-            missionStartBtn.setText(getString(R.string.mission_open));
-        }else{
-            //미션을 도전한 상태 상태 레이아웃 변경
-            li_lock_close.setVisibility(View.GONE);
-            li_lock_open.setVisibility(View.VISIBLE);
-            missionStartBtn.setText(getString(R.string.mission_start));
 
-        }
+            if(mission.getOpencount()==0){
+
+                //미션을 도전하지 않은 상태 레이아웃 변경
+                li_lock_close.setVisibility(View.VISIBLE);
+                li_lock_open.setVisibility(View.GONE);
+                missionStartBtn.setText(getString(R.string.mission_open));
+            }else{
+                //미션을 도전한 상태 상태 레이아웃 변경
+                li_lock_close.setVisibility(View.GONE);
+                li_lock_open.setVisibility(View.VISIBLE);
+                missionStartBtn.setText(getString(R.string.mission_start));
+            }
+
 
         tx_mission_open.setText(getString(R.string.mission_require_point)+" : "+mission_open_point+"P");
         tx_mission_upload.setText(getString(R.string.mission_get_upload_score)+" : "+mission_score+"점");
@@ -229,101 +232,101 @@ public class MainMissionFragment extends Fragment {
         missionStartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                    //유저가 이미 지불했을 경우...만약의 경우를 위해 코딩한다.
+                    final MissionHistoryService service = ServiceGenerator.createService(MissionHistoryService.class, getContext(), user);
+                    MissionHistory history = new MissionHistory(user.getUid(), mission.getMissionid());
+                    Call<MissionHistory> call = service.getMissionHistory(history);
+                    call.enqueue(new Callback<MissionHistory>() {
+                        @Override
+                        public void onResponse(Call<MissionHistory> call, Response<MissionHistory> response) {
+                            if (response.isSuccessful()) {
+                                MissionHistory missionHistory = response.body();
+                                Log.i(TAG, "1.결과값을 받았습니다 : " + missionHistory.toString());
+                                if (missionHistory.getUid() == user.getUid() && mission.getOpencount() == 0) {
+                                    //이미 결재를 했다면... 그런데...openCount가 0이라면...중복결재이기 때문에 넘긴다
+                                    Intent intent = new Intent(getContext(), MissionMainActivity.class);
+                                    intent.putExtra(MissionCommon.OBJECT, mission);
+                                    startActivity(intent);
+                                    getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                                    checkDuplicateFlag = "duble";
+                                } else {
+                                    checkDuplicateFlag = "initial";
 
-                //유저가 이미 지불했을 경우...만약의 경우를 위해 코딩한다.
-                final MissionHistoryService service = ServiceGenerator.createService(MissionHistoryService.class,getContext(),user);
-                MissionHistory history = new MissionHistory(user.getUid(),mission.getMissionid());
-                Call<MissionHistory> call = service.getMissionHistory(history);
-                call.enqueue(new Callback<MissionHistory>() {
-                    @Override
-                    public void onResponse(Call<MissionHistory> call, Response<MissionHistory> response) {
-                        if(response.isSuccessful()){
-                            MissionHistory missionHistory = response.body();
-                            Log.i(TAG,"1.결과값을 받았습니다 : " + missionHistory.toString());
-                            if(missionHistory.getUid() == user.getUid() && mission.getOpencount()==0) {
-                                //이미 결재를 했다면... 그런데...openCount가 0이라면...중복결재이기 때문에 넘긴다
-                                Intent intent = new Intent(getContext(),MissionMainActivity.class);
-                                intent.putExtra(MissionCommon.OBJECT,mission);
-                                startActivity(intent);
-                                getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                                checkDuplicateFlag = "duble" ;
-                            }else{
-                                checkDuplicateFlag = "initial" ;
+                                    if (checkDuplicateFlag.equals("initial")) {
+                                        if (mission.getOpencount() == 0) {
+                                            new DialogBuilder(getContext())
+                                                    //.setTitle("Title")
+                                                    .setMessage(" " + mission_open_point + getString(R.string.mission_dialg_mission_open)) //500P 가 차감됩니다...미션을 오픈 하시겠습니까?
+                                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
 
-                                if(checkDuplicateFlag.equals("initial")){
-                                    if(mission.getOpencount()==0){
-                                        new DialogBuilder(getContext())
-                                                //.setTitle("Title")
-                                                .setMessage(" "+mission_open_point + getString(R.string.mission_dialg_mission_open)) //500P 가 차감됩니다...미션을 오픈 하시겠습니까?
-                                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
+                                                            //2. 포인트를 차감한다
+                                                            PointTrVo pointTrVo = new PointTrVo();
+                                                            pointTrVo.setUid(user.getUid());
+                                                            pointTrVo.setMissionid(mission.getMissionid());
+                                                            pointTrVo.setTrType("G"); //R일때는 지급
+                                                            pointTrVo.setTypecode("MISSION");
 
-                                                        //2. 포인트를 차감한다
-                                                        PointTrVo pointTrVo = new PointTrVo();
-                                                        pointTrVo.setUid(user.getUid());
-                                                        pointTrVo.setMissionid(mission.getMissionid());
-                                                        pointTrVo.setTrType("G"); //R일때는 지급
-                                                        pointTrVo.setTypecode("MISSION");
+                                                            final PointService pointService = ServiceGenerator.createService(PointService.class, getContext(), user);
+                                                            Call<ServerResult> call = pointService.pointTr(pointTrVo);
 
-                                                        final PointService pointService = ServiceGenerator.createService(PointService.class,getContext(),user);
-                                                        Call<ServerResult> call = pointService.pointTr(pointTrVo);
-
-                                                        call.enqueue(new Callback<ServerResult>() {
-                                                            @Override
-                                                            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                                                                if(response.isSuccessful()){
-                                                                    ServerResult result = response.body();
-                                                                    if(result.getResult().equals("F")){
-                                                                        VeteranToast.makeToast(getContext(),getString(R.string.lack_point),Toast.LENGTH_SHORT).show();
-                                                                    }else{
-                                                                        openMission();
+                                                            call.enqueue(new Callback<ServerResult>() {
+                                                                @Override
+                                                                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                                                                    if (response.isSuccessful()) {
+                                                                        ServerResult result = response.body();
+                                                                        if (result.getResult().equals("F")) {
+                                                                            VeteranToast.makeToast(getContext(), getString(R.string.lack_point), Toast.LENGTH_SHORT).show();
+                                                                        } else {
+                                                                            openMission();
+                                                                        }
+                                                                    } else {
+                                                                        VeteranToast.makeToast(getContext(), "Mission History Error 1 : " + getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_SHORT).show();
                                                                     }
-                                                                }else{
-                                                                    VeteranToast.makeToast(getContext(),"Mission History Error 1 : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                                                                 }
-                                                            }
-                                                            @Override
-                                                            public void onFailure(Call<ServerResult> call, Throwable t) {
-                                                                //mdialog.dismiss();
-                                                                VeteranToast.makeToast(getContext(),"Mission History Error 2 : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
-                                                                t.printStackTrace();
-                                                            }
-                                                        });
-                                                        dialog.dismiss();
-                                                    }
-                                                })
-                                                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
 
-                                                        dialog.dismiss();
-                                                    }
-                                                })
-                                                .create().show();
-                                    }else{
-                                        Intent intent = new Intent(getContext(),MissionMainActivity.class);
-                                        intent.putExtra(MissionCommon.OBJECT,mission);
-                                        startActivity(intent);
-                                        getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                                                                @Override
+                                                                public void onFailure(Call<ServerResult> call, Throwable t) {
+                                                                    //mdialog.dismiss();
+                                                                    VeteranToast.makeToast(getContext(), "Mission History Error 2 : " + getString(R.string.network_error_message1), Toast.LENGTH_SHORT).show();
+                                                                    t.printStackTrace();
+                                                                }
+                                                            });
+                                                            dialog.dismiss();
+                                                        }
+                                                    })
+                                                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+
+                                                            dialog.dismiss();
+                                                        }
+                                                    })
+                                                    .create().show();
+                                        } else {
+                                            Intent intent = new Intent(getContext(), MissionMainActivity.class);
+                                            intent.putExtra(MissionCommon.OBJECT, mission);
+                                            startActivity(intent);
+                                            getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                                        }
                                     }
+
                                 }
+                                Log.i(TAG, "2.결과값을 받았습니다 : " + checkDuplicateFlag);
+                            } else {
 
                             }
-                            Log.i(TAG,"2.결과값을 받았습니다 : " + checkDuplicateFlag);
-                        }else{
+                        }
+
+                        @Override
+                        public void onFailure(Call<MissionHistory> call, Throwable t) {
 
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<MissionHistory> call, Throwable t) {
-
-                    }
-                });
-
+                    });
             }
         });
+
         return view;
     }
 

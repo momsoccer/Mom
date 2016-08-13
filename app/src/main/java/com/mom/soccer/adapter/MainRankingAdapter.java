@@ -73,10 +73,12 @@ public class MainRankingAdapter extends BaseAdapter {
             listHolder.username = (TextView) currentRow.findViewById(R.id.main_ranking_username);
             listHolder.teamname = (TextView) currentRow.findViewById(R.id.main_ranking_teamname);
             listHolder.score = (TextView) currentRow.findViewById(R.id.main_ranking_score);
+            listHolder.tx_level = (TextView) currentRow.findViewById(R.id.tx_level);
 
             listHolder.number.setText(String.valueOf(i+1));
             listHolder.username.setText(RankingVos.get(i).getUsername());
             listHolder.score.setText(RankingVos.get(i).getTotalscore());
+            listHolder.tx_level.setText("99");
 
             if(RankingVos.get(i).getTeamname()==null){
                 listHolder.teamname.setText("팀 비소속");
@@ -98,6 +100,7 @@ public class MainRankingAdapter extends BaseAdapter {
                 listHolder.number.setText(String.valueOf(i+1));
                 listHolder.username.setText(RankingVos.get(i).getUsername());
                 listHolder.score.setText(RankingVos.get(i).getTotalscore());
+                listHolder.tx_level.setText("99");
 
                 if(RankingVos.get(i).getTeamname()==null){
                     listHolder.teamname.setText("팀 비소속");
@@ -127,6 +130,7 @@ public class MainRankingAdapter extends BaseAdapter {
         TextView  username;
         TextView  teamname;
         TextView  score;
+        TextView  tx_level;
     }
 
 }

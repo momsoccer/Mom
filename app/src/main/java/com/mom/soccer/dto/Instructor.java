@@ -20,34 +20,61 @@ public class Instructor {
     private int commontokenid;
     private String serialnumber;
     private String fcmtoken;
-    private String creationdate;
+    //private Date creationdate;
     private String change_creationdate;
     private int uid;
+    private String teamname;
+    private String emblem;
+    //private Date teamcreationdate;
+    private String change_teamcreationdate;
+
+    private int queryRow;
+    private String orderbytype;  // 대량목록 조회시 sort 순서 해당 컬럼에 한해서 사용
 
     public Instructor(){}
 
-    public int getUid() {
-        return uid;
+    @Override
+    public String toString() {
+        return "Instructor{" +
+                "instructorid=" + instructorid +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", profileimgurl='" + profileimgurl + '\'' +
+                ", profile='" + profile + '\'' +
+                ", description='" + description + '\'' +
+                ", phone='" + phone + '\'' +
+                ", location=" + location +
+                ", pointhistoryid=" + pointhistoryid +
+                ", feedbackflag='" + feedbackflag + '\'' +
+                ", apppushflag='" + apppushflag + '\'' +
+                ", commontokenid=" + commontokenid +
+                ", serialnumber='" + serialnumber + '\'' +
+                ", fcmtoken='" + fcmtoken + '\'' +
+                ", change_creationdate='" + change_creationdate + '\'' +
+                ", uid=" + uid +
+                ", teamname='" + teamname + '\'' +
+                ", emblem='" + emblem + '\'' +
+                ", change_teamcreationdate='" + change_teamcreationdate + '\'' +
+                ", queryRow=" + queryRow +
+                ", orderbytype='" + orderbytype + '\'' +
+                '}';
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public int getQueryRow() {
+        return queryRow;
     }
 
-    public String getProfileimgurl() {
-        return profileimgurl;
+    public void setQueryRow(int queryRow) {
+        this.queryRow = queryRow;
     }
 
-    public void setProfileimgurl(String profileimgurl) {
-        this.profileimgurl = profileimgurl;
+    public String getOrderbytype() {
+        return orderbytype;
     }
 
-    public int getCommontokenid() {
-        return commontokenid;
-    }
-
-    public void setCommontokenid(int commontokenid) {
-        this.commontokenid = commontokenid;
+    public void setOrderbytype(String orderbytype) {
+        this.orderbytype = orderbytype;
     }
 
     public int getInstructorid() {
@@ -66,12 +93,28 @@ public class Instructor {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getProfileimgurl() {
+        return profileimgurl;
+    }
+
+    public void setProfileimgurl(String profileimgurl) {
+        this.profileimgurl = profileimgurl;
     }
 
     public String getProfile() {
@@ -130,28 +173,12 @@ public class Instructor {
         this.apppushflag = apppushflag;
     }
 
-    public String getPassword() {
-        return password;
+    public int getCommontokenid() {
+        return commontokenid;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getCreationdate() {
-        return creationdate;
-    }
-
-    public void setCreationdate(String creationdate) {
-        this.creationdate = creationdate;
-    }
-
-    public String getChange_creationdate() {
-        return change_creationdate;
-    }
-
-    public void setChange_creationdate(String change_creationdate) {
-        this.change_creationdate = change_creationdate;
+    public void setCommontokenid(int commontokenid) {
+        this.commontokenid = commontokenid;
     }
 
     public String getSerialnumber() {
@@ -170,27 +197,43 @@ public class Instructor {
         this.fcmtoken = fcmtoken;
     }
 
-    @Override
-    public String toString() {
-        return "Instructor{" +
-                "instructorid=" + instructorid +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", profileimgurl='" + profileimgurl + '\'' +
-                ", profile='" + profile + '\'' +
-                ", description='" + description + '\'' +
-                ", phone='" + phone + '\'' +
-                ", location=" + location +
-                ", pointhistoryid=" + pointhistoryid +
-                ", feedbackflag='" + feedbackflag + '\'' +
-                ", apppushflag='" + apppushflag + '\'' +
-                ", commontokenid=" + commontokenid +
-                ", serialnumber='" + serialnumber + '\'' +
-                ", fcmtoken='" + fcmtoken + '\'' +
-                ", creationdate='" + creationdate + '\'' +
-                ", change_creationdate='" + change_creationdate + '\'' +
-                ", uid=" + uid +
-                '}';
+    public String getChange_creationdate() {
+        return change_creationdate;
+    }
+
+    public void setChange_creationdate(String change_creationdate) {
+        this.change_creationdate = change_creationdate;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    public String getTeamname() {
+        return teamname;
+    }
+
+    public void setTeamname(String teamname) {
+        this.teamname = teamname;
+    }
+
+    public String getEmblem() {
+        return emblem;
+    }
+
+    public void setEmblem(String emblem) {
+        this.emblem = emblem;
+    }
+
+    public String getChange_teamcreationdate() {
+        return change_teamcreationdate;
+    }
+
+    public void setChange_teamcreationdate(String change_teamcreationdate) {
+        this.change_teamcreationdate = change_teamcreationdate;
     }
 }

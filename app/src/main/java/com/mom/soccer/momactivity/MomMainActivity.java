@@ -1,7 +1,6 @@
 package com.mom.soccer.momactivity;
 
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,6 +45,7 @@ import com.mom.soccer.Ranking.UserRankingActivity;
 import com.mom.soccer.adapter.MainRankingAdapter;
 import com.mom.soccer.besideactivity.ApplyCoachActivity;
 import com.mom.soccer.besideactivity.FavoriteMissionActivity;
+import com.mom.soccer.besideactivity.StudentMainActivity;
 import com.mom.soccer.bookmark.MyBookMarkActivity;
 import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.bottommenu.SearchActivity;
@@ -53,15 +53,20 @@ import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.common.SettingActivity;
 import com.mom.soccer.dataDto.UserRangkinVo;
+import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.ServerResult;
+import com.mom.soccer.dto.TeamMember;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionActivity;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.DataService;
+import com.mom.soccer.retrofitdao.InstructorService;
 import com.mom.soccer.retrofitdao.MomComService;
+import com.mom.soccer.retrofitdao.TeamService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.List;
 
@@ -78,9 +83,11 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
 
     private User user;
     private PrefUtil prefUtil;
+    private Instructor instructor;
     private ViewPager viewPager;
     private MomViewPagerAdapter momViewPagerAdapter;
     private MainRankingAdapter mainRankingAdapter;
+    private TeamMember teamMember = new TeamMember();
 
     private LinearLayout dotsLayout;
     private TextView[] dots;
@@ -95,6 +102,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     TextView navHeaderUserName,navHeaderUserEmail,navHeaderCoachName,navHeaderTeamName;
     ImageView navHeaderImage;
 
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +114,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
+        instructor = prefUtil.getIns();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -145,6 +154,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         navHeaderUserName.setText(user.getUsername());
         navHeaderUserEmail.setText(user.getUseremail());
 
+
         //일반 회원 가입시 이미지가 없기 때문에..초기 셋팅
         if(!Compare.isEmpty(user.getProfileimgurl())){
             Glide.with(MomMainActivity.this)
@@ -173,8 +183,9 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
 
         layouts = new int[]{
                 R.layout.mom_main_slide1,
+                R.layout.mom_main_slide3,
                 R.layout.mom_main_slide2,
-                R.layout.mom_main_slide3};
+        };
 
         addBottomDots(0);
         changeStatusBarColor();
@@ -196,11 +207,38 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             }
         });
 
-
-
         Log.d(TAG, "onCreate ===========================================================" + user.getProfileimgurl());
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG,"on Start ======================================================");
+
+        user = prefUtil.getUser();
+
+        //만약 앱을 연 상태에서 설정을 했다면 다시 불러오기
+        if(user.getUseremail() != null){
+            navHeaderUserName = (TextView) header.findViewById(R.id.nav_header_username);
+            navHeaderUserEmail = (TextView) header.findViewById(R.id.nav_header_useremail);
+            navHeaderCoachName = (TextView) header.findViewById(R.id.nav_header_coachname);
+            navHeaderTeamName = (TextView) header.findViewById(R.id.nav_header_teamname);
+            navHeaderImage  = (ImageView) header.findViewById(R.id.nav_header_image);
+            navHeaderUserName.setText(user.getUsername());
+            navHeaderUserEmail.setText(user.getUseremail());
+        }
+
+        if(!Compare.isEmpty(user.getProfileimgurl())){
+            Glide.with(MomMainActivity.this)
+                    .load(user.getProfileimgurl())
+                    .into(navHeaderImage);
+        }
+
+        //강사정보 셋팅
+        getInstructorInfo();
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -218,10 +256,14 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         int id = item.getItemId();
 
         if (id == R.id.mn_item_home) {
-            Intent intent = new Intent(this,MomMainActivity.class);
+            Intent intent = new Intent(this, MomMainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
+        }else if(id==R.id.mn_item_teammemberlist){
+            Intent intent = new Intent(this,StudentMainActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         }else if(id == R.id.mn_item_favorite){
             Intent intent = new Intent(this,FavoriteMissionActivity.class);
             startActivity(intent);
@@ -284,11 +326,9 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         }
         prefUtil.clearPrefereance();
 
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(this, "",getString(R.string.network_logout_user), true);
-        dialog.show();
 
         //서버 세션을 초기화해준다.
+        WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
         MomComService momComService = ServiceGenerator.createService(MomComService.class,this,user);
         final Call<ServerResult> logOutCall = momComService.logOut();
 
@@ -301,30 +341,32 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                     @Override
                     public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                         if(response.isSuccessful()) {
-                            dialog.dismiss();
+                            WaitingDialog.cancelWaitingDialog();
                             VeteranToast.makeToast(getApplicationContext(),getString(R.string.app_logout), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
                             finish();
                         }else{
+                            WaitingDialog.cancelWaitingDialog();
                             VeteranToast.makeToast(getApplicationContext(),getString(R.string.app_logout), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
                             finish();
-                            dialog.dismiss();
+
                         }
                     }
                     @Override
                     public void onFailure(Call<ServerResult> call, Throwable t) {
+                        WaitingDialog.cancelWaitingDialog();
                         Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
                         VeteranToast.makeToast(getApplicationContext(),getString(R.string.app_logout), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent);
                         finish();
-                        dialog.dismiss();
+
                     }
                 });
             }
@@ -344,13 +386,8 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     public void OnClickHeader(View v){
         switch (v.getId()){
             case R.id.mom_hd_mk:
-                //VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation),Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(this,TestGridActivity.class);
-                //startActivity(intent);
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation) + "벨",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.hd_bell:
-
                 break;
         }
     }
@@ -459,6 +496,9 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             return super.getItemPosition(object);
         }
 
+
+        //메인 랭킹 표현부분
+
         @Override
         public Object instantiateItem(final ViewGroup container, int position) {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -466,8 +506,8 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             final View view = layoutInflater.inflate(layouts[position],container,false);
             container.addView(view);
 
-            if(position == 0){
 
+            if(position == 0){
                 Log.i(TAG,"뷰 페이저 값을 갱신 합니다");
                 final LinearLayout li_main_slid_ranking,li_main_slid_ranking_no_data;
                 li_main_slid_ranking = (LinearLayout) view.findViewById(R.id.li_main_slid_ranking);
@@ -477,17 +517,16 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                 userRangkinVo.setQueryRow(3);
                 userRangkinVo.setOrderbytype("totalscore");
 
+                WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
                 DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
-
                 final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(userRangkinVo);
-
                 call.enqueue(new Callback<List<UserRangkinVo>>() {
 
 
                     @Override
                     public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
                         if(response.isSuccessful()){
-
+                            WaitingDialog.cancelWaitingDialog();
                             li_main_slid_ranking.setVisibility(View.VISIBLE);
                             li_main_slid_ranking_no_data.setVisibility(View.GONE);
 
@@ -496,6 +535,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                             ListView listView = (ListView) container.findViewById(R.id.list_total_ranking);
                             listView.setAdapter(mainRankingAdapter);
                         }else{
+                            WaitingDialog.cancelWaitingDialog();
                             li_main_slid_ranking.setVisibility(View.GONE);
                             li_main_slid_ranking_no_data.setVisibility(View.VISIBLE);
                             btnMethodAllRanking(view);
@@ -504,6 +544,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
 
                     @Override
                     public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
+                        WaitingDialog.cancelWaitingDialog();
                         li_main_slid_ranking.setVisibility(View.GONE);
                         li_main_slid_ranking_no_data.setVisibility(View.VISIBLE);
                         btnMethodAllRanking(view);
@@ -526,20 +567,45 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
 
             }else if(position==1){
 
-                ListView listView = (ListView) container.findViewById(R.id.list_friend_ranking);
-                Button button = (Button) container.findViewById(R.id.btn_more_friend_ranking);
-                button.setOnClickListener(new View.OnClickListener() {
+                final LinearLayout li_main_team_layout,li_main_noData_layout;
+
+                li_main_team_layout = (LinearLayout) view.findViewById(R.id.li_main_team_layout);
+                li_main_noData_layout = (LinearLayout) view.findViewById(R.id.li_main_noData_layout);
+
+                WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
+                TeamService teamService = ServiceGenerator.createService(TeamService.class,MomMainActivity.this,user);
+                TeamMember member = new TeamMember();
+                member.setUid(user.getUid());
+                Call<TeamMember> c = teamService.getTeamMemeber(member);
+                c.enqueue(new Callback<TeamMember>() {
                     @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(),UserRankingActivity.class);
-                        intent.putExtra("pageparam","friend");
-                        startActivity(intent);
+                    public void onResponse(Call<TeamMember> call, Response<TeamMember> response) {
+                        if(response.isSuccessful()){
+                            teamMember = response.body();
+                            WaitingDialog.cancelWaitingDialog();
+
+                            if(teamMember.getUid()==0){
+                                li_main_noData_layout.setVisibility(View.VISIBLE);
+                                li_main_team_layout.setVisibility(View.GONE);
+                            }else{
+                                li_main_noData_layout.setVisibility(View.GONE);
+                                li_main_team_layout.setVisibility(View.VISIBLE);
+
+                                //데이터를 읽어 들여 뿌리는 작업을 한다
+                                ListView listView = (ListView) container.findViewById(R.id.list_team_ranking);
+                            }
+
+                        }else{
+                            WaitingDialog.cancelWaitingDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TeamMember> call, Throwable t) {
+                        WaitingDialog.cancelWaitingDialog();
+                        t.printStackTrace();
                     }
                 });
-
-            }else if(position==2){
-
-                ListView listView = (ListView) container.findViewById(R.id.list_team_ranking);
 
                 Button button = (Button) container.findViewById(R.id.btn_more_team_ranking);
                 button.setOnClickListener(new View.OnClickListener() {
@@ -547,6 +613,18 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                     public void onClick(View v) {
                         Intent intent = new Intent(getApplicationContext(),UserRankingActivity.class);
                         intent.putExtra("pageparam","team");
+                        startActivity(intent);
+                    }
+                });
+
+            }else if(position==2){
+                ListView listView = (ListView) container.findViewById(R.id.list_friend_ranking);
+                Button button = (Button) container.findViewById(R.id.btn_more_friend_ranking);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(),UserRankingActivity.class);
+                        intent.putExtra("pageparam","friend");
                         startActivity(intent);
                     }
                 });
@@ -593,34 +671,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     public void mOnClick(View v){
         switch (v.getId()){
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG,"on Start ======================================================");
-
-        user = prefUtil.getUser();
-
-        //만약 앱을 연 상태에서 설정을 했다면 다시 불러오기
-        if(user.getUseremail() != null){
-
-            navHeaderUserName = (TextView) header.findViewById(R.id.nav_header_username);
-            navHeaderUserEmail = (TextView) header.findViewById(R.id.nav_header_useremail);
-            navHeaderCoachName = (TextView) header.findViewById(R.id.nav_header_coachname);
-            navHeaderTeamName = (TextView) header.findViewById(R.id.nav_header_teamname);
-            navHeaderImage  = (ImageView) header.findViewById(R.id.nav_header_image);
-            navHeaderUserName.setText(user.getUsername());
-            navHeaderUserEmail.setText(user.getUseremail());
-
-        }
-
-        if(!Compare.isEmpty(user.getProfileimgurl())){
-            Glide.with(MomMainActivity.this)
-                    .load(user.getProfileimgurl())
-                    .into(navHeaderImage);
-        }
-
     }
 
     @Override
@@ -681,5 +731,43 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     }
 
 
+    public void getInstructorInfo(){
+
+        WaitingDialog.showWaitingDialog(this,false);
+
+        InstructorService service = ServiceGenerator.createService(InstructorService.class,getApplicationContext(),user);
+        Call<Instructor> c = service.getFindIns(user.getUid());
+        c.enqueue(new Callback<Instructor>() {
+            @Override
+            public void onResponse(Call<Instructor> call, Response<Instructor> response) {
+                if(response.isSuccessful()){
+                    instructor = response.body();
+                    prefUtil.saveIns(instructor);
+                    WaitingDialog.cancelWaitingDialog();
+
+                    Log.i(TAG,"ins : " + instructor.toString());
+
+                    if(instructor.getUid()==0){
+                        navigationView.getMenu().findItem(R.id.mn_item_coachreq).setTitle(getString(R.string.mom_menu_title_coach_apply));
+                        navigationView.getMenu().findItem(R.id.mn_item_teammemberlist).setVisible(false);
+                    }else{
+                        navigationView.getMenu().findItem(R.id.mn_item_coachreq).setTitle(getString(R.string.mom_menu_title_coach_info));
+                        navigationView.getMenu().findItem(R.id.mn_item_teammemberlist).setVisible(true);
+                    }
+
+
+                }else{
+                    WaitingDialog.cancelWaitingDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Instructor> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+
+    }
 
 }

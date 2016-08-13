@@ -42,6 +42,9 @@ public class PrefUtil {
         pre.putInt("commontokenid",ins.getCommontokenid());
         pre.putInt("pointhistoryid",ins.getPointhistoryid());
 
+        pre.putString("teamname",ins.getTeamname());
+        pre.putString("emblem",ins.getEmblem());
+        pre.putString("change_teamcreationdate",ins.getChange_teamcreationdate());
 
         pre.commit();
     }
@@ -64,6 +67,10 @@ public class PrefUtil {
         instructor.setSerialnumber(sp.getString("serialnumber",null));
         instructor.setCommontokenid(sp.getInt("commontokenid",0));
         instructor.setPointhistoryid(sp.getInt("pointhistoryid",0));
+
+        instructor.setTeamname(sp.getString("teamname",null));
+        instructor.setEmblem(sp.getString("emblem",null));
+        instructor.setChange_teamcreationdate(sp.getString("change_teamcreationdate",null));
 
         return instructor;
     }

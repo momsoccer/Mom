@@ -13,11 +13,14 @@ import android.widget.Toast;
 
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.GridSearchAdapter;
+import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
+import com.mom.soccer.retrofitdao.InstructorService;
 import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.List;
 
@@ -85,16 +88,17 @@ public class SearchFragment extends Fragment {
                     mFlag="Y";
                 }
             });
+
         }else{
 
             if(mFlag.equals("NO")){
-                getUserList("NO",user.getUid());
+                getFindInsList("NO",user.getUid());
             }
             search_word.setHint(getString(R.string.search_coarch_field));
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getUserList(search_word.getText().toString(),user.getUid());
+                    getFindInsList(search_word.getText().toString(),user.getUid());
                     mFlag="Y";
                 }
             });
@@ -103,13 +107,50 @@ public class SearchFragment extends Fragment {
         return rootview;
     }
 
+    public void getFindInsList(String searchWord,int uid){
+
+        WaitingDialog.showWaitingDialog(getContext(),false);
+        InstructorService service = ServiceGenerator.createService(InstructorService.class,getContext(),user);
+
+        Instructor queryIns = new Instructor();
+
+        if(!searchWord.equals("NO")){
+            queryIns.setName(searchWord);
+        }
+        queryIns.setUid(uid); //자신은 빼고
+        //queryIns.setQueryRow(500);
+        Call<List<Instructor>> c = service.getCoachSearchList(queryIns);
+        c.enqueue(new Callback<List<Instructor>>() {
+            @Override
+            public void onResponse(Call<List<Instructor>> call, Response<List<Instructor>> response) {
+                if(response.isSuccessful()){
+
+                    List<Instructor> instructorList = response.body();
+                    gridSearchAdapter = new GridSearchAdapter(getActivity(),instructorList,R.layout.ac_search_grid_item_layout);
+                    search_grid_view.setAdapter(gridSearchAdapter);
+                    WaitingDialog.cancelWaitingDialog();
+
+                    if(instructorList.size()==0){
+                        VeteranToast.makeToast(getContext(),getString(R.string.network_nodata_found_coach), Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    WaitingDialog.cancelWaitingDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Instructor>> call, Throwable t) {
+                Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+    }
+
 
     public void getUserList(String searchWord,int uid){
 
-        //final ProgressDialog dialog;
-        //dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_user), true);
-        //dialog.show();
-
+        WaitingDialog.showWaitingDialog(getContext(),false);
         UserService userService = ServiceGenerator.createService(UserService.class,getContext(),user);
         User user = new User();
 
@@ -118,6 +159,7 @@ public class SearchFragment extends Fragment {
         }
 
         user.setUid(uid); //자신은 빼고 조회한다
+        //user.setQueryRow(500);
 
         Call<List<User>> call = userService.getUserSearList(user);
         call.enqueue(new Callback<List<User>>() {
@@ -125,25 +167,24 @@ public class SearchFragment extends Fragment {
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if(response.isSuccessful()){
                     List<User> userList = response.body();
-                    gridSearchAdapter = new GridSearchAdapter(getActivity(),userList,R.layout.ac_search_grid_item_layout);
+                    gridSearchAdapter = new GridSearchAdapter(getActivity(),userList,R.layout.ac_search_grid_item_layout,"user");
                     search_grid_view.setAdapter(gridSearchAdapter);
-                    //dialog.dismiss();
+                    WaitingDialog.cancelWaitingDialog();
+
                     if(userList.size()==0){
                         VeteranToast.makeToast(getContext(),getString(R.string.network_nodata_found_user), Toast.LENGTH_SHORT).show();
                     }
-
                 }else{
-                    //VeteranToast.makeToast(getContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
-                    //dialog.dismiss();
+                    WaitingDialog.cancelWaitingDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
                 Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
-                //VeteranToast.makeToast(getContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
+                WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
-                //dialog.dismiss();
+
             }
         });
     }

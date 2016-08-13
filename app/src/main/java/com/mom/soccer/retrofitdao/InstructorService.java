@@ -24,6 +24,12 @@ import retrofit2.http.Query;
 public interface InstructorService {
 
 
+    @POST("/api/ins/getCoachSearchList")
+    Call<List<Instructor>> getCoachSearchList(@Body Instructor ins);
+
+    @GET("/api/ins/getFindIns")
+    Call<Instructor> getFindIns(@Query("uid") int uid);
+
     @POST("/all/ins/saveInstructor")
     Call<ServerResult> saveInstructor(@Body Instructor ins);
 

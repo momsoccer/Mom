@@ -42,19 +42,21 @@
 
 
     <LinearLayout
+        android:id="@+id/li_bacground_lyout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
+        android:background="@drawable/ranking"
         >
 
         <ListView
             android:layout_marginTop="10dp"
             android:id="@+id/rankingpage_total_ranking"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="match_parent"
             android:dividerHeight="1dp"
             android:divider="@color/line_color1"
             />

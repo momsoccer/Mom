@@ -5,6 +5,7 @@
     android:background="@color/mom_color1">
 
     <LinearLayout
+        android:id="@+id/li_slide_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -17,7 +18,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             >
 
             <ListView
@@ -27,7 +28,8 @@
                 android:layout_height="180dp"
                 android:dividerHeight="1dp"
                 android:divider="@color/color8"
-                />
+                >
+                </ListView>
 
             <Button
                 android:id="@+id/btn_more_total_ranking"
@@ -47,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:visibility="visible"
+            android:visibility="gone"
             >
 
             <ImageView

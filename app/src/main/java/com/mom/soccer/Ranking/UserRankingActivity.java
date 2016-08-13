@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,9 @@ public class UserRankingActivity extends AppCompatActivity {
 
     @Bind(R.id.ranking_title)
     TextView textView_ranking_title;
+
+    @Bind(R.id.li_bacground_lyout)
+    LinearLayout li_bacground_lyout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +85,17 @@ public class UserRankingActivity extends AppCompatActivity {
         Log.i(TAG,"onStart() ===============================================");
 
         if(pageFlag.equals("total")){
+            li_bacground_lyout.setBackground(getResources().getDrawable(R.drawable.ranking));
             listView = (ListView) findViewById(R.id.rankingpage_total_ranking);
             getTotalRankingList();
         }else if((pageFlag.equals("team"))){
-
+            li_bacground_lyout.setBackground(getResources().getDrawable(R.drawable.team_ranking));
+            listView = (ListView) findViewById(R.id.rankingpage_total_ranking);
+            getTotalRankingList();
         }else if(pageFlag.equals("friend")){
-
+            li_bacground_lyout.setBackground(getResources().getDrawable(R.drawable.freind_ranking));
+            listView = (ListView) findViewById(R.id.rankingpage_total_ranking);
+            getTotalRankingList();
         }
 
     }

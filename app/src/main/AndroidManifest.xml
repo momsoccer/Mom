@@ -85,6 +85,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".bottommenu.UserProfile"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".bottommenu.SearchActivity"
@@ -146,17 +147,21 @@
             android:name=".besideactivity.ApplyCoachActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            />
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".mission.UserMissionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mission.UserMissionListActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_user_mission_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".besideactivity.StudentMainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>

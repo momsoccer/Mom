@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
@@ -82,8 +83,13 @@ public class UserProfile extends AppCompatActivity {
         setContentView(R.layout.ac_bottom_userprofile_layout);
         ButterKnife.bind(this);
 
-        getSupportActionBar().setTitle(R.string.toolbar_page_profile);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //빽버튼?
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         layoutUserNicname = (TextInputLayout) findViewById(R.id.layout_user_nicname);
         layoutUserPhone = (TextInputLayout) findViewById(R.id.layout_user_phone);

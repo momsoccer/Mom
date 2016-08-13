@@ -117,6 +117,8 @@
     <string name="toolbar_point_page">포인트</string>
     <string name="toolbar_comment_page">댓글</string>
     <string name="toolbar_user_missionview_page">미션영상</string>
+    <string name="toolbar_setup">설정 및 관리</string>
+    <string name="toolbar_userprofile">프로파일</string>
 
     <string name="toolbar_ranking_all">랭킹 전체</string>
     <string name="toolbar_ranking_friend">랭킹 친구</string>
@@ -175,6 +177,8 @@
     <string name="mission_dialg_mission_open">P가 차감 됩니다\n미션을 오픈 하시겠습니까?</string>
     <string name="mission_open_message">미션이 정상적으로 오픈 되었습니다</string>
 
+    <string name="mission_open_coach_msg">강사분들은 포인트와 관계 없이 \n 미션 서비스를 이용하실 수 있습니다.</string>
+
     <string name="user_mission_p">심사중</string>
     <string name="user_mission_n">심사대기중</string>
 
@@ -182,7 +186,7 @@
 
     <!--layout text-->
     <string name="grid_user_name_title">유저명:</string>
-    <string name="search_coarch_field">코치명</string>
+    <string name="search_coarch_field">강사명</string>
     <string name="search_user_field">유저명</string>
     <string name="search_btn">검색</string>
     <string name="search_team">팀명</string>
@@ -200,7 +204,7 @@
     <string name="friedn_reject_req">친구요청을 거절 했지만 다시 한번 친구 요청을 하시겠습니까?</string>
     <string name="friedn_stop_req">친구끈기를 하시겠습니까?</string>
 
-    <string name="tab_coach">코치</string>
+    <string name="tab_coach">강사</string>
     <string name="tab_user">유저</string>
 
     <!--board-->
@@ -273,4 +277,15 @@
     <string name="coach_req_status_a">강사승인됨</string>
     <string name="coach_req_update_message">강사정보가 수정되었습니다 \n 메인 화면으로 돌아갑니다</string>
 
+    <!--메뉴타이틀-->
+    <string name="mom_menu_title_home">홈</string>
+    <string name="mom_menu_title_favorite_mission">즐겨찾기(미션)</string>
+    <string name="mom_menu_title_interest_video">관심영상</string>
+    <string name="mom_menu_title_ulist">제자리스트</string>
+    <string name="mom_menu_title_search">유저/강사 검색</string>
+    <string name="mom_menu_title_mypage">마이페이지</string>
+    <string name="mom_menu_title_coach_apply">강사신청</string>
+    <string name="mom_menu_title_coach_info">강사정보</string>
+    <string name="mom_menu_title_setup">설정</string>
+    <string name="mom_menu_title_logout">로그아웃</string>
 </resources>
