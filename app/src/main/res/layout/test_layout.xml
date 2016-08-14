@@ -8,29 +8,4 @@
 
 
 
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        >
-
-        <TextView
-            android:id="@+id/tx_main_mission_subject"
-            android:text="@string/default_mission_subject"
-            android:textColor="@color/color6"
-            android:textSize="18sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <ImageButton
-            android:id="@+id/btnMainVideo"
-            android:background="@drawable/btn_video_list_click"
-            android:layout_marginLeft="30dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"/>
-    </LinearLayout>
-
 </LinearLayout>

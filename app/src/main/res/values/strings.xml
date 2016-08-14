@@ -184,6 +184,11 @@
 
     <string name="user_mission_progress">강사께서 심사를 하고 있는 중입니다</string>
 
+    <string name="mission_feedback_btn">피드백요청</string>
+    <string name="mission_eval_btn">심사요청</string>
+
+    <string name="mission_user_video">등록된 영상이 없습니다</string>
+
     <!--layout text-->
     <string name="grid_user_name_title">유저명:</string>
     <string name="search_coarch_field">강사명</string>
@@ -288,4 +293,28 @@
     <string name="mom_menu_title_coach_info">강사정보</string>
     <string name="mom_menu_title_setup">설정</string>
     <string name="mom_menu_title_logout">로그아웃</string>
+
+
+    <!--다이얼로그창-->
+    <string name="mom_diaalog_feedback_title">피드백요청</string>
+    <string name="mom_diaalog_title_logout">로그아웃</string>
+    <string name="mom_diaalog_title_append">앱 종료</string>
+
+    <string name="mom_diaalog_content_logout">로그아웃 하시겠습니까?</string>
+    <string name="mom_diaalog_confirm">확인</string>
+    <string name="mom_diaalog_cancel">취소</string>
+    <string name="mom_diaalog_alert">알림</string>
+
+    <!--설정사항-->
+    <string name="mom_setting_info">MoM 정보</string>
+    <string name="mom_setting_upload">영상업로드 설정</string>
+    <string name="mom_setting_help">자주하는 질문</string>
+    <string name="mom_setting_update">앱 자동업데이트</string>
+    <string name="mom_setting_update_alert">앱 자동 업데이트후 알림</string>
+    <string name="mom_setting_update_alert_bell">알림벨 설정</string>
+    <string name="mom_setting_app_evaluation">앱평가하기</string>
+    <string name="mom_setting_app_email">개발팀에게 메일 보내기</string>
+    <string name="mom_setting_app_user">개인프로필</string>
+
+
 </resources>

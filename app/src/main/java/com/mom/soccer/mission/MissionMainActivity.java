@@ -1,7 +1,6 @@
 package com.mom.soccer.mission;
 
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
@@ -38,6 +36,7 @@ import com.mom.soccer.retrofitdao.FavoriteMissionService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.List;
 
@@ -118,6 +117,13 @@ public class MissionMainActivity extends AppCompatActivity {
 
     ExpandableHeightGridView videoGridView;
     UserMission userMission;
+
+    @Bind(R.id.li_video_list)
+    LinearLayout li_video_list;
+
+    @Bind(R.id.li_no_data_found)
+    LinearLayout li_no_data_found;
+
     /**************************************************
      * google uplaod define
      **********************/
@@ -285,10 +291,9 @@ public class MissionMainActivity extends AppCompatActivity {
     */
 
     //다른 사람들의 영상 목록
-    public void userGrid_MissionList(UserMission userMission){
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(this, "", getString(R.string.network_get_list), true);
+    public void userGrid_MissionList(final UserMission userMission){
 
+        WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
         userMission.setQueryRow(20);
 
         UserMissionService userMissionService = ServiceGenerator.createService(UserMissionService.class,getApplicationContext(),user);
@@ -299,26 +304,35 @@ public class MissionMainActivity extends AppCompatActivity {
             public void onResponse(Call<List<UserMission>> call, Response<List<UserMission>> response) {
 
                 if(response.isSuccessful()){
+                    WaitingDialog.cancelWaitingDialog();
                     userMissionList = response.body();
                     gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissionList,"YOU");
                     videoGridView.setAdapter(gridMissionAdapter);
-                    dialog.dismiss();
+
+                    if(userMissionList.size()==0){
+                        li_video_list.setVisibility(View.GONE);
+                        li_no_data_found.setVisibility(View.VISIBLE);
+                    }else{
+                        li_video_list.setVisibility(View.VISIBLE);
+                        li_no_data_found.setVisibility(View.GONE);
+                    }
+
                 }else{
-                    VeteranToast.makeToast(getApplicationContext(),"User Video List : "+getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
+                    WaitingDialog.cancelWaitingDialog();
+
                 }
             }
             @Override
             public void onFailure(Call<List<UserMission>> call, Throwable t) {
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
-                dialog.dismiss();
             }
         });
     }
 
     //내가 수행한 미션
     public void getMyVideo(){
+        WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
         UserMission u = new UserMission();
         u.setMissionid(mission.getMissionid());
         u.setUid(user.getUid());
@@ -329,7 +343,7 @@ public class MissionMainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UserMission> call, Response<UserMission> response) {
                 if(response.isSuccessful()){
-
+                    WaitingDialog.cancelWaitingDialog();
                     userMission = response.body();
 
                     Log.i(TAG," 받아온 값은  : " + userMission.toString() );
@@ -390,14 +404,15 @@ public class MissionMainActivity extends AppCompatActivity {
                         });
                     }
                 }else{
-                    VeteranToast.makeToast(getApplicationContext(),"UserMission(1) "+getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+                    WaitingDialog.cancelWaitingDialog();
 
                 }
             }
 
             @Override
             public void onFailure(Call<UserMission> call, Throwable t) {
-                VeteranToast.makeToast(getApplicationContext(),"UserMission(2) "+getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
             }
         });
 
@@ -528,15 +543,27 @@ public class MissionMainActivity extends AppCompatActivity {
     }
 
 
+    public void reqBtnClick(View v){
 
-    @OnClick(R.id.ic_tree)
+        String[] strings = {"팀 강사에게","다른 강사선택","Mom에 요청"};
+
+        switch (v.getId()){
+            case R.id.btnReqfeed:
+                break;
+            case R.id.btnReqEval:
+                break;
+        }
+    }
+
+/*    @OnClick(R.id.ic_tree)
     public void showSingleChoice() {
         Log.i(TAG,"하이");
 
-        String[] strings = {"대표강사 요청","다른강사 요청","MoM에 요청"};
+        String[] strings = {"팀 강사에게","다른 강사선택","Mom에 요청"};
 
         new MaterialDialog.Builder(this)
-                .title("피드백 요청")
+                .title(R.string.mom_diaalog_feedback_title)
+                .titleColor(getResources().getColor(R.color.color6))
                 .items(strings)
                 .itemsCallbackSingleChoice(2, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
@@ -546,8 +573,8 @@ public class MissionMainActivity extends AppCompatActivity {
                         return true; // allow selection
                     }
                 })
-                .positiveText(R.string.md_choose_label)
+                .positiveText(R.string.mom_diaalog_confirm)
                 .show();
-    }
+    }*/
 
 }

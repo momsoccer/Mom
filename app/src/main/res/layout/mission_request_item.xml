@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_screen2"
+    >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        >
+
+        <ImageView
+            android:id="@+id/usermission_iv_comment"
+            android:src="@drawable/coment_ic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/usermission_tx_comment"
+            android:text="0"
+            android:layout_marginLeft="5dp"
+            android:textSize="16sp"
+            android:textColor="@color/color6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_marginLeft="130dp"
+            android:text="피드백요청"
+            android:textSize="10sp"
+            android:layout_width="75dp"
+            android:layout_height="35dp"
+            style="@style/btnStylePaprika"
+            android:onClick="reqBtnClick"
+            />
+
+        <Button
+            android:layout_marginLeft="5dp"
+            android:text="심사요청"
+            android:textSize="10sp"
+            android:layout_width="75dp"
+            android:layout_height="35dp"
+            style="@style/btnStylePaprika"
+            android:onClick="reqBtnClick"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

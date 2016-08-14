@@ -1,7 +1,6 @@
 package com.mom.soccer.bottommenu;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +33,6 @@ import com.mom.soccer.retrofitdao.FriendService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 
@@ -546,17 +544,6 @@ public class MyPageActivity extends AppCompatActivity {
     // 친구요청하기
     @OnClick(R.id.friend_btn)
     public void friendBtn(){
-
-        new DialogBuilder(MyPageActivity.this)
-                //.setTitle("Title")
-                .setMessage(getString(R.string.preparation))
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .create().show();
         return;
 
 /*        if(friendApply.getApplyid()==0){

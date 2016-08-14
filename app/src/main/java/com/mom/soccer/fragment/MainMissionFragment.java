@@ -17,9 +17,9 @@
 package com.mom.soccer.fragment;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -32,6 +32,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mom.soccer.R;
 import com.mom.soccer.dataDto.PointTrVo;
 import com.mom.soccer.dto.FavoriteMission;
@@ -46,8 +48,8 @@ import com.mom.soccer.retrofitdao.MissionHistoryService;
 import com.mom.soccer.retrofitdao.MissionService;
 import com.mom.soccer.retrofitdao.PointService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -254,13 +256,16 @@ public class MainMissionFragment extends Fragment {
 
                                     if (checkDuplicateFlag.equals("initial")) {
                                         if (mission.getOpencount() == 0) {
-                                            new DialogBuilder(getContext())
-                                                    //.setTitle("Title")
-                                                    .setMessage(" " + mission_open_point + getString(R.string.mission_dialg_mission_open)) //500P 가 차감됩니다...미션을 오픈 하시겠습니까?
-                                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
 
+
+                                            new MaterialDialog.Builder(getContext())
+                                                    .title(R.string.mom_diaalog_alert)
+                                                    .titleColor(getResources().getColor(R.color.color6))
+                                                    .content(mission_open_point + getString(R.string.mission_dialg_mission_open))
+                                                    .positiveText(R.string.mom_diaalog_confirm)
+                                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                        @Override
+                                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                             //2. 포인트를 차감한다
                                                             PointTrVo pointTrVo = new PointTrVo();
                                                             pointTrVo.setUid(user.getUid());
@@ -268,9 +273,9 @@ public class MainMissionFragment extends Fragment {
                                                             pointTrVo.setTrType("G"); //R일때는 지급
                                                             pointTrVo.setTypecode("MISSION");
 
+                                                            WaitingDialog.showWaitingDialog(getContext(),false);
                                                             final PointService pointService = ServiceGenerator.createService(PointService.class, getContext(), user);
                                                             Call<ServerResult> call = pointService.pointTr(pointTrVo);
-
                                                             call.enqueue(new Callback<ServerResult>() {
                                                                 @Override
                                                                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
@@ -281,29 +286,29 @@ public class MainMissionFragment extends Fragment {
                                                                         } else {
                                                                             openMission();
                                                                         }
+                                                                        WaitingDialog.cancelWaitingDialog();
                                                                     } else {
-                                                                        VeteranToast.makeToast(getContext(), "Mission History Error 1 : " + getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_SHORT).show();
+                                                                        WaitingDialog.cancelWaitingDialog();
                                                                     }
                                                                 }
 
                                                                 @Override
                                                                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                                                                    //mdialog.dismiss();
-                                                                    VeteranToast.makeToast(getContext(), "Mission History Error 2 : " + getString(R.string.network_error_message1), Toast.LENGTH_SHORT).show();
+                                                                    WaitingDialog.cancelWaitingDialog();
                                                                     t.printStackTrace();
                                                                 }
                                                             });
-                                                            dialog.dismiss();
                                                         }
                                                     })
-                                                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                                    .negativeText(R.string.mom_diaalog_cancel)
+                                                    .onNegative(new MaterialDialog.SingleButtonCallback() {
                                                         @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
+                                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
-                                                            dialog.dismiss();
                                                         }
                                                     })
-                                                    .create().show();
+                                                    .backgroundColor(getResources().getColor(R.color.mom_color1))
+                                                    .show();
                                         } else {
                                             Intent intent = new Intent(getContext(), MissionMainActivity.class);
                                             intent.putExtra(MissionCommon.OBJECT, mission);
@@ -341,6 +346,7 @@ public class MainMissionFragment extends Fragment {
             queryMission.setUid(user.getUid());
             queryMission.setMissionid(mission.getMissionid());
 
+            WaitingDialog.showWaitingDialog(getContext(),false);
             MissionService missionService = ServiceGenerator.createService(MissionService.class,getContext(),user);
             Call<Mission> call = missionService.getMission(queryMission);
             call.enqueue(new Callback<Mission>() {
@@ -348,14 +354,15 @@ public class MainMissionFragment extends Fragment {
                 public void onResponse(Call<Mission> call, Response<Mission> response) {
                     if(response.isSuccessful()){
                         reflashMission = response.body();
+                        WaitingDialog.cancelWaitingDialog();
                     }else{
-                        VeteranToast.makeToast(getContext(),"mission refrash error 1 " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        WaitingDialog.cancelWaitingDialog();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Mission> call, Throwable t) {
-                    VeteranToast.makeToast(getContext(),"mission refrash error 2 : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    WaitingDialog.cancelWaitingDialog();
                     t.printStackTrace();
                 }
             });
@@ -389,16 +396,13 @@ public class MainMissionFragment extends Fragment {
         favoriteMission.setUid(uId);
         favoriteMission.setMissionid(missionId);
 
+        WaitingDialog.showWaitingDialog(getContext(),false);
+
         if(typeMethod.equals("getCount")){
             Call<ServerResult> callBack = service.getCountFavoriteMission(favoriteMission);
             callBack.enqueue(new Callback<ServerResult>() {
                 @Override
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-
-                    //final ProgressDialog dialog;
-                    //dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
-                    //dialog.show();
-
                     if(response.isSuccessful()){
                         //dialog.dismiss();
                         ServerResult result = response.body();
@@ -409,68 +413,56 @@ public class MainMissionFragment extends Fragment {
                         }else{
                             imageButton.setImageResource(R.drawable.star_enabled);
                         }
-
+                        WaitingDialog.cancelWaitingDialog();
                     }else{
-                        //dialog.dismiss();
-                        VeteranToast.makeToast(getContext(),"Favorite Info Error(1) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        WaitingDialog.cancelWaitingDialog();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    //dialog.dismiss();
-                    VeteranToast.makeToast(getContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    WaitingDialog.cancelWaitingDialog();
                     t.printStackTrace();
                 }
             });
 
         }else if(typeMethod.equals("create")){
-            //final ProgressDialog dialog;
-            //dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
-            //dialog.show();
             Call<ServerResult> callBack = service.saveFavoriteMission(favoriteMission);
             callBack.enqueue(new Callback<ServerResult>() {
                 @Override
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
 
                     if(response.isSuccessful()){
-                        //dialog.dismiss();
-                        VeteranToast.makeToast(getContext(),"즐겨찾기에 추가했습니다", Toast.LENGTH_SHORT).show();
+
                         imageButton.setImageResource(R.drawable.star);
                         favoriteCount = 1;
+                        WaitingDialog.cancelWaitingDialog();
                     }else{
-                        //dialog.dismiss();
-                        VeteranToast.makeToast(getContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                         imageButton.setImageResource(R.drawable.star_enabled);
                         favoriteCount = 0;
+                        WaitingDialog.cancelWaitingDialog();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    //dialog.dismiss();
-                    VeteranToast.makeToast(getContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    WaitingDialog.cancelWaitingDialog();
                     t.printStackTrace();
                 }
             });
 
         }else if(typeMethod.equals("delete")){
-            //final ProgressDialog dialog;
-            //dialog = ProgressDialog.show(getContext(), "",getString(R.string.network_get_list), true);
-            //dialog.show();
             Call<ServerResult> callBack = service.deleteFavoriteMission(favoriteMission);
             callBack.enqueue(new Callback<ServerResult>() {
                 @Override
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
 
                     if(response.isSuccessful()){
-                        //dialog.dismiss();
-                        //VeteranToast.makeToast(getContext(),"즐겨찾기에서 제외 했습니다", Toast.LENGTH_SHORT).show();
+                        WaitingDialog.cancelWaitingDialog();
                         imageButton.setImageResource(R.drawable.star_enabled);
                         favoriteCount = 0;
                     }else{
-                        //dialog.dismiss();
-                        //VeteranToast.makeToast(getContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        WaitingDialog.cancelWaitingDialog();
                         imageButton.setImageResource(R.drawable.star);
                         favoriteCount = 1;
                     }
@@ -478,8 +470,7 @@ public class MainMissionFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<ServerResult> call, Throwable t) {
-                    //dialog.dismiss();
-                    //VeteranToast.makeToast(getContext(),"Favorite Info Error(6) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    WaitingDialog.cancelWaitingDialog();
                     t.printStackTrace();
                 }
             });
@@ -488,6 +479,7 @@ public class MainMissionFragment extends Fragment {
     }
 
     public void openMission(){
+        WaitingDialog.showWaitingDialog(getContext(),false);
         MissionHistoryService service = ServiceGenerator.createService(MissionHistoryService.class,getContext(),user);
         MissionHistory missionHistory = new MissionHistory(user.getUid(),mission.getMissionid(),mission.getEscapepoint(),"each");
         final Call<ServerResult> resultCall = service.saveMissionHistory(missionHistory);
@@ -495,6 +487,7 @@ public class MainMissionFragment extends Fragment {
             @Override
             public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                 if(response.isSuccessful()){
+                    WaitingDialog.cancelWaitingDialog();
                     ServerResult serverResult = response.body();
                     VeteranToast.makeToast(getContext(),getString(R.string.mission_open_message),Toast.LENGTH_SHORT).show();
 
@@ -505,15 +498,13 @@ public class MainMissionFragment extends Fragment {
                     getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
                 }else{
-                    //mdialog.dismiss();
-                    //VeteranToast.makeToast(getContext(),"Mission History Error : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    WaitingDialog.cancelWaitingDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<ServerResult> call, Throwable t) {
-                //mdialog.dismiss();
-                VeteranToast.makeToast(getContext(),"Mission History Error : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
             }
         });

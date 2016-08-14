@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            >
+
+            <ImageView
+                android:id="@+id/ac_user_mission_image"
+                android:src="@drawable/userimg"
+                android:layout_gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                >
+
+                <TextView
+                    android:id="@+id/ac_user_mission_name"
+                    android:text="이름"
+                    android:textColor="@color/color6"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/ac_user_mission_team"
+                    android:text="전남 해남초 3-1반팀"
+                    android:textColor="@color/line_color1"
+                    android:textSize="13sp"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:maxLines="1"
+                    android:maxLength="15"
+                    />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_fllow"
+                android:layout_marginRight="15dp"
+                style="@style/btnStylePaprika"
+                android:text="@string/app_fllow"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:visibility="invisible"
+                />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/youtube_frame_layout"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/color8"
+            android:layout_width="match_parent"
+            android:layout_height="190dp">
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/ac_user_mission_video_pickup"
+                android:src="@drawable/ic_white_hart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/mom_color1"
+                />
+
+            <TextView
+                android:id="@+id/ac_user_mission_video_pickcount"
+                android:layout_marginLeft="5dp"
+                android:text="0"
+                android:textColor="@color/color6"
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageButton
+                android:id="@+id/ac_user_mission_video_comment"
+                android:src="@drawable/coment_ic"
+                android:layout_marginLeft="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/mom_color1"
+                />
+
+            <TextView
+                android:id="@+id/ac_user_mission_video_commentcount"
+                android:layout_marginLeft="5dp"
+                android:text="0"
+                android:textColor="@color/color6"
+                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvSample"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+    </LinearLayout>
+</ScrollView>

@@ -85,8 +85,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".bottommenu.UserProfile"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".bottommenu.SearchActivity"
             android:screenOrientation="portrait"
@@ -157,11 +157,14 @@
             android:label="@string/title_activity_user_mission_list"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".besideactivity.StudentMainActivity"
+        <activity
+            android:name=".besideactivity.StudentMainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".common.MomInforActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            />
+            ></activity>
     </application>
 
 </manifest>

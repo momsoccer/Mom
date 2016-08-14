@@ -77,6 +77,7 @@ public class BoardMainActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.back_arrow);
         comment_title.setText(getString(R.string.toolbar_comment_page)+"("+user.getUsername()+")");
 
+
     }
 
     @Override

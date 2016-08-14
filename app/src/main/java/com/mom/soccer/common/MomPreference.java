@@ -28,6 +28,7 @@ public class MomPreference extends Preference {
         super.onBindView(view);
         TextView titleView = (TextView) view.findViewById(android.R.id.title);
         titleView.setTextColor(view.getResources().getColor(R.color.color6));
+        titleView.setTextSize(12);
     }
     
 }

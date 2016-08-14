@@ -2,12 +2,12 @@ package com.mom.soccer.momactivity;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
@@ -34,6 +34,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
@@ -64,7 +66,6 @@ import com.mom.soccer.retrofitdao.InstructorService;
 import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retrofitdao.TeamService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 
@@ -299,7 +300,27 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
         }else if(id == R.id.mn_item_logout){
-            logOut();
+
+            new MaterialDialog.Builder(this)
+                    .title(R.string.mom_diaalog_title_logout)
+                    .titleColor(getResources().getColor(R.color.color6))
+                    .content(R.string.mom_diaalog_content_logout)
+                    .positiveText(R.string.mom_diaalog_confirm)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            logOut();
+                        }
+                    })
+                    .negativeText(R.string.mom_diaalog_cancel)
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                        }
+                    })
+                    .backgroundColor(getResources().getColor(R.color.mom_color1))
+                    .show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -308,8 +329,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     }
 
     public void logOut(){
-
-
 
         if(user.getSnstype().equals("facebook")){
             Log.d(TAG,"페이스북 회원가입 유저 로그아웃을 합니다");
@@ -398,25 +417,27 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         switch (keyCode) {
             //하드웨어 뒤로가기 버튼에 따른 이벤트 설정
             case KeyEvent.KEYCODE_BACK:
-
-                new DialogBuilder(MomMainActivity.this)
-                        //.setTitle("질문")
-                        .setMessage(getString(R.string.app_end_action))
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                new MaterialDialog.Builder(this)
+                        .titleColor(getResources().getColor(R.color.color6))
+                        .title(R.string.mom_diaalog_title_append)
+                        .content(R.string.app_end_action)
+                        .positiveText(R.string.mom_diaalog_confirm)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 moveTaskToBack(true);
                                 finish();
                                 android.os.Process.killProcess(android.os.Process.myPid());
                             }
-                        }).create().show();
+                        })
+                        .negativeText(R.string.mom_diaalog_cancel)
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            }
+                        })
+                        .backgroundColor(getResources().getColor(R.color.mom_color1))
+                        .show();
                 break;
             default:
                 break;
@@ -425,12 +446,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         return super.onKeyDown(keyCode, event);
     }
 
-
-
-    /*
-    아이콘 관련 디테일하게 꾸미기
-    http://stackoverflow.com/questions/31097716/how-to-style-the-design-support-librarys-navigationview
-     */
 
     /************************************
      *

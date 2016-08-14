@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,22 +21,31 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
+import com.mom.soccer.adapter.BoardItemAdapter;
 import com.mom.soccer.board.BoardMainActivity;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
+import com.mom.soccer.dto.Board;
 import com.mom.soccer.dto.MyBookMark;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.fragment.YoutubeFragment;
+import com.mom.soccer.retrofitdao.BoardService;
 import com.mom.soccer.retrofitdao.PickService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,6 +90,11 @@ public class UserMissionActivity extends AppCompatActivity {
     TextView user_missionview_title;
 
     String pageTitle;
+
+    RecyclerView rvSample;
+    BoardItemAdapter adapter;
+    List<Board> boardList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +153,22 @@ public class UserMissionActivity extends AppCompatActivity {
         }else{
             btnFllow.setVisibility(View.VISIBLE);
         }
+
+        //RecyclerView apply
+        rvSample = (RecyclerView) findViewById(R.id.rvSample);
+/*        rvSample.addOnItemTouchListener(
+                new RecyclerItemClickListener(getApplicationContext(), rvSample ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // do whatever
+                        Toast.makeText(getApplicationContext(),"하이하이",Toast.LENGTH_SHORT).show();
+                        adapter.removeItem(0);
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );*/
 
     }
 
@@ -250,6 +283,56 @@ public class UserMissionActivity extends AppCompatActivity {
         });
 
         initialPickCheck();
+
+        //보더 리스트
+
+        WaitingDialog.showWaitingDialog(this,false);
+
+        BoardService boardService = ServiceGenerator.createService(BoardService.class,this,user);
+
+        Board board = new Board();
+        board.setUsermissionid(userMission.getUsermissionid());
+        board.setUid(userMission.getUid());
+        Call<List<Board>> c = boardService.getboardlist(board);
+
+        c.enqueue(new Callback<List<Board>>() {
+            @Override
+            public void onResponse(Call<List<Board>> call, Response<List<Board>> response) {
+                if(response.isSuccessful()){
+                    boardList = response.body();
+
+                    Log.i(TAG,"RecyclerView===========================================================");
+                    Log.i(TAG,"받은 값은 : " +boardList.size());
+
+                    adapter = new BoardItemAdapter(getApplicationContext(),boardList);
+
+                    rvSample.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                    rvSample.getItemAnimator().setAddDuration(300);
+                    rvSample.getItemAnimator().setRemoveDuration(300);
+                    rvSample.getItemAnimator().setMoveDuration(300);
+                    rvSample.getItemAnimator().setChangeDuration(300);
+
+                    rvSample.setHasFixedSize(true);
+                    rvSample.setLayoutManager(new LinearLayoutManager(UserMissionActivity.this));
+
+                    AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
+                    alphaAdapter.setDuration(1000);
+                    rvSample.setAdapter(alphaAdapter);
+
+                    WaitingDialog.cancelWaitingDialog();
+                }else{
+                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    WaitingDialog.cancelWaitingDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Board>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
 
     }
 

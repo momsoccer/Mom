@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.common.Common;
@@ -32,7 +35,6 @@ import com.mom.soccer.dto.User;
 import com.mom.soccer.ins.InsApplyVo;
 import com.mom.soccer.retrofitdao.InstructorService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.DialogBuilder;
 import com.mom.soccer.widget.WaitingDialog;
 
 import java.io.BufferedOutputStream;
@@ -283,44 +285,52 @@ public class ApplyCoachActivity extends AppCompatActivity {
 
         if(resultInsVo.getUid()==0){
             valiDation();
-            new DialogBuilder(ApplyCoachActivity.this)
-                    //.setTitle("Title")
-                    .setMessage(getString(R.string.coach_req_messge))
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+            new MaterialDialog.Builder(this)
+                    .titleColor(getResources().getColor(R.color.color6))
+                    .title(R.string.mom_diaalog_alert)
+                    .content(R.string.coach_req_messge)
+                    .positiveText(R.string.mom_diaalog_confirm)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             reqInsFile();
-                            dialog.dismiss();
                         }
                     })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    .negativeText(R.string.mom_diaalog_cancel)
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         }
                     })
-                    .create().show();
+                    .backgroundColor(getResources().getColor(R.color.mom_color1))
+                    .show();
         }else{
 
             if(resultInsVo.getApplystatus().equals("REQUEST")){
                 //강사지원 취소
-                new DialogBuilder(ApplyCoachActivity.this)
-                        //.setTitle("Title")
-                        .setMessage(getString(R.string.coach_cancel_messge))
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+                new MaterialDialog.Builder(this)
+                        .titleColor(getResources().getColor(R.color.color6))
+                        .title(R.string.mom_diaalog_alert)
+                        .content(R.string.coach_cancel_messge)
+                        .positiveText(R.string.mom_diaalog_confirm)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 ApplyCancel();
-                                dialog.dismiss();
                             }
                         })
-                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        .negativeText(R.string.mom_diaalog_cancel)
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             }
                         })
-                        .create().show();
+                        .backgroundColor(getResources().getColor(R.color.mom_color1))
+                        .show();
             }
         }
 
@@ -387,18 +397,20 @@ public class ApplyCoachActivity extends AppCompatActivity {
                     Log.i(TAG,"성공 ======================= : " +response.body());
                     WaitingDialog.cancelWaitingDialog();
 
-                    new DialogBuilder(ApplyCoachActivity.this)
-                            .setMessage(getString(R.string.coach_reqconfim_message))
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    new MaterialDialog.Builder(ApplyCoachActivity.this)
+                            .titleColor(getResources().getColor(R.color.color6))
+                            .title(R.string.mom_diaalog_alert)
+                            .content(R.string.coach_reqconfim_message)
+                            .positiveText(R.string.mom_diaalog_confirm)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     finish();
                                     overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                                    dialog.dismiss();
                                 }
                             })
-                            .create().show();
-
+                            .backgroundColor(getResources().getColor(R.color.mom_color1))
+                            .show();
                 }else{
                     Log.i(TAG,"실패1 =======================");
                     WaitingDialog.cancelWaitingDialog();
@@ -663,24 +675,28 @@ public class ApplyCoachActivity extends AppCompatActivity {
 
     //접수중 취소를 한다면...
     public void ApplyCancel(){
-        new DialogBuilder(ApplyCoachActivity.this)
-                //.setTitle("Title")
-                .setMessage(getString(R.string.coach_req_cancell))
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+        new MaterialDialog.Builder(this)
+                .titleColor(getResources().getColor(R.color.color6))
+                .title(R.string.mom_diaalog_title_append)
+                .content(R.string.coach_req_cancell)
+                .positiveText(R.string.mom_diaalog_confirm)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         deleteApply();
-                        WaitingDialog.showWaitingDialog(ApplyCoachActivity.this,false);
-                        dialog.dismiss();
                     }
                 })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                .negativeText(R.string.mom_diaalog_cancel)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                     }
                 })
-                .create().show();
+                .backgroundColor(getResources().getColor(R.color.mom_color1))
+                .show();
+
 
     }
 
@@ -795,18 +811,20 @@ public class ApplyCoachActivity extends AppCompatActivity {
                     ServerResult result = response.body();
                     WaitingDialog.cancelWaitingDialog();
 
-                    new DialogBuilder(ApplyCoachActivity.this)
-                            //.setTitle("Title")
-                            .setMessage(getString(R.string.coach_req_update_message))
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    new MaterialDialog.Builder(ApplyCoachActivity.this)
+                            .titleColor(getResources().getColor(R.color.color6))
+                            .title(R.string.mom_diaalog_alert)
+                            .content(R.string.coach_req_update_message)
+                            .positiveText(R.string.mom_diaalog_confirm)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     finish();
                                     overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                                    dialog.dismiss();
                                 }
                             })
-                            .create().show();
+                            .backgroundColor(getResources().getColor(R.color.mom_color1))
+                            .show();
                 }else{
                     WaitingDialog.cancelWaitingDialog();
                 }

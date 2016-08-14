@@ -61,7 +61,7 @@
             android:textStyle="bold"
             android:textSize="18sp"
             android:textColor="@color/mom_color1"
-            android:background="@color/color6"
+            android:background="@drawable/text_input_boder"
             android:layout_width="260dp"
             android:layout_height="32dp"
             android:singleLine="true"
