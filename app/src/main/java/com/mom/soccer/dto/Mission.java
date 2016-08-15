@@ -24,13 +24,6 @@ public class Mission implements Serializable{
     private String updatedate;
     private String change_creationdate;
     private String change_updatedate;
-    private int opencount;
-    private int getpoint;
-    private int escapepoint;
-    private int uid;
-    private int uploadcount;
-    private int missionpasscount;
-
 
     public Mission(){}
 
@@ -44,36 +37,26 @@ public class Mission implements Serializable{
         this.passgrade = passgrade;
     }
 
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
-    public int getOpencount() {
-        return opencount;
-    }
-
-    public void setOpencount(int opencount) {
-        this.opencount = opencount;
-    }
-
-    public int getGetpoint() {
-        return getpoint;
-    }
-
-    public void setGetpoint(int getpoint) {
-        this.getpoint = getpoint;
-    }
-
-    public int getEscapepoint() {
-        return escapepoint;
-    }
-
-    public void setEscapepoint(int escapepoint) {
-        this.escapepoint = escapepoint;
+    public Mission(int missionid, int categoryid, int typeid, String typename, int sequence, String missionname, String description, String precon, String videoaddr, String fullyoutubeaddr, String youtubeaddr, String enabled, String feetype, int grade, int passgrade, String creationdate, String updatedate, String change_creationdate, String change_updatedate) {
+        this.missionid = missionid;
+        this.categoryid = categoryid;
+        this.typeid = typeid;
+        this.typename = typename;
+        this.sequence = sequence;
+        this.missionname = missionname;
+        this.description = description;
+        this.precon = precon;
+        this.videoaddr = videoaddr;
+        this.fullyoutubeaddr = fullyoutubeaddr;
+        this.youtubeaddr = youtubeaddr;
+        this.enabled = enabled;
+        this.feetype = feetype;
+        this.grade = grade;
+        this.passgrade = passgrade;
+        this.creationdate = creationdate;
+        this.updatedate = updatedate;
+        this.change_creationdate = change_creationdate;
+        this.change_updatedate = change_updatedate;
     }
 
     public String getTypename() {
@@ -228,22 +211,6 @@ public class Mission implements Serializable{
         this.change_updatedate = change_updatedate;
     }
 
-    public int getUploadcount() {
-        return uploadcount;
-    }
-
-    public void setUploadcount(int uploadcount) {
-        this.uploadcount = uploadcount;
-    }
-
-    public int getMissionpasscount() {
-        return missionpasscount;
-    }
-
-    public void setMissionpasscount(int missionpasscount) {
-        this.missionpasscount = missionpasscount;
-    }
-
     @Override
     public String toString() {
         return "Mission{" +
@@ -266,12 +233,6 @@ public class Mission implements Serializable{
                 ", updatedate='" + updatedate + '\'' +
                 ", change_creationdate='" + change_creationdate + '\'' +
                 ", change_updatedate='" + change_updatedate + '\'' +
-                ", opencount=" + opencount +
-                ", getpoint=" + getpoint +
-                ", escapepoint=" + escapepoint +
-                ", uid=" + uid +
-                ", uploadcount=" + uploadcount +
-                ", missionpasscount=" + missionpasscount +
                 '}';
     }
 }

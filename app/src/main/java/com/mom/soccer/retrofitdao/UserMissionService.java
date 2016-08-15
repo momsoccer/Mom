@@ -36,10 +36,4 @@ public interface UserMissionService {
             @Query("usermissionid") int usermissionid,
             @Query("uid") int uid,
             @Query("youtubeaddr") String youTubeaddr);
-
-
-    //my 영상
-    @POST("/api/usermission/getumission")
-    Call<UserMission> getUserMission(@Body UserMission userMission);
-
 }

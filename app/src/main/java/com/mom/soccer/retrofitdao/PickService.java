@@ -2,9 +2,6 @@ package com.mom.soccer.retrofitdao;
 
 import com.mom.soccer.dto.MyBookMark;
 import com.mom.soccer.dto.ServerResult;
-import com.mom.soccer.dto.UserMission;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -25,7 +22,4 @@ public interface PickService {
 
     @GET("/api/mission/getPickCount")
     Call<ServerResult> getPickCount(@Query("uid") int uid, @Query("usermissionid") int usermissionid);
-
-    @POST("/api/mission/getMyBookMark")
-    Call<List<UserMission>> getMyBookMark(@Body MyBookMark myBookMark);
 }

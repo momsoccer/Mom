@@ -1,7 +1,6 @@
 package com.mom.soccer.retrofitdao;
 
 
-import com.mom.soccer.dto.FollowManage;
 import com.mom.soccer.dto.FriendApply;
 import com.mom.soccer.dto.ServerResult;
 
@@ -14,25 +13,7 @@ import retrofit2.http.POST;
  */
 public interface FriendService {
 
-    /****************************************
-     * 친구추가
-     ************/
     @POST("/api/common/reqFriend")
     public Call<ServerResult> reqFriend(@Body FriendApply friendApply);
 
-    @POST("/api/common/getFriendApply")
-    public Call<FriendApply> getFriendApply(@Body FriendApply friendApply);
-
-    /****************************************
-     * 팔로우...기능
-     ************/
-
-    @POST("/api/common/saveFollow")
-    public Call<ServerResult> saveFollow(@Body FollowManage followManage);
-
-    @POST("/api/common/deleteFollow")
-    public Call<ServerResult> deleteFollow(@Body FollowManage followManage);
-
-    @POST("/api/common/getFollowUserCount")
-    public Call<ServerResult> getFollowUserCount(@Body FollowManage followManage);
 }

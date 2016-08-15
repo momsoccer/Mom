@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:fillViewport="true"
     >
     <LinearLayout
         android:orientation="vertical"
@@ -86,7 +87,9 @@
             android:layout_marginRight="20dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            >
 
             <ImageButton
                 android:id="@+id/ac_user_mission_video_pickup"
@@ -122,13 +125,27 @@
                 android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <ImageButton
+                android:id="@+id/ac_user_mission_video_sending"
+                android:src="@drawable/sending"
+                android:layout_marginLeft="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/mom_color1"
+                />
+
         </LinearLayout>
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvSample"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="200dp" />
-
     </LinearLayout>
 </ScrollView>

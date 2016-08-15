@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
+<ScrollView
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_weight="1"
     android:layout_marginBottom="5dp"
@@ -183,7 +185,8 @@
                 android:orientation="horizontal"
                 android:id="@+id/linearLayout"
                 android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center_vertical"
@@ -222,9 +225,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
+
                 <Button
                     android:id="@+id/btnReqfeed"
-                    android:layout_marginLeft="65dp"
+                    android:layout_marginLeft="100dp"
                     android:text="@string/mission_feedback_btn"
                     android:textSize="10sp"
                     android:layout_width="75dp"

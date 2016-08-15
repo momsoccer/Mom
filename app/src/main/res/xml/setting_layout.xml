@@ -1,66 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <com.mom.soccer.common.MomPreference
+    <com.mom.soccer.common.MyPreferenceCategory>
+
+        <Preference
             android:key="userprofile"
-            android:title="@string/mom_setting_app_user"
-            >
-        </com.mom.soccer.common.MomPreference>
+            android:title="프로필">
+        </Preference>
 
-        <com.mom.soccer.common.MomPreference
-            android:key="mominfo"
-            android:title="@string/mom_setting_info"
-            >
-        </com.mom.soccer.common.MomPreference>
-
-
-        <com.mom.soccer.common.MomPreference
-            android:title="@string/mom_setting_upload">
+        <Preference
+            android:title="영상업로드 설정">
                  <intent android:targetClass="com.mom.soccer.common.SettingVideoUploadActivity"
             android:targetPackage="com.mom.soccer" />
-        </com.mom.soccer.common.MomPreference>
+        </Preference>
 
+        <Preference
+            android:key="keyappversion"
+            android:title="앱 버전 : 1.0.0" />
 
-        <com.mom.soccer.common.MomPreference
+        <Preference
+            android:key="keyagree"
+            android:title="약관 및 취급방침" />
+
+        <Preference
             android:key="keyhelp"
-            android:title="@string/mom_setting_help" />
+            android:title="도움말" />
+        <Preference
+            android:key="keycontact"
+            android:title="고객센터" />
 
-        <com.mom.soccer.common.MomPreference
+        <Preference
             android:key="keyMaildev"
-            android:title="@string/mom_setting_app_email" >
+            android:title="개발팀에게 메일을 보냅니다" >
             <intent
                 android:action="android.intent.action.SENDTO"
                 android:data="mailto:momsoccer@naver.com"
                 />
-        </com.mom.soccer.common.MomPreference>
+        </Preference>
 
-        <com.mom.soccer.common.MomPreference
+        <Preference
             android:key="keyevaluation"
-            android:title="@string/mom_setting_app_evaluation" >
+            android:title="앱 평가하기" >
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="market://details?id=com.app.soccerveteranv"
                 />
-        </com.mom.soccer.common.MomPreference>
+        </Preference>
 
-        <com.mom.soccer.common.MomSwitchPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="autoUpdate"
             android:switchTextOff="OFF"
             android:switchTextOn="ON"
-            android:title="@string/mom_setting_update" />
+            android:title="앱 자동 업데이트를 설정합니다" />
 
-        <com.mom.soccer.common.MomCheckBoxPreference
+        <CheckBoxPreference
             android:defaultValue="false"
             android:dependency="autoUpdate"
             android:key="useUpdateNofiti"
-            android:title="@string/mom_setting_update_alert" />
+            android:title="앱 자동 업데이트후 알림을 띄웁니다" />
 
-        <com.mom.soccer.common.MomRingtonePreference
+        <RingtonePreference
             android:defaultValue="content://settings/system/notification_sound"
             android:dependency="useUpdateNofiti"
             android:key="autoUpdate_ringtone"
             android:ringtoneType="notification"
             android:showSilent="true"
-            android:title="@string/mom_setting_update_alert_bell" />
+            android:title="알림 소리" />
+
+    </com.mom.soccer.common.MyPreferenceCategory>
+
+
+
 </PreferenceScreen>

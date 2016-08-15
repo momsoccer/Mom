@@ -71,7 +71,7 @@ public class TestGridActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
 
                     userMissionList = response.body();
-                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissionList,"YOU");
+                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissionList);
                     videoGridView.setAdapter(gridMissionAdapter);
                 }else{
 

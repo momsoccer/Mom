@@ -57,7 +57,9 @@ public class YoutubeFragment extends Fragment {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 if (!b) {
-                    youTubePlayer.cueVideo(addr);
+                    youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
+                    youTubePlayer.loadVideo(addr);
+                    youTubePlayer.play();
                 }
             }
 

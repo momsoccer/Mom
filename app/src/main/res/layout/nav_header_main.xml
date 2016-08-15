@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="125dp"
+    android:layout_height="120dp"
     android:layout_weight="1"
     android:orientation="vertical"
     android:background="@drawable/header_line"
@@ -14,7 +14,6 @@
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:gravity="center_vertical"
-        android:layout_marginLeft="10dp"
         >
 
         <LinearLayout
@@ -49,7 +48,7 @@
 
             <TextView
                 android:id="@+id/nav_header_username"
-                android:text="@string/nav_header_name"
+                android:text="유저 닉네임"
                 android:textStyle="bold"
                 android:textColor="@color/color6"
                 android:textSize="18sp"
@@ -60,11 +59,11 @@
 
             <TextView
                 android:id="@+id/nav_header_useremail"
-                android:text="@string/nav_header_email"
+                android:text="유저 이메일"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/line_color1"
-                android:textSize="13sp"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/color6"
+                android:textSize="16sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -74,50 +73,46 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_margin="5dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
+        android:layout_weight="1"
         >
 
         <TextView
-            android:text="@string/nav_header_assgin_coach"
+            android:text="지정코치 : "
             android:textColor="@color/color6"
-            android:textSize="13sp"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/nav_header_coachname"
-            android:text="@string/nav_header_not_assgin"
+            android:text="소속 전"
             android:textColor="@color/color6"
-            android:textSize="13sp"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             />
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        >
         <TextView
-            android:text="@string/nav_header_assgin_team"
+            android:layout_marginLeft="20dp"
+            android:text="팀 : "
             android:textColor="@color/color6"
-            android:textSize="13sp"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/nav_header_teamname"
-            android:text="@string/nav_header_not_assgin_team"
+            android:text="소속 전"
             android:textColor="@color/color6"
-            android:textSize="13sp"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
     </LinearLayout>
+
+
 
 </LinearLayout>

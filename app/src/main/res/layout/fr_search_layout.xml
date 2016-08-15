@@ -26,10 +26,10 @@
             <EditText
                 android:id="@+id/search_word"
                 android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="@color/mom_color1"
+                android:textSize="16sp"
+                android:textColor="@color/color6"
                 android:gravity="center_vertical"
-                android:background="@drawable/text_input_boder"
+                android:background="@drawable/inputtext"
                 android:layout_width="250dp"
                 android:layout_height="40dp"
                 android:layout_margin="3dp"

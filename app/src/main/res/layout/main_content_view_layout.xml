@@ -4,16 +4,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/mom_color1"
-    >
+    android:paddingRight="5px">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:background="@color/color2"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <LinearLayout
         android:id="@+id/layoutDots"
@@ -32,7 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -41,8 +38,8 @@
             >
 
             <ImageButton
-                android:layout_margin="7dp"
                 android:id="@+id/main_btn_drible"
+                android:layout_margin="1dp"
                 android:background="@drawable/main_page_drible"
                 android:layout_width="105dp"
                 android:layout_height="110dp"
@@ -50,7 +47,7 @@
                 android:onClick="OnClickMission"/>
 
             <ImageButton
-                android:layout_margin="7dp"
+                android:layout_margin="1dp"
                 android:id="@+id/main_btn_trapping"
                 android:background="@drawable/main_page_traping"
                 android:layout_width="105dp"
@@ -59,7 +56,7 @@
                 android:onClick="OnClickMission"/>
 
             <ImageButton
-                android:layout_margin="7dp"
+                android:layout_margin="1dp"
                 android:id="@+id/main_btn_lifting"
                 android:background="@drawable/main_page_lifting"
                 android:layout_width="105dp"
@@ -77,7 +74,7 @@
             >
 
             <ImageButton
-                android:layout_margin="7dp"
+                android:layout_margin="1dp"
                 android:id="@+id/main_btn_around"
                 android:background="@drawable/main_page_around"
                 android:layout_width="105dp"
@@ -87,7 +84,7 @@
                 />
 
             <ImageButton
-                android:layout_margin="7dp"
+                android:layout_margin="1dp"
                 android:id="@+id/main_btn_flick"
                 android:background="@drawable/main_page_flib"
                 android:layout_width="105dp"
@@ -96,7 +93,7 @@
                 android:onClick="OnClickMission"/>
 
             <ImageButton
-                android:layout_margin="7dp"
+                android:layout_margin="1dp"
                 android:id="@+id/main_btn_crosbar"
                 android:background="@drawable/main_page_cross"
                 android:layout_width="105dp"

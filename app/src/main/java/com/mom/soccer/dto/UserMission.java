@@ -7,12 +7,6 @@ public class UserMission implements Serializable {
 	private int usermissionid;
 	private int missionid;
 	private int uid;
-	private String username;
-	private String profileimgurl;
-	private String teamname;
-	private String bookmarkcount;
-	private String boardcount;
-	private int mycheck;
 	private String subject;
 	private String descroption;
 	private String uploadflag;
@@ -24,26 +18,24 @@ public class UserMission implements Serializable {
 	private int passgrade;      //미션클리어점수
 	private String creationdate;
 	private String change_creationdate;
-	private int queryRow;
-	private String orderbytype;  // 대량목록 조회시 sort 순서 해당 컬럼에 한해서 사용
-	private String missionname;
 
 	public UserMission(){}
 
-	public String getMissionname() {
-		return missionname;
-	}
-
-	public void setMissionname(String missionname) {
-		this.missionname = missionname;
-	}
-
-	public int getQueryRow() {
-		return queryRow;
-	}
-
-	public void setQueryRow(int queryRow) {
-		this.queryRow = queryRow;
+	public UserMission(int usermissionid, int missionid, int uid, String subject, String descroption, String uploadflag, String youtubeaddr, String passflag, String videoaddr, String filename, int grade, int passgrade, String creationdate, String change_creationdate) {
+		this.usermissionid = usermissionid;
+		this.missionid = missionid;
+		this.uid = uid;
+		this.subject = subject;
+		this.descroption = descroption;
+		this.uploadflag = uploadflag;
+		this.youtubeaddr = youtubeaddr;
+		this.passflag = passflag;
+		this.videoaddr = videoaddr;
+		this.filename = filename;
+		this.grade = grade;
+		this.passgrade = passgrade;
+		this.creationdate = creationdate;
+		this.change_creationdate = change_creationdate;
 	}
 
 	public String getFilename() {
@@ -158,74 +150,12 @@ public class UserMission implements Serializable {
 		this.passgrade = passgrade;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getProfileimgurl() {
-		return profileimgurl;
-	}
-
-	public void setProfileimgurl(String profileimgurl) {
-		this.profileimgurl = profileimgurl;
-	}
-
-	public String getTeamname() {
-		return teamname;
-	}
-
-	public void setTeamname(String teamname) {
-		this.teamname = teamname;
-	}
-
-	public String getBookmarkcount() {
-		return bookmarkcount;
-	}
-
-	public void setBookmarkcount(String bookmarkcount) {
-		this.bookmarkcount = bookmarkcount;
-	}
-
-	public int getMycheck() {
-		return mycheck;
-	}
-
-	public void setMycheck(int mycheck) {
-		this.mycheck = mycheck;
-	}
-
-	public String getBoardcount() {
-		return boardcount;
-	}
-
-	public void setBoardcount(String boardcount) {
-		this.boardcount = boardcount;
-	}
-
-	public String getOrderbytype() {
-		return orderbytype;
-	}
-
-	public void setOrderbytype(String orderbytype) {
-		this.orderbytype = orderbytype;
-	}
-
 	@Override
 	public String toString() {
 		return "UserMission{" +
 				"usermissionid=" + usermissionid +
 				", missionid=" + missionid +
 				", uid=" + uid +
-				", username='" + username + '\'' +
-				", profileimgurl='" + profileimgurl + '\'' +
-				", teamname='" + teamname + '\'' +
-				", bookmarkcount='" + bookmarkcount + '\'' +
-				", boardcount='" + boardcount + '\'' +
-				", mycheck=" + mycheck +
 				", subject='" + subject + '\'' +
 				", descroption='" + descroption + '\'' +
 				", uploadflag='" + uploadflag + '\'' +
@@ -237,9 +167,6 @@ public class UserMission implements Serializable {
 				", passgrade=" + passgrade +
 				", creationdate='" + creationdate + '\'' +
 				", change_creationdate='" + change_creationdate + '\'' +
-				", queryRow=" + queryRow +
-				", orderbytype='" + orderbytype + '\'' +
-				", missionname='" + missionname + '\'' +
 				'}';
 	}
 }

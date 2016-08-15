@@ -38,13 +38,19 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         });
 
         Preference keyhelp = (Preference)findPreference("keyhelp");
+        Preference keycontact = (Preference)findPreference("keycontact");
+        Preference keyagree = (Preference)findPreference("keyagree");
+        Preference keyappversion = (Preference)findPreference("keyappversion");
         Preference userprofile = (Preference)findPreference("userprofile");
-        Preference keyMaildev = (Preference)findPreference("keyMaildev");
-        Preference mominfo = (Preference)findPreference("mominfo");
 
         keyhelp.setOnPreferenceClickListener(this);
+        keycontact.setOnPreferenceClickListener(this);
+        keyagree.setOnPreferenceClickListener(this);
+        keyappversion.setOnPreferenceClickListener(this);
         userprofile.setOnPreferenceClickListener(this);
-        mominfo.setOnPreferenceClickListener(this);
+
+        Preference keyMaildev = (Preference)findPreference("keyMaildev");
+
     }
 
 
@@ -52,17 +58,21 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
     public boolean onPreferenceClick(Preference preference) {
         // 도움말 선택시
 
-        if(preference.getKey().equals("keyhelp")) {
+        if(preference.getKey().equals("keyappversion")) {
+            VeteranToast.makeToast(getApplicationContext(),"앱 버전 이력 스토리", Toast.LENGTH_SHORT).show();
+        }
+        else if(preference.getKey().equals("keyagree")) {
+            VeteranToast.makeToast(getApplicationContext(),"약관 및 취급방침 창으로 이동", Toast.LENGTH_SHORT).show();
+        }
+        else if(preference.getKey().equals("keyhelp")) {
             VeteranToast.makeToast(getApplicationContext(),"도움말 창으로 이동", Toast.LENGTH_SHORT).show();
             //Intent intent = new Intent(Setting.this, appHelp.class);
             //startActivityForResult(intent, 0);
+        }
+        else if(preference.getKey().equals("keycontact")) {
+            VeteranToast.makeToast(getApplicationContext(),"고객센터 연결", Toast.LENGTH_SHORT).show();
         }else if(preference.getKey().equals("userprofile")) {
             Intent intent = new Intent(this, UserProfile.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-        }else if(preference.getKey().equals("mominfo")) {
-            //버전정보,이용약관,개인정보 취급방지,회사소개
-            Intent intent = new Intent(this, MomInforActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         }

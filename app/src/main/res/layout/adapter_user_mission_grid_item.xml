@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="170dp"
-    android:layout_height="165dp"
-    android:background="@color/mom_color1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mom_color2"
+    android:gravity="center"
     >
+
 
     <com.google.android.youtube.player.YouTubeThumbnailView
         android:id="@+id/grid_youtybe_Thumbnail"
@@ -16,31 +18,9 @@
         android:layout_alignParentLeft="true"/>
 
     <ImageView
-        android:id="@+id/video_play_btn"
-        android:src="@drawable/video_play_btn_white"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginLeft="65dp"
-        android:layout_marginTop="40dp"
-        />
-
-    <TextView
-        android:id="@+id/tx_missionname"
-        android:text="덤덤덤덤덤덤덤덤덤덤덤덤덤덤덤덤덤덤덤덤"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="10dp"
-        android:textSize="8sp"
-        android:textColor="@color/color6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:maxLength="15"
-        />
-
-    <ImageView
         android:id="@+id/image_clear_marck"
-        android:layout_marginTop="3dp"
-        android:layout_marginLeft="145dp"
+        android:visibility="visible"
+        android:layout_marginLeft="150dp"
         android:layout_alignTop="@+id/grid_youtybe_Thumbnail"
         android:src="@drawable/ic_clear"
         android:layout_width="wrap_content"
@@ -49,8 +29,8 @@
 
     <LinearLayout
         android:layout_alignBottom="@+id/grid_youtybe_Thumbnail"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout">
@@ -69,7 +49,7 @@
 
             <TextView
                 android:id="@+id/tx_hart"
-                android:text="0"
+                android:text="20"
                 android:layout_marginLeft="5dp"
                 android:textSize="16sp"
                 android:textColor="@color/color6"
@@ -93,7 +73,7 @@
 
             <TextView
                 android:id="@+id/tx_comment"
-                android:text="0"
+                android:text="20"
                 android:layout_marginLeft="5dp"
                 android:textSize="16sp"
                 android:textColor="@color/color6"
@@ -104,7 +84,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_below="@+id/grid_youtybe_Thumbnail"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
@@ -112,7 +92,7 @@
 
         <TextView
             android:text="@string/grid_user_name_title"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/color6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -120,7 +100,7 @@
         <TextView
             android:id="@+id/tx_ninck_name"
             android:text="유저명"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/color6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -129,18 +109,18 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:layout_below="@+id/grid_youtybe_Thumbnail"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         >
 
         <TextView
             android:id="@+id/tx_subject"
             android:text="영상 제목 입니다 안녕하세요"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textColor="@color/color6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

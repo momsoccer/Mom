@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import com.mom.soccer.R;
 import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.bottommenu.SearchActivity;
-import com.mom.soccer.common.SettingActivity;
 import com.mom.soccer.momactivity.MomMainActivity;
 
 import butterknife.Bind;
@@ -57,7 +56,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,MomMainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
                 if (context instanceof Activity) {
                     ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
@@ -69,8 +68,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,MyPageActivity.class);
-                intent.putExtra("pageflag","me");
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
                 if (context instanceof Activity) {
                     ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
@@ -88,7 +86,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,SearchActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //스택에 쌓이는 것을 방지 한다. 필수
                 context.startActivity(intent);
                 if (context instanceof Activity) {
                     ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
@@ -99,12 +97,6 @@ public class TabNaviComplaintBase extends RelativeLayout {
         imageBtnSetup.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context,SettingActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                context.startActivity(intent);
-                if (context instanceof Activity) {
-                    ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
-                }
             }
         });
 

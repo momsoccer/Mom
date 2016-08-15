@@ -20,61 +20,45 @@ public class Instructor {
     private int commontokenid;
     private String serialnumber;
     private String fcmtoken;
-    //private Date creationdate;
+    private String creationdate;
     private String change_creationdate;
-    private int uid;
-    private String teamname;
-    private String emblem;
-    //private Date teamcreationdate;
-    private String change_teamcreationdate;
-
-    private int queryRow;
-    private String orderbytype;  // 대량목록 조회시 sort 순서 해당 컬럼에 한해서 사용
 
     public Instructor(){}
 
-    @Override
-    public String toString() {
-        return "Instructor{" +
-                "instructorid=" + instructorid +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", profileimgurl='" + profileimgurl + '\'' +
-                ", profile='" + profile + '\'' +
-                ", description='" + description + '\'' +
-                ", phone='" + phone + '\'' +
-                ", location=" + location +
-                ", pointhistoryid=" + pointhistoryid +
-                ", feedbackflag='" + feedbackflag + '\'' +
-                ", apppushflag='" + apppushflag + '\'' +
-                ", commontokenid=" + commontokenid +
-                ", serialnumber='" + serialnumber + '\'' +
-                ", fcmtoken='" + fcmtoken + '\'' +
-                ", change_creationdate='" + change_creationdate + '\'' +
-                ", uid=" + uid +
-                ", teamname='" + teamname + '\'' +
-                ", emblem='" + emblem + '\'' +
-                ", change_teamcreationdate='" + change_teamcreationdate + '\'' +
-                ", queryRow=" + queryRow +
-                ", orderbytype='" + orderbytype + '\'' +
-                '}';
+    public Instructor(int instructorid, String email, String password, String name, String profileimgurl, String profile, String description, String phone, int location, int pointhistoryid, String feedbackflag, String apppushflag, int commontokenid, String serialnumber, String fcmtoken, String creationdate, String change_creationdate) {
+        this.instructorid = instructorid;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.profileimgurl = profileimgurl;
+        this.profile = profile;
+        this.description = description;
+        this.phone = phone;
+        this.location = location;
+        this.pointhistoryid = pointhistoryid;
+        this.feedbackflag = feedbackflag;
+        this.apppushflag = apppushflag;
+        this.commontokenid = commontokenid;
+        this.serialnumber = serialnumber;
+        this.fcmtoken = fcmtoken;
+        this.creationdate = creationdate;
+        this.change_creationdate = change_creationdate;
     }
 
-    public int getQueryRow() {
-        return queryRow;
+    public String getProfileimgurl() {
+        return profileimgurl;
     }
 
-    public void setQueryRow(int queryRow) {
-        this.queryRow = queryRow;
+    public void setProfileimgurl(String profileimgurl) {
+        this.profileimgurl = profileimgurl;
     }
 
-    public String getOrderbytype() {
-        return orderbytype;
+    public int getCommontokenid() {
+        return commontokenid;
     }
 
-    public void setOrderbytype(String orderbytype) {
-        this.orderbytype = orderbytype;
+    public void setCommontokenid(int commontokenid) {
+        this.commontokenid = commontokenid;
     }
 
     public int getInstructorid() {
@@ -93,28 +77,12 @@ public class Instructor {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getProfileimgurl() {
-        return profileimgurl;
-    }
-
-    public void setProfileimgurl(String profileimgurl) {
-        this.profileimgurl = profileimgurl;
     }
 
     public String getProfile() {
@@ -173,12 +141,28 @@ public class Instructor {
         this.apppushflag = apppushflag;
     }
 
-    public int getCommontokenid() {
-        return commontokenid;
+    public String getPassword() {
+        return password;
     }
 
-    public void setCommontokenid(int commontokenid) {
-        this.commontokenid = commontokenid;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getCreationdate() {
+        return creationdate;
+    }
+
+    public void setCreationdate(String creationdate) {
+        this.creationdate = creationdate;
+    }
+
+    public String getChange_creationdate() {
+        return change_creationdate;
+    }
+
+    public void setChange_creationdate(String change_creationdate) {
+        this.change_creationdate = change_creationdate;
     }
 
     public String getSerialnumber() {
@@ -197,43 +181,26 @@ public class Instructor {
         this.fcmtoken = fcmtoken;
     }
 
-    public String getChange_creationdate() {
-        return change_creationdate;
-    }
-
-    public void setChange_creationdate(String change_creationdate) {
-        this.change_creationdate = change_creationdate;
-    }
-
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
-    public String getTeamname() {
-        return teamname;
-    }
-
-    public void setTeamname(String teamname) {
-        this.teamname = teamname;
-    }
-
-    public String getEmblem() {
-        return emblem;
-    }
-
-    public void setEmblem(String emblem) {
-        this.emblem = emblem;
-    }
-
-    public String getChange_teamcreationdate() {
-        return change_teamcreationdate;
-    }
-
-    public void setChange_teamcreationdate(String change_teamcreationdate) {
-        this.change_teamcreationdate = change_teamcreationdate;
+    @Override
+    public String toString() {
+        return "Instructor{" +
+                "instructorid=" + instructorid +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", profileimgurl='" + profileimgurl + '\'' +
+                ", profile='" + profile + '\'' +
+                ", description='" + description + '\'' +
+                ", phone='" + phone + '\'' +
+                ", location=" + location +
+                ", pointhistoryid=" + pointhistoryid +
+                ", feedbackflag='" + feedbackflag + '\'' +
+                ", apppushflag='" + apppushflag + '\'' +
+                ", commontokenid=" + commontokenid +
+                ", serialnumber='" + serialnumber + '\'' +
+                ", fcmtoken='" + fcmtoken + '\'' +
+                ", creationdate='" + creationdate + '\'' +
+                ", change_creationdate='" + change_creationdate + '\'' +
+                '}';
     }
 }

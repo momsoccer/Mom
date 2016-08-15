@@ -162,12 +162,11 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
             Log.d(TAG, "업로드가 가능하지 않습니다. 토큰이 없습니다");
             startActivityForResult(e.getIntent(), REQUEST_ACCOUNT_PICKER);
             uploadPossibility = false;
-        }catch (IllegalArgumentException e){
-            Log.d(TAG, "IllegalArgumentException 에러 발생......");
-            Auth.accountName = user.getGoogleemail();
+
         } catch (Exception e) {
             e.getMessage();
             e.printStackTrace();
+
         }
 
     }

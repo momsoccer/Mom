@@ -1,15 +1,12 @@
 package com.mom.soccer.retrofitdao;
 
 
-import com.mom.soccer.dataDto.PointTrVo;
 import com.mom.soccer.dto.CpBalanceHeader;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.SpBalanceHeader;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 
@@ -31,9 +28,4 @@ public interface PointService {
             @Query("pointtype") String pointType,
             @Query("lang") String lang
     );
-
-
-    //미션 오픈
-    @POST("/api/user/pointTr")
-    Call<ServerResult> pointTr(@Body PointTrVo pointTrVo);
 }

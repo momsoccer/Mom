@@ -1,6 +1,7 @@
 package com.mom.soccer.retropitutil;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -9,6 +10,11 @@ import com.mom.soccer.common.Common;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.User;
 
+import java.io.IOException;
+
+import okhttp3.Interceptor;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -84,15 +90,6 @@ public class ServiceGenerator {
 
         Log.d(TAG,"레트로핏 서비스 호출(유저인증용) =======================================");
 
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-
-
-        //로그 인터셉터
-        //httpClient.addInterceptor(loggingInterceptor);
-
-        /* 잠시막는다
         if (user.getUseremail() != null && user.getPassword() != null) {
 
             String credentials = null;
@@ -111,21 +108,14 @@ public class ServiceGenerator {
             httpClient.addInterceptor(new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
-
                     Request original = chain.request();
-                    Request request = null;
-                    try{
-                        Request.Builder requestBuilder = original.newBuilder()
-                                .header("Authorization", basic)
-                                .header("Accept", "application/json")
-                                .method(original.method(), original.body());
 
-                        request = requestBuilder.build();
+                    Request.Builder requestBuilder = original.newBuilder()
+                            .header("Authorization", basic)
+                            .header("Accept", "application/json")
+                            .method(original.method(), original.body());
 
-                    }catch (Exception e){
-                        request = original.newBuilder().build();
-                    }
-
+                    Request request = requestBuilder.build();
                     return chain.proceed(request);
                 }
             });
@@ -147,8 +137,6 @@ public class ServiceGenerator {
 
          HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
          loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            */
-
 
          //로그 인터셉터
          //httpClient.addInterceptor(loggingInterceptor);
@@ -188,7 +176,7 @@ public class ServiceGenerator {
                         .baseUrl(API_BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create(gson))
                 ;
-/*
+
         Log.d(TAG,"레트로핏 서비스 호출(강사인증용) =======================================");
 
         String adminEmail = instructor.getEmail();
@@ -226,7 +214,7 @@ public class ServiceGenerator {
 
             Common.NETWORK_COOKIE = true;
         }
-        */
+
         /*****************************************************************************
          HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
          loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

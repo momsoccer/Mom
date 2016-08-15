@@ -1,23 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
 
     defaultConfig {
         applicationId "com.mom.soccer"
-        minSdkVersion 16
-        targetSdkVersion 23
+        minSdkVersion 19
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
     }
-
-    dexOptions {
-        jumboMode true
-        javaMaxHeapSize "4g"
-    }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -57,17 +50,11 @@ configurations {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-/*    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:support-v4:23.2.1'
-    compile 'com.android.support:design:23.2.1'*/
-
-    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.android.support:design:23.2.1'
-
     compile 'com.android.support:cardview-v7:23.2.1'
-    compile 'com.android.support:recyclerview-v7:+'
-    compile 'jp.wasabeef:recyclerview-animators:2.2.3'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
 
     //butterknife
     compile 'com.jakewharton:butterknife:7.0.1'
@@ -114,9 +101,6 @@ dependencies {
 
     //diarlog
     compile 'com.github.d-max:spots-dialog:0.4@aar'
-    compile 'com.android.support:multidex:1.0.0'
-
-    compile 'com.afollestad.material-dialogs:commons:0.9.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
