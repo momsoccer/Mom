@@ -11,13 +11,14 @@ import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.dto.Board;
+import com.mom.soccer.holder.BoardItemViewHolder;
 
 import java.util.List;
 
 /**
  * Created by sungbo on 2016-08-14.
  */
-public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemViewHoder> {
+public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemViewHolder> {
 
     private static final String TAG = "BoardItemAdapter";
     private Context context;
@@ -29,15 +30,15 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemViewHoder> {
     }
 
     @Override
-    public BoardItemViewHoder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BoardItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.board_list_item_layout, parent, false);
 
-        return new BoardItemViewHoder(layout);
+        return new BoardItemViewHolder(layout);
     }
 
     @Override
-    public void onBindViewHolder(BoardItemViewHoder holder, int i) {
+    public void onBindViewHolder(BoardItemViewHolder holder, int i) {
 
         Log.i(TAG,"보더 리스트 =============================" + i );
 

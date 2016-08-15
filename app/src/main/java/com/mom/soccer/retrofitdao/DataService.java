@@ -1,5 +1,6 @@
 package com.mom.soccer.retrofitdao;
 
+import com.mom.soccer.dataDto.InsInfoVo;
 import com.mom.soccer.dataDto.MainTypeListVo;
 import com.mom.soccer.dataDto.UserRangkinVo;
 
@@ -21,6 +22,8 @@ public interface DataService {
     @POST("/api/data/getTotalRanking")
     Call<List<UserRangkinVo>> getTotalRanking(@Body UserRangkinVo userRangkinVo);
 
-
+    //선생님 피드빽 신청할때 필요한 리스트
+    @POST("/api/data/getInsInfoList")
+    Call<List<InsInfoVo>> getInsInfoList(@Body InsInfoVo v);
 
 }

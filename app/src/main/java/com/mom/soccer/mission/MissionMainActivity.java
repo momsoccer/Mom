@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
@@ -32,6 +33,7 @@ import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.fragment.YoutubeSeedMissionFragment;
+import com.mom.soccer.ins.FeedBackInsListActivity;
 import com.mom.soccer.retrofitdao.FavoriteMissionService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
@@ -51,6 +53,8 @@ public class MissionMainActivity extends AppCompatActivity {
 
     private static final String TAG = "MissionMainActivity";
     private static final int RECOVERY_DIALOG_REQUEST = 1;
+    private static final int REQUEST_FEED_BACK_CODE = 201;
+
     private int seedMissionId = 0;
 
     private User user = new User();
@@ -136,6 +140,11 @@ public class MissionMainActivity extends AppCompatActivity {
     UserMission qUserMission = new UserMission();
     Intent intent;
     private static int UPLOAD_NOTIFICATION_ID = 1001;
+
+    //피드백, 심사요청
+    String[] requestMittion = {"팀 강사에게","다른 강사선택","Mom에 요청"};
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -244,7 +253,11 @@ public class MissionMainActivity extends AppCompatActivity {
                     }
                 }
                 break;
-
+            case REQUEST_FEED_BACK_CODE:
+                if (resultCode == RESULT_OK) {
+                    Log.i(TAG,"값이 왔습니다 : "+ data.getStringExtra("req_ins_id"));
+                }
+                break;
         }
     }
 
@@ -545,36 +558,41 @@ public class MissionMainActivity extends AppCompatActivity {
 
     public void reqBtnClick(View v){
 
-        String[] strings = {"팀 강사에게","다른 강사선택","Mom에 요청"};
+        String[] strings = {getString(R.string.user_mission_team_feedback_request),
+                            getString(R.string.user_mission_team_feedback_another_request),
+                            getString(R.string.user_mission_team_feedback_mom_request)};
 
         switch (v.getId()){
             case R.id.btnReqfeed:
+                new MaterialDialog.Builder(this)
+                        .title(R.string.mom_diaalog_feedback_title)
+                        .titleColor(getResources().getColor(R.color.color6))
+                        .items(strings)
+                        .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() //첫번째 인수는 기본 선택
+                        {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+
+                                if(which==0){
+                                    VeteranToast.makeToast(getApplicationContext(),"준비중입니다",Toast.LENGTH_SHORT).show();
+                                }else if(which==1){
+                                    Intent intent = new Intent(MissionMainActivity.this,FeedBackInsListActivity.class);
+                                    startActivityForResult(intent,REQUEST_FEED_BACK_CODE);
+                                }else if(which==2){
+                                    VeteranToast.makeToast(getApplicationContext(),"준비중입니다",Toast.LENGTH_SHORT).show();
+                                }
+
+                                return true;
+                            }
+                        })
+                        .positiveText(R.string.mom_diaalog_confirm)
+                        .negativeText(R.string.mom_diaalog_cancel)
+                        .show();
                 break;
             case R.id.btnReqEval:
                 break;
         }
     }
 
-/*    @OnClick(R.id.ic_tree)
-    public void showSingleChoice() {
-        Log.i(TAG,"하이");
-
-        String[] strings = {"팀 강사에게","다른 강사선택","Mom에 요청"};
-
-        new MaterialDialog.Builder(this)
-                .title(R.string.mom_diaalog_feedback_title)
-                .titleColor(getResources().getColor(R.color.color6))
-                .items(strings)
-                .itemsCallbackSingleChoice(2, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-
-                        Log.i(TAG,"선택하신 목록은 : "+text);
-                        return true; // allow selection
-                    }
-                })
-                .positiveText(R.string.mom_diaalog_confirm)
-                .show();
-    }*/
 
 }

@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="5dp"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/teamimage"
+                        android:src="@drawable/team_flag"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:background="@color/color2"
+                        />
+
+                    <ImageView
+                        android:id="@+id/insimage"
+                        android:src="@drawable/userimg"
+                        android:layout_marginTop="-45dp"
+                        android:layout_marginLeft="75dp"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:background="@color/bg_screen3"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:text="@string/ins_text_name"
+                            android:textSize="10sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="@color/color6"
+                            android:text="조관우"
+                            android:textSize="10sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:textColor="@color/color6"
+                            android:text="@string/ins_text_teamname"
+                            android:textSize="10sp"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:textColor="@color/color6"
+                            android:id="@+id/teamname"
+                            android:layout_marginLeft="10dp"
+                            android:text="조관우"
+                            android:textSize="10sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:textColor="@color/color6"
+                            android:text="@string/ins_text_teammember_count"
+                            android:textSize="10sp"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:textColor="@color/color6"
+                            android:id="@+id/teammembercount"
+                            android:layout_marginLeft="10dp"
+                            android:text="20명"
+                            android:textSize="10sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:textColor="@color/color6"
+                            android:text="@string/ins_text_feed_q"
+                            android:textSize="10sp"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:textColor="@color/color6"
+                            android:id="@+id/questioncount"
+                            android:layout_marginLeft="10dp"
+                            android:text="120"
+                            android:textSize="10sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:textColor="@color/color6"
+                            android:text="@string/ins_text_feed_a"
+                            android:textSize="10sp"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:textColor="@color/color6"
+                            android:id="@+id/answercount"
+                            android:layout_marginLeft="10dp"
+                            android:text="120"
+                            android:textSize="10sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:textColor="@color/color6"
+                            android:text="@string/ins_text_feed_e"
+                            android:textSize="10sp"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:textColor="@color/color6"
+                            android:id="@+id/estimation"
+                            android:layout_marginLeft="10dp"
+                            android:text="20"
+                            android:textSize="10sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:textColor="@color/color6"
+                            android:text="@string/ins_text_feed_v"
+                            android:textSize="10sp"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:textColor="@color/color6"
+                            android:id="@+id/insvidecount"
+                            android:layout_marginLeft="10dp"
+                            android:text="20"
+                            android:textSize="10sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textColor="@color/color6"
+                    android:text="*피드백 포인트 정보"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:layout_width="110dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:textColor="@color/color6"
+                        android:text="@string/ins_text_p_pub_video"
+                        android:textSize="10sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:textColor="@color/color6"
+                        android:id="@+id/pubvideopoint"
+                        android:layout_marginLeft="10dp"
+                        android:text="1000P"
+                        android:textSize="10sp"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:textColor="@color/color6"
+                        android:text="@string/ins_text_p_pub_word"
+                        android:textSize="10sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:textColor="@color/color6"
+                        android:id="@+id/pubwordpoint"
+                        android:layout_marginLeft="10dp"
+                        android:text="1000P"
+                        android:textSize="10sp"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:textColor="@color/color6"
+                        android:text="@string/ins_text_p_team_video"
+                        android:textSize="10sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:textColor="@color/color6"
+                        android:id="@+id/teamvideopoint"
+                        android:layout_marginLeft="10dp"
+                        android:text="1000P"
+                        android:textSize="10sp"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:textColor="@color/color6"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:textColor="@color/color6"
+                        android:text="@string/ins_text_p_team_word"
+                        android:textSize="10sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:textColor="@color/color6"
+                        android:id="@+id/teamwordpoint"
+                        android:layout_marginLeft="10dp"
+                        android:text="1000P"
+                        android:textSize="10sp"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                >
+
+                <LinearLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:textColor="@color/color6"
+                        android:text="@string/ins_text_p_pub_eval"
+                        android:textSize="10sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:textColor="@color/color6"
+                        android:id="@+id/pubpasspoint"
+                        android:layout_marginLeft="10dp"
+                        android:text="1000P"
+                        android:textSize="10sp"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:textColor="@color/color6"
+                        android:text="@string/ins_text_p_team_eval"
+                        android:textSize="10sp"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:textColor="@color/color6"
+                        android:id="@+id/teampasspoint"
+                        android:layout_marginLeft="10dp"
+                        android:text="1000P"
+                        android:textSize="10sp"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

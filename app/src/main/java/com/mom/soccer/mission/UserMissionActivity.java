@@ -1,6 +1,5 @@
 package com.mom.soccer.mission;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -316,12 +315,11 @@ public class UserMissionActivity extends AppCompatActivity {
                     rvSample.setLayoutManager(new LinearLayoutManager(UserMissionActivity.this));
 
                     AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
-                    alphaAdapter.setDuration(1000);
+                    alphaAdapter.setDuration(500);
                     rvSample.setAdapter(alphaAdapter);
 
                     WaitingDialog.cancelWaitingDialog();
                 }else{
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                     WaitingDialog.cancelWaitingDialog();
                 }
             }
@@ -329,7 +327,6 @@ public class UserMissionActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Board>> call, Throwable t) {
                 WaitingDialog.cancelWaitingDialog();
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }
         });
@@ -351,10 +348,7 @@ public class UserMissionActivity extends AppCompatActivity {
     //관심 영상 체크 상태 확인
     public void initialPickCheck(){
 
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(this, "",getString(R.string.network_get_list), true);
-        dialog.show();
-
+        WaitingDialog.showWaitingDialog(this,false);
 
         pickService = ServiceGenerator.createService(PickService.class, this, user);
         Call<ServerResult> call = pickService.getPickCount(user.getUid(),userMission.getUsermissionid());
@@ -370,19 +364,19 @@ public class UserMissionActivity extends AppCompatActivity {
                         pickUpFlag="Y";
                         imageButton_pickup.setImageResource(R.drawable.ic_hart_red);
                     }
-                    dialog.dismiss();
+                    WaitingDialog.cancelWaitingDialog();
                 }else{
                     //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
-                    dialog.dismiss();
+                    WaitingDialog.cancelWaitingDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<ServerResult> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
                 Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
                 //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
                 t.printStackTrace();
-                dialog.dismiss();
             }
         });
     }

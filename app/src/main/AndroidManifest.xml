@@ -161,10 +161,14 @@
             android:name=".besideactivity.StudentMainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".common.MomInforActivity"
+        <activity
+            android:name=".common.MomInforActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ins.FeedBackInsListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            ></activity>
+            />
     </application>
 
 </manifest>

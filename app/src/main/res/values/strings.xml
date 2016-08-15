@@ -119,6 +119,7 @@
     <string name="toolbar_user_missionview_page">미션영상</string>
     <string name="toolbar_setup">설정 및 관리</string>
     <string name="toolbar_userprofile">프로파일</string>
+    <string name="toolbar_feedback_page">피드백요청</string>
 
     <string name="toolbar_ranking_all">랭킹 전체</string>
     <string name="toolbar_ranking_friend">랭킹 친구</string>
@@ -316,5 +317,24 @@
     <string name="mom_setting_app_email">개발팀에게 메일 보내기</string>
     <string name="mom_setting_app_user">개인프로필</string>
 
+    <!--강사정보-->
+    <string name="ins_text_name">1.강사이름</string>
+    <string name="ins_text_teamname">2.팀명</string>
+    <string name="ins_text_teammember_count">3.팀 회원수</string>
+    <string name="ins_text_feed_q">4.피드백 질문</string>
+    <string name="ins_text_feed_a">5.피드백 답변</string>
+    <string name="ins_text_feed_e">6.답변평가(5점 만점)</string>
+    <string name="ins_text_feed_v">7.강사등록 강의</string>
+
+    <string name="ins_text_p_pub_video">기본-영상 피드백</string>
+    <string name="ins_text_p_pub_word">기본-문자 피드백</string>
+    <string name="ins_text_p_team_video">팀원-영상 피드백</string>
+    <string name="ins_text_p_team_word">팀원-문자 피드백</string>
+    <string name="ins_text_p_pub_eval">기본 심사비</string>
+    <string name="ins_text_p_team_eval">팀원 심사비</string>
+
+    <string name="user_mission_team_feedback_request">팀강사분</string>
+    <string name="user_mission_team_feedback_another_request">다른 강사분</string>
+    <string name="user_mission_team_feedback_mom_request">Mom</string>
 
 </resources>

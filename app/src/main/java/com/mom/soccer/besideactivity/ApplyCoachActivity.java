@@ -377,7 +377,6 @@ public class ApplyCoachActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        //홈버튼클릭시
         if (id == android.R.id.home){
             finish();
             return true;
