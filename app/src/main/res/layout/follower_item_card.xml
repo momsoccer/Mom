@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/followr_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="5dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_margin="3dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:gravity="center"
+                >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/img"
+                        android:src="@drawable/team_flag"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@color/color2"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    >
+
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:text="@string/f_layout_username"
+                            android:textSize="10sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:id="@+id/username"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="@color/color6"
+                            android:text="Smith"
+                            android:textSize="10sp"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent"
+                            android:maxLength="12"
+                            android:maxLines="1"
+                            />
+
+                        <TextView
+                            android:text="@string/f_layout_m_count"
+                            android:textSize="10sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:id="@+id/missioncount"
+                            android:textColor="@color/color6"
+                            android:text="100"
+                            android:textSize="10sp"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:text="@string/f_layout_teamname"
+                            android:textSize="10sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:id="@+id/teamname"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="@color/color6"
+                            android:text="kaka FC"
+                            android:textSize="10sp"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent"
+                            android:maxLength="12"
+                            android:maxLines="1"
+                            />
+
+                        <TextView
+                            android:text="@string/f_layout_level"
+                            android:textSize="10sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:id="@+id/level"
+                            android:textColor="@color/color6"
+                            android:text="Lv.7"
+                            android:textSize="10sp"
+                            android:layout_width="30dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:id="@+id/score"
+                            android:textColor="@color/color6"
+                            android:text="1,520"
+                            android:textSize="10sp"
+                            android:layout_width="30dp"
+                            android:layout_height="match_parent" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:text="@string/f_layout_fw_count"
+                            android:textSize="10sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:id="@+id/followercount"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="@color/color6"
+                            android:text="110"
+                            android:textSize="10sp"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:text="@string/f_layout_fi_count"
+                            android:textSize="10sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:id="@+id/followingcount"
+                            android:textColor="@color/color6"
+                            android:text="74"
+                            android:textSize="10sp"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:text="@string/f_layout_mycom"
+                            android:textSize="10sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:id="@+id/mecomment"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="@color/color6"
+                            android:text="20"
+                            android:textSize="10sp"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:text="@string/f_layout_usercom"
+                            android:textSize="10sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:id="@+id/usercomment"
+                            android:textColor="@color/color6"
+                            android:text="100"
+                            android:textSize="10sp"
+                            android:layout_width="60dp"
+                            android:layout_height="match_parent" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

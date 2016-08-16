@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -128,6 +129,9 @@ public class MissionMainActivity extends AppCompatActivity {
     @Bind(R.id.li_no_data_found)
     LinearLayout li_no_data_found;
 
+    @Bind(R.id.scroll_layout)
+    ScrollView scroll_layout;
+
     /**************************************************
      * google uplaod define
      **********************/
@@ -234,6 +238,10 @@ public class MissionMainActivity extends AppCompatActivity {
         NotificationManager nm =
                 (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         nm.cancel(UPLOAD_NOTIFICATION_ID);
+
+        //스크롤 강제로 0,0
+        scroll_layout.setX(0);
+        scroll_layout.setY(0);
     }
 
 

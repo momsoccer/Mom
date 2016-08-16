@@ -25,12 +25,14 @@ import com.mom.soccer.board.BoardMainActivity;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.Board;
+import com.mom.soccer.dto.FollowManage;
 import com.mom.soccer.dto.MyBookMark;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.fragment.YoutubeFragment;
 import com.mom.soccer.retrofitdao.BoardService;
+import com.mom.soccer.retrofitdao.FollowService;
 import com.mom.soccer.retrofitdao.PickService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
@@ -64,7 +66,7 @@ public class UserMissionActivity extends AppCompatActivity {
     TextView text_teamName;
 
     @Bind(R.id.btn_fllow)
-    Button btnFllow;
+    Button btn_fllow;
 
     @Bind(R.id.ac_user_mission_video_pickup)
     ImageButton imageButton_pickup;
@@ -94,6 +96,7 @@ public class UserMissionActivity extends AppCompatActivity {
     BoardItemAdapter adapter;
     List<Board> boardList = new ArrayList<>();
 
+    private static int followingCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,9 +151,9 @@ public class UserMissionActivity extends AppCompatActivity {
         }
 
         if(user.getUid() == userMission.getUid()){
-            btnFllow.setVisibility(View.GONE);
+            btn_fllow.setVisibility(View.GONE);
         }else{
-            btnFllow.setVisibility(View.VISIBLE);
+            btn_fllow.setVisibility(View.VISIBLE);
         }
 
         //RecyclerView apply
@@ -258,6 +261,8 @@ public class UserMissionActivity extends AppCompatActivity {
         super.onStart();
         Log.d(TAG,"onStart() ============================================ ");
 
+        WaitingDialog.showWaitingDialog(this,false);
+
         UserMissionService userMissionService = ServiceGenerator.createService(UserMissionService.class,this,user);
         UserMission quserMission = new UserMission();
         quserMission.setUsermissionid(userMission.getUsermissionid());
@@ -266,25 +271,30 @@ public class UserMissionActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UserMission> call, Response<UserMission> response) {
                 if(response.isSuccessful()){
+                    WaitingDialog.cancelWaitingDialog();
                     userMission = response.body();
                     textView_commentCount.setText(userMission.getBoardcount());
+
                 }else{
-                    //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
+                    WaitingDialog.cancelWaitingDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<UserMission> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
                 Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
-                //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
                 t.printStackTrace();
             }
         });
 
+        //팔로우
+        followMethod("getcount");
+
+        //좋아요체크
         initialPickCheck();
 
-        //보더 리스트
-
+        //댓글 리스트
         WaitingDialog.showWaitingDialog(this,false);
 
         BoardService boardService = ServiceGenerator.createService(BoardService.class,this,user);
@@ -391,6 +401,97 @@ public class UserMissionActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
     }
 
+    //팔로잉 관련 트랜잭션
+    @OnClick(R.id.btn_fllow)
+    public void followBtn(){
 
+        Log.i(TAG,"팔로우 상태는 : " + followingCount);
+
+        if(followingCount==0){
+            followMethod("save");
+        }else{
+            followMethod("cancel");
+        }
+    }
+
+    public void followMethod(String followType){
+
+        WaitingDialog.showWaitingDialog(this,false);
+        final FollowManage manage = new FollowManage();
+        manage.setUid(user.getUid());
+        manage.setFollowuid(userMission.getUid());
+
+        FollowService service = ServiceGenerator.createService(FollowService.class,this,user);
+
+        if(followType.equals("save")){
+            Call<ServerResult> c = service.saveFollow(manage);
+            c.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                    if(response.isSuccessful()){
+                        WaitingDialog.cancelWaitingDialog();
+                        btn_fllow.setText(getString(R.string.app_fllow_cancel));
+                        VeteranToast.makeToast(getApplicationContext(),userMission.getUsername()+getString(R.string.follow_pickup),Toast.LENGTH_SHORT).show();
+                        followingCount = 1;
+                    }else{
+                        WaitingDialog.cancelWaitingDialog();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
+                }
+            });
+        }else if(followType.equals("cancel")){
+            Call<ServerResult> c = service.deleteFollow(manage);
+            c.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                    if(response.isSuccessful()){
+                        WaitingDialog.cancelWaitingDialog();
+                        btn_fllow.setText(getString(R.string.app_fllow));
+                        VeteranToast.makeToast(getApplicationContext(),userMission.getUsername()+getString(R.string.follow_pickup_cancel),Toast.LENGTH_SHORT).show();
+                        followingCount = 0;
+                    }else{
+                        WaitingDialog.cancelWaitingDialog();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
+                }
+            });
+        }else if(followType.equals("getcount")){
+            Call<ServerResult> c = service.getFollowUserCount(manage);
+            c.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                    if(response.isSuccessful()){
+                        ServerResult result = response.body();
+                        followingCount = result.getCount();
+
+                        if(followingCount==0){
+                            //팔로우 유저가 아닐경우
+                            btn_fllow.setText(getString(R.string.app_fllow));
+                        }else{
+                            //팔로우 유저일 경우
+                            btn_fllow.setText(getString(R.string.app_fllow_cancel));
+                        }
+
+                        WaitingDialog.cancelWaitingDialog();
+                    }else{
+                        WaitingDialog.cancelWaitingDialog();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
+                }
+            });
+        }
+    }
 
 }

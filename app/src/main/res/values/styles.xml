@@ -19,8 +19,9 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="BlackNoBarsTheme" parent="android:Theme.Black.NoTitleBar.Fullscreen"/>
-    <style name="BlackNoTitleBarTheme" parent="android:Theme.Black.NoTitleBar"/>
+    <style name="BlackNoBarsTheme" parent="android:Theme.Black.NoTitleBar.Fullscreen" />
+
+    <style name="BlackNoTitleBarTheme" parent="android:Theme.Black.NoTitleBar" />
 
     <style name="dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>

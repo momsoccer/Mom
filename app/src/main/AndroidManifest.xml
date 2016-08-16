@@ -165,7 +165,12 @@
             android:name=".common.MomInforActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ins.FeedBackInsListActivity"
+        <activity
+            android:name=".ins.FeedBackInsListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".bottommenu.FollowActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             />

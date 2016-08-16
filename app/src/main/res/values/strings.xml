@@ -145,6 +145,7 @@
     <string name="app_button">수정</string>
     <string name="app_save">저장</string>
     <string name="app_fllow">팔로우</string>
+    <string name="app_fllow_cancel">팔로우취소</string>
 
     <!--dermy-->
     <string name="dermy_missionname">가상미션 : 0 스테이지</string>
@@ -336,5 +337,28 @@
     <string name="user_mission_team_feedback_request">팀강사분</string>
     <string name="user_mission_team_feedback_another_request">다른 강사분</string>
     <string name="user_mission_team_feedback_mom_request">Mom</string>
+
+    <!--follow-->
+    <string name="follow_toolbar_page_text">팔로워</string>
+    <string name="follow_view_pager">팔로잉</string>
+    <string name="follow_pickup"> 님을 팔로우 합니다</string>
+    <string name="follow_pickup_cancel"> 님 팔로우를 취소합니다</string>
+    <string name="title_activity_follow">FollowActivity</string>
+
+    <string name="follower_no_data">팔로워가 없습니다</string>
+    <string name="following_no_data">팔로잉이 없습니다</string>
+
+    <string name="f_layout_username">유저명</string>
+    <string name="f_layout_m_count">미션등록수</string>
+    <string name="f_layout_teamname">소속팀</string>
+    <string name="f_layout_level">레벨/점수</string>
+    <string name="f_layout_fw_count">팔로워수</string>
+    <string name="f_layout_fi_count">팔로잉수</string>
+    <string name="f_layout_mycom">내가 쓴 댓글</string>
+    <string name="f_layout_usercom">내게 쓴 댓글</string>
+
+    <string name="f_layout_arlam_cancel">팔로잉을 취소 하시겠습니까?</string>
+    <string name="f_layout_not_see">다른 사람 팔로워 정보는 볼수 없습니다~</string>
+
 
 </resources>

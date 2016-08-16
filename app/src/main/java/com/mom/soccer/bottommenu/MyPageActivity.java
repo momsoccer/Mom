@@ -1,6 +1,5 @@
 package com.mom.soccer.bottommenu;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,14 +20,13 @@ import com.mom.soccer.common.BlurTransformation;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
-import com.mom.soccer.dto.FollowManage;
+import com.mom.soccer.dataDto.TeamMapVo;
 import com.mom.soccer.dto.FriendApply;
-import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.mission.UserMissionActivity;
-import com.mom.soccer.retrofitdao.FriendService;
+import com.mom.soccer.retrofitdao.FollowService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
@@ -40,7 +37,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -90,12 +86,6 @@ public class MyPageActivity extends AppCompatActivity {
     @Bind(R.id.mypage_team_count)
     TextView tx_team_count;
 
-    @Bind(R.id.mypage_fllower)
-    TextView tx_fllowerCount;
-
-    @Bind(R.id.mypage_fllowing)
-    TextView tx_fllowingCount;
-
     //종목별 점수 및 레벨
     @Bind(R.id.mypage_lifting_level)  // 1.리프팅
             TextView tx_lifting_level;
@@ -133,15 +123,11 @@ public class MyPageActivity extends AppCompatActivity {
     @Bind(R.id.mypage_crosba_score)
     TextView tx_crosbal_socre;
 
-    //친구요청 관련
-    @Bind(R.id.friend_btn_follow)
-    Button friend_btn_follow;
+    @Bind(R.id.btnfollow)
+    Button btnfollow;  //팔로워
 
-    @Bind(R.id.friend_btn)
-    Button friend_btn;
-
-    @Bind(R.id.li_friend)
-    LinearLayout li_friend;
+    @Bind(R.id.btnfollowing)
+    Button btnfollowing; //팔로잉
 
     private User user = new User();
     private User findUser = new User();
@@ -208,29 +194,56 @@ public class MyPageActivity extends AppCompatActivity {
 
         if(pageFlag.equals("me")){
             findUser = user;
-            li_friend.setVisibility(View.GONE);
-
-
         }else{
             youUid = getParamInt.getExtras().getInt("frienduid");
             Log.i(TAG,"youUid : " + youUid );
             findUser.setUid(youUid);
-            li_friend.setVisibility(View.VISIBLE);
-
-            //친구요청 중인지 아닌지 로직
-            getFriendStatus(friend_btn);
-
-            //팔로우 버튼 설정
-            getFollowTransaction(user.getUid(),youUid,"getCount");
-
         }
 
         getProfileUser(findUser.getUid());
         qUserMission.setUid(findUser.getUid());
         userGrid_MissionList(qUserMission);
 
-
+        //팔러잉 버튼 텍스트
+        getFollowCountBtnSet();
     }
+
+    public void getFollowCountBtnSet(){
+
+        FollowService f = ServiceGenerator.createService(FollowService.class,getApplicationContext(),user);
+        int queryUid = 0;
+
+        if(pageFlag.equals("me")){
+            queryUid=user.getUid();
+        }else{
+            queryUid=findUser.getUid();
+        }
+
+        Call<List<TeamMapVo>> call = f.getFollowerCount(queryUid);
+        call.enqueue(new Callback<List<TeamMapVo>>() {
+            @Override
+            public void onResponse(Call<List<TeamMapVo>> call, Response<List<TeamMapVo>> response) {
+                if(response.isSuccessful()){
+                    List<TeamMapVo> mapVo = response.body();
+                    for(int i=0 ; i < mapVo.size();i++){
+                        if(mapVo.get(i).getType().equals("M")){
+                            btnfollow.setText(getString(R.string.follow_toolbar_page_text)+"("+String.valueOf(mapVo.get(i).getCount())+")");
+                        }else{
+                            btnfollowing.setText(getString(R.string.follow_view_pager)+"("+String.valueOf(mapVo.get(i).getCount())+")");
+                        }
+                    }
+                }else{
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TeamMapVo>> call, Throwable t) {
+
+            }
+        });
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -245,8 +258,7 @@ public class MyPageActivity extends AppCompatActivity {
 
     //유저 정보
     public void getProfileUser(int uid){
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(this, "", getString(R.string.network_get_list), true);
+        WaitingDialog.showWaitingDialog(this,false);
         UserService service = ServiceGenerator.createService(UserService.class,getApplicationContext(),user);
 
         Call<User> userCall = service.getProfileUser(uid);
@@ -255,7 +267,7 @@ public class MyPageActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
                     findUser = response.body();
-                    dialog.dismiss();
+                    WaitingDialog.cancelWaitingDialog();
                     Log.i(TAG,"1.조회 유저정보는 : " + findUser.toString());
 
                     if(youUid!=0){
@@ -295,8 +307,6 @@ public class MyPageActivity extends AppCompatActivity {
                     TextView tx_friend_count;
                     TextView tx_team_ranking;
                     TextView tx_team_count;
-                    TextView tx_fllowerCount;
-                    TextView tx_fllowingCount;
                     TextView tx_lifting_level;
                     TextView tx_lifting_score;
                     TextView tx_around_level;
@@ -312,16 +322,15 @@ public class MyPageActivity extends AppCompatActivity {
                     */
 
                 }else{
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
+                    WaitingDialog.cancelWaitingDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
-                dialog.dismiss();
+
             }
         });
 
@@ -330,15 +339,7 @@ public class MyPageActivity extends AppCompatActivity {
 
     //영상 목록
     public void userGrid_MissionList(final UserMission userMission){
-
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(this, "", getString(R.string.network_get_list), true);
-
-        /*
-        final AlertDialog dialog = new SpotsDialog(this, R.style.Custom);
-        dialog.show();
-        */
-
+        WaitingDialog.showWaitingDialog(this,false);
         UserMissionService userMissionService = ServiceGenerator.createService(UserMissionService.class,getApplicationContext(),user);
         Call<List<UserMission>> call = userMissionService.getUserMissionList(userMission);
         call.enqueue(new Callback<List<UserMission>>() {
@@ -346,10 +347,10 @@ public class MyPageActivity extends AppCompatActivity {
             public void onResponse(Call<List<UserMission>> call, Response<List<UserMission>> response) {
 
                 if(response.isSuccessful()){
+                    WaitingDialog.cancelWaitingDialog();
                     userMissions = response.body();
                     gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissions,"ME");
                     videoGridView.setAdapter(gridMissionAdapter);
-                    dialog.dismiss();
 
                     if(userMissions.size()==0){
                         noData_textView.setVisibility(View.VISIBLE);
@@ -359,35 +360,18 @@ public class MyPageActivity extends AppCompatActivity {
                     }
 
                 }else{
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
+                    WaitingDialog.cancelWaitingDialog();
                 }
 
             }
 
             @Override
             public void onFailure(Call<List<UserMission>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
                 VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
-                dialog.dismiss();
             }
         });
-    }
-
-    @OnClick(R.id.friend_btn_follow)
-    public void friend_btn_follow(){
-        //VeteranToast.makeToast(getApplicationContext(),"값은 : " + FollowCount,Toast.LENGTH_SHORT).show();
-        if(FollowCount==0){
-            getFollowTransaction(user.getUid(),youUid,"saveFollow");
-        }else{
-            getFollowTransaction(user.getUid(),youUid,"cancelFollow");
-        }
-    }
-
-
-    @OnClick(R.id.mypage_bell)
-    public void uprofile_bell(){
-        VeteranToast.makeToast(getApplicationContext(),"준비중",Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -396,279 +380,14 @@ public class MyPageActivity extends AppCompatActivity {
         Log.i(TAG,"onResume() ===================================");
     }
 
-
-    //팔러우를 했는지 알아보기 위한 사전 작업
-    public void getFollowTransaction(int uid, int followuid,String trFlag){
-
-        FollowManage followManage = new FollowManage();
-        followManage.setUid(uid);
-        followManage.setFollowuid(followuid);
-
-        FriendService friendService = ServiceGenerator.createService(FriendService.class,this,user);
-
-        //final ProgressDialog dialog;
-        //dialog = ProgressDialog.show(this, "",getString(R.string.network_get_list), true);
-        //dialog.show();
-
-        if(trFlag.equals("getCount")){
-
-            Call<ServerResult> call = friendService.getFollowUserCount(followManage);
-            call.enqueue(new Callback<ServerResult>() {
-                @Override
-                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                    if(response.isSuccessful()){
-                        //dialog.dismiss();
-                        ServerResult result = response.body();
-                        if(result.getCount()==0){
-                            friend_btn_follow.setText(getString(R.string.friedn_follow));
-                            FollowCount=0;
-                        }else{
-                            friend_btn_follow.setText(getString(R.string.friedn_follow_cancel));
-                            FollowCount=1;
-                        };
-
-
-                    }else{
-                        //dialog.dismiss();
-                        //VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(1) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
-                        FollowCount=0;
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ServerResult> call, Throwable t) {
-                    //dialog.dismiss();
-                    //VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(2) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
-                    t.printStackTrace();
-                }
-            });
-        }else if(trFlag.equals("saveFollow")){
-            Call<ServerResult> call = friendService.saveFollow(followManage);
-            call.enqueue(new Callback<ServerResult>() {
-                @Override
-                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                    if(response.isSuccessful()){
-                        //dialog.dismiss();
-                        ServerResult result = response.body();
-                        friend_btn_follow.setText(getString(R.string.friedn_follow_cancel));
-                        FollowCount=1;
-                        //VeteranToast.makeToast(getApplicationContext(), findUser.getUsername() + getString(R.string.follow_start),Toast.LENGTH_SHORT).show();
-                    }else{
-                        //dialog.dismiss();
-                        //VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ServerResult> call, Throwable t) {
-                    //dialog.dismiss();
-                    //VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
-                    t.printStackTrace();
-                }
-            });
-        }else if(trFlag.equals("cancelFollow")){
-            Call<ServerResult> call = friendService.deleteFollow(followManage);
-            call.enqueue(new Callback<ServerResult>() {
-                @Override
-                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                    if(response.isSuccessful()){
-                        //dialog.dismiss();
-                        ServerResult result = response.body();
-                        friend_btn_follow.setText(getString(R.string.friedn_follow));
-                        FollowCount=0;
-                        //VeteranToast.makeToast(getApplicationContext(), findUser.getUsername() + getString(R.string.follow_end),Toast.LENGTH_SHORT).show();
-                    }else{
-                        //dialog.dismiss();
-                        //VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(5) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ServerResult> call, Throwable t) {
-                    //dialog.dismiss();
-                    //VeteranToast.makeToast(getApplicationContext(),"Follow Info Error(6) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
-                    t.printStackTrace();
-                }
-            });
+    public void followClick(View v){
+        if(pageFlag.equals("me")){
+            Intent intent = new Intent(MyPageActivity.this,FollowActivity.class);
+            startActivity(intent);
+        }else{
+            VeteranToast.makeToast(getApplicationContext(),getString(R.string.f_layout_not_see),Toast.LENGTH_SHORT).show();
         }
     }
 
-    /***************************************************************
-     *  친구 요청 관련 기능
-     * */
-
-    //DB 상태 조회
-    public void getFriendStatus(Button button){
-
-        Log.i(TAG,"친구 요청 이력을 가져 옵니다");
-
-        FriendApply qfriendApply = new FriendApply();
-        qfriendApply.setRequid(user.getUid());
-        qfriendApply.setResuid(youUid);
-
-        FriendService friendService = ServiceGenerator.createService(FriendService.class,this,user);
-        Call<FriendApply> call = friendService.getFriendApply(qfriendApply);
-
-        call.enqueue(new Callback<FriendApply>() {
-            @Override
-            public void onResponse(Call<FriendApply> call, Response<FriendApply> response) {
-                if(response.isSuccessful()){
-                    friendApply = response.body();
-                    Log.i(TAG,"친구 요청 이력을 가져 옵니다" + friendApply.toString());
-                    if(friendApply.getApplyid()==0){
-                        friend_btn.setText(getString(R.string.friedn_friend_request));
-                    }else{
-                        if(friendApply.getFlag().equals("REQUEST")){
-                            friend_btn.setText(getString(R.string.friedn_friend_request_process));
-                        }else if(friendApply.getFlag().equals("REJECT")){
-                            friend_btn.setText(getString(R.string.friedn_friend_reject));
-                        }else if(friendApply.getFlag().equals("FRIEND")){
-                            friend_btn.setText(getString(R.string.friedn_friend_cancel));
-                        }
-                    }
-
-                }else{
-                    Log.i(TAG,"에러 입니다");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<FriendApply> call, Throwable t) {
-                Log.i(TAG,"에러 입니다");
-                t.printStackTrace();
-            }
-        });
-
-    }
-
-    // 친구요청하기
-    @OnClick(R.id.friend_btn)
-    public void friendBtn(){
-        return;
-
-/*        if(friendApply.getApplyid()==0){
-
-            new DialogBuilder(MyPageActivity.this)
-                    //.setTitle("Title")
-                    .setMessage(getString(R.string.friedn_req))
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            requestFriend();
-                            dialog.dismiss();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .create().show();
-        }else if(friendApply.getFlag().equals("REJECT")){ //친구요청을 거절한 상태
-            new DialogBuilder(MyPageActivity.this)
-                    //.setTitle("Title")
-                    .setMessage(getString(R.string.friedn_reject_req))
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            requestFriend();
-                            dialog.dismiss();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .create().show();
-        }else if(friendApply.getFlag().equals("FRIEND")){ //이미친구 친구 끈기
-            new DialogBuilder(MyPageActivity.this)
-                    //.setTitle("Title")
-                    .setMessage(getString(R.string.friedn_stop_req))
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            dialog.dismiss();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .create().show();
-        }else if(friendApply.getFlag().equals("REQUEST")){ //친구요청 한 상태
-            new DialogBuilder(MyPageActivity.this)
-                    //.setTitle("Title")
-                    .setMessage(getString(R.string.friedn_alrady_req))
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .create().show();
-            return;
-        }*/
-    }
-
-    public void requestFriend(){
-        WaitingDialog.showWaitingDialog(this,false);
-        FriendApply friendApply = new FriendApply();
-        friendApply.setRequid(user.getUid());
-        friendApply.setResuid(youUid);
-        friendApply.setFlag("REQUEST"); // "REJECT","FRIEND"
-
-        FriendService friendService = ServiceGenerator.createService(FriendService.class,this,user);
-        Call<ServerResult> c = friendService.reqFriend(friendApply);
-        c.enqueue(new Callback<ServerResult>() {
-            @Override
-            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                if(response.isSuccessful()){
-                    ServerResult result = response.body();
-                    REQ_FRIEND = result.getResult();
-                    WaitingDialog.cancelWaitingDialog();
-                }else{
-                    WaitingDialog.cancelWaitingDialog();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ServerResult> call, Throwable t) {
-                WaitingDialog.cancelWaitingDialog();
-            }
-        });
-    }
-
-    public void requestFriendStop(){
-        WaitingDialog.showWaitingDialog(this,false);
-        FriendApply friendApply = new FriendApply();
-        friendApply.setRequid(user.getUid());
-        friendApply.setResuid(youUid);
-
-        FriendService friendService = ServiceGenerator.createService(FriendService.class,this,user);
-        Call<ServerResult> c = friendService.reqFriend(friendApply);
-        c.enqueue(new Callback<ServerResult>() {
-            @Override
-            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                if(response.isSuccessful()){
-                    ServerResult result = response.body();
-                    REQ_FRIEND = result.getResult();
-                    WaitingDialog.cancelWaitingDialog();
-                }else{
-                    WaitingDialog.cancelWaitingDialog();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ServerResult> call, Throwable t) {
-                WaitingDialog.cancelWaitingDialog();
-            }
-        });
-    }
 
 }
