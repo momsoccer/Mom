@@ -6,19 +6,6 @@
     android:background="@color/mom_color1"
     >
 
-    <Button
-        android:layout_margin="1dp"
-        android:id="@+id/main_btn_drible"
-        android:background="@drawable/main_page_drible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="mOnClick"/>
-
-    <ImageButton
-        android:background="@color/color6"
-        android:src="@drawable/main_page_drible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

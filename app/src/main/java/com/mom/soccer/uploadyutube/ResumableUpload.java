@@ -60,7 +60,10 @@ public class ResumableUpload {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
         Intent notificationIntent = new Intent(context, MissionMainActivity.class);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         notificationIntent.putExtra(MissionCommon.OBJECT,mission);
+        notificationIntent.putExtra("uploadflag","Y");
         notificationIntent.setAction(Intent.ACTION_VIEW);
 
 
@@ -72,11 +75,12 @@ public class ResumableUpload {
         Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND);
 
         builder.setContentTitle(context.getString(R.string.upload_pre_title))
-                .setContentText(context.getString(R.string.upload_pre_title_content)+" : "+userMission.getSubject())
+                .setContentText( context.getString(R.string.upload_pre_title_content)+" : "+userMission.getSubject())
                 .setSmallIcon(R.drawable.noyimark).setContentIntent(contentIntent).setStyle(new NotificationCompat.BigPictureStyle().bigPicture(thumbnail));
                 ;
 
         notifyManager.notify(UPLOAD_NOTIFICATION_ID, builder.build());
+
 
         /*******************************************************************/
 
@@ -207,6 +211,9 @@ public class ResumableUpload {
         } catch (IOException e) {
             Log.e(TAG, "IOException", e);
             notifyFailedUpload(context, "업로드를 재시도 합니다", notifyManager, builder);
+
+            //IOException 에러시 웹뷰를 연결 유투브 계정 initial 시킨다
+
         } catch (CancellationException e){
             Log.e(TAG, "사용자 에러를 발생 시켰습니다");
             return "uploadCancel";

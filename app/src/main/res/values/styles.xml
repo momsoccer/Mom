@@ -3,17 +3,24 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/mom_color1</item>
-        <item name="colorPrimaryDark">@color/mom_color1</item>
-        <item name="colorAccent">@color/color6</item>
-        <item name="android:textColorPrimaryInverse">@color/color6</item>
-        <item name="android:textColorPrimary">@color/color6</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorAccent">@color/color6</item>
+        <item name="colorControlNormal">@color/color6</item>
+        <item name="android:colorBackground">@color/mom_color1</item>
+        <item name="android:textColorPrimary">@color/color6</item>
+        <item name="android:textColorHint">@color/line_color1</item>
+        <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="BlackNoBarsTheme" parent="android:Theme.Black.NoTitleBar.Fullscreen"/>
+    <style name="BlackNoTitleBarTheme" parent="android:Theme.Black.NoTitleBar"/>
 
     <style name="dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -87,6 +94,16 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="btnRefresh">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/mom_color1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">wrap_content</item>
+
+    </style>
+
 
     <style name="button" parent="@android:style/Widget.Button">
         <item name="android:gravity">center_vertical|center_horizontal</item>
@@ -109,6 +126,25 @@
         <item name="DialogTitleText">Updating…</item>
         <item name="DialogSpotColor">@android:color/holo_orange_dark</item>
         <item name="DialogSpotCount">4</item>
+    </style>
+
+    <style name="CustomProgressDialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="TextLabel" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/color2</item>
+        <item name="android:textSize">12sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/enabled_red</item>
+        <item name="colorControlNormal">@color/edit_tx_off</item>
+        <item name="colorControlActivated">@color/color6</item>
     </style>
 
 </resources>

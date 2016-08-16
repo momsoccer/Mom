@@ -1,6 +1,5 @@
 package com.mom.soccer.holder;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,7 +16,6 @@ public class BoardItemViewHolder extends RecyclerView.ViewHolder {
     public TextView username;
     public TextView comment;
     public TextView change_updatedate;
-    public CardView cardview;
 
 
     public BoardItemViewHolder(View itemView) {
@@ -26,6 +24,5 @@ public class BoardItemViewHolder extends RecyclerView.ViewHolder {
         this.username = (TextView) itemView.findViewById(R.id.txt_board_user_name);
         this.comment = (TextView) itemView.findViewById(R.id.txt_board_user_comment);
         this.change_updatedate = (TextView) itemView.findViewById(R.id.txt_board_user_time);
-        this.cardview = (CardView) itemView.findViewById(R.id.cardview);
     }
 }

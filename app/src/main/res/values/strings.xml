@@ -37,19 +37,27 @@
     <string name="upload_disp">인터넷속도,유투브서버 상황, 업로드 파일용량에 따라 \n 업로드 시간이 달라집니다.</string>
 
     <!--어플리케이션에서 주요하게 사용하는 메세지-->
+    <string name="network_problem">네트워크가 원활하지 않습니다</string>
+    <string name="page_refresh">새로고침</string>
+
     <string name="app_logout">로그아웃 합니다</string>
     <string name="app_end_action">앱을 종료 하시겠습니까?</string>
     <string name="moreview">더보기</string>
     <string name="donotinternet">인터넷 연결이 해제 되어 있습니다 \n 앱이 정상 작동 하지 않음을 알려드립니다</string>
     <string name="app_myvideo_view">내 영상 보기</string>
 
-    <string name="lifting">리프팅</string>
-    <string name="drrible">드리블</string>
-    <string name="around">어라운드</string>
-    <string name="crossbar">크로스바</string>
-    <string name="trapping">트래핑</string>
-    <string name="flick">플릭</string>
+    <string name="mission_toolbar_title">스테이지</string>
+    <string name="lifting">(리프팅)</string>
+    <string name="drrible">(드리블)</string>
+    <string name="around">(어라운드)</string>
+    <string name="crossbar">(크로스바)</string>
+    <string name="trapping">(트래핑)</string>
+    <string name="flick">(플릭)</string>
+
     <string name="mission_start">시작하기</string>
+    <string name="mission_open">미션오픈</string>
+
+
     <string name="mission_upload">나의 실습 영상 선택</string>
     <string name="mission_upload_start">업로드</string>
     <string name="mission_upload_box1">제목</string>
@@ -69,6 +77,12 @@
     <string name="file_upload_progress_title">진행도 : </string>
     <string name="file_upload_progress_content">영상 업로드 진행 상태 정보</string>
 
+    <string name="user_team_yet_join">팀 비소속</string>
+
+    <string name="user_video_like_cancel">관심 영상을 해제 합니다</string>
+    <string name="user_video_like_ok">관심 영상으로 등록 합니다</string>
+
+    <string name="user_profile_update">유저정보를 반영 했습니다</string>
 
     <!--통신프로그레스에 사용될 값들-->
     <string name="network_valid_user">회원 검증을 진행하는 중입니다</string>
@@ -78,15 +92,41 @@
     <string name="network_updating_user">유저 정보를 업데이트 합니다</string>
     <string name="network_logout_user">안전하게 로그아웃 중입니다</string>
     <string name="network_get_list">서버로부터 정보를 받아 오는 중입니다</string>
+    <string name="network_create_comment">댓글을 등록합니다</string>
+    <string name="network_create_complete">댓글이 등록 되었습니다. 댓글 리스트를 갱신 합니다</string>
+
+    <string name="network_nodata_found_user">입력하신 검색어에 맞는 \n 유저가 존재하지 않습니다</string>
+    <string name="network_nodata_found_coach">입력하신 검색어에 맞는 \n 코치가 존재하지 않습니다</string>
+
+    <string name="network_nodata_error">데이터를 불러오는데 실패했습니다 \n 통신 상태를 확인하고 눌러주세요</string>
+    <string name="no_mission_noty">미션이 곧 추가 됩니다. 기다려주실꺼죠?~~</string>
 
 
+    <!--툴바-->
     <string name="page_subject_upload">선택하신 영상</string>
     <string name="user_mission_subject">영상제목(40자 까지 입력 가능)</string>
     <string name="user_mission_cotent">영상 내용</string>
 
-
     <string name="toolbar_page_mypage">마이페이지</string>
     <string name="toolbar_page_profile">프로파일 편집</string>
+    <string name="toolbar_video">미션영상</string>
+    <string name="toolbar_board_page">댓글</string>
+    <string name="toolbar_search_page">검색</string>
+    <string name="toolbar_book_page">관심영상</string>
+    <string name="toolbar_favorite_page">즐겨찾기(미션)</string>
+    <string name="toolbar_point_page">포인트</string>
+    <string name="toolbar_comment_page">댓글</string>
+    <string name="toolbar_user_missionview_page">미션영상</string>
+    <string name="toolbar_setup">설정 및 관리</string>
+    <string name="toolbar_userprofile">프로파일</string>
+    <string name="toolbar_feedback_page">피드백요청</string>
+
+    <string name="toolbar_ranking_all">랭킹 전체</string>
+    <string name="toolbar_ranking_friend">랭킹 친구</string>
+    <string name="toolbar_ranking_team">랭킹 팀</string>
+
+    <string name="toolbar_apply_coach">코치신청</string>
+    <string name="toolbar_umission_list_page_title">유저 미션 영상 리스트</string>
 
     <!--다이얼 로그 문의 창-->
     <string name="cancel">취소</string>
@@ -121,7 +161,8 @@
     <string name="default_mission_disp">Mision description</string>
     <string name="default_mission_precon">Mision precondition</string>
     <string name="default_mission_getpoint">When success, get 50 Point</string>
-    <string name="default_mission_subject">다른 사람 영상 보기</string>
+    <string name="default_mission_subject">다른 사람 미션영상(최근 등록 20개)</string>
+    <string name="my_mission_subject">내 미션 영상</string>
 
     <!--mission-->
     <string name="point_pre_word">성공시</string>
@@ -129,6 +170,171 @@
     <string name="point_get">포인트 획득</string>
     <string name="title_activity_test_grid">TestGridActivity</string>
 
+    <string name="mission_require_point">미션 오픈을 위한 유저소비 포인트(1회)</string>
+    <string name="mission_get_upload_score">미션영상업로드시 유저획득 점수(1회)</string>
+    <string name="mission_clear_score">미션 클리어시 유저획득 추가점수(1회)</string>
+    <string name="mission_clear_point">미션 클리어시 유저획득 포인트(1회)</string>
+
+    <string name="mission_dialg_mission_open">P가 차감 됩니다\n미션을 오픈 하시겠습니까?</string>
+    <string name="mission_open_message">미션이 정상적으로 오픈 되었습니다</string>
+
+    <string name="mission_open_coach_msg">강사분들은 포인트와 관계 없이 \n 미션 서비스를 이용하실 수 있습니다.</string>
+
+    <string name="user_mission_p">심사중</string>
+    <string name="user_mission_n">심사대기중</string>
+
+    <string name="user_mission_progress">강사께서 심사를 하고 있는 중입니다</string>
+
+    <string name="mission_feedback_btn">피드백요청</string>
+    <string name="mission_eval_btn">심사요청</string>
+
+    <string name="mission_user_video">등록된 영상이 없습니다</string>
+
     <!--layout text-->
-    <string name="grid_user_name_title">유저명 : </string>
+    <string name="grid_user_name_title">유저명:</string>
+    <string name="search_coarch_field">강사명</string>
+    <string name="search_user_field">유저명</string>
+    <string name="search_btn">검색</string>
+    <string name="search_team">팀명</string>
+    <string name="search_choose">선택</string>
+
+    <string name="friedn_follow">팔로우</string>
+    <string name="friedn_follow_cancel">팔로우취소</string>
+    <string name="friedn_friend_request">친구요청</string>
+    <string name="friedn_friend_request_process">친구요청중</string>
+    <string name="friedn_friend_cancel">친구끈기</string>
+    <string name="friedn_friend_reject">거절됨</string>
+
+    <string name="friedn_req">친구요청을 하시겠습니까?</string>
+    <string name="friedn_alrady_req">친구 요청을 한 상태입니다</string>
+    <string name="friedn_reject_req">친구요청을 거절 했지만 다시 한번 친구 요청을 하시겠습니까?</string>
+    <string name="friedn_stop_req">친구끈기를 하시겠습니까?</string>
+
+    <string name="tab_coach">강사</string>
+    <string name="tab_user">유저</string>
+
+    <!--board-->
+    <string name="board_createbtn">작성</string>
+    <string name="board_validation_word_empty">내용을 입력해주세요</string>
+
+    <!--nav menu-->
+    <string name="nav_header_name">닉네임</string>
+    <string name="nav_header_email">메일주소</string>
+
+    <string name="nav_header_assgin_coach">지정 코치 : </string>
+    <string name="nav_header_assgin_team">대표 소속 팀 : </string>
+    <string name="nav_header_not_assgin">미지정</string>
+    <string name="nav_header_not_assgin_team">소속 전</string>
+
+    <string name="no_data_video">수집하신 관심 영상이 없습니다</string>
+
+    <!--follow-->
+    <string name="follow_start"> 님을 팔로우 합니다</string>
+    <string name="follow_end"> 님 팔로우를 해지 합니다</string>
+
+    <!--point-->
+    <string name="lack_point">포인트가 부족합니다\n충전이 필요합니다 </string>
+
+    <!--유저미션영상 레이아웃-->
+    <string name="userdetail_page_title">미션 영상</string>
+    <string name="title_activity_user_mission_list">UserMissionListActivity</string>
+
+    <!--coach apply-->
+    <string name="coach_ins_img_hint">강사분 사진</string>
+    <string name="coach_team_emblemname_header">강사분 팀엠블럼</string>
+    <string name="coach_team_hint_bankname">은행명(옵션)</string>
+    <string name="coach_team_hint_bankaccount">계좌번호(옵션)</string>
+    <string name="coach_team_hint_addres">집주소(옵션)</string>
+    <string name="coach_team_hint_teamname">오프라인 운영 축구팀 명(옵션)</string>
+    <string name="coach_team_hint_caree1">선수경력(중,고,대)(옵션)</string>
+    <string name="coach_team_hint_caree2">선수/대회입상/강사/팀/자격증 경력(옵션)</string>
+    <string name="coach_team_hint_caree3">선수/대회입상/강사/팀/자격증 경력(옵션)</string>
+    <string name="coach_team_hint_caree4">선수/대회입상/강사/팀/자격증 경력(옵션)</string>
+    <string name="coach_team_hint_caree5">선수/대회입상/강사/팀/자격증 경력(옵션)</string>
+    <string name="coach_btn_apply">강사지원</string>
+
+    <string name="coach_team_hint_phone">전화번호(*필수)</string>
+    <string name="coach_team_hint_age">강사분의 나이(*필수)</string>
+    <string name="coach_team_hint_resume">자기소개(*필수)</string>
+    <string name="coach_ins_hint_name">강사분 이름(*필수)</string>
+    <string name="coach_team_hint_name">강사분이 운영할 팀명(*필수)</string>
+    <string name="coach_team_hint_playeryear">선수경력 년수(*필수)</string>
+    <string name="coach_team_hint_insyear">강사경력 년수(*필수)</string>
+
+    <string name="coach_vali_phone">전화번호는 필수 입력 정보입니다</string>
+    <string name="coach_vali_age">나이는 필수 입력 정보입니다</string>
+    <string name="coach_vali_resume">자기소개는 필수 입력 정보입니다</string>
+    <string name="coach_vali_name">강사분 이름은 필수 입력 정보입니다</string>
+    <string name="coach_vali_teamname">강사분이 운영할 팀명은 필수 입력 정보입니다</string>
+    <string name="coach_vali_playeryear">선수경력 년수는 필수 입력 정보입니다</string>
+    <string name="coach_vali_insyear">강사경력 년수는 필수 입력 정보입니다</string>
+
+    <string name="coach_req_messge">강사지원을 감사드립니다 \n 늦어도 2일 안으로 연락을 드리겠습니다</string>
+    <string name="coach_reqconfim_message">승인 후, 강사프로필 화면에서 \n 상세 정보를 수정하실 수 있습니다</string>
+    <string name="coach_cancel_messge">지원을 취소 하시더라도 \n 언제든지 다시 지원하실 수 있습니다</string>
+
+    <string name="coach_req_cancell">접수하셨던 내용이 모두 사라집니다 \n 취소 하시겠습니까?</string>
+
+    <!--강사지원 수정관련-->
+    <string name="coach_page_title">강사정보</string>
+    <string name="coach_page_title_btn">정보수정</string>
+    <string name="coach_req_cancel_btn">지원취소</string>
+    <string name="coach_req_status_r">접수 및 승인 검토중</string>
+    <string name="coach_req_status_a">강사승인됨</string>
+    <string name="coach_req_update_message">강사정보가 수정되었습니다 \n 메인 화면으로 돌아갑니다</string>
+
+    <!--메뉴타이틀-->
+    <string name="mom_menu_title_home">홈</string>
+    <string name="mom_menu_title_favorite_mission">즐겨찾기(미션)</string>
+    <string name="mom_menu_title_interest_video">관심영상</string>
+    <string name="mom_menu_title_ulist">제자리스트</string>
+    <string name="mom_menu_title_search">유저/강사 검색</string>
+    <string name="mom_menu_title_mypage">마이페이지</string>
+    <string name="mom_menu_title_coach_apply">강사신청</string>
+    <string name="mom_menu_title_coach_info">강사정보</string>
+    <string name="mom_menu_title_setup">설정</string>
+    <string name="mom_menu_title_logout">로그아웃</string>
+
+
+    <!--다이얼로그창-->
+    <string name="mom_diaalog_feedback_title">피드백요청</string>
+    <string name="mom_diaalog_title_logout">로그아웃</string>
+    <string name="mom_diaalog_title_append">앱 종료</string>
+
+    <string name="mom_diaalog_content_logout">로그아웃 하시겠습니까?</string>
+    <string name="mom_diaalog_confirm">확인</string>
+    <string name="mom_diaalog_cancel">취소</string>
+    <string name="mom_diaalog_alert">알림</string>
+
+    <!--설정사항-->
+    <string name="mom_setting_info">MoM 정보</string>
+    <string name="mom_setting_upload">영상업로드 설정</string>
+    <string name="mom_setting_help">자주하는 질문</string>
+    <string name="mom_setting_update">앱 자동업데이트</string>
+    <string name="mom_setting_update_alert">앱 자동 업데이트후 알림</string>
+    <string name="mom_setting_update_alert_bell">알림벨 설정</string>
+    <string name="mom_setting_app_evaluation">앱평가하기</string>
+    <string name="mom_setting_app_email">개발팀에게 메일 보내기</string>
+    <string name="mom_setting_app_user">개인프로필</string>
+
+    <!--강사정보-->
+    <string name="ins_text_name">1.강사이름</string>
+    <string name="ins_text_teamname">2.팀명</string>
+    <string name="ins_text_teammember_count">3.팀 회원수</string>
+    <string name="ins_text_feed_q">4.피드백 질문</string>
+    <string name="ins_text_feed_a">5.피드백 답변</string>
+    <string name="ins_text_feed_e">6.답변평가(5점 만점)</string>
+    <string name="ins_text_feed_v">7.강사등록 강의</string>
+
+    <string name="ins_text_p_pub_video">기본-영상 피드백</string>
+    <string name="ins_text_p_pub_word">기본-문자 피드백</string>
+    <string name="ins_text_p_team_video">팀원-영상 피드백</string>
+    <string name="ins_text_p_team_word">팀원-문자 피드백</string>
+    <string name="ins_text_p_pub_eval">기본 심사비</string>
+    <string name="ins_text_p_team_eval">팀원 심사비</string>
+
+    <string name="user_mission_team_feedback_request">팀강사분</string>
+    <string name="user_mission_team_feedback_another_request">다른 강사분</string>
+    <string name="user_mission_team_feedback_mom_request">Mom</string>
+
 </resources>

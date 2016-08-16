@@ -6,40 +6,49 @@
             android:icon="@drawable/side_home"
             android:title="홈"
             />
+
         <item
-            android:id="@+id/mn_item_fe"
+            android:id="@+id/mn_item_teammemberlist"
+            android:icon="@drawable/ic_ulist"
+            android:title="@string/mom_menu_title_ulist"
+            />
+
+        <item
+            android:id="@+id/mn_item_favorite"
             android:icon="@drawable/side_feb"
-            android:title="즐겨찾기"
+            android:title="@string/mom_menu_title_favorite_mission"
             />
 
         <item
             android:id="@+id/mn_item_gansim"
             android:icon="@drawable/side_gansim"
-            android:title="관심영상" />
+            android:title="@string/mom_menu_title_interest_video" />
 
         <item
             android:id="@+id/mn_item_search"
             android:icon="@drawable/side_search"
-            android:title="검색" />
+            android:title="@string/mom_menu_title_search" />
 
         <item
             android:id="@+id/mn_item_mypage"
             android:icon="@drawable/side_mypage"
-            android:title="마이페이지" />
+            android:title="@string/mom_menu_title_mypage" />
 
         <item
             android:id="@+id/mn_item_coachreq"
             android:icon="@drawable/side_coach"
-            android:title="코치신청" />
+            android:title="@string/mom_menu_title_coach_apply" />
 
         <item
             android:id="@+id/mn_item_setup"
             android:icon="@drawable/side_setup"
-            android:title="설정" />
+            android:title="@string/mom_menu_title_setup" />
 
         <item
             android:id="@+id/mn_item_logout"
-            android:title="로그아웃" />
+            android:icon="@drawable/logout"
+            android:title="@string/mom_menu_title_logout"
+            />
 
     </group>
 

@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
     <item>
         <shape android:shape="rectangle">
-            <stroke android:width="3dp" android:color="@color/cardview_dark_background" />
+            <stroke android:width="2dp" android:color="@color/cardview_dark_background" />
             <solid android:color="@color/mom_color2" />
         </shape>
     </item>

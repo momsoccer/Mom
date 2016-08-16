@@ -1,34 +1,44 @@
 package com.mom.soccer.mission;
 
-import android.app.ProgressDialog;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.GridMissionAdapter;
 import com.mom.soccer.common.Auth;
 import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
-import com.mom.soccer.dataDto.MomMessage;
+import com.mom.soccer.dto.FavoriteMission;
 import com.mom.soccer.dto.Mission;
+import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
-import com.mom.soccer.retrofitdao.MomComService;
+import com.mom.soccer.fragment.YoutubeSeedMissionFragment;
+import com.mom.soccer.ins.FeedBackInsListActivity;
+import com.mom.soccer.retrofitdao.FavoriteMissionService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.List;
 
@@ -39,16 +49,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MissionMainActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
+public class MissionMainActivity extends AppCompatActivity {
 
     private static final String TAG = "MissionMainActivity";
     private static final int RECOVERY_DIALOG_REQUEST = 1;
-    private int seedMissionId = 0;
+    private static final int REQUEST_FEED_BACK_CODE = 201;
 
+    private int seedMissionId = 0;
 
     private User user = new User();
     private PrefUtil prefUtil;
-    private YouTubePlayerView youTubeView;
+    private YouTubeThumbnailView thumbnailView;
+    int favoriteCount = 0;
 
     private Mission mission = new Mission();
 
@@ -75,8 +87,46 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
     @Bind(R.id.tx_main_mission_potin)
     TextView tx_missionPoint;
 
+    @Bind(R.id.img_missiontab)
+    ImageView img_missiontab;
+
+    @Bind(R.id.li_mymittion)
+    LinearLayout linearLayout;
+
+    @Bind(R.id.tx_main_usermission)
+    TextView tx_main_usermission;
+
+    @Bind(R.id.view_l1)
+    View view_l1;
+    @Bind(R.id.view_l2)
+    View view_l2;
+
+    @Bind(R.id.usermission_iv_hart)
+    ImageView usermission_iv_hart;
+
+    @Bind(R.id.usermission_tx_hart)
+    TextView usermission_tx_hart;
+
+    @Bind(R.id.usermission_iv_comment)
+    ImageView usermission_iv_comment;
+
+    @Bind(R.id.usermission_tx_comment)
+    TextView usermission_tx_comment;
+
+    @Bind(R.id.btn_mission_upload)
+    Button btn_mission_upload;
+
+    @Bind(R.id.im_clear_marck)
+    ImageView im_clear_marck;
 
     ExpandableHeightGridView videoGridView;
+    UserMission userMission;
+
+    @Bind(R.id.li_video_list)
+    LinearLayout li_video_list;
+
+    @Bind(R.id.li_no_data_found)
+    LinearLayout li_no_data_found;
 
     /**************************************************
      * google uplaod define
@@ -88,6 +138,20 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
 
     List<UserMission> userMissionList;
     UserMission qUserMission = new UserMission();
+    Intent intent;
+    private static int UPLOAD_NOTIFICATION_ID = 1001;
+
+    //피드백, 심사요청
+    String[] requestMittion = {"팀 강사에게","다른 강사선택","Mom에 요청"};
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        setResult(RESULT_OK);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +164,11 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
 
-        Intent intent = getIntent();
+        intent = getIntent();
         mission = (Mission) intent.getSerializableExtra(MissionCommon.OBJECT);
 
-        youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
-        youTubeView.initialize(Auth.KEY, this);
+
+        thumbnailView = (YouTubeThumbnailView) findViewById(R.id.youtybe_Thumbnail);
 
         if (mission.getYoutubeaddr()==null){
             setNet = true;
@@ -140,11 +204,6 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
         videoGridView = (ExpandableHeightGridView) findViewById(R.id.main_mission_gridview);
         videoGridView.setExpanded(true);
 
-        //조회 조건 <나를 제외한 같은 미션 영상을 업로드한 리스트>
-        //qUserMission.setMissionid(mission.getMissionid());
-        qUserMission.setUid(user.getUid());
-
-        userGrid_MissionList(qUserMission);
 
         videoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -156,54 +215,27 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
                 overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
             }
         });
-    }
 
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, boolean wasRestored) {
-
-        if (!wasRestored) {
-            if(!setNet){
-                youTubePlayer.cueVideo(mission.getYoutubeaddr());
-            }else{
-                //유투브 주소가 없다면 문제. 이럴때는 몸싸커 메인 인트로를 보여준다
-
-                MomComService service = ServiceGenerator.createService(MomComService.class,this,user);
-                Call<MomMessage> call = service.getCommonInfo("VIDEOERROR");
-                call.enqueue(new Callback<MomMessage>() {
-                    @Override
-                    public void onResponse(Call<MomMessage> call, Response<MomMessage> response) {
-                        if(response.isSuccessful()){
-                            MomMessage momMessage = response.body();
-                            youTubePlayer.cueVideo(momMessage.getAttribute1());
-                        }else{
-                            youTubePlayer.cueVideo("3v1SRgbGsV8");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<MomMessage> call, Throwable t) {
-                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
-                        youTubePlayer.cueVideo("3v1SRgbGsV8");
-                    }
-                });
+        thumbnailView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent miIntent = new Intent(getApplicationContext(),UserMissionActivity.class);
+                miIntent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMission);
+                startActivity(miIntent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
             }
-        }
+        });
 
+
+        favoriteTransaction(user.getUid(),mission.getMissionid(),"getCount",btnStart);
+        //youTubeView.initialize(Auth.KEY,MissionMainActivity.this);
+
+        //업로드후 노티를 지워준다
+        NotificationManager nm =
+                (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        nm.cancel(UPLOAD_NOTIFICATION_ID);
     }
 
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
-    }
-
-
-    @OnClick(R.id.btn_mission_upload)
-    public void missionVideoUpload(){
-        //업로드
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("video/*");
-        startActivityForResult(intent, RESULT_PICK_IMAGE_CROP);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -221,15 +253,42 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
                     }
                 }
                 break;
-
+            case REQUEST_FEED_BACK_CODE:
+                if (resultCode == RESULT_OK) {
+                    Log.i(TAG,"값이 왔습니다 : "+ data.getStringExtra("req_ins_id"));
+                }
+                break;
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i(TAG,"onResume() =====================================");
+        intent = getIntent();
+        String uploadflag = intent.getStringExtra("uploadflag");
+        Log.i(TAG,"받은 값은 : " + uploadflag);
 
-        Log.d(TAG,"onResume() =====================================");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart() =====================================");
+
+        //나의 미션 영상
+        getMyVideo();
+        //조회 조건 <나를 제외한 같은 미션 영상을 업로드한 리스트>
+        qUserMission.setMissionid(mission.getMissionid());
+        qUserMission.setUid(user.getUid());
+        userGrid_MissionList(qUserMission);
+
+        //YoutubeFragment 유투브 플래그먼트
+        YoutubeSeedMissionFragment youtubeFragment = new YoutubeSeedMissionFragment(this,mission.getYoutubeaddr());
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction tc = fm.beginTransaction();
+        tc.add(R.id.youtube_seed_frame_layout,youtubeFragment,"");
+        tc.commit();
 
     }
 
@@ -244,9 +303,11 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
     };
     */
 
-    public void userGrid_MissionList(UserMission userMission){
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(this, "", getString(R.string.network_get_list), true);
+    //다른 사람들의 영상 목록
+    public void userGrid_MissionList(final UserMission userMission){
+
+        WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
+        userMission.setQueryRow(20);
 
         UserMissionService userMissionService = ServiceGenerator.createService(UserMissionService.class,getApplicationContext(),user);
         Call<List<UserMission>> call = userMissionService.uMissionList(userMission);
@@ -256,22 +317,281 @@ public class MissionMainActivity extends YouTubeBaseActivity implements YouTubeP
             public void onResponse(Call<List<UserMission>> call, Response<List<UserMission>> response) {
 
                 if(response.isSuccessful()){
+                    WaitingDialog.cancelWaitingDialog();
                     userMissionList = response.body();
-                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissionList);
+                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissionList,"YOU");
                     videoGridView.setAdapter(gridMissionAdapter);
-                    dialog.dismiss();
+
+                    if(userMissionList.size()==0){
+                        li_video_list.setVisibility(View.GONE);
+                        li_no_data_found.setVisibility(View.VISIBLE);
+                    }else{
+                        li_video_list.setVisibility(View.VISIBLE);
+                        li_no_data_found.setVisibility(View.GONE);
+                    }
+
                 }else{
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
+                    WaitingDialog.cancelWaitingDialog();
+
                 }
             }
             @Override
             public void onFailure(Call<List<UserMission>> call, Throwable t) {
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
-                dialog.dismiss();
             }
         });
+    }
+
+    //내가 수행한 미션
+    public void getMyVideo(){
+        WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
+        UserMission u = new UserMission();
+        u.setMissionid(mission.getMissionid());
+        u.setUid(user.getUid());
+        UserMissionService userMissionService = ServiceGenerator.createService(UserMissionService.class,this,user);
+        Call<UserMission> c = userMissionService.getUserMission(u);
+
+        c.enqueue(new Callback<UserMission>() {
+            @Override
+            public void onResponse(Call<UserMission> call, Response<UserMission> response) {
+                if(response.isSuccessful()){
+                    WaitingDialog.cancelWaitingDialog();
+                    userMission = response.body();
+
+                    Log.i(TAG," 받아온 값은  : " + userMission.toString() );
+                    //좋아요 카운트
+                    usermission_tx_hart.setText(String.valueOf(userMission.getBookmarkcount()));
+                    usermission_tx_comment.setText(String.valueOf(userMission.getBoardcount()));
+
+                    if(userMission.getUid()==0){
+                        img_missiontab.setVisibility(View.GONE);
+                        linearLayout.setVisibility(View.GONE);
+                    }else{
+
+                        Log.i(TAG," Test View Start ######" + userMission.toString());
+
+                        if(userMission.getPassflag().equals("Y")){
+                            Log.i(TAG,"===1" + userMission.getPassflag());
+                            img_missiontab.setVisibility(View.VISIBLE);
+                            view_l1.setVisibility(View.GONE);
+                            view_l2.setVisibility(View.GONE);
+                            im_clear_marck.setVisibility(View.VISIBLE);
+                        }else if(userMission.getPassflag().equals("P")){
+
+                            Log.i(TAG,"===2" + userMission.getPassflag());
+                            img_missiontab.setVisibility(View.GONE);
+                            tx_main_usermission.setText(R.string.user_mission_p);
+                            btn_mission_upload.setText(R.string.user_mission_p);
+
+                            btn_mission_upload.setBackgroundResource(R.color.color8);
+                            im_clear_marck.setVisibility(View.GONE);
+
+                        }else if(userMission.getPassflag().equals("N")){
+                            Log.i(TAG,"===3" + userMission.getPassflag());
+                            img_missiontab.setVisibility(View.GONE);
+                            tx_main_usermission.setText(R.string.user_mission_n);
+                            im_clear_marck.setVisibility(View.GONE);
+                        }
+                        Log.i(TAG," Test View End #####");
+
+
+                        //내가 좋아요를 했다면
+                        if(userMission.getMycheck()==0){
+                            usermission_iv_hart.setImageResource(R.drawable.ic_white_hart);
+                        }else{
+                            usermission_iv_hart.setImageResource(R.drawable.ic_hart_red);
+                        }
+
+                        linearLayout.setVisibility(View.VISIBLE);
+                        thumbnailView.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
+                            @Override
+                            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+                                youTubeThumbnailLoader.setVideo(userMission.getYoutubeaddr());
+                            }
+
+                            @Override
+                            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+
+                            }
+                        });
+                    }
+                }else{
+                    WaitingDialog.cancelWaitingDialog();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserMission> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+
+    }
+
+
+    //버튼 컨트롤
+    @OnClick(R.id.btn_mission_upload)
+    public void missionVideoUpload(){
+
+        if(userMission.getUid()!=0){
+
+            if(userMission.getPassflag().equals("P")) {
+                VeteranToast.makeToast(getApplicationContext(), getString(R.string.user_mission_progress), Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("video/*");
+        startActivityForResult(intent, RESULT_PICK_IMAGE_CROP);
+    }
+
+    //즐겨찾기 컨트롤
+    public void favoriteTransaction(int uId, int missionId, String typeMethod, final ImageButton imageButton){
+
+        FavoriteMissionService service = ServiceGenerator.createService(FavoriteMissionService.class,this,user);
+        FavoriteMission favoriteMission = new FavoriteMission();
+        favoriteMission.setUid(uId);
+        favoriteMission.setMissionid(missionId);
+
+        if(typeMethod.equals("getCount")){
+            Call<ServerResult> callBack = service.getCountFavoriteMission(favoriteMission);
+            callBack.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+
+                    if(response.isSuccessful()){
+                        ServerResult result = response.body();
+                        favoriteCount = result.getCount();
+
+                        if(favoriteCount != 0){
+                            imageButton.setImageResource(R.drawable.star);
+                        }else{
+                            imageButton.setImageResource(R.drawable.star_enabled);
+                        }
+
+                    }else{
+                        //VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(1) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    //VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(2) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+
+        }else if(typeMethod.equals("create")){
+
+            Call<ServerResult> callBack = service.saveFavoriteMission(favoriteMission);
+            callBack.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+
+                    if(response.isSuccessful()){
+                        VeteranToast.makeToast(getApplicationContext(),"즐겨찾기에 추가했습니다", Toast.LENGTH_SHORT).show();
+                        imageButton.setImageResource(R.drawable.star);
+                        favoriteCount = 1;
+                    }else{
+                        //VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        imageButton.setImageResource(R.drawable.star_enabled);
+                        favoriteCount = 0;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    //VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(4) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+
+        }else if(typeMethod.equals("delete")){
+
+            Call<ServerResult> callBack = service.deleteFavoriteMission(favoriteMission);
+            callBack.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+
+                    if(response.isSuccessful()){
+                        VeteranToast.makeToast(getApplicationContext(),"즐겨찾기에서 제외 했습니다", Toast.LENGTH_SHORT).show();
+                        imageButton.setImageResource(R.drawable.star_enabled);
+                        favoriteCount = 0;
+                    }else{
+                        //VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(3) : " + getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                        imageButton.setImageResource(R.drawable.star);
+                        favoriteCount = 1;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    //VeteranToast.makeToast(getApplicationContext(),"Favorite Info Error(6) : " + getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                    t.printStackTrace();
+                }
+            });
+
+        }
+    }
+
+    @OnClick(R.id.main_mission_start)
+    public void btnStart(){
+        if(favoriteCount==0){
+            favoriteTransaction(user.getUid(),mission.getMissionid(),"create",btnStart);
+            favoriteCount=1;
+        }else{
+            favoriteTransaction(user.getUid(),mission.getMissionid(),"delete",btnStart);
+            favoriteCount=0;
+        }
+    }
+
+    @OnClick(R.id.btnMainVideo)
+    public void userVideoList(){
+        Intent intent = new Intent(this,UserMissionListActivity.class);
+        startActivity(intent);
+    }
+
+
+    public void reqBtnClick(View v){
+
+        String[] strings = {getString(R.string.user_mission_team_feedback_request),
+                            getString(R.string.user_mission_team_feedback_another_request),
+                            getString(R.string.user_mission_team_feedback_mom_request)};
+
+        switch (v.getId()){
+            case R.id.btnReqfeed:
+                new MaterialDialog.Builder(this)
+                        .title(R.string.mom_diaalog_feedback_title)
+                        .titleColor(getResources().getColor(R.color.color6))
+                        .items(strings)
+                        .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() //첫번째 인수는 기본 선택
+                        {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+
+                                if(which==0){
+                                    VeteranToast.makeToast(getApplicationContext(),"준비중입니다",Toast.LENGTH_SHORT).show();
+                                }else if(which==1){
+                                    Intent intent = new Intent(MissionMainActivity.this,FeedBackInsListActivity.class);
+                                    startActivityForResult(intent,REQUEST_FEED_BACK_CODE);
+                                }else if(which==2){
+                                    VeteranToast.makeToast(getApplicationContext(),"준비중입니다",Toast.LENGTH_SHORT).show();
+                                }
+
+                                return true;
+                            }
+                        })
+                        .positiveText(R.string.mom_diaalog_confirm)
+                        .negativeText(R.string.mom_diaalog_cancel)
+                        .show();
+                break;
+            case R.id.btnReqEval:
+                break;
+        }
     }
 
 

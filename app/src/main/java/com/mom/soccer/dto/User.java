@@ -22,37 +22,69 @@ public class User implements Serializable{
 	private String serialnumber;
 	private String creationdate;
 	private String change_creationdate;
+	private String teamname;
 
 	//DB
 	private String fcmToken;
-
+	private int queryRow;
+	private String orderbytype;
 
 	public User() {
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"uid=" + uid +
+				", useremail='" + useremail + '\'' +
+				", username='" + username + '\'' +
+				", snsid='" + snsid + '\'' +
+				", snsname='" + snsname + '\'' +
+				", snstype='" + snstype + '\'' +
+				", phone='" + phone + '\'' +
+				", password='" + password + '\'' +
+				", profileimgurl='" + profileimgurl + '\'' +
+				", googleemail='" + googleemail + '\'' +
+				", location=" + location +
+				", apppushflag='" + apppushflag + '\'' +
+				", teampushflag='" + teampushflag + '\'' +
+				", commontokenid=" + commontokenid +
+				", serialnumber='" + serialnumber + '\'' +
+				", creationdate='" + creationdate + '\'' +
+				", change_creationdate='" + change_creationdate + '\'' +
+				", teamname='" + teamname + '\'' +
+				", fcmToken='" + fcmToken + '\'' +
+				", queryRow=" + queryRow +
+				", orderbytype='" + orderbytype + '\'' +
+				'}';
 	}
 
 	public User(String useremail) {
 		this.useremail = useremail;
 	}
 
-	public User(int uid, String useremail, String username, String snsid, String snsname, String snstype, String phone, String password, String profileimgurl, String googleemail, int location, String apppushflag, String teampushflag, int commontokenid, String serialnumber, String creationdate, String change_creationdate, String fcmToken) {
-		this.uid = uid;
-		this.useremail = useremail;
-		this.username = username;
-		this.snsid = snsid;
-		this.snsname = snsname;
-		this.snstype = snstype;
-		this.phone = phone;
-		this.password = password;
-		this.profileimgurl = profileimgurl;
-		this.googleemail = googleemail;
-		this.location = location;
-		this.apppushflag = apppushflag;
-		this.teampushflag = teampushflag;
-		this.commontokenid = commontokenid;
-		this.serialnumber = serialnumber;
-		this.creationdate = creationdate;
-		this.change_creationdate = change_creationdate;
-		this.fcmToken = fcmToken;
+	public int getQueryRow() {
+		return queryRow;
+	}
+
+	public void setQueryRow(int queryRow) {
+		this.queryRow = queryRow;
+	}
+
+	public String getOrderbytype() {
+		return orderbytype;
+	}
+
+	public void setOrderbytype(String orderbytype) {
+		this.orderbytype = orderbytype;
+	}
+
+	public String getTeamname() {
+		return teamname;
+	}
+
+	public void setTeamname(String teamname) {
+		this.teamname = teamname;
 	}
 
 	public String getFcmToken() {
@@ -199,27 +231,5 @@ public class User implements Serializable{
 		this.serialnumber = serialnumber;
 	}
 
-	@Override
-	public String toString() {
-		return "User{" +
-				"uid=" + uid +
-				", useremail='" + useremail + '\'' +
-				", username='" + username + '\'' +
-				", snsid='" + snsid + '\'' +
-				", snsname='" + snsname + '\'' +
-				", snstype='" + snstype + '\'' +
-				", phone='" + phone + '\'' +
-				", password='" + password + '\'' +
-				", profileimgurl='" + profileimgurl + '\'' +
-				", googleemail='" + googleemail + '\'' +
-				", location=" + location +
-				", apppushflag='" + apppushflag + '\'' +
-				", teampushflag='" + teampushflag + '\'' +
-				", commontokenid=" + commontokenid +
-				", serialnumber='" + serialnumber + '\'' +
-				", creationdate='" + creationdate + '\'' +
-				", change_creationdate='" + change_creationdate + '\'' +
-				", fcmToken='" + fcmToken + '\'' +
-				'}';
-	}
+
 }
