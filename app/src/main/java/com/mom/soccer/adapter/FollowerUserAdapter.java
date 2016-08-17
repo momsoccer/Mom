@@ -49,7 +49,12 @@ public class FollowerUserAdapter extends RecyclerView.Adapter<FollowerUserAdapte
         holder.username.setText(data.getUsername());
         holder.missioncount.setText(String.valueOf(data.getUsermissioncount()));
 
-        holder.teamname.setText(data.getTeamname());
+        if(data.getTeamname()==null){
+            holder.teamname.setText(R.string.user_team_yet_join);
+        }else{
+            holder.teamname.setText(data.getTeamname());
+        }
+
         holder.level.setText(String.valueOf(data.getLevel()));
         holder.score.setText(String.valueOf(data.getScore()));
 
@@ -58,20 +63,6 @@ public class FollowerUserAdapter extends RecyclerView.Adapter<FollowerUserAdapte
 
         holder.mecommentcount.setText(String.valueOf(data.getMecommentcount()));
         holder.usercommentcount.setText(String.valueOf(data.getCommentcount()));
-
-/*        holder.cardview.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                if(data.getFollowtype()==1){
-                    VeteranToast.makeToast(context,data.getUsername() + context.getString(R.string.follow_pickup_cancel) + position, Toast.LENGTH_SHORT).show();
-                    remove(position);
-                }
-
-                return false;
-            }
-        });*/
-
 
     }
 

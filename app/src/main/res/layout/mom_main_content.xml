@@ -37,6 +37,17 @@
             android:background="@color/mom_color1"
             android:onClick="OnClickHeader"
             />
+
+        <ImageButton
+            android:id="@+id/hd_point"
+            android:src="@drawable/ic_basic_mony"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:background="@color/mom_color1"
+            android:onClick="OnClickHeader"
+            />
     </android.support.v7.widget.Toolbar>
 
     <ScrollView

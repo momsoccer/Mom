@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.MainRankingAdapter;
@@ -18,7 +17,6 @@ import com.mom.soccer.dataDto.UserRangkinVo;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.VeteranToast;
 
 import java.util.List;
 
@@ -73,8 +71,6 @@ public class UserRankingActivity extends AppCompatActivity {
             textView_ranking_title.setText(R.string.toolbar_ranking_all);
         }else if((pageFlag.equals("team"))){
             textView_ranking_title.setText(R.string.toolbar_ranking_friend);
-        }else if(pageFlag.equals("friend")){
-            textView_ranking_title.setText(R.string.toolbar_ranking_team);
         }
 
     }
@@ -92,10 +88,6 @@ public class UserRankingActivity extends AppCompatActivity {
             li_bacground_lyout.setBackground(getResources().getDrawable(R.drawable.team_ranking));
             listView = (ListView) findViewById(R.id.rankingpage_total_ranking);
             getTotalRankingList();
-        }else if(pageFlag.equals("friend")){
-            li_bacground_lyout.setBackground(getResources().getDrawable(R.drawable.freind_ranking));
-            listView = (ListView) findViewById(R.id.rankingpage_total_ranking);
-            getTotalRankingList();
         }
 
     }
@@ -103,32 +95,52 @@ public class UserRankingActivity extends AppCompatActivity {
     public void getTotalRankingList(){
 
         DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
-
         UserRangkinVo userRangkinVo = new UserRangkinVo();
         userRangkinVo.setQueryRow(30);
         userRangkinVo.setOrderbytype("totalscore");
+        userRangkinVo.setUid(user.getUid());
 
-        final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(userRangkinVo);
-
-        call.enqueue(new Callback<List<UserRangkinVo>>() {
-            @Override
-            public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
-                if(response.isSuccessful()){
-                    List<UserRangkinVo> listVos = response.body();
-                    mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
-                    listView.setAdapter(mainRankingAdapter);
-                }else{
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
+        if(pageFlag.equals("total")){
+            final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(userRangkinVo);
+            call.enqueue(new Callback<List<UserRangkinVo>>() {
+                @Override
+                public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
+                    if(response.isSuccessful()){
+                        List<UserRangkinVo> listVos = response.body();
+                        mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
+                        listView.setAdapter(mainRankingAdapter);
+                    }else{
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
-                Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
-            }
-        });
+                @Override
+                public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
+                    Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        }else if((pageFlag.equals("team"))){
+            final Call<List<UserRangkinVo>> call = dataService.getTeamRanking(userRangkinVo);
+            call.enqueue(new Callback<List<UserRangkinVo>>() {
+                @Override
+                public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
+                    if(response.isSuccessful()){
+                        List<UserRangkinVo> listVos = response.body();
+                        mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
+                        listView.setAdapter(mainRankingAdapter);
+                    }else{
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
+                    Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        }
+
+
     }
 
     @OnClick(R.id.ranking_bell)

@@ -18,13 +18,15 @@
     <color name="color7">#000000</color>
     <color name="color8">#4A4A4C</color>
     <color name="color9">#BDD1DC</color>
-
     <color name="line_color1">#666666</color>
 
     <color name="edit_tx_on">#FFFFFF</color>
     <color name="edit_tx_off">#AEAEAE</color>
 
     <color name="enabled_red">#d0021b</color>
+
+    <color name="gold1">#BDD1DC</color>
+    <color name="gold2">#BDD1DC</color>
 
     <!--mom_main_viewpage_Color-->
     <color name="bg_screen1">#f64c73</color>

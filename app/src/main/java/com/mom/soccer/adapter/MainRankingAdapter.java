@@ -81,7 +81,7 @@ public class MainRankingAdapter extends BaseAdapter {
             listHolder.tx_level.setText(String.valueOf(RankingVos.get(i).getLevel()));
 
             if(RankingVos.get(i).getTeamname()==null){
-                listHolder.teamname.setText("팀 비소속");
+                listHolder.teamname.setText(R.string.user_team_yet_join);
             }else{
                 listHolder.teamname.setText(RankingVos.get(i).getTeamname());
             }

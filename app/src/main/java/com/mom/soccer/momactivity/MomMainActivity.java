@@ -45,6 +45,7 @@ import com.mom.soccer.MainActivity;
 import com.mom.soccer.R;
 import com.mom.soccer.Ranking.UserRankingActivity;
 import com.mom.soccer.adapter.MainRankingAdapter;
+import com.mom.soccer.besideactivity.AlramActivity;
 import com.mom.soccer.besideactivity.ApplyCoachActivity;
 import com.mom.soccer.besideactivity.FavoriteMissionActivity;
 import com.mom.soccer.besideactivity.StudentMainActivity;
@@ -57,14 +58,13 @@ import com.mom.soccer.common.SettingActivity;
 import com.mom.soccer.dataDto.UserRangkinVo;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.ServerResult;
-import com.mom.soccer.dto.TeamMember;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionActivity;
 import com.mom.soccer.mission.MissionCommon;
+import com.mom.soccer.point.PointMainActivity;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.InstructorService;
 import com.mom.soccer.retrofitdao.MomComService;
-import com.mom.soccer.retrofitdao.TeamService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
@@ -88,7 +88,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     private ViewPager viewPager;
     private MomViewPagerAdapter momViewPagerAdapter;
     private MainRankingAdapter mainRankingAdapter;
-    private TeamMember teamMember = new TeamMember();
 
     private LinearLayout dotsLayout;
     private TextView[] dots;
@@ -415,6 +414,14 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             case R.id.mom_hd_mk:
                 break;
             case R.id.hd_bell:
+                Intent intenti = new Intent(this, AlramActivity.class);
+                startActivity(intenti);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                break;
+            case R.id.hd_point:
+                Intent intent = new Intent(this, PointMainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 break;
         }
     }
@@ -553,12 +560,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                             li_main_slid_ranking.setVisibility(View.VISIBLE);
                             li_main_slid_ranking_no_data.setVisibility(View.GONE);
 
-                            Log.i(TAG,"오류전==================================");
-
                             List<UserRangkinVo> listVos = response.body();
-
-                            Log.i(TAG,"오류전==================================" + listVos.get(0).toString());
-
                             MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
                             ListView listView = (ListView) container.findViewById(R.id.list_total_ranking);
                             listView.setAdapter(mainRankingAdapter);
@@ -601,26 +603,32 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                 li_main_noData_layout = (LinearLayout) view.findViewById(R.id.li_main_noData_layout);
 
                 WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
-                TeamService teamService = ServiceGenerator.createService(TeamService.class,MomMainActivity.this,user);
-                TeamMember member = new TeamMember();
-                member.setUid(user.getUid());
-                Call<TeamMember> c = teamService.getTeamMemeber(member);
-                c.enqueue(new Callback<TeamMember>() {
+                DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
+
+                //parameter
+                UserRangkinVo userRangkinVo = new UserRangkinVo();
+                userRangkinVo.setUid(user.getUid());
+                userRangkinVo.setQueryRow(3);
+                userRangkinVo.setOrderbytype("totalscore");
+
+                Call<List<UserRangkinVo>> c = dataService.getTeamRanking(userRangkinVo);
+                c.enqueue(new Callback<List<UserRangkinVo>>() {
                     @Override
-                    public void onResponse(Call<TeamMember> call, Response<TeamMember> response) {
+                    public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
                         if(response.isSuccessful()){
-                            teamMember = response.body();
+                            List<UserRangkinVo> listVos = response.body();
                             WaitingDialog.cancelWaitingDialog();
 
-                            if(teamMember.getUid()==0){
+                            if(listVos.size()==0){
                                 li_main_noData_layout.setVisibility(View.VISIBLE);
                                 li_main_team_layout.setVisibility(View.GONE);
                             }else{
                                 li_main_noData_layout.setVisibility(View.GONE);
                                 li_main_team_layout.setVisibility(View.VISIBLE);
-
+                                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
                                 //데이터를 읽어 들여 뿌리는 작업을 한다
                                 ListView listView = (ListView) container.findViewById(R.id.list_team_ranking);
+                                listView.setAdapter(mainRankingAdapter);
                             }
 
                         }else{
@@ -629,7 +637,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                     }
 
                     @Override
-                    public void onFailure(Call<TeamMember> call, Throwable t) {
+                    public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
                         WaitingDialog.cancelWaitingDialog();
                         t.printStackTrace();
                     }
@@ -646,16 +654,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                 });
 
             }else if(position==2){
-                ListView listView = (ListView) container.findViewById(R.id.list_friend_ranking);
-                Button button = (Button) container.findViewById(R.id.btn_more_friend_ranking);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(),UserRankingActivity.class);
-                        intent.putExtra("pageparam","friend");
-                        startActivity(intent);
-                    }
-                });
+
             }
 
             return view;

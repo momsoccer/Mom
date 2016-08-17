@@ -370,4 +370,5 @@
     <string name="ins_team_join">팀가입불가(이미 다른팀 가입중)</string>
     <string name="ins_team_duplicate_msg">팀가입불가</string>
     <string name="ins_team_joining">기존 팀탈퇴 후 가입이 가능 합니다</string>
+    <string name="title_activity_alram">AlramActivity</string>
 </resources>

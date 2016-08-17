@@ -1,4 +1,4 @@
-package com.mom.soccer.point;
+package com.mom.soccer.ball;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,19 +7,18 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.mom.soccer.R;
+import com.mom.soccer.fragment.PlayerFragment;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.User;
-import com.mom.soccer.fragment.PointFragment;
 
-import butterknife.ButterKnife;
+public class PlayerMainActivity extends AppCompatActivity {
 
-public class PointMainActivity extends AppCompatActivity {
-
-    private static final String TAG = "InsMainActivity";
+    private static final String TAG = "PlayerMainActivity";
 
     ViewPager viewPager;
     PagerSlidingTabStrip tabsStrip;
@@ -30,25 +29,26 @@ public class PointMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ac_point_main_layout);
-        ButterKnife.bind(this);
+        setContentView(R.layout.ac_player_main_layout);
+        Log.i(TAG,"====================== onCreate() ======================");
+
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.point_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.player_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(R.drawable.back_arrow);
 
-        viewPager = (ViewPager) findViewById(R.id.point_viewpager);
+        viewPager = (ViewPager) findViewById(R.id.player_ollow_viewpager);
 
-        PointViewPagerAdapter pagerAdapter = new PointViewPagerAdapter(getSupportFragmentManager());
+        PlayerViewPagerAdapter pagerAdapter = new PlayerViewPagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(pagerAdapter);
 
-        tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.point_tabs);
+        tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.player_follow_tabs);
 
         //setting
         tabsStrip.setIndicatorColor(getResources().getColor(R.color.color6));
@@ -57,37 +57,10 @@ public class PointMainActivity extends AppCompatActivity {
     }
 
 
-    public class PointViewPagerAdapter extends FragmentStatePagerAdapter {
-
-        final int PAGE_COUNT = 2;
-
-        private String tabTitles[] = new String[] {
-                "포인트 구매","포인트 사용이력"
-        };
-
-        public PointViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public int getCount() {
-            return PAGE_COUNT;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return PointFragment.newInstance(position + 1,user);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return tabTitles[position];
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
-        }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG,"====================== onStart() ======================");
     }
 
     @Override
@@ -99,5 +72,38 @@ public class PointMainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public class PlayerViewPagerAdapter extends FragmentStatePagerAdapter {
+
+        final int PAGE_COUNT = 3;
+
+        private String tabTitles[] = new String[] {
+                "나의 미션 챌린지","나의 피드백","준비중"
+        };
+
+        public PlayerViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return PAGE_COUNT;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return PlayerFragment.newInstance(position + 1,user);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
     }
 }
