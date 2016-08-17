@@ -57,7 +57,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,MomMainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 if (context instanceof Activity) {
                     ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
@@ -70,7 +70,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
             public void onClick(View view) {
                 Intent intent = new Intent(context,MyPageActivity.class);
                 intent.putExtra("pageflag","me");
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 if (context instanceof Activity) {
                     ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
@@ -88,7 +88,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,SearchActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 if (context instanceof Activity) {
                     ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
@@ -100,7 +100,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,SettingActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
                 if (context instanceof Activity) {
                     ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);

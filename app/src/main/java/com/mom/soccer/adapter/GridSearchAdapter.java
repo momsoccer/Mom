@@ -10,14 +10,14 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.User;
-import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.ins.InsMainActivity;
+import com.mom.soccer.mission.MissionCommon;
 
 import java.util.HashMap;
 import java.util.List;
@@ -170,7 +170,10 @@ public class GridSearchAdapter extends BaseAdapter {
                     mContext.startActivity(intent);
                     ((Activity) mContext).overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 }else{
-                    VeteranToast.makeToast(mContext,"선생님입니다", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mContext,InsMainActivity.class);
+                    intent.putExtra(MissionCommon.INS_OBJECT,instructorList.get(i));
+                    mContext.startActivity(intent);
+                    ((Activity) mContext).overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 }
 
             }

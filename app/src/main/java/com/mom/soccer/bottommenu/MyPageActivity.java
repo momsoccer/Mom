@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -147,6 +148,9 @@ public class MyPageActivity extends AppCompatActivity {
     private String REQ_FRIEND = "N";
     private FriendApply friendApply;
 
+    @Bind(R.id.scrollView)
+    ScrollView scrollView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,6 +189,7 @@ public class MyPageActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     @Override
@@ -206,6 +211,7 @@ public class MyPageActivity extends AppCompatActivity {
 
         //팔러잉 버튼 텍스트
         getFollowCountBtnSet();
+
     }
 
     public void getFollowCountBtnSet(){
@@ -349,7 +355,11 @@ public class MyPageActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     WaitingDialog.cancelWaitingDialog();
                     userMissions = response.body();
-                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissions,"ME");
+
+                    //adapter_book_mark_layout
+                    //adapter_user_mission_grid_item
+
+                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_book_mark_layout,userMissions,"ME");
                     videoGridView.setAdapter(gridMissionAdapter);
 
                     if(userMissions.size()==0){
@@ -377,7 +387,7 @@ public class MyPageActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG,"onResume() ===================================");
+        Log.i(TAG, "onResume() ===================================");
     }
 
     public void followClick(View v){
@@ -389,5 +399,15 @@ public class MyPageActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        scrollView.post(new Runnable(){
+            public void run() {
+                scrollView.scrollTo(1, 1);
+            }
+        });
+    }
 
 }

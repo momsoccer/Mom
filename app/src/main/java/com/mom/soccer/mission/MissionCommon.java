@@ -10,5 +10,6 @@ public class MissionCommon {
     public static String OBJECT = "OBJECT";
     public static String USER_MISSTION_OBJECT = "USER_MISSTION_OBJECT";
     public static String USER_OBJECT = "USER_OBJECT";
+    public static String INS_OBJECT = "INS_OBJECT";
 
 }

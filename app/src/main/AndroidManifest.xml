@@ -172,6 +172,9 @@
         <activity
             android:name=".bottommenu.FollowActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ins.InsMainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             />
     </application>

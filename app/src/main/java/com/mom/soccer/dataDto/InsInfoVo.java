@@ -25,6 +25,21 @@ public class InsInfoVo {
     private int teampasspoint;
     private int pubpasspoint;
     private String change_teamcreationdate;
+    private int teamid;
+
+    //강사정보 추가
+    private int age;
+    private int playeryear;
+    private int instructoryear;
+
+    private String address;
+    private String currentteamname;
+    private String career1;
+    private String career2;
+    private String career3;
+    private String career4;
+    private String career5;
+    private String resume;
 
     //search object
     private String searchname;
@@ -32,6 +47,54 @@ public class InsInfoVo {
     private String orderbytype;
 
     public InsInfoVo(){}
+
+    @Override
+    public String toString() {
+        return "InsInfoVo{" +
+                "instructorid=" + instructorid +
+                ", uid=" + uid +
+                ", name='" + name + '\'' +
+                ", profileimgurl='" + profileimgurl + '\'' +
+                ", teamname='" + teamname + '\'' +
+                ", emblem='" + emblem + '\'' +
+                ", teamvideopoint=" + teamvideopoint +
+                ", teamwordpoint=" + teamwordpoint +
+                ", pubvideopoint=" + pubvideopoint +
+                ", pubwordpoint=" + pubwordpoint +
+                ", teamjoinpoint=" + teamjoinpoint +
+                ", teammembercount=" + teammembercount +
+                ", questioncount=" + questioncount +
+                ", answercount=" + answercount +
+                ", estimation=" + estimation +
+                ", insvidecount=" + insvidecount +
+                ", teampasspoint=" + teampasspoint +
+                ", pubpasspoint=" + pubpasspoint +
+                ", change_teamcreationdate='" + change_teamcreationdate + '\'' +
+                ", teamid=" + teamid +
+                ", age=" + age +
+                ", playeryear=" + playeryear +
+                ", instructoryear=" + instructoryear +
+                ", address='" + address + '\'' +
+                ", currentteamname='" + currentteamname + '\'' +
+                ", career1='" + career1 + '\'' +
+                ", career2='" + career2 + '\'' +
+                ", career3='" + career3 + '\'' +
+                ", career4='" + career4 + '\'' +
+                ", career5='" + career5 + '\'' +
+                ", resume='" + resume + '\'' +
+                ", searchname='" + searchname + '\'' +
+                ", queryRow=" + queryRow +
+                ", orderbytype='" + orderbytype + '\'' +
+                '}';
+    }
+
+    public int getTeamid() {
+        return teamid;
+    }
+
+    public void setTeamid(int teamid) {
+        this.teamid = teamid;
+    }
 
     public int getInstructorid() {
         return instructorid;
@@ -161,12 +224,116 @@ public class InsInfoVo {
         this.insvidecount = insvidecount;
     }
 
+    public int getTeampasspoint() {
+        return teampasspoint;
+    }
+
+    public void setTeampasspoint(int teampasspoint) {
+        this.teampasspoint = teampasspoint;
+    }
+
+    public int getPubpasspoint() {
+        return pubpasspoint;
+    }
+
+    public void setPubpasspoint(int pubpasspoint) {
+        this.pubpasspoint = pubpasspoint;
+    }
+
     public String getChange_teamcreationdate() {
         return change_teamcreationdate;
     }
 
     public void setChange_teamcreationdate(String change_teamcreationdate) {
         this.change_teamcreationdate = change_teamcreationdate;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getPlayeryear() {
+        return playeryear;
+    }
+
+    public void setPlayeryear(int playeryear) {
+        this.playeryear = playeryear;
+    }
+
+    public int getInstructoryear() {
+        return instructoryear;
+    }
+
+    public void setInstructoryear(int instructoryear) {
+        this.instructoryear = instructoryear;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCurrentteamname() {
+        return currentteamname;
+    }
+
+    public void setCurrentteamname(String currentteamname) {
+        this.currentteamname = currentteamname;
+    }
+
+    public String getCareer1() {
+        return career1;
+    }
+
+    public void setCareer1(String career1) {
+        this.career1 = career1;
+    }
+
+    public String getCareer2() {
+        return career2;
+    }
+
+    public void setCareer2(String career2) {
+        this.career2 = career2;
+    }
+
+    public String getCareer3() {
+        return career3;
+    }
+
+    public void setCareer3(String career3) {
+        this.career3 = career3;
+    }
+
+    public String getCareer4() {
+        return career4;
+    }
+
+    public void setCareer4(String career4) {
+        this.career4 = career4;
+    }
+
+    public String getCareer5() {
+        return career5;
+    }
+
+    public void setCareer5(String career5) {
+        this.career5 = career5;
+    }
+
+    public String getResume() {
+        return resume;
+    }
+
+    public void setResume(String resume) {
+        this.resume = resume;
     }
 
     public String getSearchname() {
@@ -191,47 +358,5 @@ public class InsInfoVo {
 
     public void setOrderbytype(String orderbytype) {
         this.orderbytype = orderbytype;
-    }
-
-    public int getTeampasspoint() {
-        return teampasspoint;
-    }
-
-    public void setTeampasspoint(int teampasspoint) {
-        this.teampasspoint = teampasspoint;
-    }
-
-    public int getPubpasspoint() {
-        return pubpasspoint;
-    }
-
-    public void setPubpasspoint(int pubpasspoint) {
-        this.pubpasspoint = pubpasspoint;
-    }
-
-    @Override
-    public String toString() {
-        return "InsInfoVo{" +
-                "instructorid=" + instructorid +
-                ", uid=" + uid +
-                ", name='" + name + '\'' +
-                ", profileimgurl='" + profileimgurl + '\'' +
-                ", teamname='" + teamname + '\'' +
-                ", emblem='" + emblem + '\'' +
-                ", teamvideopoint=" + teamvideopoint +
-                ", teamwordpoint=" + teamwordpoint +
-                ", pubvideopoint=" + pubvideopoint +
-                ", pubwordpoint=" + pubwordpoint +
-                ", teamjoinpoint=" + teamjoinpoint +
-                ", teammembercount=" + teammembercount +
-                ", questioncount=" + questioncount +
-                ", answercount=" + answercount +
-                ", estimation=" + estimation +
-                ", insvidecount=" + insvidecount +
-                ", change_teamcreationdate='" + change_teamcreationdate + '\'' +
-                ", searchname='" + searchname + '\'' +
-                ", queryRow=" + queryRow +
-                ", orderbytype='" + orderbytype + '\'' +
-                '}';
     }
 }

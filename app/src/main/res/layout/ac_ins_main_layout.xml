@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/mom_color1"
+    tools:context="com.mom.soccer.ins.InsMainActivity">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ins_toolbar"
+        app:titleTextColor="@color/color6"
+        android:background="@color/mom_color1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/ins_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ins_toolbar_title"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/color6"
+            android:layout_gravity="center"
+            />
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.astuetz.PagerSlidingTabStrip
+            android:id="@+id/follow_tabs"
+            app:pstsShouldExpand="true"
+            app:pstsTextAllCaps="true"
+            app:pstsDividerColor="@color/color6"
+            app:pstsIndicatorHeight="2dp"
+            app:pstsUnderlineHeight="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/follow_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,6 +1,7 @@
 package com.mom.soccer.retrofitdao;
 
 
+import com.mom.soccer.dataDto.InsInfoVo;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.InstructorPointHistory;
 import com.mom.soccer.dto.ServerResult;
@@ -75,4 +76,7 @@ public interface InstructorService {
 
     @POST("ins/updateIns")
     Call<ServerResult> updateIns(@Body InsApplyVo insApplyVo);
+
+    @GET("/api/ins/getInsInfoApply")
+    Call<InsInfoVo> getInsInfoApply(@Query("insid") int insid);
 }

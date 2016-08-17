@@ -521,12 +521,12 @@
             android:id="@+id/mypage_gridview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:numColumns="2"
+            android:numColumns="3"
             android:gravity="center"
             android:horizontalSpacing="2dp"
             android:isScrollContainer="false"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="5dp"
+            android:verticalSpacing="2dp"
             >
         </com.mom.soccer.common.ExpandableHeightGridView>
 

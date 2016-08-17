@@ -129,8 +129,6 @@ public class MissionMainActivity extends AppCompatActivity {
     @Bind(R.id.li_no_data_found)
     LinearLayout li_no_data_found;
 
-    @Bind(R.id.scroll_layout)
-    ScrollView scroll_layout;
 
     /**************************************************
      * google uplaod define
@@ -239,9 +237,8 @@ public class MissionMainActivity extends AppCompatActivity {
                 (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         nm.cancel(UPLOAD_NOTIFICATION_ID);
 
-        //스크롤 강제로 0,0
-        scroll_layout.setX(0);
-        scroll_layout.setY(0);
+
+
     }
 
 
@@ -284,6 +281,7 @@ public class MissionMainActivity extends AppCompatActivity {
         super.onStart();
         Log.d(TAG,"onStart() =====================================");
 
+
         //나의 미션 영상
         getMyVideo();
         //조회 조건 <나를 제외한 같은 미션 영상을 업로드한 리스트>
@@ -297,6 +295,7 @@ public class MissionMainActivity extends AppCompatActivity {
         FragmentTransaction tc = fm.beginTransaction();
         tc.add(R.id.youtube_seed_frame_layout,youtubeFragment,"");
         tc.commit();
+
 
     }
 
@@ -327,7 +326,7 @@ public class MissionMainActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     WaitingDialog.cancelWaitingDialog();
                     userMissionList = response.body();
-                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_user_mission_grid_item,userMissionList,"YOU");
+                    gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_book_mark_layout,userMissionList,"YOU");
                     videoGridView.setAdapter(gridMissionAdapter);
 
                     if(userMissionList.size()==0){
@@ -602,5 +601,16 @@ public class MissionMainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
 
+        final ScrollView scroll_layout;
+        scroll_layout = (ScrollView) findViewById(R.id.scroll_layout);
+        scroll_layout.post(new Runnable(){
+            public void run() {
+                scroll_layout.scrollTo(1, 1);
+            }
+        });
+    }
 }

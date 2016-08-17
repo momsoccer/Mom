@@ -1,9 +1,11 @@
 package com.mom.soccer.dto;
 
+import java.io.Serializable;
+
 /**
  * Created by sungbo on 2016-06-01.
  */
-public class Instructor {
+public class Instructor implements Serializable {
 
     private int instructorid;
     private String email;

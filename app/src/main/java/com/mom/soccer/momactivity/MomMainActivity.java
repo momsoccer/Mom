@@ -290,6 +290,14 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
+            /*if(instructor.getUid()!=0){
+                Intent intent = new Intent(getApplicationContext(),InsMainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+            }else{
+            }*/
+
+
         }else if(id == R.id.mn_item_coachreq){
             Intent intent = new Intent(this,ApplyCoachActivity.class);
             startActivity(intent);
@@ -545,7 +553,12 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                             li_main_slid_ranking.setVisibility(View.VISIBLE);
                             li_main_slid_ranking_no_data.setVisibility(View.GONE);
 
+                            Log.i(TAG,"오류전==================================");
+
                             List<UserRangkinVo> listVos = response.body();
+
+                            Log.i(TAG,"오류전==================================" + listVos.get(0).toString());
+
                             MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
                             ListView listView = (ListView) container.findViewById(R.id.list_total_ranking);
                             listView.setAdapter(mainRankingAdapter);

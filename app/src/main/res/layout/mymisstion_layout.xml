@@ -313,13 +313,13 @@
         <com.mom.soccer.common.ExpandableHeightGridView
             android:id="@+id/main_mission_gridview"
             android:layout_marginTop="10dp"
-            android:numColumns="2"
+            android:numColumns="3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:horizontalSpacing="2dp"
             android:isScrollContainer="false"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="20dp"
+            android:horizontalSpacing="1dp"
+            android:verticalSpacing="2dp"
             >
         </com.mom.soccer.common.ExpandableHeightGridView>
 

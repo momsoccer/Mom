@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="118dp"
+    android:layout_width="115dp"
     android:layout_height="110dp"
     android:background="@drawable/video_background"
-    android:layout_margin="2dp"
     >
 
     <com.google.android.youtube.player.YouTubeThumbnailView
@@ -21,8 +20,8 @@
         android:src="@drawable/video_play_btn_white"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginLeft="45dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginLeft="43dp"
+        android:layout_marginTop="27dp"
         />
 
     <TextView
@@ -30,12 +29,12 @@
         android:text="subjectsubjectsubjectsubject"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="8dp"
-        android:textSize="8sp"
+        android:textSize="6sp"
         android:textColor="@color/color6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:maxLength="25"
+        android:maxLines="2"
+        android:maxLength="18"
         />
 
     <ImageView
@@ -113,7 +112,7 @@
 
         <TextView
             android:text="@string/grid_user_name_title"
-            android:textSize="8sp"
+            android:textSize="6sp"
             android:textColor="@color/color6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -121,7 +120,7 @@
         <TextView
             android:id="@+id/tx_ninck_name"
             android:text="유저명"
-            android:textSize="8sp"
+            android:textSize="6sp"
             android:textColor="@color/color6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -141,7 +140,7 @@
         <TextView
             android:id="@+id/tx_subject"
             android:text="영상 제목 입니다 안녕하세요"
-            android:textSize="8sp"
+            android:textSize="6sp"
             android:textColor="@color/color6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

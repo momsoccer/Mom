@@ -1,6 +1,8 @@
 package com.mom.soccer.retrofitdao;
 
+import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.Team;
+import com.mom.soccer.dto.TeamApply;
 import com.mom.soccer.dto.TeamMember;
 
 import okhttp3.MultipartBody;
@@ -31,4 +33,12 @@ public interface TeamService {
     @POST("/api/team/getTeamMemeber")
     Call<TeamMember> getTeamMemeber(@Body TeamMember teamMember);
 
+    @POST("/api/team/applyTeam")
+    Call<ServerResult> applyTeam(@Body TeamApply teamApply);
+
+    @POST("/api/team/getTeamApply")
+    Call<TeamApply> getTeamApply(@Body TeamApply teamApply);
+
+    @POST("/api/team/deleteTeamApply")
+    Call<ServerResult> deleteTeamApply(@Body TeamApply teamApply);
 }
