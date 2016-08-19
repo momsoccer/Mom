@@ -35,12 +35,13 @@
                 android:layout_margin="3dp"
                 android:singleLine="true"
                 android:imeOptions="actionSearch"
+                android:textColorHint="@color/color6"
                 />
 
             <Button
                 android:id="@+id/btn_search"
                 android:text="@string/search_btn"
-                style="@style/btnStyleBlack"
+                style="@style/btnStylePaprika"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_margin="3dp"

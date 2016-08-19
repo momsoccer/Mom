@@ -62,7 +62,7 @@ public class InsMainActivity extends AppCompatActivity {
         tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.follow_tabs);
 
         //setting
-        tabsStrip.setIndicatorColor(getResources().getColor(R.color.color6));
+        tabsStrip.setIndicatorColor(getResources().getColor(R.color.enabled_red));
         tabsStrip.setTextColor(getResources().getColor(R.color.color6));
         tabsStrip.setViewPager(viewPager);
 

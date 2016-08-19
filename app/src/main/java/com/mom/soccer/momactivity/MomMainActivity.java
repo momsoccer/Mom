@@ -148,8 +148,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         header = navigationView.getHeaderView(0);
         navHeaderUserName = (TextView) header.findViewById(R.id.nav_header_username);
         navHeaderUserEmail = (TextView) header.findViewById(R.id.nav_header_useremail);
-        navHeaderCoachName = (TextView) header.findViewById(R.id.nav_header_coachname);
-        navHeaderTeamName = (TextView) header.findViewById(R.id.nav_header_teamname);
         navHeaderImage  = (ImageView) header.findViewById(R.id.nav_header_image);
         navHeaderUserName.setText(user.getUsername());
         navHeaderUserEmail.setText(user.getUseremail());
@@ -222,8 +220,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         if(user.getUseremail() != null){
             navHeaderUserName = (TextView) header.findViewById(R.id.nav_header_username);
             navHeaderUserEmail = (TextView) header.findViewById(R.id.nav_header_useremail);
-            navHeaderCoachName = (TextView) header.findViewById(R.id.nav_header_coachname);
-            navHeaderTeamName = (TextView) header.findViewById(R.id.nav_header_teamname);
             navHeaderImage  = (ImageView) header.findViewById(R.id.nav_header_image);
             navHeaderUserName.setText(user.getUsername());
             navHeaderUserEmail.setText(user.getUseremail());
@@ -288,15 +284,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-
-            /*if(instructor.getUid()!=0){
-                Intent intent = new Intent(getApplicationContext(),InsMainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-            }else{
-            }*/
-
-
         }else if(id == R.id.mn_item_coachreq){
             Intent intent = new Intent(this,ApplyCoachActivity.class);
             startActivity(intent);

@@ -1,10 +1,12 @@
 package com.mom.soccer.dataDto;
 
+import java.io.Serializable;
+
 /**
  * Created by sungbo on 2016-08-15.
  * 강사 정보를 복합으로 담은 객체
  */
-public class InsInfoVo {
+public class InsInfoVo implements Serializable{
 
     private int instructorid;
     private int uid;

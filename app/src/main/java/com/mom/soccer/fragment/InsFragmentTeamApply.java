@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.common.Compare;
@@ -46,6 +45,8 @@ public class InsFragmentTeamApply extends Fragment{
     private Instructor ins = new Instructor();
     private InsInfoVo insInfoVo = new InsInfoVo();
     private TeamApply teamApply = new TeamApply();
+
+    Button btnTeamRequest;
 
     public static InsFragmentTeamApply newInstance(int page, User user,Instructor ins){
 
@@ -82,46 +83,11 @@ public class InsFragmentTeamApply extends Fragment{
         li_layout_page3 = (LinearLayout) v.findViewById(R.id.li_layout_page3);
 
         if(mPage==1){
-
-
-
             li_layout_page1.setVisibility(View.VISIBLE);
             li_layout_page2.setVisibility(View.GONE);
             li_layout_page3.setVisibility(View.GONE);
 
             setPageInsInfo(v);
-
-            final Button btnTeamRequest = (Button) v.findViewById(R.id.btnTeamRequest);
-
-            applyTeam("QUERY",btnTeamRequest);
-
-            btnTeamRequest.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Log.i(TAG,"값은 : " + teamApply.getApproval());
-
-                    if(teamApply.getUid()==0){
-                        applyTeam("REQUEST",btnTeamRequest);
-                    }else{
-                        if(teamApply.getTeamid() == insInfoVo.getTeamid()){
-                            if(teamApply.getApproval().equals("APROVAL")){
-                                applyTeam("WITHDRAWAL",btnTeamRequest);
-                            }else if(teamApply.getApproval().equals("REQUEST")){
-                                Log.i(TAG,"검토중입니다. 요청 취소");
-                                applyTeam("WITHDRAWAL",btnTeamRequest);
-                            }
-                        }else{
-                            String msg = getString(R.string.ins_team_duplicate_msg)+"("+teamApply.getTeamname()+")"+getString(R.string.ins_team_joining);
-                            new MaterialDialog.Builder(getContext())
-                                    .content(msg)
-                                    .positiveText(R.string.mom_diaalog_confirm)
-                                    .backgroundColor(getResources().getColor(R.color.mom_color1))
-                                    .show();
-                        }
-                    }
-                }
-            });
 
         }else if(mPage==2){
 
@@ -172,6 +138,7 @@ public class InsFragmentTeamApply extends Fragment{
 
                     TextView  pubpasspoint = (TextView) v.findViewById(R.id.pubpasspoint);
                     TextView  teampasspoint = (TextView) v.findViewById(R.id.teampasspoint);
+                    btnTeamRequest = (Button) v.findViewById(R.id.btnTeamRequest);
 
                     /****************
                      * Assgin db data
@@ -207,6 +174,30 @@ public class InsFragmentTeamApply extends Fragment{
                     pubpasspoint.setText(String.valueOf(insInfoVo.getPubpasspoint()));
                     teampasspoint.setText(String.valueOf(insInfoVo.getTeampasspoint()));
 
+                    //화면이 처음 실행 될때.
+                    applyTeam("QUERY",btnTeamRequest);
+
+
+                    btnTeamRequest.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(teamApply.getTeamid()==0){
+                                applyTeam("REQUEST",null);
+                            }else{
+                                //현재 누군가의 제자이거나, 제자 요청을 했다면..
+                                if(teamApply.getTeamid() == insInfoVo.getTeamid()){ //제자요청을 했거나 현재 제자이라면
+                                    if(teamApply.getApproval().equals("REQUEST") || teamApply.getApproval().equals("APPROVAL")){
+                                        applyTeam("WITHDRAWAL",null);
+                                    }
+                                }else{
+                                    btnTeamRequest.setVisibility(View.INVISIBLE);
+                                }
+
+                            }
+
+                        }
+                    });
+
                 }else{
                     WaitingDialog.cancelWaitingDialog();
                 }
@@ -221,10 +212,13 @@ public class InsFragmentTeamApply extends Fragment{
     }
 
     public void applyTeam(String applyType, final Button button){
+
         WaitingDialog.showWaitingDialog(getContext(),false);
         TeamService teamService = ServiceGenerator.createService(TeamService.class,getContext(),user);
+
         final TeamApply apply = new TeamApply();
         apply.setUid(user.getUid());
+
         if(applyType.equals("REQUEST")){
             apply.setInstructorid(ins.getInstructorid());
             apply.setTeamid(insInfoVo.getTeamid());
@@ -238,8 +232,6 @@ public class InsFragmentTeamApply extends Fragment{
                     if(response.isSuccessful()){
                         WaitingDialog.cancelWaitingDialog();
                         ServerResult result = response.body();
-                        button.setText(R.string.ins_team_pregress);
-
                         Intent intent = new Intent(getContext(), InsMainActivity.class);
                         intent.putExtra(MissionCommon.INS_OBJECT,ins);
                         getActivity().finish();
@@ -265,21 +257,25 @@ public class InsFragmentTeamApply extends Fragment{
                         WaitingDialog.cancelWaitingDialog();
                         teamApply = response.body();
 
-                        Log.i(TAG,"teamApply : " + teamApply.toString());
+                        Log.i(TAG,"초기셋팅 teamApply.getTeamid() : " + teamApply.getTeamid());
+                        Log.i(TAG,"초기셋팅 insInfoVo.getTeamid() " + insInfoVo.getTeamid());
+                        Log.i(TAG,"초기셋팅 user.getUid() " + user.getUid());
 
-                        if(teamApply.getUid()==0){
+                        //제가요청 테이블에 자료가 없다면
+                        if(teamApply.getTeamid()==0){
                             button.setText(getString(R.string.ins_team_apply));
                         }else{
-
-                            if(teamApply.getTeamid() == insInfoVo.getTeamid()){
+                            //현재 누군가의 제자이거나, 제자 요청을 했다면..
+                            if(teamApply.getTeamid() == insInfoVo.getTeamid()){ //제자요청을 했거나 현재 제자이라면
                                 if(teamApply.getApproval().equals("REQUEST")){
                                     button.setText(getString(R.string.ins_team_pregress));
-                                }else if(teamApply.getApproval().equals("APPROVAL")){
+                                }else if(teamApply.getApproval().equals("APPROVAL")){  //현재 제자일 경우
                                     button.setText(getString(R.string.ins_team_applied));
                                 }
                             }else{
-                                button.setText(getString(R.string.ins_team_join));
+                                button.setVisibility(View.INVISIBLE);
                             }
+
                         }
 
                     }else {
@@ -293,14 +289,18 @@ public class InsFragmentTeamApply extends Fragment{
                 }
             });
         }else if(applyType.equals("WITHDRAWAL")){
+
+            apply.setInstructorid(insInfoVo.getInstructorid());
+            apply.setTeamid(insInfoVo.getTeamid());
+
+            Log.i(TAG,"제자 삭제 요청 : " + apply.toString());
+
             Call<ServerResult> c = teamService.deleteTeamApply(apply);
             c.enqueue(new Callback<ServerResult>() {
                 @Override
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                     if(response.isSuccessful()){
                         WaitingDialog.cancelWaitingDialog();
-                        button.setText(R.string.ins_team_apply);
-
                         Intent intent = new Intent(getContext(), InsMainActivity.class);
                         intent.putExtra(MissionCommon.INS_OBJECT,ins);
                         getActivity().finish();

@@ -319,20 +319,20 @@
     <string name="mom_setting_app_user">개인프로필</string>
 
     <!--강사정보-->
-    <string name="ins_text_name">1.강사이름</string>
-    <string name="ins_text_teamname">2.팀명</string>
-    <string name="ins_text_teammember_count">3.팀 회원수</string>
-    <string name="ins_text_feed_q">4.피드백 질문</string>
-    <string name="ins_text_feed_a">5.피드백 답변</string>
-    <string name="ins_text_feed_e">6.답변평가(5점 만점)</string>
-    <string name="ins_text_feed_v">7.강사등록 강의</string>
+    <string name="ins_text_name">강사이름</string>
+    <string name="ins_text_teamname">팀명</string>
+    <string name="ins_text_teammember_count">팀 회원수</string>
+    <string name="ins_text_feed_q">피드백 질문</string>
+    <string name="ins_text_feed_a">피드백 답변</string>
+    <string name="ins_text_feed_e">답변평가(5점 만점)</string>
+    <string name="ins_text_feed_v">강사등록 강의</string>
 
     <string name="ins_text_p_pub_video">기본-영상 피드백</string>
     <string name="ins_text_p_pub_word">기본-문자 피드백</string>
-    <string name="ins_text_p_team_video">팀원-영상 피드백</string>
-    <string name="ins_text_p_team_word">팀원-문자 피드백</string>
     <string name="ins_text_p_pub_eval">기본 심사비</string>
-    <string name="ins_text_p_team_eval">팀원 심사비</string>
+    <string name="ins_text_p_team_video">제자-영상 피드백</string>
+    <string name="ins_text_p_team_word">제자-문자 피드백</string>
+    <string name="ins_text_p_team_eval">제자 심사비</string>
 
     <string name="user_mission_team_feedback_request">팀강사분</string>
     <string name="user_mission_team_feedback_another_request">다른 강사분</string>
@@ -361,14 +361,26 @@
     <string name="f_layout_not_see">다른 사람 팔로워 정보는 볼수 없습니다~</string>
 
     <string name="ins_toolbar_title">강사</string>
-    <string name="ins_team_info_text">팀원</string>
+    <string name="ins_team_info_text">제자리스트</string>
     <string name="ins_team_video_text">강사영상</string>
 
-    <string name="ins_team_apply">팀가입요청</string>
-    <string name="ins_team_pregress">팀가입검토중(클릭시 취소)</string>
-    <string name="ins_team_applied">팀탈퇴</string>
-    <string name="ins_team_join">팀가입불가(이미 다른팀 가입중)</string>
-    <string name="ins_team_duplicate_msg">팀가입불가</string>
-    <string name="ins_team_joining">기존 팀탈퇴 후 가입이 가능 합니다</string>
+    <string name="ins_team_apply">제자요청</string>
+    <string name="ins_team_pregress">제자검토중(클릭시 취소)</string>
+    <string name="ins_team_applied">제자취소</string>
+    <string name="ins_team_join">제자 요청불가(이미 다른 강사의 제자)</string>
+    <string name="ins_team_duplicate_msg">제자 요청불가</string>
+    <string name="ins_team_joining">제자 요청이 가능합니다</string>
     <string name="title_activity_alram">AlramActivity</string>
+
+    <!--피드백요청-->
+    <string name="feedback_title1">To.</string>
+    <string name="feedback_title2">피드백 요청</string>
+    <string name="feedback_title3">Mom 피드백 요청</string>
+
+    <string name="feedback_video_point">비디오 답변은 </string>
+    <string name="feedback_word_point">문자 답변은 </string>
+    <string name="feedback_word_hint">문의 내용(글자수 제한 없음)</string>
+
+
+
 </resources>

@@ -45,7 +45,7 @@
                 android:gravity="center"
                 android:text="@string/default_mission_name"
                 android:textColor="@color/color6"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginTop="75dp"
                 android:layout_marginRight="15dp"
@@ -75,7 +75,7 @@
                 android:layout_marginRight="20dp"
                 android:text="@string/default_mission_disp"
                 android:textColor="@color/color6"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -87,7 +87,7 @@
                 android:layout_marginRight="20dp"
                 android:text="@string/default_mission_precon"
                 android:textColor="@color/color2"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -99,7 +99,7 @@
                 android:layout_marginRight="20dp"
                 android:text="@string/default_mission_getpoint"
                 android:textColor="@color/color6"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -226,12 +226,12 @@
 
                 <Button
                     android:id="@+id/btnReqfeed"
-                    android:layout_marginLeft="65dp"
+                    android:layout_marginLeft="105dp"
                     android:text="@string/mission_feedback_btn"
                     android:textSize="10sp"
                     android:layout_width="75dp"
                     android:layout_height="35dp"
-                    style="@style/btnStyleBlack"
+                    style="@style/btnStylePaprika"
                     android:onClick="reqBtnClick"
                     />
 
@@ -242,7 +242,7 @@
                     android:textSize="10sp"
                     android:layout_width="75dp"
                     android:layout_height="35dp"
-                    style="@style/btnStyleBlack"
+                    style="@style/btnStylePaprika"
                     android:onClick="reqBtnClick"
                     />
             </LinearLayout>

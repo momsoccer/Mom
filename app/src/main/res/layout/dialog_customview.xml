@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/video_background"
+    >
+
+
+    <RadioGroup
+        android:id="@+id/feed_RadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+        <android.support.v7.widget.AppCompatRadioButton
+            android:text="비디오로 피드백을 받겠습니다"
+            android:textColor="@color/color6"
+            android:id="@+id/feed_Video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:theme="@style/CustomStyledRadioButton"
+            />
+        <android.support.v7.widget.AppCompatRadioButton
+            android:text="문자로 피드백을 받겠습니다"
+            android:textColor="@color/color6"
+            android:id="@+id/feed_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/CustomStyledRadioButton"
+            />
+    </RadioGroup>
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/layout_feedback_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <EditText
+            android:id="@+id/feedback_content"
+            android:hint="@string/feedback_word_hint"
+            android:textSize="12sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:textColorHint="@color/color6"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/feed_video_point"
+        android:text="비디오 답변 포인트는 1000P"
+        android:textColor="@color/color6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        />
+
+    <TextView
+        android:id="@+id/feed_word_point"
+        android:text="문자 답변 포인트는 1000P"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color6"
+        android:textSize="10sp"
+        />
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.mom.soccer.ins;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,13 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.InsInfoRecyclerAdapter;
 import com.mom.soccer.common.PrefUtil;
+import com.mom.soccer.common.RecyclerItemClickListener;
 import com.mom.soccer.dataDto.InsInfoVo;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -57,20 +61,6 @@ public class FeedBackInsListActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.back_arrow);
 
         recyclerView = (RecyclerView) findViewById(R.id.feedback_recyclerview);
-/*
-                recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getApplicationContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        // do whatever
-                        Toast.makeText(getApplicationContext(),"하이하이 : " + position,Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override public void onLongItemClick(View view, int position) {
-                        // do whatever
-                        Toast.makeText(getApplicationContext(),"하이하이 길게 눌르셨어요 : " +position + position,Toast.LENGTH_SHORT).show();
-                    }
-                })
-        );*/
 
     }
 
@@ -105,6 +95,23 @@ public class FeedBackInsListActivity extends AppCompatActivity {
                     AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(recyclerAdapter);
                     alphaAdapter.setDuration(500);
                     recyclerView.setAdapter(alphaAdapter);
+
+                    recyclerView.addOnItemTouchListener(
+                            new RecyclerItemClickListener(getApplicationContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, final int i) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra(MissionCommon.INS_OBJECT,insInfoVoList.get(i));
+                                    setResult(RESULT_OK,intent);
+                                    finish();
+                                }
+
+                                @Override
+                                public void onLongItemClick(View view, int position) {
+                                }
+                            })
+                    );
+
                 }else{
                     WaitingDialog.cancelWaitingDialog();
                 }
@@ -126,13 +133,6 @@ public class FeedBackInsListActivity extends AppCompatActivity {
         int id = item.getItemId();
         //홈버튼클릭시
         if (id == android.R.id.home){
-
-/*
-            Intent intent = new Intent();
-            intent.putExtra("req_ins_id","피드백 요청을 보냈습니다");
-            setResult(RESULT_OK,intent);
-*/
-
             finish();
             return true;
         }

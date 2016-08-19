@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
@@ -68,12 +67,6 @@ public class InsInfoRecyclerAdapter extends RecyclerView.Adapter<InsInfoRecycler
         holder.tx_pubpasspoint.setText(String.valueOf(vo.getPubpasspoint()));
         holder.tx_teampasspoint.setText(String.valueOf(vo.getTeampasspoint()));
 
-        holder.cardview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, vo.getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 

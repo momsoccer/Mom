@@ -8,6 +8,6 @@
     android:fitsSystemWindows="true"
     tools:context=".momactivity.MomMainActivity">
 
-    <include layout="@layout/mom_main_content"/>
+    <include layout="@layout/mom_main_content" />
 
 </android.support.design.widget.CoordinatorLayout>

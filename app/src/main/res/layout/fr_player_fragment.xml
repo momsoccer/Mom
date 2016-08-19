@@ -12,12 +12,7 @@
         android:visibility="gone"
         >
 
-        <TextView
-            android:text="패이지1"
-            android:textSize="30sp"
-            android:textColor="@color/color6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+
 
     </LinearLayout>
 
@@ -29,12 +24,7 @@
         android:visibility="gone"
         >
 
-        <TextView
-            android:text="패이지2"
-            android:textSize="30sp"
-            android:textColor="@color/color6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+
 
     </LinearLayout>
 
@@ -46,12 +36,7 @@
         android:visibility="gone"
         >
 
-        <TextView
-            android:text="패이지3"
-            android:textSize="30sp"
-            android:textColor="@color/color6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+
 
     </LinearLayout>
 

@@ -10,6 +10,7 @@
 
 
     <LinearLayout
+        android:layout_marginTop="30dp"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
@@ -53,7 +54,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/color6"
                 android:textSize="18sp"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 />
@@ -65,59 +66,9 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/line_color1"
                 android:textSize="13sp"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        >
-
-        <TextView
-            android:text="@string/nav_header_assgin_coach"
-            android:textColor="@color/color6"
-            android:textSize="13sp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:id="@+id/nav_header_coachname"
-            android:text="@string/nav_header_not_assgin"
-            android:textColor="@color/color6"
-            android:textSize="13sp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        >
-        <TextView
-            android:text="@string/nav_header_assgin_team"
-            android:textColor="@color/color6"
-            android:textSize="13sp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:id="@+id/nav_header_teamname"
-            android:text="@string/nav_header_not_assgin_team"
-            android:textColor="@color/color6"
-            android:textSize="13sp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
     </LinearLayout>
 
 </LinearLayout>

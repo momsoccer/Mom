@@ -29,4 +29,8 @@ public interface DataService {
     @POST("/api/data/getInsInfoList")
     Call<List<InsInfoVo>> getInsInfoList(@Body InsInfoVo v);
 
+    //선생님 피드빽 신청할때 필요한 리스트
+    @POST("/api/data/getInsInfo")
+    Call<InsInfoVo> getInsInfo(@Body InsInfoVo v);
+
 }

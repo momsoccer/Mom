@@ -51,7 +51,7 @@ public class PointMainActivity extends AppCompatActivity {
         tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.point_tabs);
 
         //setting
-        tabsStrip.setIndicatorColor(getResources().getColor(R.color.color6));
+        tabsStrip.setIndicatorColor(getResources().getColor(R.color.enabled_red));
         tabsStrip.setTextColor(getResources().getColor(R.color.color6));
         tabsStrip.setViewPager(viewPager);
     }

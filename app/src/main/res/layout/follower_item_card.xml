@@ -3,7 +3,8 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <android.support.v7.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,10 +12,11 @@
         android:id="@+id/followr_cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="3dp"
         card_view:cardCornerRadius="5dp"
         card_view:cardElevation="5dp"
         android:orientation="vertical"
-        android:layout_marginTop="5dp"
+        card_view:contentPadding="10dp"
         >
 
         <LinearLayout
@@ -23,7 +25,6 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_margin="3dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
@@ -46,9 +47,9 @@
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="270dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginLeft="5dp"
                     >
 
                     <LinearLayout
@@ -57,6 +58,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         >
+
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
 
                         <TextView
                             android:text="@string/f_layout_username"
@@ -76,7 +82,10 @@
                             android:maxLength="12"
                             android:maxLines="1"
                             />
-
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:text="@string/f_layout_m_count"
                             android:textSize="10sp"
@@ -100,7 +109,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         >
-
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:text="@string/f_layout_teamname"
                             android:textSize="10sp"
@@ -119,7 +131,10 @@
                             android:maxLength="12"
                             android:maxLines="1"
                             />
-
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:text="@string/f_layout_level"
                             android:textSize="10sp"
@@ -151,7 +166,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         >
-
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:text="@string/f_layout_fw_count"
                             android:textSize="10sp"
@@ -167,7 +185,10 @@
                             android:textSize="10sp"
                             android:layout_width="60dp"
                             android:layout_height="match_parent" />
-
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:text="@string/f_layout_fi_count"
                             android:textSize="10sp"
@@ -191,7 +212,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         >
-
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:text="@string/f_layout_mycom"
                             android:textSize="10sp"
@@ -207,7 +231,10 @@
                             android:textSize="10sp"
                             android:layout_width="60dp"
                             android:layout_height="match_parent" />
-
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:text="@string/f_layout_usercom"
                             android:textSize="10sp"

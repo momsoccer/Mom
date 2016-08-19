@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mom_color1"
-    tools:ignore="MissingPrefix">
+    tools:ignore="MissingPrefix"
+    >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

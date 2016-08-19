@@ -76,7 +76,7 @@ public class ResumableUpload {
 
         builder.setContentTitle(context.getString(R.string.upload_pre_title))
                 .setContentText( context.getString(R.string.upload_pre_title_content)+" : "+userMission.getSubject())
-                .setSmallIcon(R.drawable.noyimark).setContentIntent(contentIntent).setStyle(new NotificationCompat.BigPictureStyle().bigPicture(thumbnail));
+                .setSmallIcon(R.drawable.ic_diarog_mom).setContentIntent(contentIntent).setStyle(new NotificationCompat.BigPictureStyle().bigPicture(thumbnail));
                 ;
 
         notifyManager.notify(UPLOAD_NOTIFICATION_ID, builder.build());

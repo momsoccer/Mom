@@ -23,6 +23,7 @@ public class User implements Serializable{
 	private String creationdate;
 	private String change_creationdate;
 	private String teamname;
+	private int teamid;
 
 	//DB
 	private String fcmToken;
@@ -61,6 +62,14 @@ public class User implements Serializable{
 
 	public User(String useremail) {
 		this.useremail = useremail;
+	}
+
+	public int getTeamid() {
+		return teamid;
+	}
+
+	public void setTeamid(int teamid) {
+		this.teamid = teamid;
 	}
 
 	public int getQueryRow() {

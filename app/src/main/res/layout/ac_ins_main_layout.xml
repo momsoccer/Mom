@@ -39,9 +39,9 @@
             android:id="@+id/follow_tabs"
             app:pstsShouldExpand="true"
             app:pstsTextAllCaps="true"
-            app:pstsDividerColor="@color/color6"
-            app:pstsIndicatorHeight="2dp"
-            app:pstsUnderlineHeight="2dp"
+            app:pstsDividerColor="@color/enabled_red"
+            app:pstsIndicatorHeight="1dp"
+            app:pstsUnderlineHeight="1dp"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             />

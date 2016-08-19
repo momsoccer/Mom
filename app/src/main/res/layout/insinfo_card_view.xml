@@ -64,6 +64,11 @@
                         android:layout_height="wrap_content"
                         >
 
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
                         <TextView
                             android:text="@string/ins_text_name"
                             android:textSize="10sp"
@@ -88,7 +93,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         >
-
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:textColor="@color/color6"
                             android:text="@string/ins_text_teamname"
@@ -113,7 +121,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         >
-
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:textColor="@color/color6"
                             android:text="@string/ins_text_teammember_count"
@@ -138,7 +149,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         >
-
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:textColor="@color/color6"
                             android:text="@string/ins_text_feed_q"
@@ -163,7 +177,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         >
-
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:textColor="@color/color6"
                             android:text="@string/ins_text_feed_a"
@@ -188,7 +205,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         >
-
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:textColor="@color/color6"
                             android:text="@string/ins_text_feed_e"
@@ -213,7 +233,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         >
-
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                         <TextView
                             android:textColor="@color/color6"
                             android:text="@string/ins_text_feed_v"
@@ -261,6 +284,11 @@
                     android:layout_height="wrap_content"
                     >
 
+                    <ImageView
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
                     <TextView
                         android:textColor="@color/color6"
                         android:text="@string/ins_text_p_pub_video"
@@ -286,7 +314,10 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     >
-
+                    <ImageView
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
                     <TextView
                         android:textColor="@color/color6"
                         android:text="@string/ins_text_p_pub_word"
@@ -318,7 +349,10 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     >
-
+                    <ImageView
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
                     <TextView
                         android:textColor="@color/color6"
                         android:text="@string/ins_text_p_team_video"
@@ -345,7 +379,10 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     >
-
+                    <ImageView
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
                     <TextView
                         android:textColor="@color/color6"
                         android:text="@string/ins_text_p_team_word"
@@ -380,7 +417,10 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     >
-
+                    <ImageView
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
                     <TextView
                         android:textColor="@color/color6"
                         android:text="@string/ins_text_p_pub_eval"
@@ -406,7 +446,10 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     >
-
+                    <ImageView
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
                     <TextView
                         android:textColor="@color/color6"
                         android:text="@string/ins_text_p_team_eval"
