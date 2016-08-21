@@ -8,9 +8,7 @@
     android:background="@color/mom_color2"
     tools:ignore="MissingPrefix">
 
-    <include layout="@layout/mymisstion_layout">
-
-    </include>
+    <include layout="@layout/mymisstion_layout"/>
 
     <Button
         android:layout_marginRight="5dp"

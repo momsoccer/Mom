@@ -247,6 +247,38 @@
                     />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/li_feedback_history"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color1" />
+
+                <TextView
+                    android:text="사용자의 질문이 들어올곳"
+                    android:layout_marginTop="5dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/color6"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    />
+
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color1" />
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <View

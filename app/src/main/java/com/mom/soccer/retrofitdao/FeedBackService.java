@@ -9,18 +9,14 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
-
 /**
  * Created by sungbo on 2016-06-20.
  */
 public interface FeedBackService {
 
-    @POST("/api/feed/feedheaderlist")
-    Call<List<FeedbackHeader>> getFeedHeaderList(@Body FeedbackHeader header);
+    @POST("/api/feed/saveFeedHeader")
+   Call<ServerResult> saveFeedHeader(@Body FeedbackHeader feedbackHeader);
 
-    @POST("/api/feed/feedheader")
-    Call<FeedbackHeader> getFeedHeader(@Body FeedbackHeader header);
-
-    @POST("/api/feed/feedheaderCount")
-    Call<ServerResult> getFeedHeaderCount(@Body FeedbackHeader header);
+    @POST("/api/feed/getFeedHeaderList")
+    Call<List<FeedbackHeader>> getFeedHeaderList(@Body FeedbackHeader feedbackHeader);
 }

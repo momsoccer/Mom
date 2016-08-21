@@ -13,8 +13,15 @@ public class FeedbackHeader {
     private int instructorid;
     private int cashpoint;
     private int Frequency;
+    private String pubstatus;
     private String subject;
+    private String instype;
     private String change_creationdate;
+
+    //라인글
+    private String type;
+    private String videoaddr;
+    private String content;
 
     public FeedbackHeader(){}
 
@@ -22,17 +29,20 @@ public class FeedbackHeader {
         this.uid = uid;
     }
 
-    public FeedbackHeader(int feedbackid, String feedbacktpe, int missionid, int usermissionid, int uid, int instructorid, int cashpoint, int frequency, String subject, String change_creationdate) {
-        this.feedbackid = feedbackid;
-        this.feedbacktpe = feedbacktpe;
-        this.missionid = missionid;
-        this.usermissionid = usermissionid;
-        this.uid = uid;
-        this.instructorid = instructorid;
-        this.cashpoint = cashpoint;
-        Frequency = frequency;
-        this.subject = subject;
-        this.change_creationdate = change_creationdate;
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getVideoaddr() {
+        return videoaddr;
+    }
+
+    public void setVideoaddr(String videoaddr) {
+        this.videoaddr = videoaddr;
     }
 
     public int getFeedbackid() {
@@ -115,6 +125,30 @@ public class FeedbackHeader {
         this.change_creationdate = change_creationdate;
     }
 
+    public String getPubstatus() {
+        return pubstatus;
+    }
+
+    public void setPubstatus(String pubstatus) {
+        this.pubstatus = pubstatus;
+    }
+
+    public String getInstype() {
+        return instype;
+    }
+
+    public void setInstype(String instype) {
+        this.instype = instype;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public String toString() {
         return "FeedbackHeader{" +
@@ -126,8 +160,13 @@ public class FeedbackHeader {
                 ", instructorid=" + instructorid +
                 ", cashpoint=" + cashpoint +
                 ", Frequency=" + Frequency +
+                ", pubstatus='" + pubstatus + '\'' +
                 ", subject='" + subject + '\'' +
+                ", instype='" + instype + '\'' +
                 ", change_creationdate='" + change_creationdate + '\'' +
+                ", type='" + type + '\'' +
+                ", videoaddr='" + videoaddr + '\'' +
+                ", content='" + content + '\'' +
                 '}';
     }
 }

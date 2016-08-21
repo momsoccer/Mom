@@ -381,6 +381,18 @@
     <string name="feedback_word_point">문자 답변은 </string>
     <string name="feedback_word_hint">문의 내용(글자수 제한 없음)</string>
 
+    <string name="feedback_pub_check_title">공개여부</string>
+    <string name="feedback_feedback_request_subject">피드백 요청</string>
 
+    <string name="feedback_req_btn">피드백 생성</string>
+    <string name="feedback_req_content"> 선택하신 강사분에게 \n 미션 피드백을 요청합니다 \n 강사분 답변이 등록되면 포인트가 최종 차감됩니다 \n (강사 답변 등록 전 피드백 취소 가능)</string>
+
+    <string name="feedback_mypoint">내 포인트</string>
+    <string name="feedback_lack">포인트 부족</string>
+    <string name="feedback_lack_msg">포인트가 부족합니다 \n 포인트 구매 페이지로 이동 하시겠습니까?</string>
+
+    <!--pointpage-->
+    <string name="point_item_type_pay">포인트사용</string>
+    <string name="point_item_type_reiceve">포인트충전</string>
 
 </resources>

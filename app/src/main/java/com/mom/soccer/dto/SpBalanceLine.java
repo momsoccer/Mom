@@ -8,35 +8,28 @@ public class SpBalanceLine {
     private int lineid;
     private int headerid;
     private String type;
-    private int previous_amount;
-    private int in_amount;
-    private int out_amount;
-    private int last_amount;
+    private int previousamount;
+    private int inamount;
+    private int outamount;
+    private int lastamount;
     private String description;
-    private String creationdate;
     private String change_creationdate;
 
     public SpBalanceLine(){}
 
-    public SpBalanceLine(int lineid, int headerid, String type, int previous_amount, int in_amount, int out_amount, int last_amount, String description, String creationdate, String change_creationdate) {
-        this.lineid = lineid;
-        this.headerid = headerid;
-        this.type = type;
-        this.previous_amount = previous_amount;
-        this.in_amount = in_amount;
-        this.out_amount = out_amount;
-        this.last_amount = last_amount;
-        this.description = description;
-        this.creationdate = creationdate;
-        this.change_creationdate = change_creationdate;
-    }
-
-    public int getLast_amount() {
-        return last_amount;
-    }
-
-    public void setLast_amount(int last_amount) {
-        this.last_amount = last_amount;
+    @Override
+    public String toString() {
+        return "SpBalanceLine{" +
+                "lineid=" + lineid +
+                ", headerid=" + headerid +
+                ", type='" + type + '\'' +
+                ", previousamount=" + previousamount +
+                ", inamount=" + inamount +
+                ", outamount=" + outamount +
+                ", lastamount=" + lastamount +
+                ", description='" + description + '\'' +
+                ", change_creationdate='" + change_creationdate + '\'' +
+                '}';
     }
 
     public int getLineid() {
@@ -63,28 +56,36 @@ public class SpBalanceLine {
         this.type = type;
     }
 
-    public int getPrevious_amount() {
-        return previous_amount;
+    public int getPreviousamount() {
+        return previousamount;
     }
 
-    public void setPrevious_amount(int previous_amount) {
-        this.previous_amount = previous_amount;
+    public void setPreviousamount(int previousamount) {
+        this.previousamount = previousamount;
     }
 
-    public int getIn_amount() {
-        return in_amount;
+    public int getInamount() {
+        return inamount;
     }
 
-    public void setIn_amount(int in_amount) {
-        this.in_amount = in_amount;
+    public void setInamount(int inamount) {
+        this.inamount = inamount;
     }
 
-    public int getOut_amount() {
-        return out_amount;
+    public int getOutamount() {
+        return outamount;
     }
 
-    public void setOut_amount(int out_amount) {
-        this.out_amount = out_amount;
+    public void setOutamount(int outamount) {
+        this.outamount = outamount;
+    }
+
+    public int getLastamount() {
+        return lastamount;
+    }
+
+    public void setLastamount(int lastamount) {
+        this.lastamount = lastamount;
     }
 
     public String getDescription() {
@@ -95,35 +96,11 @@ public class SpBalanceLine {
         this.description = description;
     }
 
-    public String getCreationdate() {
-        return creationdate;
-    }
-
-    public void setCreationdate(String creationdate) {
-        this.creationdate = creationdate;
-    }
-
     public String getChange_creationdate() {
         return change_creationdate;
     }
 
     public void setChange_creationdate(String change_creationdate) {
         this.change_creationdate = change_creationdate;
-    }
-
-    @Override
-    public String toString() {
-        return "SpBalanceLine{" +
-                "lineid=" + lineid +
-                ", headerid=" + headerid +
-                ", type='" + type + '\'' +
-                ", previous_amount=" + previous_amount +
-                ", in_amount=" + in_amount +
-                ", out_amount=" + out_amount +
-                ", last_amount=" + last_amount +
-                ", description='" + description + '\'' +
-                ", creationdate='" + creationdate + '\'' +
-                ", change_creationdate='" + change_creationdate + '\'' +
-                '}';
     }
 }

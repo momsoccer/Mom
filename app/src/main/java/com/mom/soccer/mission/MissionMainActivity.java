@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -38,20 +39,26 @@ import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dataDto.InsInfoVo;
 import com.mom.soccer.dto.FavoriteMission;
+import com.mom.soccer.dto.FeedbackHeader;
 import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.ServerResult;
+import com.mom.soccer.dto.SpBalanceHeader;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.fragment.YoutubeSeedMissionFragment;
 import com.mom.soccer.ins.FeedBackInsListActivity;
+import com.mom.soccer.point.PointMainActivity;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.FavoriteMissionService;
+import com.mom.soccer.retrofitdao.FeedBackService;
+import com.mom.soccer.retrofitdao.PointService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import butterknife.Bind;
@@ -159,9 +166,18 @@ public class MissionMainActivity extends AppCompatActivity {
     private EditText        feedback_content;
     private RadioGroup      radioGroup;
     private RadioButton feed_video, feed_word;
-    private TextView feed_video_point,feed_word_point;
+    private TextView feed_video_point,feed_word_point,text_mypoint;
+    private CheckBox pub_status;
+
+    String viewTitle = null;
+    int videoPoint = 0;
+    int wordPoint  = 0;
+
+    private FeedbackHeader feedbackHeader;
+    String pubStauts = "Y";
 
     private static int USER_TEAM_ID = 0;
+    private int myPoint = 0;
 
     @Override
     public void onBackPressed() {
@@ -296,7 +312,9 @@ public class MissionMainActivity extends AppCompatActivity {
                     WaitingDialog.cancelWaitingDialog();
                     User user = response.body();
                     USER_TEAM_ID = user.getTeamid();
-                    Log.i(TAG,"********************** : " +  USER_TEAM_ID);
+                    Log.i(TAG," USER_TEAM_ID ********************** : " +  USER_TEAM_ID);
+
+                    getInsInfo();
 
                 }else {
                     WaitingDialog.cancelWaitingDialog();
@@ -306,6 +324,31 @@ public class MissionMainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 WaitingDialog.cancelWaitingDialog();
+            }
+        });
+
+        WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
+
+        //현재 내포인트
+        PointService pointService = ServiceGenerator.createService(PointService.class,getApplicationContext(),user);
+        Call<SpBalanceHeader> c = pointService.getSelfAmt(user.getUid());
+        c.enqueue(new Callback<SpBalanceHeader>() {
+            @Override
+            public void onResponse(Call<SpBalanceHeader> call, Response<SpBalanceHeader> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    SpBalanceHeader spBalanceHeader = response.body();
+                    myPoint = spBalanceHeader.getAmount();
+                }else{
+                    Log.i(TAG,"get point error 1");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SpBalanceHeader> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                Log.i(TAG,"get point error 1");
+                t.printStackTrace();
             }
         });
 
@@ -578,13 +621,23 @@ public class MissionMainActivity extends AppCompatActivity {
 
     public void reqBtnClick(View v){
 
-        String[] strings = {getString(R.string.user_mission_team_feedback_request),
-                getString(R.string.user_mission_team_feedback_another_request),
-                getString(R.string.user_mission_team_feedback_mom_request)};
+        String[] strings;
+
+        if(USER_TEAM_ID==0){
+            strings = new String[]{
+                    getString(R.string.user_mission_team_feedback_another_request)
+            };
+        }else{
+            strings = new String[]{getString(R.string.user_mission_team_feedback_request),
+                    getString(R.string.user_mission_team_feedback_another_request)
+            };
+        }
+
 
         switch (v.getId()){
             case R.id.btnReqfeed:
                 new MaterialDialog.Builder(this)
+                        .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
                         .title(R.string.mom_diaalog_feedback_title)
                         .titleColor(getResources().getColor(R.color.color6))
                         .items(strings)
@@ -599,8 +652,6 @@ public class MissionMainActivity extends AppCompatActivity {
                                 }else if(which==1){
                                     Intent intent = new Intent(MissionMainActivity.this,FeedBackInsListActivity.class);
                                     startActivityForResult(intent,REQUEST_FEED_BACK_CODE);
-                                }else if(which==2){
-                                    popUpFeedBack("mom");
                                 }
 
                                 return true;
@@ -643,26 +694,16 @@ public class MissionMainActivity extends AppCompatActivity {
     }
 
 
-    public void popUpFeedBack(String reqType){
-        String viewTitle = null;
-        int videoPoint = 0;
-        int wordPoint  = 0;
+    public void popUpFeedBack(final String reqType){
 
         if(reqType.equals("myins")) {
-
-            //합쳐야한다 2016-08-19
-
-            getInsInfo();
-            //viewTitle = getString(R.string.feedback_title1) + insInfoVo.getName();
-            //videoPoint = insInfoVo.getTeamvideopoint();
-            //wordPoint = insInfoVo.getTeamwordpoint();
+            viewTitle = getString(R.string.feedback_title1) + insInfoVo.getName();
+            videoPoint = insInfoVo.getTeamvideopoint();
+            wordPoint = insInfoVo.getTeamwordpoint();
         }else if(reqType.equals("pubins")){
             viewTitle = getString(R.string.feedback_title1) + insInfoVo.getName();
             videoPoint = insInfoVo.getPubvideopoint();
             wordPoint = insInfoVo.getPubwordpoint();
-        }else if(reqType.equals("mom")){
-
-            viewTitle = getString(R.string.feedback_title3);
         }
 
         MaterialDialog dialog = new MaterialDialog.Builder(this)
@@ -670,12 +711,148 @@ public class MissionMainActivity extends AppCompatActivity {
                 .title(viewTitle)
                 .titleColor(getResources().getColor(R.color.color6))
                 .customView(R.layout.dialog_customview, true)
-                .positiveText("피드백생성")
-                .negativeText("취소")
+                .positiveText(R.string.feedback_req_btn)
+                .negativeText(R.string.cancel)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    public void onClick(@NonNull final MaterialDialog dialog, @NonNull DialogAction which) {
 
+
+
+                        feedbackHeader = new FeedbackHeader();
+                        feedbackHeader.setUid(user.getUid());
+                        feedbackHeader.setInstructorid(insInfoVo.getInstructorid());
+
+                        //피드백 포인트
+                        if(feed_video.isChecked()){
+                            feedbackHeader.setFeedbacktpe("video");
+                            //강사가 지정인지 아닌지
+                            if(reqType.equals("pubins")){
+                                feedbackHeader.setCashpoint(insInfoVo.getPubvideopoint());
+                            }else{
+                                feedbackHeader.setCashpoint(insInfoVo.getTeamvideopoint());
+                            }
+                        }else{
+                            feedbackHeader.setFeedbacktpe("word");
+                            //강사가 지정인지 아닌지
+                            if(reqType.equals("pubins")){
+                                feedbackHeader.setCashpoint(insInfoVo.getPubwordpoint());
+                            }else{
+                                feedbackHeader.setCashpoint(insInfoVo.getTeamwordpoint());
+                            }
+                        }
+
+                        //공개여부 체크
+                        if(pub_status.isChecked()){
+                            feedbackHeader.setPubstatus("Y");
+                        }else{
+                            feedbackHeader.setPubstatus("N");
+                        }
+
+                        feedbackHeader.setFrequency(1);
+
+                        //강사가 지정이라면 아니면
+                        if(reqType.equals("pubins")){
+                            feedbackHeader.setInstype("N");
+                        }else{
+                            feedbackHeader.setInstype("Y");
+                        }
+
+                        feedbackHeader.setType("user");
+                        feedbackHeader.setVideoaddr(userMission.getYoutubeaddr());
+                        feedbackHeader.setSubject(user.getUsername()+" : "+getString(R.string.feedback_feedback_request_subject));
+                        feedbackHeader.setContent(feedback_content.getText().toString());
+                        feedbackHeader.setUsermissionid(userMission.getUsermissionid());
+                        feedbackHeader.setMissionid(userMission.getMissionid());
+
+                        if(myPoint < feedbackHeader.getCashpoint() ){
+                            //포인트 부족시 포인트 구매 페이지로 이동
+                            new MaterialDialog.Builder(MissionMainActivity.this)
+                                    .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                    .title(R.string.feedback_lack)
+                                    .titleColor(getResources().getColor(R.color.color6))
+                                    .content(R.string.feedback_lack_msg)
+                                    .contentColor(getResources().getColor(R.color.color6))
+                                    .positiveText(R.string.mom_diaalog_confirm)
+                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                            Intent intent = new Intent(MissionMainActivity.this, PointMainActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    })
+                                    .negativeText(R.string.mom_diaalog_cancel)
+                                    .show();
+                            return;
+                        }
+                        String title = "To." + insInfoVo.getName();
+                        String content = getResources().getString(R.string.feedback_req_content);
+
+                        new MaterialDialog.Builder(MissionMainActivity.this)
+                                .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                .title(title)
+                                .titleColor(getResources().getColor(R.color.color6))
+                                .content(content)
+                                .contentColor(getResources().getColor(R.color.color6))
+                                .positiveText(R.string.mom_diaalog_confirm)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
+                                        FeedBackService feedBackService = ServiceGenerator.createService(FeedBackService.class,getApplicationContext(),user);
+                                        Call<ServerResult> call = feedBackService.saveFeedHeader(feedbackHeader);
+                                        call.enqueue(new Callback<ServerResult>() {
+                                            @Override
+                                            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                                                WaitingDialog.cancelWaitingDialog();
+                                                if(response.isSuccessful()){
+                                                    ServerResult result = response.body();
+
+                                                    if(result.getCount()==0){
+                                                        //포인트 부족
+                                                        new MaterialDialog.Builder(MissionMainActivity.this)
+                                                                .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                                                .title(R.string.feedback_lack)
+                                                                .titleColor(getResources().getColor(R.color.color6))
+                                                                .content(R.string.feedback_lack_msg)
+                                                                .contentColor(getResources().getColor(R.color.color6))
+                                                                .positiveText(R.string.mom_diaalog_confirm)
+                                                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                                    @Override
+                                                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                                        Intent intent = new Intent(MissionMainActivity.this, PointMainActivity.class);
+                                                                        startActivity(intent);
+                                                                    }
+                                                                })
+                                                                .negativeText(R.string.mom_diaalog_cancel)
+                                                                .show();
+                                                    }else{
+                                                        //미션 페이지 재실행
+                                                        Intent intent = new Intent(MissionMainActivity.this, MissionMainActivity.class);
+                                                        finish();
+                                                        intent.putExtra(MissionCommon.OBJECT,mission);
+                                                        startActivity(intent);
+
+                                                    }
+
+                                                }else{
+                                                    WaitingDialog.cancelWaitingDialog();
+                                                    Log.i(TAG,"피드백 신청 에러 발생1");
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<ServerResult> call, Throwable t) {
+                                                WaitingDialog.cancelWaitingDialog();
+                                                Log.i(TAG,"피드백 신청 에러 발생2");
+                                                t.printStackTrace();
+                                            }
+                                        });
+                                    }
+                                })
+                                .negativeText(R.string.mom_diaalog_cancel)
+                                .widgetColor(getResources().getColor(R.color.enabled_red))
+                                .show();
                     }
                 }).build();
 
@@ -683,10 +860,14 @@ public class MissionMainActivity extends AppCompatActivity {
         feedback_content = (EditText) dialog.getCustomView().findViewById(R.id.feedback_content);
         feed_video_point = (TextView) dialog.getCustomView().findViewById(R.id.feed_video_point);
         feed_word_point = (TextView) dialog.getCustomView().findViewById(R.id.feed_word_point);
+        pub_status = (CheckBox) dialog.getCustomView().findViewById(R.id.pub_status);
+        text_mypoint = (TextView) dialog.getCustomView().findViewById(R.id.text_mypoint);
 
         feed_video_point.setText(getString(R.string.feedback_video_point)+" "+videoPoint+"P");
         feed_word_point.setText(getString(R.string.feedback_word_point)+" "+wordPoint+"P");
 
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        text_mypoint.setText(numberFormat.format(myPoint)+"P");
 
         feedback_content.addTextChangedListener(new TextWatcher() {
             @Override
@@ -705,25 +886,13 @@ public class MissionMainActivity extends AppCompatActivity {
             }
         });
 
+
+
         feed_video = (RadioButton) dialog.getCustomView().findViewById(R.id.feed_Video);
         feed_word = (RadioButton) dialog.getCustomView().findViewById(R.id.feed_word);
 
         radioGroup = (RadioGroup) dialog.getCustomView().findViewById(R.id.feed_RadioGroup);
 
-        /*
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId == R.id.feed_word) {
-                    Toast.makeText(getApplicationContext(), "word",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "vedio",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        */
 
         positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
         dialog.show();
@@ -744,18 +913,24 @@ public class MissionMainActivity extends AppCompatActivity {
                     WaitingDialog.cancelWaitingDialog();
                     insInfoVo = response.body();
                     Log.i(TAG,"********************** : " +  insInfoVo.toString());
+
                 }else{
+                    Log.i(TAG,"getInsInfo error1");
                     WaitingDialog.cancelWaitingDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<InsInfoVo> call, Throwable t) {
+                Log.i(TAG,"getInsInfo error2");
                 WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
             }
         });
     }
+
+
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

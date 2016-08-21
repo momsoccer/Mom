@@ -83,7 +83,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/xml_boder"
+                android:background="@drawable/inputtext"
                 android:hint="@string/user_mission_subject"
                 android:textColorHint="@color/line_color1"
                 />
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="6"
                 android:lines="6"
-                android:background="@drawable/xml_boder"
+                android:background="@drawable/inputtext"
                 android:gravity="top"
                 android:hint="@string/user_mission_cotent"
                 android:textColorHint="@color/line_color1"

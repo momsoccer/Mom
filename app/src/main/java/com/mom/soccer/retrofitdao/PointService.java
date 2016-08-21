@@ -5,6 +5,9 @@ import com.mom.soccer.dataDto.PointTrVo;
 import com.mom.soccer.dto.CpBalanceHeader;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.SpBalanceHeader;
+import com.mom.soccer.dto.SpBalanceLine;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -36,4 +39,7 @@ public interface PointService {
     //미션 오픈
     @POST("/api/user/pointTr")
     Call<ServerResult> pointTr(@Body PointTrVo pointTrVo);
+
+    @GET("/api/user/getCashLineList")
+    Call<List<SpBalanceLine>> getCashLineList(@Query("uid") int uid);
 }

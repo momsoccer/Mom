@@ -33,4 +33,5 @@ public interface DataService {
     @POST("/api/data/getInsInfo")
     Call<InsInfoVo> getInsInfo(@Body InsInfoVo v);
 
+
 }
