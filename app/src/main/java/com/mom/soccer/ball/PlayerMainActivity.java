@@ -12,9 +12,11 @@ import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.mom.soccer.R;
-import com.mom.soccer.fragment.PlayerFragment;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.fragment.PlayerFragment;
+
+import butterknife.ButterKnife;
 
 public class PlayerMainActivity extends AppCompatActivity {
 
@@ -30,6 +32,7 @@ public class PlayerMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_player_main_layout);
+        ButterKnife.bind(this);
         Log.i(TAG,"====================== onCreate() ======================");
 
         prefUtil = new PrefUtil(this);
@@ -79,7 +82,9 @@ public class PlayerMainActivity extends AppCompatActivity {
         final int PAGE_COUNT = 3;
 
         private String tabTitles[] = new String[] {
-                "나의 미션 챌린지","나의 피드백","준비중"
+                user.getUsername()+":"+getString(R.string.my_fragment_title1),
+                user.getUsername()+":"+getString(R.string.my_fragment_title2),
+                user.getUsername()+":"+getString(R.string.my_fragment_title3)
         };
 
         public PlayerViewPagerAdapter(FragmentManager fm) {
@@ -106,4 +111,5 @@ public class PlayerMainActivity extends AppCompatActivity {
             return POSITION_NONE;
         }
     }
+
 }

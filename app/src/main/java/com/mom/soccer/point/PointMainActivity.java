@@ -62,7 +62,7 @@ public class PointMainActivity extends AppCompatActivity {
         final int PAGE_COUNT = 2;
 
         private String tabTitles[] = new String[] {
-                "포인트 구매","포인트 사용이력"
+                getString(R.string.point_fragment_title1),getString(R.string.point_fragment_title2)
         };
 
         public PointViewPagerAdapter(FragmentManager fm) {

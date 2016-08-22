@@ -50,7 +50,7 @@
     <string name="lifting">(리프팅)</string>
     <string name="drrible">(드리블)</string>
     <string name="around">(어라운드)</string>
-    <string name="crossbar">(크로스바)</string>
+    <string name="crossbar">(콤플렉스)</string>
     <string name="trapping">(트래핑)</string>
     <string name="flick">(플릭)</string>
 
@@ -394,5 +394,19 @@
     <!--pointpage-->
     <string name="point_item_type_pay">포인트사용</string>
     <string name="point_item_type_reiceve">포인트충전</string>
+
+    <string name="point_fragment_title1">포인트 구매</string>
+    <string name="point_fragment_title2">포인트 이력</string>
+
+    <string name="point_fragment_pre_amt">이전금액</string>
+    <string name="point_fragment_use_amt">충전/사용</string>
+    <string name="point_fragment_last_amt">남은금액</string>
+
+    <!--mymenu-->
+    <string name="my_fragment_title1">미션</string>
+    <string name="my_fragment_title2">피드백</string>
+    <string name="my_fragment_title3">친구</string>
+
+    <string name="my_book_nodata_found">등록하신 관심 영상이 없습니다</string>
 
 </resources>

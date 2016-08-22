@@ -61,7 +61,6 @@ import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionActivity;
 import com.mom.soccer.mission.MissionCommon;
-import com.mom.soccer.point.PointMainActivity;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.InstructorService;
 import com.mom.soccer.retrofitdao.MomComService;
@@ -405,11 +404,6 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                 startActivity(intenti);
                 overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 break;
-            case R.id.hd_point:
-                Intent intent = new Intent(this, PointMainActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                break;
         }
     }
 
@@ -548,7 +542,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                             li_main_slid_ranking_no_data.setVisibility(View.GONE);
 
                             List<UserRangkinVo> listVos = response.body();
-                            MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
+                            MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos,user);
                             ListView listView = (ListView) container.findViewById(R.id.list_total_ranking);
                             listView.setAdapter(mainRankingAdapter);
                         }else{
@@ -612,7 +606,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                             }else{
                                 li_main_noData_layout.setVisibility(View.GONE);
                                 li_main_team_layout.setVisibility(View.VISIBLE);
-                                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
+                                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos,user);
                                 //데이터를 읽어 들여 뿌리는 작업을 한다
                                 ListView listView = (ListView) container.findViewById(R.id.list_team_ranking);
                                 listView.setAdapter(mainRankingAdapter);

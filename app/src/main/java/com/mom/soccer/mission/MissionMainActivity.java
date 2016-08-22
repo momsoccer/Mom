@@ -64,6 +64,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import it.gmariotti.cardslib.library.recyclerview.internal.CardArrayRecyclerViewAdapter;
+import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -147,6 +149,9 @@ public class MissionMainActivity extends AppCompatActivity {
     @Bind(R.id.li_no_data_found)
     LinearLayout li_no_data_found;
 
+    @Bind(R.id.li_feedback_history)
+    LinearLayout li_feedback_history;
+
     private InsInfoVo insInfoVo;
     private View positiveAction;
     /**************************************************
@@ -178,6 +183,13 @@ public class MissionMainActivity extends AppCompatActivity {
 
     private static int USER_TEAM_ID = 0;
     private int myPoint = 0;
+
+    /*feedback*/
+    private List<FeedbackHeader> feedbackHeaders;
+
+    @Bind(R.id.feedback_recyclerview)
+    CardRecyclerView cardRecyclerView;
+
 
     @Override
     public void onBackPressed() {
@@ -281,6 +293,7 @@ public class MissionMainActivity extends AppCompatActivity {
         Log.i(TAG,"받은 값은 : " + uploadflag);
 
     }
+
 
     @Override
     protected void onStart() {
@@ -479,6 +492,10 @@ public class MissionMainActivity extends AppCompatActivity {
                             }
                         });
                     }
+
+                    //피드백이 있는지 검사.
+                    getFeedBack();
+
                 }else{
                     WaitingDialog.cancelWaitingDialog();
 
@@ -647,11 +664,16 @@ public class MissionMainActivity extends AppCompatActivity {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
 
-                                if(which==0){
-                                    popUpFeedBack("myins");
-                                }else if(which==1){
+                                if(USER_TEAM_ID==0){
                                     Intent intent = new Intent(MissionMainActivity.this,FeedBackInsListActivity.class);
                                     startActivityForResult(intent,REQUEST_FEED_BACK_CODE);
+                                }else{
+                                    if(which==0){
+                                        popUpFeedBack("myins");
+                                    }else if(which==1){
+                                        Intent intent = new Intent(MissionMainActivity.this,FeedBackInsListActivity.class);
+                                        startActivityForResult(intent,REQUEST_FEED_BACK_CODE);
+                                    }
                                 }
 
                                 return true;
@@ -725,7 +747,7 @@ public class MissionMainActivity extends AppCompatActivity {
 
                         //피드백 포인트
                         if(feed_video.isChecked()){
-                            feedbackHeader.setFeedbacktpe("video");
+                            feedbackHeader.setFeedbacktype("video");
                             //강사가 지정인지 아닌지
                             if(reqType.equals("pubins")){
                                 feedbackHeader.setCashpoint(insInfoVo.getPubvideopoint());
@@ -733,7 +755,7 @@ public class MissionMainActivity extends AppCompatActivity {
                                 feedbackHeader.setCashpoint(insInfoVo.getTeamvideopoint());
                             }
                         }else{
-                            feedbackHeader.setFeedbacktpe("word");
+                            feedbackHeader.setFeedbacktype("word");
                             //강사가 지정인지 아닌지
                             if(reqType.equals("pubins")){
                                 feedbackHeader.setCashpoint(insInfoVo.getPubwordpoint());
@@ -929,9 +951,6 @@ public class MissionMainActivity extends AppCompatActivity {
         });
     }
 
-
-
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -944,4 +963,50 @@ public class MissionMainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+    public void getFeedBack(){
+        Log.i(TAG,"feedbackHeaders() 피드백이 있는지 검사합니다");
+        WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
+        FeedBackService feedBackService = ServiceGenerator.createService(FeedBackService.class,getApplicationContext(),user);
+        FeedbackHeader header = new FeedbackHeader();
+        header.setUid(user.getUid());
+        header.setUsermissionid(userMission.getUsermissionid());
+        Call<List<FeedbackHeader>> c = feedBackService.getFeedHeaderList(header);
+        c.enqueue(new Callback<List<FeedbackHeader>>() {
+            @Override
+            public void onResponse(Call<List<FeedbackHeader>> call, Response<List<FeedbackHeader>> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    feedbackHeaders = response.body();
+                    Log.i(TAG,"feedbackHeaders() " + feedbackHeaders.size());
+
+                    if(feedbackHeaders.size()==0){
+                        li_feedback_history.setVisibility(View.GONE);
+                    }else{
+                        li_feedback_history.setVisibility(View.VISIBLE);
+
+
+
+                        CardArrayRecyclerViewAdapter feedbackRe; //= new CardArrayRecyclerViewAdapter(getApplicationContext(), cards);
+
+                    }
+
+                }else{
+                    Log.i(TAG,"feedbackHeaders() error1");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FeedbackHeader>> call, Throwable t) {
+                Log.i(TAG,"feedbackHeaders() error2");
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+
+    }
+
+
 }

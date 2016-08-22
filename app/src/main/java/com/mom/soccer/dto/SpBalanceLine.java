@@ -8,6 +8,7 @@ public class SpBalanceLine {
     private int lineid;
     private int headerid;
     private String type;
+    private String pointtypedisp;
     private int previousamount;
     private int inamount;
     private int outamount;
@@ -23,6 +24,7 @@ public class SpBalanceLine {
                 "lineid=" + lineid +
                 ", headerid=" + headerid +
                 ", type='" + type + '\'' +
+                ", pointtypedisp='" + pointtypedisp + '\'' +
                 ", previousamount=" + previousamount +
                 ", inamount=" + inamount +
                 ", outamount=" + outamount +
@@ -30,6 +32,14 @@ public class SpBalanceLine {
                 ", description='" + description + '\'' +
                 ", change_creationdate='" + change_creationdate + '\'' +
                 '}';
+    }
+
+    public String getPointtypedisp() {
+        return pointtypedisp;
+    }
+
+    public void setPointtypedisp(String pointtypedisp) {
+        this.pointtypedisp = pointtypedisp;
     }
 
     public int getLineid() {

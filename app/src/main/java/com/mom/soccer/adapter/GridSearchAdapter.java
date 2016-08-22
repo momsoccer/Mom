@@ -139,6 +139,8 @@ public class GridSearchAdapter extends BaseAdapter {
                     }
                     Glide.with(mContext)
                             .load(userList.get(i).getProfileimgurl())
+                            .override(180, 120)
+                            .centerCrop()
                             .into(listHolder.user_imag);
                 }
             }else{

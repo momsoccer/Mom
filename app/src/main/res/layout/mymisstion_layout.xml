@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/scroll_layout"
+<ScrollView android:id="@+id/scroll_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_weight="1"
     android:layout_marginBottom="5dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/tools">
 
     <LinearLayout
         android:orientation="vertical"
@@ -253,28 +253,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <View
-                    android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="@color/line_color1" />
-
-                <TextView
-                    android:text="사용자의 질문이 들어올곳"
-                    android:layout_marginTop="5dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/color6"
-                    android:textStyle="bold"
+                <it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    />
+                    card:list_card_layout_resourceID="@layout/native_recyclerview_card_layout"
+                    android:id="@+id/feedback_recyclerview"/>
 
-                <View
-                    android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="@color/line_color1" />
 
             </LinearLayout>
 

@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -22,11 +21,14 @@ import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dataDto.TeamMapVo;
+import com.mom.soccer.dataDto.UserLevelDataVo;
 import com.mom.soccer.dto.FriendApply;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.mission.UserMissionActivity;
+import com.mom.soccer.point.PointMainActivity;
+import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.FollowService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retrofitdao.UserService;
@@ -38,6 +40,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,72 +66,63 @@ public class MyPageActivity extends AppCompatActivity {
     @Bind(R.id.mypage_user_name)
     TextView tx_user_name;
 
-    @Bind(R.id.mypage_coachname)
-    TextView tx_coachname;
-
-    @Bind(R.id.mypage_teamname)
-    TextView tx_teamname;
-
     @Bind(R.id.mypage_total_ranking)
-    TextView tx_total_ranking;
+    TextView mypage_total_ranking;
 
     @Bind(R.id.mypage_total_count)
-    TextView tx_total_count;
+    TextView mypage_total_count;
 
     @Bind(R.id.mypage_friend_ranking)
-    TextView tx_friend_ranking;
+    TextView mypage_friend_ranking;
 
     @Bind(R.id.mypage_friend_count)
-    TextView tx_friend_count;
+    TextView mypage_friend_count;
 
     @Bind(R.id.mypage_team_ranking)
-    TextView tx_team_ranking;
+    TextView mypage_team_ranking;
 
     @Bind(R.id.mypage_team_count)
-    TextView tx_team_count;
+    TextView mypage_team_count;
 
     //종목별 점수 및 레벨
     @Bind(R.id.mypage_lifting_level)  // 1.리프팅
-            TextView tx_lifting_level;
+            TextView mypage_lifting_level;
 
     @Bind(R.id.mypage_lifting_score)
-    TextView tx_lifting_score;
+    TextView mypage_lifting_score;
 
     @Bind(R.id.mypage_around_level)  // 2.어라운드
-            TextView tx_around_level;
+            TextView mypage_around_level;
 
     @Bind(R.id.mypage_around_score)
-    TextView tx_around_score;
+    TextView mypage_around_score;
 
     @Bind(R.id.mypage_trapping_level) // 3.트래핑
-            TextView tx_trapping_level;
+    TextView mypage_trapping_level;
 
     @Bind(R.id.mypage_trapping_socre)
-    TextView tx_trapping_socre;
+    TextView mypage_trapping_socre;
 
     @Bind(R.id.mypage_flib_level) // 4.플립
-            TextView tx_flib_level;
+            TextView mypage_flib_level;
 
     @Bind(R.id.mypage_flib_score)
-    TextView tx_flib_socre;
+    TextView mypage_flib_score;
 
     @Bind(R.id.mypage_drible_level) // 5.드리블
-            TextView tx_drible_level;
+            TextView mypage_drible_level;
 
     @Bind(R.id.mypage_drible_score)
-    TextView tx_drible_socre;
+    TextView mypage_drible_score;
 
     @Bind(R.id.mypage_crosba_level) // 6.크로스바 대체 예정 complex
-            TextView tx_crosbal_level;
+            TextView mypage_crosba_level;
 
     @Bind(R.id.mypage_crosba_score)
-    TextView tx_crosbal_socre;
+    TextView mypage_crosba_score;
 
-    @Bind(R.id.btnfollow)
-    Button btnfollow;  //팔로워
-
-    @Bind(R.id.btnfollowing)
-    Button btnfollowing; //팔로잉
+    @Bind(R.id.tx_follower)
+    TextView tx_follower;
 
     private User user = new User();
     private User findUser = new User();
@@ -150,6 +144,12 @@ public class MyPageActivity extends AppCompatActivity {
 
     @Bind(R.id.scrollView)
     ScrollView scrollView;
+
+    @Bind(R.id.im_point)
+    ImageView im_point;
+
+    @Bind(R.id.tx_level)
+    TextView tx_level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,6 +189,11 @@ public class MyPageActivity extends AppCompatActivity {
             }
         });
 
+        if(pageFlag.equals("me")){
+            im_point.setVisibility(View.VISIBLE);
+        }else{
+            im_point.setVisibility(View.GONE);
+        }
 
     }
 
@@ -211,6 +216,7 @@ public class MyPageActivity extends AppCompatActivity {
 
         //팔러잉 버튼 텍스트
         getFollowCountBtnSet();
+        getUserLevel();
 
     }
 
@@ -231,13 +237,21 @@ public class MyPageActivity extends AppCompatActivity {
             public void onResponse(Call<List<TeamMapVo>> call, Response<List<TeamMapVo>> response) {
                 if(response.isSuccessful()){
                     List<TeamMapVo> mapVo = response.body();
+
+                    int follower  = 0;
+                    int following = 0;
+                    String value = null;
                     for(int i=0 ; i < mapVo.size();i++){
+
                         if(mapVo.get(i).getType().equals("M")){
-                            btnfollow.setText(getString(R.string.follow_toolbar_page_text)+"("+String.valueOf(mapVo.get(i).getCount())+")");
+                            follower = mapVo.get(i).getCount();
                         }else{
-                            btnfollowing.setText(getString(R.string.follow_view_pager)+"("+String.valueOf(mapVo.get(i).getCount())+")");
+                            following = mapVo.get(i).getCount();
                         }
                     }
+                    value = getString(R.string.follow_toolbar_page_text)+"("+follower+")   |   "+getString(R.string.follow_view_pager)+"("+following+")";
+                    tx_follower.setText(value);
+
                 }else{
 
                 }
@@ -298,35 +312,6 @@ public class MyPageActivity extends AppCompatActivity {
                      **************************************************************************************/
 
                     tx_user_name.setText(findUser.getUsername());
-
-                    if(findUser.getTeamname()==null){
-                        tx_teamname.setText(R.string.user_team_yet_join);
-                    }else{
-                        tx_teamname.setText(findUser.getTeamname());
-                    }
-
-                    /*
-                    TextView tx_coachname;
-                    TextView tx_total_ranking;
-                    TextView tx_total_count;
-                    TextView tx_friend_ranking;
-                    TextView tx_friend_count;
-                    TextView tx_team_ranking;
-                    TextView tx_team_count;
-                    TextView tx_lifting_level;
-                    TextView tx_lifting_score;
-                    TextView tx_around_level;
-                    TextView tx_around_score;
-                    TextView tx_trapping_level;
-                    TextView tx_trapping_socre;
-                    TextView tx_flib_level;
-                    TextView tx_flib_socre;
-                    TextView tx_drible_level;
-                    TextView tx_drible_socre;
-                    TextView tx_crosbal_level;
-                    TextView tx_crosbal_socre;
-                    */
-
                 }else{
                     WaitingDialog.cancelWaitingDialog();
                 }
@@ -391,12 +376,9 @@ public class MyPageActivity extends AppCompatActivity {
     }
 
     public void followClick(View v){
-        if(pageFlag.equals("me")){
             Intent intent = new Intent(MyPageActivity.this,FollowActivity.class);
+            intent.putExtra("queryuid",findUser.getUid());
             startActivity(intent);
-        }else{
-            VeteranToast.makeToast(getApplicationContext(),getString(R.string.f_layout_not_see),Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
@@ -408,6 +390,68 @@ public class MyPageActivity extends AppCompatActivity {
                 scrollView.scrollTo(1, 1);
             }
         });
+    }
+
+
+    @OnClick(R.id.im_point)
+    public void point(){
+        Intent intent = new Intent(this, PointMainActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+    }
+
+    public void getUserLevel(){
+        WaitingDialog.showWaitingDialog(MyPageActivity.this,false);
+        DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
+        Call<List<UserLevelDataVo>> c = dataService.getUserLevelDataList(findUser.getUid());
+        c.enqueue(new Callback<List<UserLevelDataVo>>() {
+            @Override
+            public void onResponse(Call<List<UserLevelDataVo>> call, Response<List<UserLevelDataVo>> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+
+                    List<UserLevelDataVo> dataVos = response.body();
+
+                    for(int i=0; i < dataVos.size(); i++){
+                        UserLevelDataVo levelDataVo = dataVos.get(i);
+
+                        if(levelDataVo.getMittiontype().equals("DRIBLE")){
+                            mypage_drible_level.setText("Lv."+String.valueOf(levelDataVo.getLevel()));
+                            mypage_drible_score.setText(String.valueOf(levelDataVo.getScore()));
+                        }else if(levelDataVo.getMittiontype().equals("LIFTING")){
+                            mypage_lifting_level.setText("Lv."+String.valueOf(levelDataVo.getLevel()));
+                            mypage_lifting_score.setText(String.valueOf(levelDataVo.getScore()));
+                        }else if(levelDataVo.getMittiontype().equals("TRAPING")){
+                            mypage_trapping_level.setText("Lv."+String.valueOf(levelDataVo.getLevel()));
+                            mypage_trapping_socre.setText(String.valueOf(levelDataVo.getScore()));
+                        }else if(levelDataVo.getMittiontype().equals("AROUND")){
+                            mypage_around_level.setText("Lv."+String.valueOf(levelDataVo.getLevel()));
+                            mypage_around_score.setText(String.valueOf(levelDataVo.getScore()));
+                        }else if(levelDataVo.getMittiontype().equals("FLICK")){
+                            mypage_flib_level.setText("Lv."+String.valueOf(levelDataVo.getLevel()));
+                            mypage_flib_score.setText(String.valueOf(levelDataVo.getScore()));
+                        }else if(levelDataVo.getMittiontype().equals("COMPLEX")){
+                            mypage_crosba_level.setText("Lv."+String.valueOf(levelDataVo.getLevel()));
+                            mypage_crosba_score.setText(String.valueOf(levelDataVo.getScore()));
+                        }else if(levelDataVo.getMittiontype().equals("TOTAL")){
+                            tx_level.setText(String.valueOf(levelDataVo.getLevel()));
+                        }
+
+                    }
+
+                }else{
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserLevelDataVo>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+
+
     }
 
 }

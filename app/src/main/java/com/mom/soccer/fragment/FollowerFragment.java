@@ -48,17 +48,19 @@ public class FollowerFragment extends Fragment {
     RecyclerView recyclerView;
     FollowerUserAdapter adapter;
     List<FollowManage> list = new ArrayList<>();
+    private int queryuid;
 
     //parameter
     private int mPage;
     private User user = new User();
 
-    public static FollowerFragment newInstance(int page, User user){
+    public static FollowerFragment newInstance(int page, User user,int queryuid){
 
         Log.i(TAG,"FollowerFragment : ==========================");
 
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
+        args.putInt("queryuid", queryuid);
         args.putSerializable(MissionCommon.USER_OBJECT,user);
         FollowerFragment fragment = new FollowerFragment();
         fragment.setArguments(args);
@@ -74,7 +76,7 @@ public class FollowerFragment extends Fragment {
 
         mPage = getArguments().getInt(ARG_PAGE);
         user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
-
+        queryuid = getArguments().getInt("queryuid");
         Log.i(TAG,"onCreate : ==========================" + mPage);
     }
 
@@ -93,7 +95,7 @@ public class FollowerFragment extends Fragment {
             FollowService service = ServiceGenerator.createService(FollowService.class,getContext(),user);
             FollowManage followManage = new FollowManage();
             followManage.setFollowtype(2);
-            followManage.setUid(user.getUid());
+            followManage.setUid(queryuid);
 
             Call<List<FollowManage>> c = service.getMeFollowList(followManage);
             c.enqueue(new Callback<List<FollowManage>>() {
@@ -131,7 +133,7 @@ public class FollowerFragment extends Fragment {
             FollowService service = ServiceGenerator.createService(FollowService.class,getContext(),user);
             FollowManage followManage = new FollowManage();
             followManage.setFollowtype(1);
-            followManage.setUid(user.getUid());
+            followManage.setUid(queryuid);
             Call<List<FollowManage>> c = service.getMeFollowList(followManage);
 
             c.enqueue(new Callback<List<FollowManage>>() {
@@ -164,64 +166,65 @@ public class FollowerFragment extends Fragment {
                 }
             });
 
+            //삭제는 자기 자신것만..
+            if(user.getUid()==queryuid){
+                recyclerView.addOnItemTouchListener(
+                        new RecyclerItemClickListener(getContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, final int position) {
+                                new MaterialDialog.Builder(getContext())
+                                        .content(R.string.f_layout_arlam_cancel)
+                                        .positiveText(R.string.mom_diaalog_confirm)
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                FollowManage f = new FollowManage();
+                                                f.setFollowid(list.get(position).getFollowid());
 
-            //삭제시..
-            recyclerView.addOnItemTouchListener(
-                    new RecyclerItemClickListener(getContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(View view, final int position) {
-                            new MaterialDialog.Builder(getContext())
-                                    .content(R.string.f_layout_arlam_cancel)
-                                    .positiveText(R.string.mom_diaalog_confirm)
-                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                        @Override
-                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                            FollowManage f = new FollowManage();
-                                            f.setFollowid(list.get(position).getFollowid());
+                                                WaitingDialog.showWaitingDialog(getContext(),false);
+                                                FollowService service = ServiceGenerator.createService(FollowService.class,getContext(),user);
+                                                Call<ServerResult> c = service.deleteFollow(f);
+                                                c.enqueue(new Callback<ServerResult>() {
+                                                    @Override
+                                                    public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                                                        if(response.isSuccessful()){
+                                                            ServerResult result = response.body();
+                                                            WaitingDialog.cancelWaitingDialog();
+                                                            VeteranToast.makeToast(getContext(),list.get(position).getUsername()+getContext().getString(R.string.follow_pickup_cancel), Toast.LENGTH_SHORT).show();
 
-                                            WaitingDialog.showWaitingDialog(getContext(),false);
-                                            FollowService service = ServiceGenerator.createService(FollowService.class,getContext(),user);
-                                            Call<ServerResult> c = service.deleteFollow(f);
-                                            c.enqueue(new Callback<ServerResult>() {
-                                                @Override
-                                                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                                                    if(response.isSuccessful()){
-                                                        ServerResult result = response.body();
-                                                        WaitingDialog.cancelWaitingDialog();
-                                                        VeteranToast.makeToast(getContext(),list.get(position).getUsername()+getContext().getString(R.string.follow_pickup_cancel), Toast.LENGTH_SHORT).show();
+                                                            Intent intent = new Intent(getContext(), FollowActivity.class);
+                                                            getActivity().finish();
+                                                            startActivity(intent);
 
-                                                        Intent intent = new Intent(getContext(), FollowActivity.class);
-                                                        getActivity().finish();
-                                                        startActivity(intent);
+                                                        }else{
+                                                            WaitingDialog.cancelWaitingDialog();
+                                                        }
+                                                    }
 
-                                                    }else{
+                                                    @Override
+                                                    public void onFailure(Call<ServerResult> call, Throwable t) {
                                                         WaitingDialog.cancelWaitingDialog();
                                                     }
-                                                }
+                                                });
+                                            }
+                                        })
+                                        .negativeText(R.string.mom_diaalog_cancel)
+                                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                            }
+                                        })
+                                        .backgroundColor(getResources().getColor(R.color.mom_color1))
+                                        .show();
+                            }
 
-                                                @Override
-                                                public void onFailure(Call<ServerResult> call, Throwable t) {
-                                                    WaitingDialog.cancelWaitingDialog();
-                                                }
-                                            });
-                                        }
-                                    })
-                                    .negativeText(R.string.mom_diaalog_cancel)
-                                    .onNegative(new MaterialDialog.SingleButtonCallback() {
-                                        @Override
-                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        }
-                                    })
-                                    .backgroundColor(getResources().getColor(R.color.mom_color1))
-                                    .show();
-                        }
+                            @Override
+                            public void onLongItemClick(View view, int position) {
 
-                        @Override
-                        public void onLongItemClick(View view, int position) {
-
-                        }
-                    })
-            );
+                            }
+                        })
+                );
+            }
 
         }
 

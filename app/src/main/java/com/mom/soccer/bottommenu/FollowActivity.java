@@ -1,5 +1,6 @@
 package com.mom.soccer.bottommenu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -27,6 +29,7 @@ public class FollowActivity extends AppCompatActivity {
 
     private User user;
     private PrefUtil prefUtil;
+    private int queryuid = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,12 @@ public class FollowActivity extends AppCompatActivity {
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
+
+        Intent intent = getIntent();
+        queryuid = intent.getExtras().getInt("queryuid");
+
+        Log.i(TAG,"queryuid : " +queryuid);
+        Log.i(TAG,"uid : " +user.getUid());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.follow_toolbar);
         setSupportActionBar(toolbar);
@@ -86,7 +95,7 @@ public class FollowActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return FollowerFragment.newInstance(position + 1,user); //여기를 만들고
+            return FollowerFragment.newInstance(position + 1,user,queryuid); //여기를 만들고
         }
 
         @Override

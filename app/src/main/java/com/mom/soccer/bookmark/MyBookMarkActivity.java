@@ -29,7 +29,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -149,8 +148,4 @@ public class MyBookMarkActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.book_bell)
-    public void book_bell(){
-        VeteranToast.makeToast(getApplicationContext(),"준비중", Toast.LENGTH_SHORT).show();
-    }
 }

@@ -17,6 +17,6 @@ public interface FeedBackService {
     @POST("/api/feed/saveFeedHeader")
    Call<ServerResult> saveFeedHeader(@Body FeedbackHeader feedbackHeader);
 
-    @POST("/api/feed/getFeedHeaderList")
+    @POST("/api/feed/getFeedBackList")
     Call<List<FeedbackHeader>> getFeedHeaderList(@Body FeedbackHeader feedbackHeader);
 }

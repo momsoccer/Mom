@@ -1,18 +1,20 @@
 package com.mom.soccer.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
+import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.dataDto.UserRangkinVo;
-import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.dto.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,16 +29,18 @@ public class MainRankingAdapter extends BaseAdapter {
     private Context mContext = null;
     private int layout = 0;
     private LayoutInflater inflater = null;
+    private User user;
 
     //어댑터의 종류에 따라 Vo를 만든다.
     private List<UserRangkinVo> RankingVos;
     private HashMap<View, UserRangkinVo> mLoaders;
 
-    public MainRankingAdapter(Context mContext, int layout, List<UserRangkinVo> vos) {
+    public MainRankingAdapter(Context mContext, int layout, List<UserRangkinVo> vos,User user) {
 
         this.mContext = mContext;
         this.layout = layout;
         this.RankingVos = vos;
+        this.user = user;
 
         this.inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mLoaders = new HashMap<View, UserRangkinVo>();
@@ -117,7 +121,20 @@ public class MainRankingAdapter extends BaseAdapter {
         currentRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                VeteranToast.makeToast(mContext,mContext.getString(R.string.preparation)+ " : "+ i +" 번째 클릭", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext,MyPageActivity.class);
+
+                if(user.getUid() == RankingVos.get(i).getUid()){
+                    intent.putExtra("pageflag","me");
+                }else{
+                    intent.putExtra("pageflag","friend");
+                    intent.putExtra("frienduid",RankingVos.get(i).getUid());
+                }
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+                if (mContext instanceof Activity) {
+                    ((Activity) mContext).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
+                }
             }
         });
 

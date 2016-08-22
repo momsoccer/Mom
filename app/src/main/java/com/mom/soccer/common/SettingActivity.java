@@ -68,4 +68,6 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         }
         return false;
     }
+
+
 }

@@ -6,7 +6,7 @@ package com.mom.soccer.dto;
 public class FeedbackHeader {
 
     private int feedbackid;
-    private String feedbacktpe;
+    private String feedbacktype;
     private int missionid;
     private int usermissionid;
     private int uid;
@@ -22,6 +22,61 @@ public class FeedbackHeader {
     private String type;
     private String videoaddr;
     private String content;
+    private String missionname;
+    private String insname;
+    private String insprofileimgurl;
+    private String profileimgurl;
+    private String username;
+
+    @Override
+    public String toString() {
+        return "FeedbackHeader{" +
+                "feedbackid=" + feedbackid +
+                ", feedbacktype='" + feedbacktype + '\'' +
+                ", missionid=" + missionid +
+                ", usermissionid=" + usermissionid +
+                ", uid=" + uid +
+                ", instructorid=" + instructorid +
+                ", cashpoint=" + cashpoint +
+                ", Frequency=" + Frequency +
+                ", pubstatus='" + pubstatus + '\'' +
+                ", subject='" + subject + '\'' +
+                ", instype='" + instype + '\'' +
+                ", change_creationdate='" + change_creationdate + '\'' +
+                ", type='" + type + '\'' +
+                ", videoaddr='" + videoaddr + '\'' +
+                ", content='" + content + '\'' +
+                ", missionname='" + missionname + '\'' +
+                ", insname='" + insname + '\'' +
+                ", insprofileimgurl='" + insprofileimgurl + '\'' +
+                ", profileimgurl='" + profileimgurl + '\'' +
+                ", username='" + username + '\'' +
+                '}';
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getInsprofileimgurl() {
+        return insprofileimgurl;
+    }
+
+    public void setInsprofileimgurl(String insprofileimgurl) {
+        this.insprofileimgurl = insprofileimgurl;
+    }
+
+    public String getProfileimgurl() {
+        return profileimgurl;
+    }
+
+    public void setProfileimgurl(String profileimgurl) {
+        this.profileimgurl = profileimgurl;
+    }
 
     public FeedbackHeader(){}
 
@@ -29,21 +84,23 @@ public class FeedbackHeader {
         this.uid = uid;
     }
 
-    public String getType() {
-        return type;
+    public String getInsname() {
+        return insname;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setInsname(String insname) {
+        this.insname = insname;
     }
 
-    public String getVideoaddr() {
-        return videoaddr;
+    public String getMissionname() {
+
+        return missionname;
     }
 
-    public void setVideoaddr(String videoaddr) {
-        this.videoaddr = videoaddr;
+    public void setMissionname(String missionname) {
+        this.missionname = missionname;
     }
+
 
     public int getFeedbackid() {
         return feedbackid;
@@ -53,12 +110,12 @@ public class FeedbackHeader {
         this.feedbackid = feedbackid;
     }
 
-    public String getFeedbacktpe() {
-        return feedbacktpe;
+    public String getFeedbacktype() {
+        return feedbacktype;
     }
 
-    public void setFeedbacktpe(String feedbacktpe) {
-        this.feedbacktpe = feedbacktpe;
+    public void setFeedbacktype(String feedbacktype) {
+        this.feedbacktype = feedbacktype;
     }
 
     public int getMissionid() {
@@ -109,28 +166,20 @@ public class FeedbackHeader {
         Frequency = frequency;
     }
 
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getChange_creationdate() {
-        return change_creationdate;
-    }
-
-    public void setChange_creationdate(String change_creationdate) {
-        this.change_creationdate = change_creationdate;
-    }
-
     public String getPubstatus() {
         return pubstatus;
     }
 
     public void setPubstatus(String pubstatus) {
         this.pubstatus = pubstatus;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public String getInstype() {
@@ -141,32 +190,35 @@ public class FeedbackHeader {
         this.instype = instype;
     }
 
+    public String getChange_creationdate() {
+        return change_creationdate;
+    }
+
+    public void setChange_creationdate(String change_creationdate) {
+        this.change_creationdate = change_creationdate;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getVideoaddr() {
+        return videoaddr;
+    }
+
+    public void setVideoaddr(String videoaddr) {
+        this.videoaddr = videoaddr;
+    }
+
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    @Override
-    public String toString() {
-        return "FeedbackHeader{" +
-                "feedbackid=" + feedbackid +
-                ", feedbacktpe='" + feedbacktpe + '\'' +
-                ", missionid=" + missionid +
-                ", usermissionid=" + usermissionid +
-                ", uid=" + uid +
-                ", instructorid=" + instructorid +
-                ", cashpoint=" + cashpoint +
-                ", Frequency=" + Frequency +
-                ", pubstatus='" + pubstatus + '\'' +
-                ", subject='" + subject + '\'' +
-                ", instype='" + instype + '\'' +
-                ", change_creationdate='" + change_creationdate + '\'' +
-                ", type='" + type + '\'' +
-                ", videoaddr='" + videoaddr + '\'' +
-                ", content='" + content + '\'' +
-                '}';
     }
 }

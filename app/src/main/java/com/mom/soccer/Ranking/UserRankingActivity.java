@@ -107,7 +107,7 @@ public class UserRankingActivity extends AppCompatActivity {
                 public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
                     if(response.isSuccessful()){
                         List<UserRangkinVo> listVos = response.body();
-                        mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
+                        mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos,user);
                         listView.setAdapter(mainRankingAdapter);
                     }else{
                     }
@@ -126,7 +126,7 @@ public class UserRankingActivity extends AppCompatActivity {
                 public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
                     if(response.isSuccessful()){
                         List<UserRangkinVo> listVos = response.body();
-                        mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos);
+                        mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos,user);
                         listView.setAdapter(mainRankingAdapter);
                     }else{
                     }
