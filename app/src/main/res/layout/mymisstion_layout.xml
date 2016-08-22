@@ -259,7 +259,6 @@
                     card:list_card_layout_resourceID="@layout/native_recyclerview_card_layout"
                     android:id="@+id/feedback_recyclerview"/>
 
-
             </LinearLayout>
 
 

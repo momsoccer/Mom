@@ -9,6 +9,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -34,6 +35,7 @@ import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.GridMissionAdapter;
+import com.mom.soccer.cardview.FeedBackCard;
 import com.mom.soccer.common.Auth;
 import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
@@ -59,11 +61,13 @@ import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.recyclerview.internal.CardArrayRecyclerViewAdapter;
 import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
 import retrofit2.Call;
@@ -987,10 +991,18 @@ public class MissionMainActivity extends AppCompatActivity {
                     }else{
                         li_feedback_history.setVisibility(View.VISIBLE);
 
+                        ArrayList<Card> cards = new ArrayList<Card>();
+
+                        for(int i=0 ; i < feedbackHeaders.size();i++){
+                            cards.add(new FeedBackCard(getApplicationContext(),feedbackHeaders.get(i)));
+                        }
 
 
-                        CardArrayRecyclerViewAdapter feedbackRe; //= new CardArrayRecyclerViewAdapter(getApplicationContext(), cards);
+                        CardArrayRecyclerViewAdapter feedbackAdapter = new CardArrayRecyclerViewAdapter(getApplicationContext(), cards);
 
+                        cardRecyclerView.setHasFixedSize(false);
+                        cardRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        cardRecyclerView.setAdapter(feedbackAdapter);
                     }
 
                 }else{
