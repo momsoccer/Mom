@@ -513,6 +513,7 @@
             android:background="@color/line_color1" />
 
         <TextView
+            android:id="@+id/text_title"
             android:text="@string/app_myvideo_view"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"

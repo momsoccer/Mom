@@ -27,6 +27,8 @@ public class FeedbackHeader {
     private String insprofileimgurl;
     private String profileimgurl;
     private String username;
+    private int    feedbacklineid;
+    private float   evalscore;
 
     @Override
     public String toString() {
@@ -51,7 +53,25 @@ public class FeedbackHeader {
                 ", insprofileimgurl='" + insprofileimgurl + '\'' +
                 ", profileimgurl='" + profileimgurl + '\'' +
                 ", username='" + username + '\'' +
+                ", feedbacklineid=" + feedbacklineid +
+                ", evalscore=" + evalscore +
                 '}';
+    }
+
+    public float getEvalscore() {
+        return evalscore;
+    }
+
+    public void setEvalscore(float evalscore) {
+        this.evalscore = evalscore;
+    }
+
+    public int getFeedbacklineid() {
+        return feedbacklineid;
+    }
+
+    public void setFeedbacklineid(int feedbacklineid) {
+        this.feedbacklineid = feedbacklineid;
     }
 
     public String getUsername() {

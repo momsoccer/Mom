@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="250dp"
+    android:layout_height="350dp"
+    android:gravity="center"
+    android:background="@drawable/batch_background"
+    >
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        >
+
+        <TextView
+            android:background="@drawable/ic_levelmark"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="20sp"
+            android:textColor="@color/color6"
+            android:textStyle="bold"
+            android:layout_width="70dp"
+            android:layout_height="80dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/batch_drible"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+
+            <TextView
+                android:text="0"
+                android:layout_marginLeft="55dp"
+                android:layout_marginTop="35dp"
+                android:textSize="15sp"
+                android:textColor="@color/color6"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/batch_traping"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+
+            <TextView
+                android:text="0"
+                android:layout_marginLeft="55dp"
+                android:layout_marginTop="35dp"
+                android:textSize="15sp"
+                android:textColor="@color/color6"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/batch_lifting"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+
+            <TextView
+                android:text="0"
+                android:layout_marginLeft="55dp"
+                android:layout_marginTop="35dp"
+                android:textSize="15sp"
+                android:textColor="@color/color6"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/batch_around"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+
+            <TextView
+                android:text="0"
+                android:layout_marginLeft="55dp"
+                android:layout_marginTop="35dp"
+                android:textSize="15sp"
+                android:textColor="@color/color6"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/batch_flick"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+
+            <TextView
+                android:text="0"
+                android:layout_marginLeft="55dp"
+                android:layout_marginTop="35dp"
+                android:textSize="15sp"
+                android:textColor="@color/color6"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/batch_complex"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+
+            <TextView
+                android:text="0"
+                android:layout_marginLeft="55dp"
+                android:layout_marginTop="35dp"
+                android:textSize="15sp"
+                android:textColor="@color/color6"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ *******************************************************************************
   ~   Copyright (c) 2013-2014 Gabriele Mariotti.
@@ -16,12 +18,7 @@
   ~  *****************************************************************************
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item android:id="@+id/action_delete"
-        android:title="@string/feedback_deletei"
-        android:orderInCategory="102"
-        app:showAsAction="always" />
-
-</menu>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/color6"/>
+    <corners android:radius="0px"/>
+</shape>

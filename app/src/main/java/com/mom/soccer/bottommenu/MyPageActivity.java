@@ -28,6 +28,7 @@ import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.mission.UserMissionActivity;
 import com.mom.soccer.point.PointMainActivity;
+import com.mom.soccer.pubactivity.PubActivity;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.FollowService;
 import com.mom.soccer.retrofitdao.UserMissionService;
@@ -150,6 +151,17 @@ public class MyPageActivity extends AppCompatActivity {
 
     @Bind(R.id.tx_level)
     TextView tx_level;
+
+    @Bind(R.id.text_title)
+    TextView text_title;
+
+    @OnClick(R.id.im_batch)
+    public void im_batch(){
+
+        PubActivity pubActivity = new PubActivity(this,user,findUser.getUid());
+        pubActivity.showDialog();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -292,6 +304,7 @@ public class MyPageActivity extends AppCompatActivity {
 
                     if(youUid!=0){
                         mypage_title.setText(findUser.getUsername());
+                        text_title.setText(findUser.getUsername()+" "+ getString(R.string.app_myvideo_view_title));
                     }
 
                     if(!Compare.isEmpty(findUser.getProfileimgurl())) {

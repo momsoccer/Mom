@@ -6,16 +6,25 @@ package com.mom.soccer.dto;
 public class FeedbackLine {
 
     private int feedbacklineid;
-    private int feedbackheaderid;
+    private int feedbackid;
     private String type;
     private String videoaddr;
     private String content;
     private String image1;
     private String image2;
     private String image3;
+    private float evalscore;
     private String change_creationdate;
 
     public FeedbackLine(){}
+
+    public float getEvalscore() {
+        return evalscore;
+    }
+
+    public void setEvalscore(float evalscore) {
+        this.evalscore = evalscore;
+    }
 
     public int getFeedbacklineid() {
         return feedbacklineid;
@@ -25,12 +34,12 @@ public class FeedbackLine {
         this.feedbacklineid = feedbacklineid;
     }
 
-    public int getFeedbackheaderid() {
-        return feedbackheaderid;
+    public int getFeedbackid() {
+        return feedbackid;
     }
 
-    public void setFeedbackheaderid(int feedbackheaderid) {
-        this.feedbackheaderid = feedbackheaderid;
+    public void setFeedbackid(int feedbackid) {
+        this.feedbackid = feedbackid;
     }
 
     public String getType() {
@@ -93,13 +102,14 @@ public class FeedbackLine {
     public String toString() {
         return "FeedbackLine{" +
                 "feedbacklineid=" + feedbacklineid +
-                ", feedbackheaderid=" + feedbackheaderid +
+                ", feedbackid=" + feedbackid +
                 ", type='" + type + '\'' +
                 ", videoaddr='" + videoaddr + '\'' +
                 ", content='" + content + '\'' +
                 ", image1='" + image1 + '\'' +
                 ", image2='" + image2 + '\'' +
                 ", image3='" + image3 + '\'' +
+                ", evalscore=" + evalscore +
                 ", change_creationdate='" + change_creationdate + '\'' +
                 '}';
     }

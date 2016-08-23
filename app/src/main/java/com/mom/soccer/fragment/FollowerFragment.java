@@ -1,8 +1,6 @@
 package com.mom.soccer.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,21 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
-import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.FollowerUserAdapter;
-import com.mom.soccer.bottommenu.FollowActivity;
-import com.mom.soccer.common.RecyclerItemClickListener;
 import com.mom.soccer.dto.FollowManage;
-import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.FollowService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.ArrayList;
@@ -104,7 +95,7 @@ public class FollowerFragment extends Fragment {
                     if(response.isSuccessful()){
                         list = response.body();
                         WaitingDialog.cancelWaitingDialog();
-                        adapter = new FollowerUserAdapter(getContext(),list);
+                        adapter = new FollowerUserAdapter(getContext(),list,user);
                         recyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
                         recyclerView.getItemAnimator().setAddDuration(300);
                         recyclerView.getItemAnimator().setRemoveDuration(300);
@@ -127,6 +118,7 @@ public class FollowerFragment extends Fragment {
                     t.printStackTrace();
                 }
             });
+
 
         }else if(mPage==2){
             WaitingDialog.showWaitingDialog(getContext(),false);
@@ -142,7 +134,7 @@ public class FollowerFragment extends Fragment {
                     if(response.isSuccessful()){
                         list = response.body();
                         WaitingDialog.cancelWaitingDialog();
-                        adapter = new FollowerUserAdapter(getContext(),list);
+                        adapter = new FollowerUserAdapter(getContext(),list,user);
                         recyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
                         recyclerView.getItemAnimator().setAddDuration(300);
                         recyclerView.getItemAnimator().setRemoveDuration(300);
@@ -165,13 +157,18 @@ public class FollowerFragment extends Fragment {
                     t.printStackTrace();
                 }
             });
+            /*
 
-            //삭제는 자기 자신것만..
+                        //삭제는 자기 자신것만..
             if(user.getUid()==queryuid){
                 recyclerView.addOnItemTouchListener(
                         new RecyclerItemClickListener(getContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, final int position) {
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, final int i) {
                                 new MaterialDialog.Builder(getContext())
                                         .content(R.string.f_layout_arlam_cancel)
                                         .positiveText(R.string.mom_diaalog_confirm)
@@ -179,7 +176,7 @@ public class FollowerFragment extends Fragment {
                                             @Override
                                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                 FollowManage f = new FollowManage();
-                                                f.setFollowid(list.get(position).getFollowid());
+                                                f.setFollowid(list.get(i).getFollowid());
 
                                                 WaitingDialog.showWaitingDialog(getContext(),false);
                                                 FollowService service = ServiceGenerator.createService(FollowService.class,getContext(),user);
@@ -190,7 +187,7 @@ public class FollowerFragment extends Fragment {
                                                         if(response.isSuccessful()){
                                                             ServerResult result = response.body();
                                                             WaitingDialog.cancelWaitingDialog();
-                                                            VeteranToast.makeToast(getContext(),list.get(position).getUsername()+getContext().getString(R.string.follow_pickup_cancel), Toast.LENGTH_SHORT).show();
+                                                            VeteranToast.makeToast(getContext(),list.get(i).getUsername()+getContext().getString(R.string.follow_pickup_cancel), Toast.LENGTH_SHORT).show();
 
                                                             Intent intent = new Intent(getContext(), FollowActivity.class);
                                                             getActivity().finish();
@@ -217,16 +214,14 @@ public class FollowerFragment extends Fragment {
                                         .backgroundColor(getResources().getColor(R.color.mom_color1))
                                         .show();
                             }
-
-                            @Override
-                            public void onLongItemClick(View view, int position) {
-
-                            }
                         })
                 );
             }
 
+             */
         }
+
+
 
         return view;
     }

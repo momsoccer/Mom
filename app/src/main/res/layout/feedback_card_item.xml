@@ -1,40 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-  ~ *******************************************************************************
-  ~   Copyright (c) 2013-2014 Gabriele Mariotti.
-  ~
-  ~   Licensed under the Apache License, Version 2.0 (the "License");
-  ~   you may not use this file except in compliance with the License.
-  ~   You may obtain a copy of the License at
-  ~
-  ~   http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~   Unless required by applicable law or agreed to in writing, software
-  ~   distributed under the License is distributed on an "AS IS" BASIS,
-  ~   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~   See the License for the specific language governing permissions and
-  ~   limitations under the License.
-  ~  *****************************************************************************
-  -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_marginLeft="3dp"
+    android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:layout_height="96dp">
+    android:background="@color/mom_color3"
+    >
 
-    <TextView
-        android:id="@+id/content"
-        style="@style/mom_text"
+    <LinearLayout
+        android:id="@+id/li_feed_back_send"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <RatingBar
-        android:id="@+id/carddemo_myapps_main_inner_ratingBar"
-        style="?android:attr/ratingBarStyleSmall"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numStars="5" />
+        android:background="@color/mom_color3"
+        >
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_marginTop="2dp"
+                android:background="@drawable/card_rectangle_white"
+                android:layout_width="10dp"
+                android:layout_height="40dp"/>
+
+            <ImageView
+                android:layout_marginLeft="5dp"
+                android:id="@+id/userimage"
+                android:src="@drawable/userimg"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_margin="6dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/usercontent"
+                android:textColor="@color/color6"
+                android:textSize="12sp"
+                android:background="@drawable/inputtext"
+                android:text="피드백 질문 및 답변"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/li_feed_back_call"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_marginTop="2dp"
+                android:id="@+id/colorBorder"
+                android:background="@drawable/card_rectangle"
+                android:layout_width="10dp"
+                android:layout_height="40dp"/>
+
+            <ImageView
+                android:layout_marginLeft="5dp"
+                android:id="@+id/insimage"
+                android:src="@drawable/userimg"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+
+
+            <RatingBar
+                android:layout_marginLeft="5dp"
+                android:id="@+id/eval_ratingbar"
+                style="?android:attr/ratingBarStyleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:rating="0.5"
+                android:isIndicator="false"
+                />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/inscontent"
+                    android:textColor="@color/color6"
+                    android:textSize="12sp"
+                    android:background="@drawable/inputtext"
+                    android:text="피드백 질문 및 답변"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

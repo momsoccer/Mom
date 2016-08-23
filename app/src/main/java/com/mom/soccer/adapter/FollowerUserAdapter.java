@@ -1,6 +1,7 @@
 package com.mom.soccer.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,8 +13,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
+import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.dto.FollowManage;
+import com.mom.soccer.dto.User;
 
 import java.util.List;
 
@@ -24,10 +27,12 @@ public class FollowerUserAdapter extends RecyclerView.Adapter<FollowerUserAdapte
 
     Context context;
     List<FollowManage> manageList;
+    User user;
 
-    public FollowerUserAdapter(Context context, List<FollowManage> manageList) {
+    public FollowerUserAdapter(Context context, List<FollowManage> manageList,User user) {
         this.context = context;
         this.manageList = manageList;
+        this.user = user;
     }
 
     @Override
@@ -63,6 +68,23 @@ public class FollowerUserAdapter extends RecyclerView.Adapter<FollowerUserAdapte
 
         holder.mecommentcount.setText(String.valueOf(data.getMecommentcount()));
         holder.usercommentcount.setText(String.valueOf(data.getCommentcount()));
+
+        holder.cardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,MyPageActivity.class);
+
+                if(user.getUid() == data.getUid()){
+                    intent.putExtra("pageflag","me");
+                }else{
+                    intent.putExtra("pageflag","friend");
+                    intent.putExtra("frienduid",data.getUid());
+                }
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
 
     }
 

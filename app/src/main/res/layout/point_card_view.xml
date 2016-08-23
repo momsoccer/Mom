@@ -36,7 +36,7 @@
                 <TextView
                     android:id="@+id/tx_typedisp"
                     android:layout_marginLeft="5dp"
-                    android:text="사용타입"
+                    android:text="@string/point_fragment_text_type"
                     android:textSize="12sp"
                     android:textColor="@color/color6"
                     android:layout_width="match_parent"
@@ -56,7 +56,7 @@
 
                 <TextView
                     android:id="@+id/tx_date"
-                    android:text="날짜"
+                    android:text="@string/point_fragment_text_date"
                     android:textSize="12sp"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/color6"
@@ -70,17 +70,19 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageView
                     android:src="@drawable/ic_ball_subject"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
+
 
                 <TextView
                     android:text="@string/point_fragment_pre_amt"
                     android:textSize="12sp"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/color6"
-                    android:layout_width="50dp"
+                    android:layout_width="100dp"
                     android:layout_height="match_parent" />
 
                 <TextView
@@ -89,17 +91,28 @@
                     android:textSize="12sp"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/color6"
-                    android:layout_width="45dp"
+                    android:layout_width="200dp"
                     android:layout_height="match_parent"
-
                     />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:src="@drawable/ic_ball_subject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
 
                 <TextView
                     android:text="@string/point_fragment_use_amt"
                     android:textSize="12sp"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/color6"
-                    android:layout_width="55dp"
+                    android:layout_width="100dp"
                     android:layout_height="match_parent" />
 
 
@@ -109,7 +122,18 @@
                     android:textSize="12sp"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/color6"
-                    android:layout_width="50dp"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:src="@drawable/ic_ball_subject"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
 
                 <TextView
@@ -117,7 +141,7 @@
                     android:textSize="12sp"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/color6"
-                    android:layout_width="50dp"
+                    android:layout_width="100dp"
                     android:layout_height="match_parent" />
 
                 <TextView
@@ -126,10 +150,11 @@
                     android:textSize="12sp"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/color6"
-                    android:layout_width="45dp"
+                    android:layout_width="200dp"
                     android:layout_height="match_parent" />
 
             </LinearLayout>
+
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -142,7 +167,7 @@
                 <TextView
                     android:id="@+id/tx_disp"
                     android:textSize="12sp"
-                    android:text="Point transaction reason"
+                    android:text="@string/point_fragment_text_reason"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/color6"
                     android:layout_width="200dp"

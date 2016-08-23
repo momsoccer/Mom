@@ -82,9 +82,9 @@ public class PlayerMainActivity extends AppCompatActivity {
         final int PAGE_COUNT = 3;
 
         private String tabTitles[] = new String[] {
-                user.getUsername()+":"+getString(R.string.my_fragment_title1),
-                user.getUsername()+":"+getString(R.string.my_fragment_title2),
-                user.getUsername()+":"+getString(R.string.my_fragment_title3)
+                getString(R.string.my_fragment_title1),
+                getString(R.string.my_fragment_title2),
+                getString(R.string.my_fragment_title3)
         };
 
         public PlayerViewPagerAdapter(FragmentManager fm) {

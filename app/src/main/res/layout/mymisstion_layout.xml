@@ -253,7 +253,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color1" />
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/my_mission_feedback_subject"
+                    android:textColor="@color/color6"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color1" />
+
                 <it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView
+                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     card:list_card_layout_resourceID="@layout/native_recyclerview_card_layout"

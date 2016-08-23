@@ -61,6 +61,7 @@ import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionActivity;
 import com.mom.soccer.mission.MissionCommon;
+import com.mom.soccer.pubactivity.PubActivity;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.InstructorService;
 import com.mom.soccer.retrofitdao.MomComService;
@@ -71,6 +72,7 @@ import com.mom.soccer.widget.WaitingDialog;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -100,6 +102,12 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     //네비게이션 상단 아이템
     TextView navHeaderUserName,navHeaderUserEmail,navHeaderCoachName,navHeaderTeamName;
     ImageView navHeaderImage;
+
+    @OnClick(R.id.im_batch)
+    public void im_batch(){
+        PubActivity pubActivity = new PubActivity(this,user,user.getUid());
+        pubActivity.showDialog();
+    }
 
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

@@ -1,6 +1,7 @@
 package com.mom.soccer.retrofitdao;
 
 import com.mom.soccer.dto.FeedbackHeader;
+import com.mom.soccer.dto.FeedbackLine;
 import com.mom.soccer.dto.ServerResult;
 
 import java.util.List;
@@ -19,4 +20,13 @@ public interface FeedBackService {
 
     @POST("/api/feed/getFeedBackList")
     Call<List<FeedbackHeader>> getFeedHeaderList(@Body FeedbackHeader feedbackHeader);
+
+    @POST("/api/feed/updateLine")
+    Call<ServerResult> updateLine(@Body FeedbackLine line);
+
+    @POST("/api/feed/deleteLine")
+    Call<ServerResult> deleteLine(@Body FeedbackLine line);
+
+    @POST("/api/feed/updateContent")
+    Call<ServerResult> updateContent(@Body FeedbackLine line);
 }

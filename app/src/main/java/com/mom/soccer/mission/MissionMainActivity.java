@@ -1,5 +1,6 @@
 package com.mom.soccer.mission;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,7 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +34,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
+import com.mom.soccer.adapter.FeedBackAdapter;
 import com.mom.soccer.adapter.GridMissionAdapter;
 import com.mom.soccer.cardview.FeedBackCard;
 import com.mom.soccer.common.Auth;
@@ -156,6 +157,9 @@ public class MissionMainActivity extends AppCompatActivity {
     @Bind(R.id.li_feedback_history)
     LinearLayout li_feedback_history;
 
+    @Bind(R.id.btnReqEval)
+    Button btnReqEval;
+
     private InsInfoVo insInfoVo;
     private View positiveAction;
     /**************************************************
@@ -194,6 +198,12 @@ public class MissionMainActivity extends AppCompatActivity {
     @Bind(R.id.feedback_recyclerview)
     CardRecyclerView cardRecyclerView;
 
+    //@Bind(R.id.feedback_recyclerview)
+    //RecyclerView recyclerView;
+
+    private FeedBackAdapter   recyclerAdapter;
+    Activity activity;
+
 
     @Override
     public void onBackPressed() {
@@ -208,7 +218,7 @@ public class MissionMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_mission_main_layout);
         ButterKnife.bind(this);
-
+        activity = this;
         Log.d(TAG,"onCreate() =====================================");
 
         prefUtil = new PrefUtil(this);
@@ -369,6 +379,7 @@ public class MissionMainActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
 
@@ -457,6 +468,7 @@ public class MissionMainActivity extends AppCompatActivity {
                             view_l1.setVisibility(View.GONE);
                             view_l2.setVisibility(View.GONE);
                             im_clear_marck.setVisibility(View.VISIBLE);
+                            btnReqEval.setText(R.string.user_mission_y);
                         }else if(userMission.getPassflag().equals("P")){
 
                             Log.i(TAG,"===2" + userMission.getPassflag());
@@ -467,11 +479,14 @@ public class MissionMainActivity extends AppCompatActivity {
                             btn_mission_upload.setBackgroundResource(R.color.color8);
                             im_clear_marck.setVisibility(View.GONE);
 
+                            btnReqEval.setText(R.string.user_mission_p);
+
                         }else if(userMission.getPassflag().equals("N")){
                             Log.i(TAG,"===3" + userMission.getPassflag());
                             img_missiontab.setVisibility(View.GONE);
                             tx_main_usermission.setText(R.string.user_mission_n);
                             im_clear_marck.setVisibility(View.GONE);
+                            btnReqEval.setText(R.string.mission_eval_btn);
                         }
                         Log.i(TAG," Test View End #####");
 
@@ -689,6 +704,25 @@ public class MissionMainActivity extends AppCompatActivity {
                         .show();
                 break;
             case R.id.btnReqEval:
+
+                if(userMission.getPassflag().equals("Y")){
+                    new MaterialDialog.Builder(this)
+                            .content(R.string.user_mission_pass_msg)
+                            .positiveText(R.string.mom_diaalog_confirm)
+                            .widgetColor(getResources().getColor(R.color.enabled_red))
+                            .show();
+                }else if(userMission.getPassflag().equals("P")){
+                    new MaterialDialog.Builder(this)
+                            .content(R.string.user_mission_progress_msg)
+                            .positiveText(R.string.mom_diaalog_confirm)
+                            .widgetColor(getResources().getColor(R.color.enabled_red))
+                            .show();
+                }else if(userMission.getPassflag().equals("N")){
+
+
+
+                }
+
                 break;
         }
     }
@@ -742,8 +776,6 @@ public class MissionMainActivity extends AppCompatActivity {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull final MaterialDialog dialog, @NonNull DialogAction which) {
-
-
 
                         feedbackHeader = new FeedbackHeader();
                         feedbackHeader.setUid(user.getUid());
@@ -955,7 +987,7 @@ public class MissionMainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
+/*    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
@@ -966,17 +998,20 @@ public class MissionMainActivity extends AppCompatActivity {
                 scroll_layout.scrollTo(1, 1);
             }
         });
-    }
+    }*/
 
 
-
+    //피드백 리스트
     public void getFeedBack(){
         Log.i(TAG,"feedbackHeaders() 피드백이 있는지 검사합니다");
         WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
+
         FeedBackService feedBackService = ServiceGenerator.createService(FeedBackService.class,getApplicationContext(),user);
         FeedbackHeader header = new FeedbackHeader();
+
         header.setUid(user.getUid());
         header.setUsermissionid(userMission.getUsermissionid());
+
         Call<List<FeedbackHeader>> c = feedBackService.getFeedHeaderList(header);
         c.enqueue(new Callback<List<FeedbackHeader>>() {
             @Override
@@ -991,10 +1026,12 @@ public class MissionMainActivity extends AppCompatActivity {
                     }else{
                         li_feedback_history.setVisibility(View.VISIBLE);
 
+
                         ArrayList<Card> cards = new ArrayList<Card>();
 
                         for(int i=0 ; i < feedbackHeaders.size();i++){
-                            cards.add(new FeedBackCard(getApplicationContext(),feedbackHeaders.get(i)));
+                            Card card = new FeedBackCard(activity,feedbackHeaders.get(i),user,mission);
+                            cards.add(card);
                         }
 
 
@@ -1003,6 +1040,23 @@ public class MissionMainActivity extends AppCompatActivity {
                         cardRecyclerView.setHasFixedSize(false);
                         cardRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         cardRecyclerView.setAdapter(feedbackAdapter);
+
+
+                        //defalut recyclerView
+                        /*
+                        recyclerAdapter = new FeedBackAdapter(getApplicationContext(),feedbackHeaders);
+                        recyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                        recyclerView.getItemAnimator().setAddDuration(300);
+                        recyclerView.getItemAnimator().setRemoveDuration(300);
+                        recyclerView.getItemAnimator().setMoveDuration(300);
+                        recyclerView.getItemAnimator().setChangeDuration(300);
+
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(MissionMainActivity.this));
+                        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(recyclerAdapter);
+                        alphaAdapter.setDuration(500);
+                        recyclerView.setAdapter(alphaAdapter);
+                        */
                     }
 
                 }else{
@@ -1019,6 +1073,4 @@ public class MissionMainActivity extends AppCompatActivity {
         });
 
     }
-
-
 }
