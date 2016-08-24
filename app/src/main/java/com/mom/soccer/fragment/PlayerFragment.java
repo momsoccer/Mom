@@ -14,10 +14,13 @@ import android.widget.TextView;
 
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.FriendListAdapter;
+import com.mom.soccer.adapter.UserMissionAdapter;
 import com.mom.soccer.dto.FriendReqVo;
+import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.FriendService;
+import com.mom.soccer.retrofitdao.MissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
 
@@ -45,10 +48,12 @@ public class PlayerFragment extends Fragment {
     RecyclerView recyclerView;
     FriendListAdapter recyclerAdapter,irecyclerAdapter;
 
-    RecyclerView recyclerview,friendi_recyclerview;
+    RecyclerView recyclerview,friendi_recyclerview,mission_recyclerview;
     List<FriendReqVo> friendReqVos = new ArrayList<>();
     TextView friend_no_data,friend_req_data;
 
+    List<Mission> missions;
+    UserMissionAdapter userMissionAdapter;
 
 
     public static PlayerFragment newInstance(int page, User user){
@@ -92,12 +97,40 @@ public class PlayerFragment extends Fragment {
             friend_req_data.setVisibility(View.GONE);
 
 
+            //UserMissionAdapter
+
         }else if(mPage==2){
             li_layout_page1.setVisibility(View.GONE);
             li_layout_page2.setVisibility(View.VISIBLE);
             li_layout_page3.setVisibility(View.GONE);
             friend_no_data.setVisibility(View.GONE);
             friend_req_data.setVisibility(View.GONE);
+
+            mission_recyclerview = (RecyclerView) view.findViewById(R.id.mission_recyclerview);
+
+
+            MissionService missionService = ServiceGenerator.createService(MissionService.class,getContext(),user);
+            Call<List<Mission>> c = missionService.allMissionList();
+            c.enqueue(new Callback<List<Mission>>() {
+                @Override
+                public void onResponse(Call<List<Mission>> call, Response<List<Mission>> response) {
+                    if(response.isSuccessful()){
+                        missions = response.body();
+                        userMissionAdapter = new UserMissionAdapter(getContext(),missions);
+                        mission_recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+                        mission_recyclerview.setAdapter(userMissionAdapter);
+
+                    }else{
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Mission>> call, Throwable t) {
+
+                }
+            });
+
 
 
         }else if(mPage==3){

@@ -236,11 +236,25 @@ public class MissionActivity extends AppCompatActivity {
                         );
                         mFlippableStack.setAdapter(mPageAdapter);
 
+                        Log.i(TAG,"시크바 +++++++++++++++++++++++++++++++++++++++++++");
+
                         discreteSeekBar1 = (DiscreteSeekBar) findViewById(R.id.discrete1);
+
+                        //discreteSeekBar1.setBackgroundColor();
+                        discreteSeekBar1.setScrubberColor(getResources().getColor(R.color.enabled_red));
+                        discreteSeekBar1.setDrawingCacheBackgroundColor(getResources().getColor(R.color.bg_screen4));
 
                         discreteSeekBar1.setMin(0);
                         discreteSeekBar1.setMax(NUMBER_OF_FRAGMENTS);
+                        discreteSeekBar1.setRippleColor(getResources().getColor(R.color.color6));
+                        discreteSeekBar1.setTrackColor(getResources().getColor(R.color.bg_screen3));
+                        discreteSeekBar1.setBackgroundColor(getResources().getColor(R.color.bg_screen2));
 
+                        //두번째 인자가 버블색
+                        discreteSeekBar1.setThumbColor(getResources().getColor(R.color.bg_screen4),getResources().getColor(R.color.gold3));
+                        Log.i(TAG,"숫자는 : " + NUMBER_OF_FRAGMENTS);
+
+                        discreteSeekBar1.setIndicatorFormatter("레벨");
                         //https://github.com/AnderWeb/discreteSeekBar
                         discreteSeekBar1.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
                             @Override
@@ -249,6 +263,16 @@ public class MissionActivity extends AppCompatActivity {
                                 return value;
                             }
 
+                            @Override
+                            public String transformToString(int value) {
+                                mFlippableStack.setCurrentItem(value);
+                                return "Level : " + value;
+                            }
+
+                            @Override
+                            public boolean useStringTransform() {
+                                return true;
+                            }
                         });
                     }
                 }else{

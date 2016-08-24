@@ -12,7 +12,7 @@ import android.renderscript.ScriptIntrinsicBlur;
  * Created by sungbo on 2016-05-27.
  */
 public class Common {
-    public static String SERVER_ADRESS = "http://192.168.0.50:8080";
+    public static String SERVER_ADRESS = "http://192.168.10.4:8080";
     //"http://192.168.0.50:8080";
     //http://14.63.220.208:16410/ 클라우드 서버
 

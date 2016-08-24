@@ -24,4 +24,7 @@ public interface MissionService {
     @POST("/api/mission/getMission")
     Call<Mission> getMission(@Body Mission mission);
 
+
+    @GET("/api/mission/allMissionList")
+    Call<List<Mission>> allMissionList();
 }
