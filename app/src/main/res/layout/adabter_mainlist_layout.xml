@@ -34,6 +34,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
+            android:onClick="userViewOnclick"
             />
     </LinearLayout>
 
@@ -113,8 +114,8 @@
             android:textStyle="bold"
             android:textColor="@color/color6"
             android:background="@drawable/ic_levelmark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="45dp"
+            android:layout_height="47dp" />
 
 
     </LinearLayout>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    >
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/friend_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="2dp"
+        android:orientation="vertical"
+        card_view:contentPadding="3dp"
+        >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            >
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <ImageView
+                    android:src="@drawable/ic_ball_subject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:text="@string/friend_req_text"
+                    android:textColor="@color/color6"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:layout_marginLeft="50dp"
+                    android:id="@+id/creation_date"
+                    android:text="2015년 10월 10일"
+                    android:textColor="@color/color6"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+
+            <ImageView
+                android:background="@drawable/card_rectangle"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                >
+
+                <ImageView
+                    android:layout_marginTop="2dp"
+                    android:id="@+id/colorBorder"
+                    android:background="@drawable/card_rectangle"
+                    android:layout_width="10dp"
+                    android:layout_height="40dp"
+                    />
+
+                <ImageView
+                    android:id="@+id/userimg"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/userimg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:layout_marginLeft="3dp"
+                    android:id="@+id/username"
+                    android:text="유저명"
+                    android:textSize="10sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:maxLength="15"
+                    />
+
+                <TextView
+                    android:layout_marginLeft="3dp"
+                    android:id="@+id/score"
+                    android:text="220"
+                    android:textColor="@color/color6"
+                    android:textSize="10sp"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/level"
+                    android:text="0"
+                    android:gravity="center"
+                    android:textColor="@color/color6"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/ic_levelmark"
+                    android:layout_width="35dp"
+                    android:layout_height="37dp" />
+
+                <Button
+                    android:id="@+id/acceptBtn"
+                    android:layout_marginLeft="30dp"
+                    android:gravity="center"
+                    android:text="@string/mom_diaalog_cancel"
+                    android:textSize="10sp"
+                    style="@style/btnStylePaprika"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

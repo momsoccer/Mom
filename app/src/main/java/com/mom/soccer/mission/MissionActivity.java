@@ -29,6 +29,8 @@ import com.mom.soccer.retrofitdao.MissionService;
 import com.mom.soccer.retrofitdao.PointService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +79,9 @@ public class MissionActivity extends AppCompatActivity {
 
     @Bind(R.id.btn_refresh)
     Button btn_refresh;
+
+    DiscreteSeekBar discreteSeekBar1;
+
 
 
     @Override
@@ -230,6 +235,21 @@ public class MissionActivity extends AppCompatActivity {
                                 ,StackPageTransformer.Gravity.CENTER
                         );
                         mFlippableStack.setAdapter(mPageAdapter);
+
+                        discreteSeekBar1 = (DiscreteSeekBar) findViewById(R.id.discrete1);
+
+                        discreteSeekBar1.setMin(0);
+                        discreteSeekBar1.setMax(NUMBER_OF_FRAGMENTS);
+
+                        //https://github.com/AnderWeb/discreteSeekBar
+                        discreteSeekBar1.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+                            @Override
+                            public int transform(int value) {
+                                mFlippableStack.setCurrentItem(value);
+                                return value;
+                            }
+
+                        });
                     }
                 }else{
                     mFlippableStack.setVisibility(View.GONE);

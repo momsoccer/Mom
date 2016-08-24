@@ -1,6 +1,7 @@
 package com.mom.soccer.momactivity;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -53,6 +54,7 @@ import com.mom.soccer.bookmark.MyBookMarkActivity;
 import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.bottommenu.SearchActivity;
 import com.mom.soccer.common.Compare;
+import com.mom.soccer.common.CropCircleTransformation;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.common.SettingActivity;
 import com.mom.soccer.dataDto.UserRangkinVo;
@@ -103,6 +105,8 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     TextView navHeaderUserName,navHeaderUserEmail,navHeaderCoachName,navHeaderTeamName;
     ImageView navHeaderImage;
 
+    private Activity activity;
+
     @OnClick(R.id.im_batch)
     public void im_batch(){
         PubActivity pubActivity = new PubActivity(this,user,user.getUid());
@@ -118,7 +122,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         ButterKnife.bind(this);
 
         Log.d(TAG, "onCreate ===========================================================");
-
+        activity = this;
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
         instructor = prefUtil.getIns();
@@ -164,6 +168,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         if(!Compare.isEmpty(user.getProfileimgurl())){
             Glide.with(MomMainActivity.this)
                     .load(user.getProfileimgurl())
+                    .asBitmap().transform(new CropCircleTransformation(this))
                     .into(navHeaderImage);
 
         Log.d(TAG,"유저 이미지 있다면... : " + user.getProfileimgurl());
@@ -235,6 +240,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         if(!Compare.isEmpty(user.getProfileimgurl())){
             Glide.with(MomMainActivity.this)
                     .load(user.getProfileimgurl())
+                    .asBitmap().transform(new CropCircleTransformation(this))
                     .into(navHeaderImage);
         }
 
@@ -527,6 +533,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
 
 
             if(position == 0){
+                //전체랭킹
                 Log.i(TAG,"뷰 페이저 값을 갱신 합니다");
                 final LinearLayout li_main_slid_ranking,li_main_slid_ranking_no_data;
                 li_main_slid_ranking = (LinearLayout) view.findViewById(R.id.li_main_slid_ranking);
@@ -550,7 +557,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                             li_main_slid_ranking_no_data.setVisibility(View.GONE);
 
                             List<UserRangkinVo> listVos = response.body();
-                            MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos,user);
+                            MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(activity, R.layout.adabter_mainlist_layout,listVos,user);
                             ListView listView = (ListView) container.findViewById(R.id.list_total_ranking);
                             listView.setAdapter(mainRankingAdapter);
                         }else{
@@ -585,7 +592,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
 
 
             }else if(position==1){
-
+            //팀랭킹
                 final LinearLayout li_main_team_layout,li_main_noData_layout;
 
                 li_main_team_layout = (LinearLayout) view.findViewById(R.id.li_main_team_layout);
@@ -614,7 +621,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                             }else{
                                 li_main_noData_layout.setVisibility(View.GONE);
                                 li_main_team_layout.setVisibility(View.VISIBLE);
-                                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos,user);
+                                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(activity, R.layout.adabter_mainlist_layout,listVos,user);
                                 //데이터를 읽어 들여 뿌리는 작업을 한다
                                 ListView listView = (ListView) container.findViewById(R.id.list_team_ranking);
                                 listView.setAdapter(mainRankingAdapter);
@@ -643,7 +650,65 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                 });
 
             }else if(position==2){
+                //친구랭킹
+                final LinearLayout li_main_friend_layout,li_main_noData_layout;
 
+                li_main_friend_layout = (LinearLayout) view.findViewById(R.id.li_main_friend_layout);
+                li_main_noData_layout = (LinearLayout) view.findViewById(R.id.li_main_noData_layout);
+
+                WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
+                DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
+
+                //parameter
+                UserRangkinVo userRangkinVo = new UserRangkinVo();
+                userRangkinVo.setUid(user.getUid());
+                userRangkinVo.setQueryRow(3);
+                userRangkinVo.setOrderbytype("totalscore");
+
+                Call<List<UserRangkinVo>> c = dataService.getFriendRanking(userRangkinVo);
+                c.enqueue(new Callback<List<UserRangkinVo>>() {
+                    @Override
+                    public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
+                        if(response.isSuccessful()){
+                            List<UserRangkinVo> listVos = response.body();
+                            WaitingDialog.cancelWaitingDialog();
+
+                            Log.i(TAG,"친구랭킹");
+                            Log.i(TAG,"친구랭킹 : " + listVos.get(0).toString());
+
+                            if(listVos.size()==0){
+                                li_main_noData_layout.setVisibility(View.VISIBLE);
+                                li_main_friend_layout.setVisibility(View.GONE);
+                            }else{
+                                li_main_noData_layout.setVisibility(View.GONE);
+                                li_main_friend_layout.setVisibility(View.VISIBLE);
+                                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(activity, R.layout.adabter_mainlist_layout,listVos,user);
+                                //데이터를 읽어 들여 뿌리는 작업을 한다
+                                ListView listView = (ListView) container.findViewById(R.id.list_friend_ranking);
+                                listView.setAdapter(mainRankingAdapter);
+                            }
+
+                        }else{
+                            WaitingDialog.cancelWaitingDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
+                        WaitingDialog.cancelWaitingDialog();
+                        t.printStackTrace();
+                    }
+                });
+
+                Button button = (Button) container.findViewById(R.id.btn_more_friend_ranking);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(),UserRankingActivity.class);
+                        intent.putExtra("pageparam","friend");
+                        startActivity(intent);
+                    }
+                });
             }
 
             return view;
@@ -698,6 +763,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         user = prefUtil.getUser();
         Glide.with(MomMainActivity.this)
                 .load(user.getProfileimgurl())
+                .asBitmap().transform(new CropCircleTransformation(this))
                 .into(navHeaderImage);
 
     }

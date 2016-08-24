@@ -13,8 +13,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.bottommenu.MyPageActivity;
+import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dataDto.UserRangkinVo;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.pubactivity.PubActivity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +28,7 @@ public class MainRankingAdapter extends BaseAdapter {
 
     private static final String TAG = "MainRankingAdapter";
 
-    private Context mContext = null;
+    private Activity activity = null;
     private int layout = 0;
     private LayoutInflater inflater = null;
     private User user;
@@ -35,14 +37,14 @@ public class MainRankingAdapter extends BaseAdapter {
     private List<UserRangkinVo> RankingVos;
     private HashMap<View, UserRangkinVo> mLoaders;
 
-    public MainRankingAdapter(Context mContext, int layout, List<UserRangkinVo> vos,User user) {
+    public MainRankingAdapter(Activity activity, int layout, List<UserRangkinVo> vos,User user) {
 
-        this.mContext = mContext;
+        this.activity = activity;
         this.layout = layout;
         this.RankingVos = vos;
         this.user = user;
 
-        this.inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mLoaders = new HashMap<View, UserRangkinVo>();
     }
 
@@ -90,8 +92,9 @@ public class MainRankingAdapter extends BaseAdapter {
                 listHolder.teamname.setText(RankingVos.get(i).getTeamname());
             }
 
-            Glide.with(mContext)
+            Glide.with(activity)
                     .load(RankingVos.get(i).getProfileimgurl())
+                    .asBitmap().transform(new RoundedCornersTransformation(activity,10,5))
                     .into(listHolder.imageView);
 
             currentRow.setTag(listHolder);
@@ -112,12 +115,41 @@ public class MainRankingAdapter extends BaseAdapter {
                     listHolder.teamname.setText(RankingVos.get(i).getTeamname());
                 }
 
-                Glide.with(mContext)
+                Glide.with(activity)
                         .load(RankingVos.get(i).getProfileimgurl())
+                        .asBitmap().transform(new RoundedCornersTransformation(activity,10,5))
                         .into(listHolder.imageView);
             }
         }
 
+        listHolder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity,MyPageActivity.class);
+
+                if(user.getUid() == RankingVos.get(i).getUid()){
+                    intent.putExtra("pageflag","me");
+                }else{
+                    intent.putExtra("pageflag","friend");
+                    intent.putExtra("frienduid",RankingVos.get(i).getUid());
+                }
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                activity.startActivity(intent);
+                activity.overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
+
+            }
+        });
+
+        listHolder.tx_level.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PubActivity pubActivity = new PubActivity(activity,user,RankingVos.get(i).getUid());
+                pubActivity.showDialog();
+            }
+        });
+
+/*
         currentRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,6 +169,7 @@ public class MainRankingAdapter extends BaseAdapter {
                 }
             }
         });
+*/
 
         return currentRow;
     }
@@ -149,5 +182,7 @@ public class MainRankingAdapter extends BaseAdapter {
         TextView  score;
         TextView  tx_level;
     }
+
+
 
 }

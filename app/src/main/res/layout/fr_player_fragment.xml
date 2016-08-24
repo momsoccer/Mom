@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <LinearLayout
         android:id="@+id/li_layout_page1"
@@ -11,9 +12,6 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         >
-
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -28,16 +26,103 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/li_layout_page3"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        >
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_margin="5dp"
+            android:id="@+id/li_layout_page3"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
 
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color1" />
 
+            <TextView
+                android:layout_marginTop="3dp"
+                android:text="친구요청목록"
+                android:textSize="13sp"
+                android:textColor="@color/color6"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <View
+                android:layout_marginTop="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color1" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/friend_req_data"
+                android:layout_marginTop="3dp"
+                android:text="친구신청이 없습니다"
+                android:textSize="10sp"
+                android:textColor="@color/color2"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
 
+            <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/friend_recyclerview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/mom_color1"
+                />
+
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color1" />
+
+            <TextView
+                android:layout_marginTop="3dp"
+                android:text="친구목록"
+                android:textSize="13sp"
+                android:textColor="@color/color6"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <View
+                android:layout_marginTop="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/line_color1" />
+
+            <TextView
+                android:id="@+id/friend_no_data"
+                android:layout_marginTop="3dp"
+                android:text="친구가 없습니다"
+                android:textSize="10sp"
+                android:textColor="@color/color2"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/friendi_recyclerview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/mom_color1"
+                />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

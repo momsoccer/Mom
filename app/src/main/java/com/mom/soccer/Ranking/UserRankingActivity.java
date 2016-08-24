@@ -1,5 +1,6 @@
 package com.mom.soccer.Ranking;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.MainRankingAdapter;
 import com.mom.soccer.common.PrefUtil;
@@ -22,7 +24,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,6 +45,8 @@ public class UserRankingActivity extends AppCompatActivity {
     @Bind(R.id.li_bacground_lyout)
     LinearLayout li_bacground_lyout;
 
+    private Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +55,7 @@ public class UserRankingActivity extends AppCompatActivity {
 
         Log.i(TAG,"onCreate() ===============================================");
 
+        activity = this;
         Intent intent = getIntent();
         pageFlag = intent.getExtras().getString("pageparam");
 
@@ -69,8 +73,10 @@ public class UserRankingActivity extends AppCompatActivity {
 
         if(pageFlag.equals("total")){
             textView_ranking_title.setText(R.string.toolbar_ranking_all);
-        }else if((pageFlag.equals("team"))){
+        }else if((pageFlag.equals("friend"))){
             textView_ranking_title.setText(R.string.toolbar_ranking_friend);
+        }else if((pageFlag.equals("team"))){
+            textView_ranking_title.setText(R.string.toolbar_ranking_team);
         }
 
     }
@@ -86,6 +92,10 @@ public class UserRankingActivity extends AppCompatActivity {
             getTotalRankingList();
         }else if((pageFlag.equals("team"))){
             li_bacground_lyout.setBackground(getResources().getDrawable(R.drawable.team_ranking));
+            listView = (ListView) findViewById(R.id.rankingpage_total_ranking);
+            getTotalRankingList();
+        }else if((pageFlag.equals("friend"))){
+            li_bacground_lyout.setBackground(getResources().getDrawable(R.drawable.freind_ranking));
             listView = (ListView) findViewById(R.id.rankingpage_total_ranking);
             getTotalRankingList();
         }
@@ -107,7 +117,7 @@ public class UserRankingActivity extends AppCompatActivity {
                 public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
                     if(response.isSuccessful()){
                         List<UserRangkinVo> listVos = response.body();
-                        mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos,user);
+                        mainRankingAdapter = new MainRankingAdapter(activity, R.layout.adabter_mainlist_layout,listVos,user);
                         listView.setAdapter(mainRankingAdapter);
                     }else{
                     }
@@ -126,9 +136,37 @@ public class UserRankingActivity extends AppCompatActivity {
                 public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
                     if(response.isSuccessful()){
                         List<UserRangkinVo> listVos = response.body();
-                        mainRankingAdapter = new MainRankingAdapter(getApplicationContext(), R.layout.adabter_mainlist_layout,listVos,user);
+                        mainRankingAdapter = new MainRankingAdapter(activity, R.layout.adabter_mainlist_layout,listVos,user);
                         listView.setAdapter(mainRankingAdapter);
                     }else{
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
+                    Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        }else if((pageFlag.equals("friend"))) {
+
+            MaterialDialog materialDialog =  new MaterialDialog.Builder(this)
+                    .title("친구 랭킹")
+                    .content("친구랭킹을 검색합니다")
+                    .progress(true, 0)
+                    .progressIndeterminateStyle(true)
+                    .show();
+
+
+            final Call<List<UserRangkinVo>> call = dataService.getFriendRanking(userRangkinVo);
+            call.enqueue(new Callback<List<UserRangkinVo>>() {
+                @Override
+                public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
+                    if (response.isSuccessful()) {
+                        List<UserRangkinVo> listVos = response.body();
+                        mainRankingAdapter = new MainRankingAdapter(activity, R.layout.adabter_mainlist_layout, listVos, user);
+                        listView.setAdapter(mainRankingAdapter);
+                    } else {
                     }
                 }
 
@@ -143,10 +181,6 @@ public class UserRankingActivity extends AppCompatActivity {
 
     }
 
-    @OnClick(R.id.ranking_bell)
-    public void btnBell(){
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.common.Compare;
+import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dto.FollowManage;
 import com.mom.soccer.dto.User;
 
@@ -48,6 +49,7 @@ public class FollowerUserAdapter extends RecyclerView.Adapter<FollowerUserAdapte
         if(!Compare.isEmpty(data.getProfileimgurl())){
             Glide.with(context)
                     .load(data.getProfileimgurl())
+                    .asBitmap().transform(new RoundedCornersTransformation(context,10,5))
                     .into(holder.imageView);
         }
 

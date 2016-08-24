@@ -27,6 +27,9 @@ public interface DataService {
     @POST("/api/data/getTeamRanking")
     Call<List<UserRangkinVo>> getTeamRanking(@Body UserRangkinVo userRangkinVo);
 
+    @POST("/api/data/getFriendRanking")
+    Call<List<UserRangkinVo>> getFriendRanking(@Body UserRangkinVo userRangkinVo);
+
     //선생님 피드빽 신청할때 필요한 리스트
     @POST("/api/data/getInsInfoList")
     Call<List<InsInfoVo>> getInsInfoList(@Body InsInfoVo v);

@@ -209,10 +209,11 @@
     <string name="friedn_follow_cancel">팔로우취소</string>
     <string name="friedn_friend_request">친구요청</string>
     <string name="friedn_friend_request_process">친구요청중</string>
+    <string name="friedn_friend_request_me">나에게 친구요청중</string>
     <string name="friedn_friend_cancel">친구끈기</string>
     <string name="friedn_friend_reject">거절됨</string>
 
-    <string name="friedn_req">친구요청을 하시겠습니까?</string>
+    <string name="friedn_req">님에게 친구요청을 했습니다</string>
     <string name="friedn_alrady_req">친구 요청을 한 상태입니다</string>
     <string name="friedn_reject_req">친구요청을 거절 했지만 다시 한번 친구 요청을 하시겠습니까?</string>
     <string name="friedn_stop_req">친구끈기를 하시겠습니까?</string>
@@ -308,10 +309,14 @@
     <string name="mom_diaalog_title_logout">로그아웃</string>
     <string name="mom_diaalog_title_append">앱 종료</string>
 
-    <string name="mom_diaalog_content_logout">로그아웃 하시겠습니까?</string>
+
+
     <string name="mom_diaalog_confirm">확인</string>
     <string name="mom_diaalog_cancel">취소</string>
+
     <string name="mom_diaalog_alert">알림</string>
+
+    <string name="mom_diaalog_content_logout">로그아웃 하시겠습니까?</string>
 
     <!--설정사항-->
     <string name="mom_setting_info">MoM 정보</string>
@@ -435,4 +440,19 @@
     <string name="feedback_feedback_update">요청내용을 변경 했습니다</string>
 
     <string name="feedback_feedback_recontent_title">피드백 수정</string>
+
+    <!--friend-->
+    <string name="friend_req_text">친구요청</string>
+    <string name="friend_rep_text">친구요청중</string>
+    <string name="friend_rec_text">친구요청 수락</string>
+    <string name="friend_rem_text">친구취소</string>
+    <string name="friend_re_msg">친구수락은 볼메뉴에서 해주세요 \n 이동 하시겠습니까?</string>
+
+    <string name="friend_re_btn">친구수락</string>
+    <string name="friend_progressing">친구요청을 보낸 상태입니다</string>
+    <string name="friend_delete">친구끈기를 했습니다</string>
+
+    <!--main ranking-->
+    <string name="nodata_found_team">소속된 강사팀이 없습니다</string>
+    <string name="nodata_found_friend">친구가 없습니다</string>
 </resources>
