@@ -58,6 +58,7 @@ public class FeedBackEndAdapter extends RecyclerView.Adapter<FeedBackEndAdapter.
         holder.name.setText(vo.getName());
         holder.toname.setText(vo.getToname());
         holder.missionname.setText(vo.getMissionname());
+        holder.teamname.setText(vo.getTeamname());
 
         if(vo.getDatatype().equals("request")){
             holder.type.setText(activity.getString(R.string.feedback_type_re));
@@ -67,17 +68,23 @@ public class FeedBackEndAdapter extends RecyclerView.Adapter<FeedBackEndAdapter.
 
         videoAddr = vo.getVideoaddr();
 
-        holder.video_ThumbnailView.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
-                youTubeThumbnailLoader.setVideo(videoAddr);
-            }
+        if(vo.getFeedbacktype().equals("video")){
+            holder.video_ThumbnailView.setVisibility(View.VISIBLE);
+            holder.video_ThumbnailView.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
+                @Override
+                public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+                    youTubeThumbnailLoader.setVideo(videoAddr);
+                }
 
-            @Override
-            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+                @Override
+                public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
 
-            }
-        });
+                }
+            });
+        }else{
+            holder.video_ThumbnailView.setVisibility(View.GONE);
+        }
+
 
     }
 

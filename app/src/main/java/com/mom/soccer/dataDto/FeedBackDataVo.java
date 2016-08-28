@@ -22,6 +22,7 @@ public class FeedBackDataVo {
     private int totalscore;
     private String videoaddr;
     private String toname;
+    private String teamname;
 
     //쿼리를 위한
     private int queryRow;
@@ -50,6 +51,14 @@ public class FeedBackDataVo {
                 ", queryRow=" + queryRow +
                 ", orderbytype='" + orderbytype + '\'' +
                 '}';
+    }
+
+    public String getTeamname() {
+        return teamname;
+    }
+
+    public void setTeamname(String teamname) {
+        this.teamname = teamname;
     }
 
     public String getToname() {

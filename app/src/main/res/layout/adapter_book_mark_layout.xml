@@ -12,7 +12,6 @@
         android:layout_width="115dp"
         android:layout_height="75dp"
         android:scaleType="centerCrop"
-        android:background="@android:color/black"
         android:layout_alignParentLeft="true"/>
 
     <ImageView

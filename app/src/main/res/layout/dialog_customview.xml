@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/video_background"
     >
 
     <LinearLayout
@@ -74,8 +73,8 @@
         android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:alpha="@integer/list_card_swipe_distance_divisor"
         >
-
 
         <EditText
             android:id="@+id/feedback_content"
@@ -88,10 +87,9 @@
             android:layout_height="wrap_content"
             android:maxLines="5"
             android:lines="5"
-            android:background="@drawable/inputtext"
             android:gravity="top"
             android:hint="피드백 요청 내용"
-            android:textColorHint="@color/line_color1"
+            android:inputType="textMultiLine"
             />
 
     </android.support.design.widget.TextInputLayout>
