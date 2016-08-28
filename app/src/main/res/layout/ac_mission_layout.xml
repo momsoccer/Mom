@@ -82,6 +82,8 @@
             />
 
         <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:id="@+id/discrete1"
             android:layout_width="match_parent"
             android:layout_height="0dp"

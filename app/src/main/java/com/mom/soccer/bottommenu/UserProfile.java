@@ -1,8 +1,5 @@
 package com.mom.soccer.bottommenu;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -12,10 +9,10 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.common.BlurTransformation;
@@ -86,10 +85,9 @@ public class UserProfile extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        //빽버튼?
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.back_arrow);
 
         layoutUserNicname = (TextInputLayout) findViewById(R.id.layout_user_nicname);
         layoutUserPhone = (TextInputLayout) findViewById(R.id.layout_user_phone);
@@ -115,11 +113,11 @@ public class UserProfile extends AppCompatActivity {
 
         }
 
-        TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        String phoneNum = tm.getLine1Number();
+        //TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        //String phoneNum = tm.getLine1Number();
 
         if(Compare.isEmpty(user.getPhone())){
-            et_phone.setText(phoneNum);
+            et_phone.setText("000");
         }else{
             et_phone.setText(user.getPhone());
         }
@@ -300,6 +298,10 @@ public class UserProfile extends AppCompatActivity {
             out.flush();
             out.close();
 
+            //서버에가기전 적용해주기
+            backImage.setImageBitmap(bitmap);
+            user_image.setImageBitmap(bitmap);
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -338,35 +340,27 @@ public class UserProfile extends AppCompatActivity {
 
     public void changeImage(){
 
-        DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener(){
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                doTakeAlbumAction();
-            }
-        };
-
-        DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener(){
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                doTakePhotoAction();
-            }
-        };
-
-        DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener(){
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        };
-
-        new AlertDialog.Builder(this)
-                .setTitle("업로드할 이미지 선택")
-                .setPositiveButton("사진촬영", cameraListener)
-                .setNeutralButton("앨범선택", albumListener)
-                .setNegativeButton("취소", cancelListener)
+        new MaterialDialog.Builder(UserProfile.this)
+                .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                .title(R.string.mom_diaalog_photo_title)
+                .titleColor(getResources().getColor(R.color.color6))
+                .content(R.string.mom_diaalog_photo_contnet)
+                .contentColor(getResources().getColor(R.color.color6))
+                .positiveText(R.string.mom_diaalog_photo_gallery)
+                .neutralText(R.string.mom_diaalog_photo_camera)
+                .negativeText(R.string.mom_diaalog_cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        doTakeAlbumAction();
+                    }
+                })
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        doTakePhotoAction();
+                    }
+                })
                 .show();
     }
 
@@ -375,13 +369,6 @@ public class UserProfile extends AppCompatActivity {
         super.onStart();
 
         Log.d(TAG,"온 스타트==============================");
-
-        if(!Compare.isEmpty(user.getProfileimgurl())){
-            Glide.with(UserProfile.this)
-                    .load(user.getProfileimgurl())
-                    .asBitmap().transform(new BlurTransformation(this, 25))
-                    .into(backImage);
-        }
 
     }
 }

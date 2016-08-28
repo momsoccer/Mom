@@ -4,10 +4,16 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -53,6 +59,7 @@ import com.mom.soccer.besideactivity.StudentMainActivity;
 import com.mom.soccer.bookmark.MyBookMarkActivity;
 import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.bottommenu.SearchActivity;
+import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.CropCircleTransformation;
 import com.mom.soccer.common.PrefUtil;
@@ -68,9 +75,13 @@ import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.InstructorService;
 import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.trservice.UserTRService;
 import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -79,7 +90,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MomMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class  MomMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
     private static final String TAG = "MomMainActivity";
 
@@ -105,7 +116,20 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     TextView navHeaderUserName,navHeaderUserEmail,navHeaderCoachName,navHeaderTeamName;
     ImageView navHeaderImage;
 
-    private Activity activity;
+    public static Activity activity;
+
+
+    private Bitmap photo;
+    private Uri mImageCaptureUri;
+    private String RealFilePath;
+    private String fileName;
+    private String absoultePath;
+
+    private static final int PICK_FROM_CAMERA = 0;
+    private static final int PICK_FROM_ALBUM = 1;
+    private static final int CROP_FROM_IMAGE = 2;
+
+    public MomMainActivity(){};
 
     @OnClick(R.id.im_batch)
     public void im_batch(){
@@ -121,12 +145,12 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         setContentView(R.layout.ac_main_layout);
         ButterKnife.bind(this);
 
-        Log.d(TAG, "onCreate ===========================================================");
         activity = this;
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
         instructor = prefUtil.getIns();
 
+        Log.d(TAG, "onCreate ===========================================================");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -171,7 +195,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                     .asBitmap().transform(new CropCircleTransformation(this))
                     .into(navHeaderImage);
 
-        Log.d(TAG,"유저 이미지 있다면... : " + user.getProfileimgurl());
+            Log.d(TAG,"유저 이미지 있다면... : " + user.getProfileimgurl());
         }else {
             Log.d(TAG,"유저 이미지 없다면...: " + user.getProfileimgurl());
         }
@@ -218,6 +242,13 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
         });
 
         Log.d(TAG, "onCreate ===========================================================" + user.getProfileimgurl());
+
+        navHeaderImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeImage();
+            }
+        });
 
     }
 
@@ -351,6 +382,12 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
             Log.d(TAG,"자체 회원가입 유저 로그아웃을 합니다");
         }
         prefUtil.clearPrefereance();
+
+        //강사정보 지우기
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("insinfo", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.apply();
 
 
         //서버 세션을 초기화해준다.
@@ -592,7 +629,7 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
 
 
             }else if(position==1){
-            //팀랭킹
+                //팀랭킹
                 final LinearLayout li_main_team_layout,li_main_noData_layout;
 
                 li_main_team_layout = (LinearLayout) view.findViewById(R.id.li_main_team_layout);
@@ -757,14 +794,24 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG,"onResume ======================================================");
-        Log.d(TAG, "onResume ===========================================================" + user.getProfileimgurl());
 
-        user = prefUtil.getUser();
-        Glide.with(MomMainActivity.this)
-                .load(user.getProfileimgurl())
-                .asBitmap().transform(new CropCircleTransformation(this))
-                .into(navHeaderImage);
+        Log.i(TAG,"onResume 1");
+
+        if(!Compare.isEmpty(RealFilePath)){
+            Log.i(TAG,"onResume 2");
+            navHeaderImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            navHeaderImage.setImageBitmap(photo);
+        }else{
+            Log.i(TAG,"onResume 3");
+            if(!Compare.isEmpty(user.getProfileimgurl())){
+                Log.i(TAG,"onResume 4");
+                Glide.with(MomMainActivity.this)
+                        .load(user.getProfileimgurl())
+                        .asBitmap().transform(new CropCircleTransformation(this))
+                        .into(navHeaderImage);
+            }
+        }
+
 
     }
 
@@ -832,11 +879,24 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                     if(instructor.getUid()==0){
                         navigationView.getMenu().findItem(R.id.mn_item_coachreq).setTitle(getString(R.string.mom_menu_title_coach_apply));
                         navigationView.getMenu().findItem(R.id.mn_item_teammemberlist).setVisible(false);
+
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("insinfo", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+
+                        editor.putInt("ins_id",0);
+                        editor.commit();
+
                     }else{
                         navigationView.getMenu().findItem(R.id.mn_item_coachreq).setTitle(getString(R.string.mom_menu_title_coach_info));
-                        navigationView.getMenu().findItem(R.id.mn_item_teammemberlist).setVisible(true);
-                    }
+                        navigationView.getMenu().findItem(R.id.mn_item_teammemberlist).setVisible(false);
 
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("insinfo", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+
+                        editor.putInt("ins_id",instructor.getUid());
+                        editor.commit();
+
+                    }
 
                 }else{
                     WaitingDialog.cancelWaitingDialog();
@@ -849,7 +909,165 @@ public class MomMainActivity extends AppCompatActivity implements NavigationView
                 t.printStackTrace();
             }
         });
-
     }
+
+
+
+    public void changeImage(){
+
+        new MaterialDialog.Builder(MomMainActivity.this)
+                .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                .title(R.string.mom_diaalog_photo_title)
+                .titleColor(getResources().getColor(R.color.color6))
+                .content(R.string.mom_diaalog_photo_contnet)
+                .contentColor(getResources().getColor(R.color.color6))
+                .positiveText(R.string.mom_diaalog_photo_gallery)
+                .neutralText(R.string.mom_diaalog_photo_camera)
+                .negativeText(R.string.mom_diaalog_cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        doTakeAlbumAction();
+                    }
+                })
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        doTakePhotoAction();
+                    }
+                })
+                .show();
+    }
+
+    public void doTakeAlbumAction(){
+        //앨범호출
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, PICK_FROM_ALBUM);
+    }
+
+    //카메라에서 사진촬영
+    public void doTakePhotoAction(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        String uri = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
+        mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),uri));
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+        startActivityForResult(intent,PICK_FROM_CAMERA);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, final int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode != RESULT_OK){
+            return;
+        }
+
+        switch (requestCode){
+            case PICK_FROM_ALBUM:
+
+                Log.d(TAG,"사진선택");
+                mImageCaptureUri = data.getData();
+                Intent intenti = new Intent("com.android.camera.action.CROP");
+                intenti.setDataAndType(mImageCaptureUri, "image/*");
+
+                //크롭할 이미지를 100*100 크기로 저장한다
+                intenti.putExtra("outputX",100);
+                intenti.putExtra("outputY",100);
+                intenti.putExtra("aspectX",100); //크롭 박스의 x축 비율
+                intenti.putExtra("aspectY",100);
+                intenti.putExtra("scale",true);
+                intenti.putExtra("return-data", true);
+                startActivityForResult(intenti,CROP_FROM_IMAGE);
+
+                break;
+
+            case PICK_FROM_CAMERA:
+                Intent intent = new Intent("com.android.camera.action.CROP");
+                intent.setDataAndType(mImageCaptureUri, "image/*");
+
+                //크롭할 이미지를 100*100 크기로 저장한다
+                intent.putExtra("outputX",100);
+                intent.putExtra("outputY",100);
+                intent.putExtra("aspectX",100); //크롭 박스의 x축 비율
+                intent.putExtra("aspectY",100);
+                intent.putExtra("scale",true);
+                intent.putExtra("return-data", true);
+                startActivityForResult(intent,CROP_FROM_IMAGE);
+                break;
+
+            case CROP_FROM_IMAGE:
+                if(resultCode != RESULT_OK){
+                    return;
+                }
+
+                final Bundle extras = data.getExtras();
+
+                //크롭된 이미지를 저장하기 위한 file 경로
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+ Common.IMAGE_MOM_PATH+System.currentTimeMillis()+".jpg";
+
+                Log.d(TAG,"파일 경로는 : " + filePath);
+
+                RealFilePath = filePath;
+                fileName    = System.currentTimeMillis()+".jpg";
+
+                if(extras != null){
+                    photo = extras.getParcelable("data");
+
+                    storeCropImage(photo, filePath);
+                    absoultePath = filePath;
+                    break;
+                }
+                File file = new File(mImageCaptureUri.getPath());
+                if(file.exists()){
+                    file.delete();
+                }
+        }
+    }
+
+    private void storeCropImage(Bitmap bitmap,String filePath){
+
+        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()+Common.IMAGE_MOM_PATH;
+        File directory_SmartWheel = new File(dirPath);
+
+        if(!directory_SmartWheel.exists())
+            directory_SmartWheel.mkdir();
+
+        File copyFile = new File(filePath);
+        BufferedOutputStream out = null;
+
+        try{
+            copyFile.createNewFile();
+            out = new BufferedOutputStream(new FileOutputStream(copyFile));
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+
+
+            final File readFile = new File(RealFilePath);
+
+            navHeaderImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            navHeaderImage.setImageBitmap(photo);
+
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.fromFile(copyFile)));
+            out.flush();
+            out.close();
+
+            //이미지 업로드
+            Log.d(TAG,"User Upload End===================================================================");
+            UserTRService userTRService = new UserTRService(this,user);
+            userTRService.updateUserImage(String.valueOf(user.getUid()),fileName,RealFilePath);
+
+            //유저사진을 쉐어퍼런스에 저장해준다(업데이트)
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor pre = sp.edit();
+            String profileimgurl = Common.SERVER_USER_IMGFILEADRESS + fileName;
+            pre.putString("profileImgUrl", profileimgurl);
+            pre.commit();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
 }

@@ -125,6 +125,7 @@ dependencies {
 
     //seekbar
     compile 'org.adw.library:discrete-seekbar:1.0.1'
+    compile 'com.sothree.slidinguppanel:library:3.3.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

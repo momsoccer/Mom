@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
         android:name=".kakaosdk.GlobalApplication"
@@ -185,6 +186,12 @@
             android:name=".besideactivity.AlramActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ins.InsDashboardActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".youtubeplayer.YoutubePlayerActivity" />
+        <activity android:name=".ins.FeedBackWrite"></activity>
     </application>
 
 </manifest>

@@ -47,6 +47,13 @@
     <color name="dot_light_screen3">#ffffff</color>
     <color name="dot_light_screen4">#ffffff</color>
 
+    <color name="mission_color_dribble">#4AFFED</color>
+    <color name="mission_color_lifting">#FFA21A</color>
+    <color name="mission_color_around">#00A4D1</color>
+    <color name="mission_color_trraping">#BBD649</color>
+    <color name="mission_color_flick">#4072FF</color>
+    <color name="mission_color_complex">#9013fe</color>
+
     <array name="array_dot_active">
         <item>@color/dot_light_screen1</item>
         <item>@color/dot_light_screen2</item>

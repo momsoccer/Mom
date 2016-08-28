@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.common.Compare;
+import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dto.Board;
 import com.mom.soccer.holder.BoardItemViewHolder;
 
@@ -45,6 +46,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemViewHolder> 
         if(!Compare.isEmpty(boardList.get(i).getProfileimgurl())){
             Glide.with(context)
                     .load(boardList.get(i).getProfileimgurl())
+                    .asBitmap().transform(new RoundedCornersTransformation(context, 10, 5))
                     .into(holder.userImg);
         }
 

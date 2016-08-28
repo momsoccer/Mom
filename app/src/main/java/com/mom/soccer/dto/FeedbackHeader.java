@@ -1,9 +1,11 @@
 package com.mom.soccer.dto;
 
+import java.io.Serializable;
+
 /**
  * Created by sungbo on 2016-06-20.
  */
-public class FeedbackHeader {
+public class FeedbackHeader implements Serializable{
 
     private int feedbackid;
     private String feedbacktype;
@@ -13,22 +15,41 @@ public class FeedbackHeader {
     private int instructorid;
     private int cashpoint;
     private int Frequency;
-    private String pubstatus;
     private String subject;
+    private String pubstatus;
     private String instype;
-    private String change_creationdate;
-
-    //라인글
-    private String type;
-    private String videoaddr;
     private String content;
-    private String missionname;
-    private String insname;
+    private String change_creationdate;
     private String insprofileimgurl;
     private String profileimgurl;
+    private String teamname;
+
+    //DB Quer
+    private String missionname;
+    private String insname;
     private String username;
-    private int    feedbacklineid;
     private float   evalscore;
+    private String description;
+    private String typename;
+
+
+    //Line...
+    private String type;
+    private String videoaddr;
+    private int    feedbacklineid;
+
+
+    public String getTeamname() {
+        return teamname;
+    }
+
+    public void setTeamname(String teamname) {
+        this.teamname = teamname;
+    }
+
+    public FeedbackHeader(){
+
+    }
 
     @Override
     public String toString() {
@@ -41,86 +62,24 @@ public class FeedbackHeader {
                 ", instructorid=" + instructorid +
                 ", cashpoint=" + cashpoint +
                 ", Frequency=" + Frequency +
-                ", pubstatus='" + pubstatus + '\'' +
                 ", subject='" + subject + '\'' +
+                ", pubstatus='" + pubstatus + '\'' +
                 ", instype='" + instype + '\'' +
-                ", change_creationdate='" + change_creationdate + '\'' +
-                ", type='" + type + '\'' +
-                ", videoaddr='" + videoaddr + '\'' +
                 ", content='" + content + '\'' +
-                ", missionname='" + missionname + '\'' +
-                ", insname='" + insname + '\'' +
+                ", change_creationdate='" + change_creationdate + '\'' +
                 ", insprofileimgurl='" + insprofileimgurl + '\'' +
                 ", profileimgurl='" + profileimgurl + '\'' +
+                ", missionname='" + missionname + '\'' +
+                ", insname='" + insname + '\'' +
                 ", username='" + username + '\'' +
-                ", feedbacklineid=" + feedbacklineid +
                 ", evalscore=" + evalscore +
+                ", description='" + description + '\'' +
+                ", typename='" + typename + '\'' +
+                ", type='" + type + '\'' +
+                ", videoaddr='" + videoaddr + '\'' +
+                ", feedbacklineid=" + feedbacklineid +
                 '}';
     }
-
-    public float getEvalscore() {
-        return evalscore;
-    }
-
-    public void setEvalscore(float evalscore) {
-        this.evalscore = evalscore;
-    }
-
-    public int getFeedbacklineid() {
-        return feedbacklineid;
-    }
-
-    public void setFeedbacklineid(int feedbacklineid) {
-        this.feedbacklineid = feedbacklineid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getInsprofileimgurl() {
-        return insprofileimgurl;
-    }
-
-    public void setInsprofileimgurl(String insprofileimgurl) {
-        this.insprofileimgurl = insprofileimgurl;
-    }
-
-    public String getProfileimgurl() {
-        return profileimgurl;
-    }
-
-    public void setProfileimgurl(String profileimgurl) {
-        this.profileimgurl = profileimgurl;
-    }
-
-    public FeedbackHeader(){}
-
-    public FeedbackHeader(int uid) {
-        this.uid = uid;
-    }
-
-    public String getInsname() {
-        return insname;
-    }
-
-    public void setInsname(String insname) {
-        this.insname = insname;
-    }
-
-    public String getMissionname() {
-
-        return missionname;
-    }
-
-    public void setMissionname(String missionname) {
-        this.missionname = missionname;
-    }
-
 
     public int getFeedbackid() {
         return feedbackid;
@@ -186,20 +145,20 @@ public class FeedbackHeader {
         Frequency = frequency;
     }
 
-    public String getPubstatus() {
-        return pubstatus;
-    }
-
-    public void setPubstatus(String pubstatus) {
-        this.pubstatus = pubstatus;
-    }
-
     public String getSubject() {
         return subject;
     }
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getPubstatus() {
+        return pubstatus;
+    }
+
+    public void setPubstatus(String pubstatus) {
+        this.pubstatus = pubstatus;
     }
 
     public String getInstype() {
@@ -210,12 +169,84 @@ public class FeedbackHeader {
         this.instype = instype;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getChange_creationdate() {
         return change_creationdate;
     }
 
     public void setChange_creationdate(String change_creationdate) {
         this.change_creationdate = change_creationdate;
+    }
+
+    public String getInsprofileimgurl() {
+        return insprofileimgurl;
+    }
+
+    public void setInsprofileimgurl(String insprofileimgurl) {
+        this.insprofileimgurl = insprofileimgurl;
+    }
+
+    public String getProfileimgurl() {
+        return profileimgurl;
+    }
+
+    public void setProfileimgurl(String profileimgurl) {
+        this.profileimgurl = profileimgurl;
+    }
+
+    public String getMissionname() {
+        return missionname;
+    }
+
+    public void setMissionname(String missionname) {
+        this.missionname = missionname;
+    }
+
+    public String getInsname() {
+        return insname;
+    }
+
+    public void setInsname(String insname) {
+        this.insname = insname;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public float getEvalscore() {
+        return evalscore;
+    }
+
+    public void setEvalscore(float evalscore) {
+        this.evalscore = evalscore;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTypename() {
+        return typename;
+    }
+
+    public void setTypename(String typename) {
+        this.typename = typename;
     }
 
     public String getType() {
@@ -234,11 +265,11 @@ public class FeedbackHeader {
         this.videoaddr = videoaddr;
     }
 
-    public String getContent() {
-        return content;
+    public int getFeedbacklineid() {
+        return feedbacklineid;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setFeedbacklineid(int feedbacklineid) {
+        this.feedbacklineid = feedbacklineid;
     }
 }

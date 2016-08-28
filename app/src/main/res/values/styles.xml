@@ -52,7 +52,7 @@
     </style>
 
     <style name="btnStylePaprika" parent="@android:style/Widget.Button">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:gravity">center</item>
@@ -61,14 +61,12 @@
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">0.6</item>
         <item name="android:background">@drawable/custom_btn_paprika</item>
-        <item name="android:padding">10dip</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="btnStyleBlack" parent="@android:style/Widget.Button">
-        <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:gravity">center</item>
         <item name="android:shadowColor">#000000</item>
@@ -76,14 +74,12 @@
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">0.6</item>
         <item name="android:background">@drawable/custom_btn_black</item>
-        <item name="android:padding">10dip</item>
+
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="btnStyleWhite" parent="@android:style/Widget.Button">
-        <item name="android:textSize">15sp</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:gravity">center</item>
         <item name="android:shadowColor">#000000</item>
@@ -152,5 +148,16 @@
         <item name="colorControlNormal">@color/color6</item>
         <item name="colorControlActivated">@color/enabled_red</item>
     </style>
+
+    <style name="TextLabelinput" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/color2</item>
+        <item name="android:textSize">10sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/enabled_red</item>
+        <item name="colorControlNormal">@color/edit_tx_off</item>
+        <item name="colorControlActivated">@color/color6</item>
+    </style>
+
 
 </resources>

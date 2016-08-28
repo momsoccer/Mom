@@ -13,5 +13,6 @@ public class Auth {
     public static final String KEY = "AIzaSyAGPtixAgRHZ9GvglPbYynHxS3XNUmkQTk";
     public static final String[] SCOPES = {Scopes.PROFILE, YouTubeScopes.YOUTUBE};
     public static String accountName = "null";
+    public static String insFlag ="N";
 
 }

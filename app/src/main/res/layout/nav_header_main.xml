@@ -39,6 +39,7 @@
                 />
         </LinearLayout>
 
+
         <LinearLayout
             android:background="@color/mom_color1"
             android:layout_margin="5dp"
@@ -61,12 +62,13 @@
 
             <TextView
                 android:id="@+id/nav_header_useremail"
-                android:text="@string/nav_header_email"
+                android:text="aaaaaaaaaaaaaaaaaaaaaaaa"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/line_color1"
-                android:textSize="13sp"
-                android:layout_width="250dp"
+                android:textSize="12sp"
+                android:layout_width="260dp"
+                android:maxLength="25"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mom_color1"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.mom.soccer.ins.InsDashboardActivity">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/dash_toolbar"
+        app:titleTextColor="@color/color6"
+        android:background="@color/mom_color1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/toolbar_ins_page"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/color6"
+            android:layout_gravity="center"
+            />
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.astuetz.PagerSlidingTabStrip
+            android:background="@color/mom_color2"
+            android:id="@+id/dash_tabs"
+            app:pstsShouldExpand="true"
+            app:pstsTextAllCaps="true"
+            app:pstsDividerColor="@color/enabled_red"
+            app:pstsIndicatorHeight="1dp"
+            app:pstsUnderlineHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/dash_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </LinearLayout>
+
+</LinearLayout>

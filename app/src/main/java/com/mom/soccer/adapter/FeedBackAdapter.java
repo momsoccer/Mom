@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
+import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dto.FeedbackHeader;
 
 import java.util.List;
@@ -61,6 +62,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter<FeedBackAdapter.FeedBa
 
             Glide.with(context)
                     .load(vo.getInsprofileimgurl())
+                    .asBitmap().transform(new RoundedCornersTransformation(context,10,5))
                     .into(holder.insimage);
 
 

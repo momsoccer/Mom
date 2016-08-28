@@ -68,9 +68,44 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
         if(data.getFlag().equals("ACCEPT")) {
             holder.acceptBtn.setText(activity.getString(R.string.friedn_friend_cancel));
+            holder.rejectbtn.setVisibility(View.GONE);
         }else{
             holder.acceptBtn.setText(activity.getString(R.string.friend_re_btn));
+            holder.rejectbtn.setVisibility(View.VISIBLE);
         }
+
+        holder.rejectbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WaitingDialog.showWaitingDialog(activity,false);
+                FriendService service = ServiceGenerator.createService(FriendService.class,activity,user);
+                FriendApply friendApply = new FriendApply();
+                friendApply.setRequid(data.getUid());
+                friendApply.setResuid(user.getUid());
+                Call<ServerResult> c = service.deleteFriend(friendApply);
+                c.enqueue(new Callback<ServerResult>() {
+                    @Override
+                    public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                        WaitingDialog.cancelWaitingDialog();
+                        if(response.isSuccessful()){
+                            ServerResult result = response.body();
+                            Intent intent = new Intent(activity,PlayerMainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            activity.startActivity(intent);
+                        }else{
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ServerResult> call, Throwable t) {
+                        WaitingDialog.cancelWaitingDialog();
+                        t.printStackTrace();
+                    }
+                });
+            }
+        });
+
 
         holder.acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,40 +174,6 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             }
         });
 
-
-/*        holder.missioncount.setText(String.valueOf(data.getUsermissioncount()));
-
-        if (data.getTeamname() == null) {
-            holder.teamname.setText(R.string.user_team_yet_join);
-        } else {
-            holder.teamname.setText(data.getTeamname());
-        }
-
-
-
-        holder.followercount.setText(String.valueOf(data.getFollowercount()));
-        holder.followingcount.setText(String.valueOf(data.getFollowingcount()));
-
-        holder.mecommentcount.setText(String.valueOf(data.getMecommentcount()));
-        holder.usercommentcount.setText(String.valueOf(data.getCommentcount()));
-
-        holder.cardview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, MyPageActivity.class);
-
-                if (user.getUid() == data.getUid()) {
-                    intent.putExtra("pageflag", "me");
-                } else {
-                    intent.putExtra("pageflag", "friend");
-                    intent.putExtra("frienduid", data.getUid());
-                }
-
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
-        });*/
-
     }
 
     @Override
@@ -183,7 +184,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
     public class FriendItemViewHoder extends RecyclerView.ViewHolder {
 
-        public Button acceptBtn;
+        public Button acceptBtn,rejectbtn;
         public CardView cardview;
         public ImageView imageView;
         public TextView username;
@@ -211,6 +212,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             score = (TextView) v.findViewById(R.id.score);
             acceptBtn = (Button) v.findViewById(R.id.acceptBtn);
             creation_date = (TextView) v.findViewById(R.id.creation_date);
+            rejectbtn = (Button) v.findViewById(R.id.rejectbtn);
 
 
             /*

@@ -161,6 +161,7 @@ public class MissionMainActivity extends AppCompatActivity {
     Button btnReqEval;
 
     private InsInfoVo insInfoVo;
+    private InsInfoVo feedbackInfo;
     private View positiveAction;
     /**************************************************
      * google uplaod define
@@ -203,15 +204,6 @@ public class MissionMainActivity extends AppCompatActivity {
 
     private FeedBackAdapter   recyclerAdapter;
     Activity activity;
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        setResult(RESULT_OK);
-        finish();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -745,8 +737,8 @@ public class MissionMainActivity extends AppCompatActivity {
                 break;
             case REQUEST_FEED_BACK_CODE:
                 if (resultCode == RESULT_OK) {
-                    insInfoVo = (InsInfoVo) data.getSerializableExtra(MissionCommon.INS_OBJECT);
-                    Log.i(TAG,"insInfoVo 값은 : " + insInfoVo.toString());
+                    feedbackInfo = (InsInfoVo) data.getSerializableExtra(MissionCommon.INS_OBJECT);
+                    Log.i(TAG,"insInfoVo 값은 : " + feedbackInfo.toString());
                     popUpFeedBack("pubins");
                 }
                 break;
@@ -761,9 +753,9 @@ public class MissionMainActivity extends AppCompatActivity {
             videoPoint = insInfoVo.getTeamvideopoint();
             wordPoint = insInfoVo.getTeamwordpoint();
         }else if(reqType.equals("pubins")){
-            viewTitle = getString(R.string.feedback_title1) + insInfoVo.getName();
-            videoPoint = insInfoVo.getPubvideopoint();
-            wordPoint = insInfoVo.getPubwordpoint();
+            viewTitle = getString(R.string.feedback_title1) + feedbackInfo.getName();
+            videoPoint = feedbackInfo.getPubvideopoint();
+            wordPoint = feedbackInfo.getPubwordpoint();
         }
 
         MaterialDialog dialog = new MaterialDialog.Builder(this)
@@ -779,23 +771,27 @@ public class MissionMainActivity extends AppCompatActivity {
 
                         feedbackHeader = new FeedbackHeader();
                         feedbackHeader.setUid(user.getUid());
-                        feedbackHeader.setInstructorid(insInfoVo.getInstructorid());
+
 
                         //피드백 포인트
                         if(feed_video.isChecked()){
                             feedbackHeader.setFeedbacktype("video");
                             //강사가 지정인지 아닌지
                             if(reqType.equals("pubins")){
-                                feedbackHeader.setCashpoint(insInfoVo.getPubvideopoint());
+                                feedbackHeader.setInstructorid(feedbackInfo.getInstructorid());
+                                feedbackHeader.setCashpoint(feedbackInfo.getPubvideopoint());
                             }else{
+                                feedbackHeader.setInstructorid(insInfoVo.getInstructorid());
                                 feedbackHeader.setCashpoint(insInfoVo.getTeamvideopoint());
                             }
                         }else{
                             feedbackHeader.setFeedbacktype("word");
                             //강사가 지정인지 아닌지
                             if(reqType.equals("pubins")){
-                                feedbackHeader.setCashpoint(insInfoVo.getPubwordpoint());
+                                feedbackHeader.setInstructorid(feedbackInfo.getInstructorid());
+                                feedbackHeader.setCashpoint(feedbackInfo.getPubwordpoint());
                             }else{
+                                feedbackHeader.setInstructorid(insInfoVo.getInstructorid());
                                 feedbackHeader.setCashpoint(insInfoVo.getTeamwordpoint());
                             }
                         }
@@ -843,7 +839,12 @@ public class MissionMainActivity extends AppCompatActivity {
                                     .show();
                             return;
                         }
-                        String title = "To." + insInfoVo.getName();
+                        String title = "";
+                        if(reqType.equals("pubins")){
+                            title = "To." + feedbackInfo.getName();
+                        }else{
+                            title = "To." + insInfoVo.getName();
+                        }
                         String content = getResources().getString(R.string.feedback_req_content);
 
                         new MaterialDialog.Builder(MissionMainActivity.this)
@@ -1041,22 +1042,6 @@ public class MissionMainActivity extends AppCompatActivity {
                         cardRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         cardRecyclerView.setAdapter(feedbackAdapter);
 
-
-                        //defalut recyclerView
-                        /*
-                        recyclerAdapter = new FeedBackAdapter(getApplicationContext(),feedbackHeaders);
-                        recyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
-                        recyclerView.getItemAnimator().setAddDuration(300);
-                        recyclerView.getItemAnimator().setRemoveDuration(300);
-                        recyclerView.getItemAnimator().setMoveDuration(300);
-                        recyclerView.getItemAnimator().setChangeDuration(300);
-
-                        recyclerView.setHasFixedSize(true);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(MissionMainActivity.this));
-                        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(recyclerAdapter);
-                        alphaAdapter.setDuration(500);
-                        recyclerView.setAdapter(alphaAdapter);
-                        */
                     }
 
                 }else{
@@ -1071,6 +1056,13 @@ public class MissionMainActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        setResult(RESULT_OK);
+        finish();
     }
 }

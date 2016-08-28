@@ -38,6 +38,20 @@
         android:background="@color/mom_color1"
         android:layout_margin="8dp"
         />
+
+    <ImageButton
+        android:id="@+id/ib_appbar_coach"
+        android:src="@drawable/ic_write"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:background="@color/mom_color1"
+        android:layout_margin="8dp"
+        android:visibility="gone"
+        />
+
+
     <ImageButton
         android:id="@+id/ib_appbar_search"
         android:src="@drawable/bt_click_search"

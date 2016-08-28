@@ -18,7 +18,7 @@
 
     <string name="member_googleid">구글아이디 선택</string>
 
-    <string name="member_pass">건너뛰기</string>
+    <string name="member_pass">시작하기</string>
 
     <string name="preparation">기능 준비 중입니다</string>
 
@@ -126,6 +126,8 @@
     <string name="toolbar_ranking_friend">랭킹 친구</string>
     <string name="toolbar_ranking_team">랭킹 팀</string>
 
+    <string name="toolbar_ins_page">강사전용</string>
+
     <string name="toolbar_apply_coach">코치신청</string>
     <string name="toolbar_umission_list_page_title">유저 미션 영상 리스트</string>
 
@@ -204,6 +206,7 @@
     <string name="search_btn">검색</string>
     <string name="search_team">팀명</string>
     <string name="search_choose">선택</string>
+
 
     <string name="friedn_follow">팔로우</string>
     <string name="friedn_follow_cancel">팔로우취소</string>
@@ -309,6 +312,12 @@
     <string name="mom_diaalog_title_logout">로그아웃</string>
     <string name="mom_diaalog_title_append">앱 종료</string>
 
+    <!--사진업로드 다이얼로그-->
+    <string name="mom_diaalog_photo_title">사진설정</string>
+    <string name="mom_diaalog_photo_contnet">유저님의 프로필 사진을 설정합니다</string>
+    <string name="mom_diaalog_team_contnet">강사분 및 강사 팀의 사진을 설정합니다</string>
+    <string name="mom_diaalog_photo_camera">촬영하기</string>
+    <string name="mom_diaalog_photo_gallery">갤러리</string>
 
 
     <string name="mom_diaalog_confirm">확인</string>
@@ -371,7 +380,7 @@
     <string name="f_layout_arlam_cancel">팔로잉을 취소 하시겠습니까?</string>
     <string name="f_layout_not_see">다른 사람 팔로워 정보는 볼수 없습니다~</string>
 
-    <string name="ins_toolbar_title">강사</string>
+    <string name="ins_toolbar_title">강사정보</string>
     <string name="ins_team_info_text">제자리스트</string>
     <string name="ins_team_video_text">강사영상</string>
 
@@ -401,6 +410,16 @@
     <string name="feedback_mypoint">내 포인트</string>
     <string name="feedback_lack">포인트 부족</string>
     <string name="feedback_lack_msg">포인트가 부족합니다 \n 포인트 구매 페이지로 이동 하시겠습니까?</string>
+
+    <string name="feedback_write_msg1">피드백 내용이 없습니다 \n 작성해주셔야 완료 할 수 있습니다</string>
+    <string name="feedback_write_msg2">최소 10자 이상은 작성해주시기 바랍니다</string>
+    <string name="feedback_write_msg3">피드백 요청 타입이 비디오 입니다 \n 강사님의 피드백 영상을 첨부 해주셔야 합니다</string>
+
+    <string name="feedback_write_title_video">영상 피드백 요청</string>
+    <string name="feedback_write_title_word">문자 피드백 요청</string>
+
+    <string name="feedback_feed_back_no_data">요청 피드백이 현재 없습니다</string>
+    <string name="feedback_feed_back_no_data_result">답변된 피드백이 현재 없습니다</string>
 
     <!--pointpage-->
     <string name="point_item_type_pay">포인트사용</string>
@@ -441,6 +460,16 @@
 
     <string name="feedback_feedback_recontent_title">피드백 수정</string>
 
+    <string name="feedback_type_video">비디오 피드백 요청</string>
+    <string name="feedback_type_word">문자 피드백 요청</string>
+
+    <string name="feedback_write">답변작성</string>
+    <string name="feedback_write_hint">유저의 질문에 대한 피드백 작성(최소 10자 이상 작성)</string>
+    <string name="feedback_btn_video">영상첨부</string>
+
+    <string name="feedback_type_re">피드백 요청</string>
+    <string name="feedback_type_an">피드백 답변</string>
+
     <!--friend-->
     <string name="friend_req_text">친구요청</string>
     <string name="friend_rep_text">친구요청중</string>
@@ -448,11 +477,15 @@
     <string name="friend_rem_text">친구취소</string>
     <string name="friend_re_msg">친구수락은 볼메뉴에서 해주세요 \n 이동 하시겠습니까?</string>
 
-    <string name="friend_re_btn">친구수락</string>
+    <string name="friend_re_btn">수락</string>
+    <string name="friend_reject_btn">거절</string>
     <string name="friend_progressing">친구요청을 보낸 상태입니다</string>
     <string name="friend_delete">친구끈기를 했습니다</string>
+
 
     <!--main ranking-->
     <string name="nodata_found_team">소속된 강사팀이 없습니다</string>
     <string name="nodata_found_friend">친구가 없습니다</string>
+
+
 </resources>

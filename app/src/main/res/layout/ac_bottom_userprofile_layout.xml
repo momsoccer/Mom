@@ -45,19 +45,26 @@
                 android:layout_height="150dp"
                 />
 
-            <ImageView
-                android:id="@+id/image_user_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/userimg"
-                android:layout_gravity="center"
-                android:maxWidth="100dp"
-                android:maxHeight="100dp"
-                android:onClick="imageOnClick"
-                android:layout_marginTop="-50dp"
-                />
 
+                <ImageView
+                    android:id="@+id/image_user_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/userimg"
+                    android:layout_gravity="center"
+                    android:maxWidth="100dp"
+                    android:maxHeight="100dp"
+                    android:onClick="imageOnClick"
+                    android:layout_marginTop="-50dp"
+                    />
+
+                <ImageView
+                    android:layout_marginTop="-20dp"
+                    android:layout_marginLeft="35dp"
+                    android:src="@drawable/camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/modify_picture"

@@ -9,12 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
+import com.mom.soccer.common.Auth;
 import com.mom.soccer.common.Compare;
+import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dataDto.InsInfoVo;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.ServerResult;
@@ -75,31 +76,22 @@ public class InsFragmentTeamApply extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fr_ins_apply_fragment_layout, container, false);
+        View v=null;
 
-        LinearLayout li_layout_page1,li_layout_page2,li_layout_page3;
-        li_layout_page1 = (LinearLayout) v.findViewById(R.id.li_layout_page1);
-        li_layout_page2 = (LinearLayout) v.findViewById(R.id.li_layout_page2);
-        li_layout_page3 = (LinearLayout) v.findViewById(R.id.li_layout_page3);
 
         if(mPage==1){
-            li_layout_page1.setVisibility(View.VISIBLE);
-            li_layout_page2.setVisibility(View.GONE);
-            li_layout_page3.setVisibility(View.GONE);
-
+            //페이지가 복잡해지니까 분기를 함.
+            v = inflater.inflate(R.layout.fr_ins_apply_fragment_layout, container, false);
             setPageInsInfo(v);
 
         }else if(mPage==2){
 
-            li_layout_page1.setVisibility(View.GONE);
-            li_layout_page2.setVisibility(View.VISIBLE);
-            li_layout_page3.setVisibility(View.GONE);
+
 
         }else if(mPage==3){
 
-            li_layout_page1.setVisibility(View.GONE);
-            li_layout_page2.setVisibility(View.GONE);
-            li_layout_page3.setVisibility(View.VISIBLE);
+
+
 
         }
 
@@ -147,12 +139,14 @@ public class InsFragmentTeamApply extends Fragment{
                     if(!Compare.isEmpty(insInfoVo.getProfileimgurl())){
                         Glide.with(getContext())
                                 .load(insInfoVo.getProfileimgurl())
+                                .asBitmap().transform(new RoundedCornersTransformation(getContext(),10,5))
                                 .into(userimg);
                     }
 
                     if(!Compare.isEmpty(insInfoVo.getEmblem())){
                         Glide.with(getContext())
                                 .load(insInfoVo.getEmblem())
+                                .asBitmap().transform(new RoundedCornersTransformation(getContext(),10,5))
                                 .into(teamimg);
                     }
 
@@ -174,30 +168,32 @@ public class InsFragmentTeamApply extends Fragment{
                     pubpasspoint.setText(String.valueOf(insInfoVo.getPubpasspoint()));
                     teampasspoint.setText(String.valueOf(insInfoVo.getTeampasspoint()));
 
-                    //화면이 처음 실행 될때.
-                    applyTeam("QUERY",btnTeamRequest);
-
-
-                    btnTeamRequest.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if(teamApply.getTeamid()==0){
-                                applyTeam("REQUEST",null);
-                            }else{
-                                //현재 누군가의 제자이거나, 제자 요청을 했다면..
-                                if(teamApply.getTeamid() == insInfoVo.getTeamid()){ //제자요청을 했거나 현재 제자이라면
-                                    if(teamApply.getApproval().equals("REQUEST") || teamApply.getApproval().equals("APPROVAL")){
-                                        applyTeam("WITHDRAWAL",null);
+                    //화면이 처음 실행 될때. 내가 강사라면 다른팀 지원 불가
+                    if(Auth.insFlag.equals("Y")){
+                        btnTeamRequest.setVisibility(View.GONE);
+                    }else {
+                        btnTeamRequest.setVisibility(View.VISIBLE);
+                        applyTeam("QUERY", btnTeamRequest);
+                        btnTeamRequest.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (teamApply.getTeamid() == 0) {
+                                    applyTeam("REQUEST", null);
+                                } else {
+                                    //현재 누군가의 제자이거나, 제자 요청을 했다면..
+                                    if (teamApply.getTeamid() == insInfoVo.getTeamid()) { //제자요청을 했거나 현재 제자이라면
+                                        if (teamApply.getApproval().equals("REQUEST") || teamApply.getApproval().equals("APPROVAL")) {
+                                            applyTeam("WITHDRAWAL", null);
+                                        }
+                                    } else {
+                                        btnTeamRequest.setVisibility(View.INVISIBLE);
                                     }
-                                }else{
-                                    btnTeamRequest.setVisibility(View.INVISIBLE);
+
                                 }
 
                             }
-
-                        }
-                    });
-
+                        });
+                    }
                 }else{
                     WaitingDialog.cancelWaitingDialog();
                 }
@@ -233,6 +229,7 @@ public class InsFragmentTeamApply extends Fragment{
                         WaitingDialog.cancelWaitingDialog();
                         ServerResult result = response.body();
                         Intent intent = new Intent(getContext(), InsMainActivity.class);
+                        intent.putExtra("inspath","search");
                         intent.putExtra(MissionCommon.INS_OBJECT,ins);
                         getActivity().finish();
                         startActivity(intent);
@@ -302,6 +299,7 @@ public class InsFragmentTeamApply extends Fragment{
                     if(response.isSuccessful()){
                         WaitingDialog.cancelWaitingDialog();
                         Intent intent = new Intent(getContext(), InsMainActivity.class);
+                        intent.putExtra("inspath","search");
                         intent.putExtra(MissionCommon.INS_OBJECT,ins);
                         getActivity().finish();
                         startActivity(intent);

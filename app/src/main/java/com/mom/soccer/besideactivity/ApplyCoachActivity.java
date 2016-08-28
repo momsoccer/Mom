@@ -1,13 +1,13 @@
 package com.mom.soccer.besideactivity;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -30,9 +30,11 @@ import com.mom.soccer.R;
 import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
+import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.ins.InsApplyVo;
+import com.mom.soccer.retrofitdao.InsApplyService;
 import com.mom.soccer.retrofitdao.InstructorService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -52,6 +54,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ApplyCoachActivity extends AppCompatActivity {
+
+    //backImage.setImageBitmap(bitmap);
 
     private static final String TAG = "ApplyCoachActivity";
 
@@ -108,9 +112,15 @@ public class ApplyCoachActivity extends AppCompatActivity {
     private InsApplyVo insApplyVo = new InsApplyVo();
     private InsApplyVo resultInsVo = new InsApplyVo();
 
+    private Bitmap photo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //이미지 컨트롤을 위한 변수
+        Common.IMAGE_CHOOSE_FALG = "";
+
         setContentView(R.layout.ac_apply_coach);
         ButterKnife.bind(this);
 
@@ -169,15 +179,18 @@ public class ApplyCoachActivity extends AppCompatActivity {
         if(!Compare.isEmpty(user.getProfileimgurl())) {
             Glide.with(ApplyCoachActivity.this)
                     .load(user.getProfileimgurl())
+                    .asBitmap().transform(new RoundedCornersTransformation(ApplyCoachActivity.this,10,5))
                     .into(im_ins_insimg);
         }
+
+        getIns();
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG,"onStart()==============================");
-        getIns();
     }
 
     public void getIns(){
@@ -218,6 +231,7 @@ public class ApplyCoachActivity extends AppCompatActivity {
                                 if(!Compare.isEmpty(user.getProfileimgurl())) {
                                     Glide.with(ApplyCoachActivity.this)
                                             .load(resultInsVo.getTeamimg())
+                                            .asBitmap().transform(new RoundedCornersTransformation(ApplyCoachActivity.this,10,5))
                                             .into(im_ins_teaimg);
                                 }
                             }
@@ -230,7 +244,7 @@ public class ApplyCoachActivity extends AppCompatActivity {
 
                             tx_request_date.setText(resultInsVo.getChange_creationdate());
                             tx_approval_date.setText(resultInsVo.getChange_updatedate());
-                            tx_request_status.setText(getString(R.string.coach_req_status_r));
+                            tx_request_status.setText(getString(R.string.coach_req_status_a));
 
                             getDatafild();
                             textView_coachapply_title.setText(getString(R.string.coach_page_title));
@@ -239,6 +253,7 @@ public class ApplyCoachActivity extends AppCompatActivity {
                                 if(!Compare.isEmpty(user.getProfileimgurl())) {
                                     Glide.with(ApplyCoachActivity.this)
                                             .load(resultInsVo.getTeamimg())
+                                            .asBitmap().transform(new RoundedCornersTransformation(ApplyCoachActivity.this,10,5))
                                             .into(im_ins_teaimg);
                                 }
                             }
@@ -365,10 +380,13 @@ public class ApplyCoachActivity extends AppCompatActivity {
     public void imageOnClick(View v){
         switch (v.getId()){
             case R.id.im_ins_teaimg:
+                Common.IMAGE_CHOOSE_FALG = "INS";
                 changeImage();
                 break;
 
             case R.id.im_ins_insimg:
+                Common.IMAGE_CHOOSE_FALG = "USER";
+                changeImage();
                 break;
         }
     }
@@ -452,8 +470,8 @@ public class ApplyCoachActivity extends AppCompatActivity {
         if(RealFilePath==null){
             reqInsSave();
         }else {
-
             insApplyVo.setTeamimg(Common.SERVER_TEAM_IMGFILEADRESS + fileName);
+
 
             File readFile = new File(RealFilePath);
             RequestBody uid = RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(user.getUid()));
@@ -506,35 +524,27 @@ public class ApplyCoachActivity extends AppCompatActivity {
     //사진선택..
     public void changeImage(){
 
-        DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener(){
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                doTakeAlbumAction();
-            }
-        };
-
-        DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener(){
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                doTakePhotoAction();
-            }
-        };
-
-        DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener(){
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        };
-
-        new AlertDialog.Builder(this)
-                .setTitle("업로드할 이미지 선택")
-                .setPositiveButton("사진촬영", cameraListener)
-                .setNeutralButton("앨범선택", albumListener)
-                .setNegativeButton("취소", cancelListener)
+        new MaterialDialog.Builder(ApplyCoachActivity.this)
+                .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                .title(R.string.mom_diaalog_photo_title)
+                .titleColor(getResources().getColor(R.color.color6))
+                .content(R.string.mom_diaalog_team_contnet)
+                .contentColor(getResources().getColor(R.color.color6))
+                .positiveText(R.string.mom_diaalog_photo_gallery)
+                .neutralText(R.string.mom_diaalog_photo_camera)
+                .negativeText(R.string.mom_diaalog_cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        doTakeAlbumAction();
+                    }
+                })
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        doTakePhotoAction();
+                    }
+                })
                 .show();
     }
 
@@ -556,7 +566,7 @@ public class ApplyCoachActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, final int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode != RESULT_OK){
@@ -612,9 +622,7 @@ public class ApplyCoachActivity extends AppCompatActivity {
                 fileName    = System.currentTimeMillis()+".jpg";
 
                 if(extras != null){
-                    Bitmap photo = extras.getParcelable("data");
-                    im_ins_teaimg.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    im_ins_teaimg.setImageBitmap(photo);
+                    photo = extras.getParcelable("data");
 
                     storeCropImage(photo, filePath);
                     absoultePath = filePath;
@@ -643,29 +651,151 @@ public class ApplyCoachActivity extends AppCompatActivity {
             out = new BufferedOutputStream(new FileOutputStream(copyFile));
             bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
 
-            Log.d(TAG,"파일 갱신 할 정보는  : " + copyFile);
+
+            if(Common.IMAGE_CHOOSE_FALG.equals("USER")){
+
+                im_ins_insimg.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                im_ins_insimg.setImageBitmap(photo);
+
+                final File readFile = new File(RealFilePath);
+                RequestBody userid =
+                        RequestBody.create(
+                                MediaType.parse("multipart/form-data"), String.valueOf(user.getUid()));
+
+                String fileaddr = Common.SERVER_USER_IMGFILEADRESS + fileName;
+
+                //강사인지 신청단계인지...resultInsVo.getApplystatus()
+                RequestBody teamStatus =
+                        RequestBody.create(
+                                MediaType.parse("multipart/form-data"), resultInsVo.getApplystatus());
+
+                //실제파일위치
+                RequestBody serverPath =
+                        RequestBody.create(
+                                MediaType.parse("multipart/form-data"), fileaddr);
+
+
+                //파일명
+                RequestBody imgFilename =
+                        RequestBody.create(
+                                MediaType.parse("multipart/form-data"), fileName);
+
+                RequestBody requestFile =
+                        RequestBody.create(MediaType.parse("multipart/form-data"), readFile);
+
+                MultipartBody.Part file =
+                        MultipartBody.Part.createFormData("file", readFile.getName(), requestFile);
+
+                String ins_addr = Common.SERVER_INS_IMGFILEADRESS + fileName;
+
+                //강사사진 주소
+                RequestBody insfileAddr =
+                        RequestBody.create(
+                                MediaType.parse("multipart/form-data"), ins_addr);
+
+
+                InsApplyService insApplyService = ServiceGenerator.createService(InsApplyService.class,getApplicationContext(),user);
+                Call<ServerResult> c = insApplyService.fileupload(userid,serverPath,imgFilename,file,teamStatus,insfileAddr);
+                c.enqueue(new Callback<ServerResult>() {
+                    @Override
+                    public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                        if(response.isSuccessful()){
+                            ServerResult result = response.body();
+                            Log.i(TAG,"성공 : " + result.toString());
+                        }else{
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ServerResult> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
+
+                //유저사진을 쉐어퍼런스에 저장해준다(업데이트)
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor pre = sp.edit();
+                String profileimgurl = Common.SERVER_USER_IMGFILEADRESS + fileName;
+                pre.putString("profileImgUrl", profileimgurl);
+                pre.commit();
+
+                //강사라면 승인 상태와 승인전 상태를 구분해서 파일을 업로드 해준다.
+            }else{
+
+                im_ins_teaimg.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                im_ins_teaimg.setImageBitmap(photo);
+
+                if(resultInsVo.getUid()!=0){
+
+                    String status = "";
+
+
+                    if(resultInsVo.getApplystatus().equals("APPROVAL")){
+                        status = "DONE";
+                    }else{
+                        status = "Y";
+                    }
+
+
+                    final File readFile = new File(RealFilePath);
+                    RequestBody updateFlag =
+                            RequestBody.create(
+                                    MediaType.parse("multipart/form-data"),status);
+                    RequestBody userid =
+                            RequestBody.create(
+                                    MediaType.parse("multipart/form-data"), String.valueOf(user.getUid()));
+
+                    String fileaddr = Common.SERVER_TEAM_IMGFILEADRESS + fileName;
+                    //실제파일위치
+                    RequestBody serverPath =
+                            RequestBody.create(
+                                    MediaType.parse("multipart/form-data"), fileaddr);
+
+
+                    //파일명
+                    RequestBody imgFilename =
+                            RequestBody.create(
+                                    MediaType.parse("multipart/form-data"), fileName);
+
+                    RequestBody requestFile =
+                            RequestBody.create(MediaType.parse("multipart/form-data"), readFile);
+
+                    MultipartBody.Part file =
+                            MultipartBody.Part.createFormData("file", readFile.getName(), requestFile);
+
+                    InstructorService service = ServiceGenerator.createService(InstructorService.class,getApplicationContext(),user);
+                    Call<ServerResult> c = service.insApplyfile(userid,updateFlag,serverPath,imgFilename,file);
+                    c.enqueue(new Callback<ServerResult>() {
+                        @Override
+                        public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                            if (response.isSuccessful()) {
+                                //1.파일을 업로드 후 바로 데이터를 넘긴다 복잡성을 단순하게..
+                                ServerResult result = response.body();
+                                Log.i(TAG, "업로드 성공 : " + result.toString());
+                                WaitingDialog.cancelWaitingDialog();
+                            } else {
+                                Log.i(TAG, "오류 입니다(1) file upload");
+                                WaitingDialog.cancelWaitingDialog();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ServerResult> call, Throwable t) {
+                            Log.i(TAG, "오류 입니다(2) file upload");
+                            WaitingDialog.cancelWaitingDialog();
+                            t.printStackTrace();
+                        }
+                    });
+                }
+
+                im_ins_teaimg.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                im_ins_teaimg.setImageBitmap(photo);
+            }
 
             sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.fromFile(copyFile)));
             out.flush();
             out.close();
-
-
-/*            Log.i(TAG,"%%%%%%%%%%%%%%%%%%%% 여기는" + resultInsVo.getUid());
-
-            if(resultInsVo.getUid()!=0){
-
-                Log.i(TAG,"%%%%%%%%%%%%%%%%%%%% 여기는 다이얼이 안뜨는뎅...");
-
-                new DialogBuilder(ApplyCoachActivity.this)
-                        .setMessage("정보수정 버튼을 눌러주셔야 사진이 반영됩니다")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .create().show();
-            }*/
 
         }catch (Exception e){
             e.printStackTrace();
@@ -695,8 +825,6 @@ public class ApplyCoachActivity extends AppCompatActivity {
                 })
                 .backgroundColor(getResources().getColor(R.color.mom_color1))
                 .show();
-
-
     }
 
     public void deleteApply(){
@@ -726,9 +854,9 @@ public class ApplyCoachActivity extends AppCompatActivity {
                 WaitingDialog.cancelWaitingDialog();
             }
         });
-
     }
 
+    //저장을 한다면...
     @OnClick(R.id.btnUpdate)
     public void btnUpdate(){
 
@@ -799,8 +927,8 @@ public class ApplyCoachActivity extends AppCompatActivity {
         insApplyVo.setAddress(ins_address.getText().toString());
         insApplyVo.setMomappteamname(ins_momteamname.getText().toString());
         insApplyVo.setEmail(user.getUseremail());
-        WaitingDialog.showWaitingDialog(ApplyCoachActivity.this,false);
 
+        WaitingDialog.showWaitingDialog(ApplyCoachActivity.this,false);
         InstructorService service = ServiceGenerator.createService(InstructorService.class,this,user);
         Call<ServerResult> c = service.updateIns(insApplyVo);
         c.enqueue(new Callback<ServerResult>() {

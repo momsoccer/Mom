@@ -728,4 +728,7 @@ public class MyPageActivity extends AppCompatActivity {
     }
 
 
+    //사진변경
+
+
 }

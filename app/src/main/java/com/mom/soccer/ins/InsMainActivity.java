@@ -51,7 +51,14 @@ public class InsMainActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.back_arrow);
 
         intent = getIntent();
-        instructor = (Instructor) intent.getSerializableExtra(MissionCommon.INS_OBJECT);
+
+        if(intent.getStringExtra("inspath").equals("new")){
+            instructor = prefUtil.getIns();
+        }else{
+            instructor = (Instructor) intent.getSerializableExtra(MissionCommon.INS_OBJECT);
+        }
+
+
 
         viewPager = (ViewPager) findViewById(R.id.follow_viewpager);
 

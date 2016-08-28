@@ -173,6 +173,7 @@ public class GridSearchAdapter extends BaseAdapter {
                     ((Activity) mContext).overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 }else{
                     Intent intent = new Intent(mContext,InsMainActivity.class);
+                    intent.putExtra("inspath","search");
                     intent.putExtra(MissionCommon.INS_OBJECT,instructorList.get(i));
                     mContext.startActivity(intent);
                     ((Activity) mContext).overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);

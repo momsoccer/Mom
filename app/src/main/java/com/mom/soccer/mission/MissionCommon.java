@@ -12,4 +12,6 @@ public class MissionCommon {
     public static String USER_OBJECT = "USER_OBJECT";
     public static String INS_OBJECT = "INS_OBJECT";
 
+    public static String FEEDBACKHEADER = "FEEDBACKHEADER";
+
 }

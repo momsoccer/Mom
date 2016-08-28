@@ -1,7 +1,6 @@
 package com.mom.soccer.trservice;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,6 +10,7 @@ import com.mom.soccer.dto.User;
 import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
 
 import java.io.File;
 
@@ -37,6 +37,8 @@ public class UserTRService {
     }
 
     public void updateUserImage(String uid, String filename, String realFilePath){
+
+        WaitingDialog.showWaitingDialog(activity,false);
 
         File readFile = new File(realFilePath);
         profileimgurl = Common.SERVER_USER_IMGFILEADRESS + filename;
@@ -69,29 +71,26 @@ public class UserTRService {
         final Call<ServerResult> resultCall = userService.fileupload(userid,fileName,serverPath,file);
 
         //프로그레스바 준비
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(activity, "", "유저 프로파일 사진을 업데이트 합니다", true);
-        dialog.show();
+
 
         resultCall.enqueue(new Callback<ServerResult>() {
             @Override
             public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     ServerResult serverResult = response.body();
                     Log.d(TAG,"값 : "+serverResult.toString());
-                    dialog.dismiss();
                     VeteranToast.makeToast(activity,"프로파일 사진을 업데이트 했습니다", Toast.LENGTH_SHORT).show();
                 }else{
                     Log.d(TAG,"서버 컨트롤러에서 값을 받지 못했습니다");
-                    dialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<ServerResult> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
                 Log.d(TAG,"통신오류 발생 " + t.getMessage());
                 t.printStackTrace();
-                dialog.dismiss();
             }
         });
     }

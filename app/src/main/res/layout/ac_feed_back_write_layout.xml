@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mom.soccer.ins.FeedBackWrite">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/feed_toolbar"
+        app:titleTextColor="@color/color6"
+        android:background="@color/mom_color1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/feed_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="피드백 작성"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/color6"
+            android:layout_gravity="center"
+            />
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            >
+
+            <TextView
+                android:id="@+id/title"
+                android:textColor="@color/color6"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:text="피드백 요청 타입"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:id="@+id/li_video_title"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:src="@drawable/ic_ball_subject"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/color6"
+                android:textSize="14sp"
+                android:text="영상"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/li_video_layout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@drawable/xml_back_white"
+                android:gravity="center"
+                android:onClick="videoAttach"
+                >
+
+                <ImageView
+                    android:src="@drawable/btn_uploadvideoadd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="videoAttach"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:src="@drawable/ic_ball_subject"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:text="피드백"
+                android:textColor="@color/color6"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <EditText
+            android:layout_marginTop="5dp"
+            android:id="@+id/feedback_content"
+            android:textSize="12sp"
+            android:textColor="@color/color6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="10"
+            android:lines="10"
+            android:background="@drawable/inputtext"
+            android:gravity="top"
+            android:hint="@string/feedback_write_hint"
+            android:textColorHint="@color/line_color1"
+            />
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            >
+
+            <Button
+                android:id="@+id/feedvideoBtn"
+                android:text="영상첨부"
+                style="@style/btnStylePaprika"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:textSize="10sp"
+                android:onClick="videoAttach"
+                />
+
+            <Button
+                android:id="@+id/feedBtn"
+                android:text="완료"
+                android:layout_marginLeft="5dp"
+                style="@style/btnStylePaprika"
+                android:layout_width="wrap_content"
+                android:textSize="10sp"
+                android:layout_height="35dp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
