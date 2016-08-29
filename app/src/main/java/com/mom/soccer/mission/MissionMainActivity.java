@@ -2,9 +2,11 @@ package com.mom.soccer.mission;
 
 import android.app.Activity;
 import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentManager;
@@ -40,6 +42,7 @@ import com.mom.soccer.adapter.GridMissionAdapter;
 import com.mom.soccer.adapter.PassListAdapter;
 import com.mom.soccer.cardview.FeedBackCard;
 import com.mom.soccer.common.Auth;
+import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dataDto.InsInfoVo;
@@ -173,7 +176,10 @@ public class MissionMainActivity extends AppCompatActivity {
      **********************/
     private Uri mFileURI = null;
 
-    private static final int RESULT_PICK_IMAGE_CROP = 4;
+    private static final int PICK_FROM_CAMERA = 1;
+    private static final int PICK_FROM_GALLERY = 3;
+    private static final String EXTRA_LOCAL_ONLY = "android.intent.extra.LOCAL_ONLY";
+
     private GridMissionAdapter gridMissionAdapter;
 
     List<UserMission> userMissionList;
@@ -458,6 +464,8 @@ public class MissionMainActivity extends AppCompatActivity {
                     WaitingDialog.cancelWaitingDialog();
                     userMission = response.body();
 
+                    Log.i(TAG,"my Mission info : " + userMission.toString());
+
                     usermission_tx_hart.setText(String.valueOf(userMission.getBookmarkcount()));
                     usermission_tx_comment.setText(String.valueOf(userMission.getBoardcount()));
 
@@ -535,21 +543,74 @@ public class MissionMainActivity extends AppCompatActivity {
     }
 
 
-    //버튼 컨트롤
+    //업로드
     @OnClick(R.id.btn_mission_upload)
     public void missionVideoUpload(){
 
         if(userMission.getUid()!=0){
 
             if(userMission.getPassflag().equals("P")) {
-                VeteranToast.makeToast(getApplicationContext(), getString(R.string.user_mission_progress), Toast.LENGTH_SHORT).show();
+                //VeteranToast.makeToast(getApplicationContext(), getString(R.string.user_mission_progress), Toast.LENGTH_SHORT).show();
+
                 return;
             }
         }
+        changeImage();
 
+    }
+
+    public void changeImage(){
+        new MaterialDialog.Builder(MissionMainActivity.this)
+                .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                .title("영상선택")
+                .titleColor(getResources().getColor(R.color.color6))
+                .content("영상 업로드 유의 사항")
+                .contentColor(getResources().getColor(R.color.color6))
+                .positiveText("영상 갤러리")
+                .neutralText("촬영하기")
+                .negativeText(R.string.mom_diaalog_cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        doTakeAlbumAction();
+                    }
+                })
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        doTakePhotoAction();
+                    }
+                })
+                .show();
+    }
+    //앨범에서 이미지 가져오기
+    public void doTakeAlbumAction(){
+        //앨범호출
+        Intent intent = new Intent(Intent.ACTION_PICK, null).setType("video/*");
+        intent.putExtra(EXTRA_LOCAL_ONLY, true);
+        startActivityForResult(intent, PICK_FROM_GALLERY);
+
+        /*
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("video/*");
         startActivityForResult(intent, RESULT_PICK_IMAGE_CROP);
+        */
+    }
+
+    //카메라에서 영상촬영
+    public void doTakePhotoAction(){
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
+
+        try {
+            intent.putExtra("return-data", true);
+            startActivityForResult(intent, PICK_FROM_CAMERA);
+
+        } catch (ActivityNotFoundException e) {
+
+        }
     }
 
     //즐겨찾기 컨트롤
@@ -784,7 +845,7 @@ public class MissionMainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case RESULT_PICK_IMAGE_CROP:
+            case PICK_FROM_CAMERA:
                 if (resultCode == RESULT_OK) {
                     mFileURI = data.getData();
                     if (mFileURI != null) {
@@ -792,7 +853,17 @@ public class MissionMainActivity extends AppCompatActivity {
                         intent.setData(mFileURI);
                         intent.putExtra(MissionCommon.OBJECT,mission);
                         startActivity(intent);
-                        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                    }
+                }
+                break;
+            case PICK_FROM_GALLERY:
+                if (resultCode == RESULT_OK) {
+                    mFileURI = data.getData();
+                    if (mFileURI != null) {
+                        Intent intent = new Intent(this, ReviewActivity.class);
+                        intent.setData(mFileURI);
+                        intent.putExtra(MissionCommon.OBJECT,mission);
+                        startActivity(intent);
                     }
                 }
                 break;
@@ -1227,44 +1298,46 @@ public class MissionMainActivity extends AppCompatActivity {
     }
 
     public void passHistory(){
-        if(userMission.getPassflag().equals("Y")||userMission.getPassflag().equals("P")){
-            li_pass_history.setVisibility(View.VISIBLE);
+        if(!Compare.isEmpty(userMission.getPassflag())){
+            if(userMission.getPassflag().equals("Y")||userMission.getPassflag().equals("P")){
+                li_pass_history.setVisibility(View.VISIBLE);
 
-            passrecyclerview = (RecyclerView)findViewById(R.id.passrecyclerview);
-            WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
-            MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getApplicationContext(),user);
+                passrecyclerview = (RecyclerView)findViewById(R.id.passrecyclerview);
+                WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
+                MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getApplicationContext(),user);
 
-            MissionPass query = new MissionPass();
-            query.setUid(user.getUid());
-            query.setUsermissionid(userMission.getUsermissionid());
-            query.setMissionid(userMission.getMissionid());
+                MissionPass query = new MissionPass();
+                query.setUid(user.getUid());
+                query.setUsermissionid(userMission.getUsermissionid());
+                query.setMissionid(userMission.getMissionid());
 
-            Call<List<MissionPass>> c = service.getPassList(query);
-            c.enqueue(new Callback<List<MissionPass>>() {
-                @Override
-                public void onResponse(Call<List<MissionPass>> call, Response<List<MissionPass>> response) {
-                    WaitingDialog.cancelWaitingDialog();
-                    if(response.isSuccessful()){
+                Call<List<MissionPass>> c = service.getPassList(query);
+                c.enqueue(new Callback<List<MissionPass>>() {
+                    @Override
+                    public void onResponse(Call<List<MissionPass>> call, Response<List<MissionPass>> response) {
+                        WaitingDialog.cancelWaitingDialog();
+                        if(response.isSuccessful()){
 
-                        missionPasses = response.body();
+                            missionPasses = response.body();
 
-                        passListAdapter = new PassListAdapter(activity,missionPasses,user);
-                        passrecyclerview.setHasFixedSize(true);
-                        passrecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                        passrecyclerview.setAdapter(passListAdapter);
+                            passListAdapter = new PassListAdapter(activity,missionPasses,user);
+                            passrecyclerview.setHasFixedSize(true);
+                            passrecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            passrecyclerview.setAdapter(passListAdapter);
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<List<MissionPass>> call, Throwable t) {
-                    WaitingDialog.cancelWaitingDialog();
-                    t.printStackTrace();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<List<MissionPass>> call, Throwable t) {
+                        WaitingDialog.cancelWaitingDialog();
+                        t.printStackTrace();
+                    }
+                });
 
 
-        }else{
-            li_pass_history.setVisibility(View.GONE);
+            }else{
+                li_pass_history.setVisibility(View.GONE);
+            }
         }
     }
 }

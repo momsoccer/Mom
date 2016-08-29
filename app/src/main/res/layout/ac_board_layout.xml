@@ -30,7 +30,6 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
-        android:layout_marginTop="15dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -62,7 +61,8 @@
             android:textSize="16sp"
             android:textColor="@color/color6"
             android:background="@drawable/inputtext"
-            android:layout_width="260dp"
+            android:layout_width="0dp"
+            android:layout_weight="8"
             android:layout_height="32dp"
             android:singleLine="true"
             android:imeOptions="actionSearch"
@@ -71,11 +71,13 @@
 
         <Button
             android:id="@+id/btn_boardcreate"
-            style="@style/btnStyleBlack"
+            style="@style/btnStylePaprika"
             android:text="@string/board_createbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginLeft="5dp"
+            android:textSize="10sp"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="34dp"
+            android:layout_marginLeft="3dp"
             android:layout_marginRight="5dp"
             android:gravity="center" />
 

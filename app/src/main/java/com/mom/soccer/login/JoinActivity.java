@@ -2,7 +2,6 @@ package com.mom.soccer.login;
 
 import android.accounts.AccountManager;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -248,11 +248,15 @@ public class JoinActivity extends AppCompatActivity {
     }
 
     public void userCreate(final User user){
-
-        final ProgressDialog dialog;
-
-        dialog = ProgressDialog.show(this, "", "회원가입을 진행합니다", true);
-        dialog.show();
+        final MaterialDialog materialDialog =  new MaterialDialog.Builder(this)
+                .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                .title(R.string.network_join_user)
+                .titleColor(getResources().getColor(R.color.color6))
+                .content(getString(R.string.network_valid_user))
+                .contentColor(getResources().getColor(R.color.color6))
+                .progress(true, 0)
+                .progressIndeterminateStyle(true)
+                .show();
 
         UserService userService = ServiceGenerator.createService(UserService.class);
 
@@ -266,12 +270,11 @@ public class JoinActivity extends AppCompatActivity {
                 userCre.enqueue(new Callback<ServerResult>() {
                     @Override
                     public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                        materialDialog.dismiss();
                         if (response.isSuccessful()) {
                             try {
                                 ServerResult serverResult = response.body();
                                 UID = serverResult.getCount();
-                                dialog.dismiss();
-
                                 Log.d(TAG, "서버에서 생성된 아이디는 : " + UID);
 
 
@@ -294,19 +297,15 @@ public class JoinActivity extends AppCompatActivity {
                             } catch (Exception e) {
                                 Log.d(TAG, "서버와 통신중 오류 발생");
                                 UID = 0;
-                                dialog.dismiss();
                             }
                         }else{
-                            VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
-                            dialog.dismiss();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ServerResult> call, Throwable t) {
-                        Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
+                        materialDialog.dismiss();
                         t.printStackTrace();
-                        dialog.dismiss();
                         UID = -1;
                     }
                 });

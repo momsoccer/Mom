@@ -1,133 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    sothree:umanoPanelHeight="68dp"
+    sothree:umanoShadowHeight="4dp"
+    sothree:umanoParallaxOffset="100dp"
+    sothree:umanoDragView="@+id/dragView"
+    sothree:umanoOverlay="true"
+    sothree:umanoScrollableView="@+id/list">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        >
 
-        <ImageView
-            android:id="@+id/ac_user_mission_image"
-            android:src="@drawable/userimg"
-            android:layout_gravity="center"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
+            android:gravity="center_horizontal"
             >
 
-            <TextView
-                android:id="@+id/ac_user_mission_name"
-                android:text="이름"
-                android:textColor="@color/color6"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/ac_user_mission_team"
-                android:text="전남 해남초 3-1반팀"
-                android:textColor="@color/line_color1"
-                android:textSize="13sp"
-                android:layout_width="140dp"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                >
+
+                <ImageView
+                    android:id="@+id/ac_user_mission_image"
+                    android:src="@drawable/userimg"
+                    android:layout_gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:layout_height="50dp" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.8"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    >
+
+                    <TextView
+                        android:id="@+id/ac_user_mission_name"
+                        android:text="이름"
+                        android:textColor="@color/color6"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/ac_user_mission_team"
+                        android:text="소속 팀"
+                        android:textColor="@color/line_color1"
+                        android:textSize="8sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:maxLines="1"
+                        android:maxLength="15"
+                        />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_fllow"
+                    android:layout_marginLeft="50dp"
+                    style="@style/btnStylePaprika"
+                    android:text="@string/app_fllow"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.6"
+                    android:layout_height="35dp"
+                    android:layout_gravity="right|center_vertical"
+                    android:visibility="visible"
+                    android:textSize="10dp"
+                    />
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/youtube_frame_layout"
                 android:layout_marginTop="5dp"
-                android:maxLines="1"
-                android:maxLength="15"
-                />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/color8"
+                android:layout_width="match_parent"
+                android:layout_height="180dp">
+            </FrameLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/ac_user_mission_video_pickup"
+                    android:src="@drawable/ic_white_hart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mom_color1"
+                    />
+
+                <TextView
+                    android:id="@+id/ac_user_mission_video_pickcount"
+                    android:layout_marginLeft="5dp"
+                    android:text="0"
+                    android:textColor="@color/color6"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageButton
+                    android:id="@+id/ac_user_mission_video_comment"
+                    android:src="@drawable/coment_ic"
+                    android:layout_marginLeft="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mom_color1"
+                    />
+
+                <TextView
+                    android:id="@+id/ac_user_mission_video_commentcount"
+                    android:layout_marginLeft="5dp"
+                    android:text="0"
+                    android:textColor="@color/color6"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_fllow"
-            android:layout_marginLeft="10dp"
-            style="@style/btnStylePaprika"
-            android:text="@string/app_fllow"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:visibility="visible"
-            android:textSize="13dp"
-            />
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/youtube_frame_layout"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/color8"
-        android:layout_width="match_parent"
-        android:layout_height="190dp">
-    </FrameLayout>
 
 
-    <LinearLayout
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="false"
+            android:id="@+id/dragView">
 
-        <ImageButton
-            android:id="@+id/ac_user_mission_video_pickup"
-            android:src="@drawable/ic_white_hart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/mom_color1"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/bg_screen3"
+                >
 
-        <TextView
-            android:id="@+id/ac_user_mission_video_pickcount"
-            android:layout_marginLeft="5dp"
-            android:text="0"
-            android:textColor="@color/color6"
-            android:textSize="12sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                <TextView
+                    android:text="피드백 대쉬라인"
+                    android:textColor="@color/color6"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-        <ImageButton
-            android:id="@+id/ac_user_mission_video_comment"
-            android:src="@drawable/coment_ic"
-            android:layout_marginLeft="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/mom_color1"
-            />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/ac_user_mission_video_commentcount"
-            android:layout_marginLeft="5dp"
-            android:text="0"
-            android:textColor="@color/color6"
-            android:textSize="12sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/bg_screen2"
+                >
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:id="@+id/rvSample"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
+                <TextView
+                    android:text="테스트 입니다"
+                    android:textColor="@color/color6"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-</LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>

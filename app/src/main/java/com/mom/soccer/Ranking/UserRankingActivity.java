@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.MainRankingAdapter;
 import com.mom.soccer.common.PrefUtil;
@@ -19,6 +18,7 @@ import com.mom.soccer.dataDto.UserRangkinVo;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.List;
 
@@ -149,19 +149,12 @@ public class UserRankingActivity extends AppCompatActivity {
                 }
             });
         }else if((pageFlag.equals("friend"))) {
-
-            MaterialDialog materialDialog =  new MaterialDialog.Builder(this)
-                    .title("친구 랭킹")
-                    .content("친구랭킹을 검색합니다")
-                    .progress(true, 0)
-                    .progressIndeterminateStyle(true)
-                    .show();
-
-
+            WaitingDialog.showWaitingDialog(UserRankingActivity.this,false);
             final Call<List<UserRangkinVo>> call = dataService.getFriendRanking(userRangkinVo);
             call.enqueue(new Callback<List<UserRangkinVo>>() {
                 @Override
                 public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
+                    WaitingDialog.cancelWaitingDialog();
                     if (response.isSuccessful()) {
                         List<UserRangkinVo> listVos = response.body();
                         mainRankingAdapter = new MainRankingAdapter(activity, R.layout.adabter_mainlist_layout, listVos, user);
@@ -172,6 +165,7 @@ public class UserRankingActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
                     Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
                     t.printStackTrace();
                 }

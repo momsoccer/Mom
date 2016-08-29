@@ -26,6 +26,7 @@
     <color name="edit_tx_off">#AEAEAE</color>
 
     <color name="enabled_red">#d0021b</color>
+    <color name="line_red">#b1d0021b</color>
 
     <color name="gold1">#BDD1DC</color>
     <color name="gold2">#BDD1DC</color>

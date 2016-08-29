@@ -87,9 +87,9 @@ public class TabNaviComplaintBase extends RelativeLayout {
                 Intent intent = new Intent(context,InsDashboardActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                if (context instanceof Activity) {
+/*                if (context instanceof Activity) {
                     ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
-                }
+                }*/
             }
         });
 
@@ -100,9 +100,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
                 Intent intent = new Intent(context,MomMainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                if (context instanceof Activity) {
-                    ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
-                }
+
             }
         });
 
@@ -113,9 +111,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
                 intent.putExtra("pageflag","me");
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                if (context instanceof Activity) {
-                    ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
-                }
+
             }
         });
 
@@ -125,9 +121,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
                 Intent intent = new Intent(context,PlayerMainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                if (context instanceof Activity) {
-                    ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
-                }
+
             }
         });
 
@@ -137,9 +131,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
                 Intent intent = new Intent(context,SearchActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                if (context instanceof Activity) {
-                    ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
-                }
+
             }
         });
 
@@ -149,9 +141,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
                 Intent intent = new Intent(context,SettingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                if (context instanceof Activity) {
-                    ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
-                }
+
             }
         });
 

@@ -1,6 +1,5 @@
 package com.mom.soccer.login;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -13,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -41,6 +41,7 @@ import com.mom.soccer.momactivity.MomMainActivity;
 import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
 
 import org.json.JSONObject;
 
@@ -344,21 +345,25 @@ public class LoginActivity extends AppCompatActivity {
 
     public void userLogin(){
 
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(this, "",getString(R.string.network_valid_user), true);
-        dialog.show();
+        final MaterialDialog materialDialog =  new MaterialDialog.Builder(this)
+                .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                .title(R.string.app_loging_title)
+                .titleColor(getResources().getColor(R.color.color6))
+                .content(getString(R.string.network_valid_user))
+                .contentColor(getResources().getColor(R.color.color6))
+                .progress(true, 0)
+                .progressIndeterminateStyle(true)
+                .show();
 
         UserService userService = ServiceGenerator.createService(UserService.class,this,user);
         final Call<ServerResult> getUserInfo = userService.getUserCheck(user.getSnstype(),user.getUseremail());
         getUserInfo.enqueue(new Callback<ServerResult>() {
             @Override
             public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                materialDialog.dismiss();
                 if(response.isSuccessful()){
 
-                    Log.d(TAG, "서버 조회 결과 성공");
                     ServerResult serverResult = response.body();
-                    Log.d(TAG, "서버 조회 결과 값은 : " + serverResult.getResult());
-                    dialog.dismiss();
 
                     if(serverResult.getCount()==1){
                         getUserSet();
@@ -369,26 +374,20 @@ public class LoginActivity extends AppCompatActivity {
                 }else{
                     VeteranToast.makeToast(getApplicationContext(),getString(R.string.valid_user),Toast.LENGTH_SHORT).show();
                     et_Login_Email.setText(tempEmail);
-                    dialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<ServerResult> call, Throwable t) {
-                Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
+                materialDialog.dismiss();
                 VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
                 t.printStackTrace();
-                dialog.dismiss();
             }
         });
     }
 
     public void getUserSet(){
-
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(this, "",getString(R.string.network_get_user), true);
-        dialog.show();
-
+        WaitingDialog.showWaitingDialog(LoginActivity.this,false);
         UserService userService = ServiceGenerator.createService(UserService.class);
 
         final Call<User> getUserInfo = userService.getUser(user.getSnstype(),
@@ -399,23 +398,20 @@ public class LoginActivity extends AppCompatActivity {
         getUserInfo.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
+                WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     SERVERUSER = response.body();
                     SERVERUSER.setPassword(user.getPassword());
-                    dialog.dismiss();
                     userExist();
                 }else{
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_LONG).show();
-                    dialog.dismiss();
+
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
+                WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
-                dialog.dismiss();
             }
         });
     }
@@ -423,11 +419,11 @@ public class LoginActivity extends AppCompatActivity {
     public void userExist(){
 
         prefUtil.saveUser(SERVERUSER);
-        Log.d("User Info", "************************************************");
-        Log.d("User Info", "SNS TYPE : " + SERVERUSER.getSnstype());
-        Log.d("User Info", "EMAIL : " + SERVERUSER.getUseremail());
-        Log.d("User Info", "PW : " + SERVERUSER.getPassword());
-        Log.d("User Info", "************************************************");
+        Log.i("User Info", "************************************************");
+        Log.i("User Info", "SNS TYPE : " + SERVERUSER.getSnstype());
+        Log.i("User Info", "EMAIL : " + SERVERUSER.getUseremail());
+        Log.i("User Info", "PW : " + SERVERUSER.getPassword());
+        Log.i("User Info", "************************************************");
 
         Intent intent = new Intent(getApplicationContext(), MomMainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -445,10 +441,8 @@ public class LoginActivity extends AppCompatActivity {
             String email //useremail
     ){
 
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(this, "",getString(R.string.network_valid_user), true);
-        dialog.show();
 
+        WaitingDialog.showWaitingDialog(LoginActivity.this,false);
         UserService userService = ServiceGenerator.createService(UserService.class);
         final Call<User> getUserInfo = userService.getUser(type, id, pw, email);
 
@@ -456,14 +450,13 @@ public class LoginActivity extends AppCompatActivity {
         getUserInfo.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-
+                WaitingDialog.cancelWaitingDialog();
                 if (response.isSuccessful()) {
                     Log.d(TAG, "서버 조회 결과 성공");
 
                     SERVERUSER = response.body();
 
                     if (SERVERUSER.getUseremail().equals("null@co.com")) {
-                        Log.d(TAG, "우리 서버에 처음 오신분 입니다. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
                         //처음이면 가입 페이지로 이동 시킨다
                         Intent intent = new Intent(getApplicationContext(), JoinActivity.class);
@@ -481,21 +474,17 @@ public class LoginActivity extends AppCompatActivity {
                         //처음이 아니라면 MomMain으로 이동 시킨다
                         userExist();
                     }
-
                 } else {
                     Log.d(TAG, "조회 결과 실패 ===");
-
                 }
 
-                dialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.d(TAG, "환경 구성 확인 서버와 통신 불가" + t.getMessage());
+                WaitingDialog.cancelWaitingDialog();
                 VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_LONG).show();
                 t.printStackTrace();
-                dialog.dismiss();
             }
         });
 

@@ -312,27 +312,27 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             Intent intent = new Intent(this, MomMainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-            overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
+            //overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
         }else if(id==R.id.mn_item_teammemberlist){
             Intent intent = new Intent(this,StudentMainActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+            //overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         }else if(id == R.id.mn_item_favorite){
             Intent intent = new Intent(this,FavoriteMissionActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+            //overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         }else if(id == R.id.mn_item_gansim){
             Intent intent = new Intent(getApplicationContext(),MyBookMarkActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+            //overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
         }else if(id == R.id.mn_item_search){
 
             Intent intent = new Intent(getApplicationContext(),SearchActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //스택에 쌓이는 것을 방지 한다. 필수
             startActivity(intent);
-            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+            //overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
         }else if(id == R.id.mn_item_mypage){
 
@@ -340,15 +340,15 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             intent.putExtra("pageflag","me");
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+            //overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         }else if(id == R.id.mn_item_coachreq){
             Intent intent = new Intent(this,ApplyCoachActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+            //overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         }else if(id == R.id.mn_item_setup){
             Intent intent = new Intent(this,SettingActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+            //overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
         }else if(id == R.id.mn_item_logout){
 

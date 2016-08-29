@@ -11,13 +11,15 @@
     <include layout="@layout/mymisstion_layout"/>
 
     <Button
+        android:id="@+id/btn_mission_upload"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
-        android:id="@+id/btn_mission_upload"
         style="@style/btnStylePaprika"
         android:text="@string/mission_upload"
         android:layout_gravity="bottom"
+        android:textColor="@color/color6"
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        android:textSize="10sp"
+        android:layout_height="35dp" />
 
 </LinearLayout>

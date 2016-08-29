@@ -1,5 +1,6 @@
 package com.mom.soccer.board;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,6 +53,8 @@ public class BoardMainActivity extends AppCompatActivity {
     @Bind(R.id.comment_title)
     TextView comment_title;
 
+    Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +78,8 @@ public class BoardMainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(R.drawable.back_arrow);
-        comment_title.setText(getString(R.string.toolbar_comment_page)+"("+user.getUsername()+")");
-
+        comment_title.setText(getString(R.string.toolbar_comment_page));
+        activity = this;
 
     }
 
@@ -101,7 +104,7 @@ public class BoardMainActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     List<Board> boardList;
                     boardList = response.body();
-                    boardListAdapter = new BoardListAdapter(getApplicationContext(),boardList,user.getUid());
+                    boardListAdapter = new BoardListAdapter(activity,boardList,user.getUid());
                     boardListView.setAdapter(boardListAdapter);
                     dialog.dismiss();
                 }else{

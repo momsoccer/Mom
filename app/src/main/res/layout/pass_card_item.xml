@@ -144,9 +144,9 @@
                 android:layout_marginRight="1dp"
                 android:text="심사취소"
                 android:textSize="10sp"
-                android:textColor="@color/color2"
+                android:textColor="@color/color6"
                 style="@style/btnStylePaprika"
-                android:layout_width="350dp"
+                android:layout_width="330dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center"
                 />
