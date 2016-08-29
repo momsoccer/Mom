@@ -3,7 +3,9 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/mom_color1"
+    >
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardview"
@@ -11,9 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
-        card_view:cardCornerRadius="10dp"
+        card_view:cardCornerRadius="5dp"
         card_view:cardElevation="5dp"
         android:orientation="vertical"
+        card_view:cardBackgroundColor="@color/mom_color3"
+        card_view:contentPadding="5dp"
         >
 
         <LinearLayout
@@ -36,7 +40,7 @@
                         android:src="@drawable/team_flag"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:background="@color/color2"
+                        android:background="@color/mom_color1"
                         />
 
                     <ImageView
@@ -46,7 +50,6 @@
                         android:layout_marginLeft="75dp"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
-                        android:background="@color/bg_screen3"
                         />
                 </LinearLayout>
 
@@ -256,7 +259,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+<!--            <LinearLayout
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:orientation="horizontal"
@@ -269,7 +272,7 @@
                     android:textStyle="bold"
                     android:layout_width="110dp"
                     android:layout_height="match_parent" />
-            </LinearLayout>
+            </LinearLayout>-->
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -466,8 +469,17 @@
                         android:layout_width="70dp"
                         android:layout_height="match_parent" />
                 </LinearLayout>
-
             </LinearLayout>
+            <Button
+                android:id="@+id/btnchoose"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="선택"
+                android:textColor="@color/color6"
+                android:textSize="10sp"
+                style="@style/btnStylePaprika"
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

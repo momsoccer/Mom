@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.ball.PlayerMainActivity;
+import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.CropCircleTransformation;
 import com.mom.soccer.dto.FriendApply;
@@ -39,6 +40,8 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
     List<FriendReqVo> manageList;
     User user;
 
+    private int uid=0;
+
     public FriendListAdapter(Activity activity, List<FriendReqVo> manageList, User user) {
         this.activity = activity;
         this.manageList = manageList;
@@ -53,8 +56,10 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
 
     @Override
     public void onBindViewHolder(FriendItemViewHoder holder, final int position) {
-
         final FriendReqVo data = manageList.get(position);
+
+        uid = data.getUid();
+
         if (!Compare.isEmpty(data.getProfileimgurl())) {
             Glide.with(activity)
                     .load(data.getProfileimgurl())
@@ -69,7 +74,9 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         if(data.getFlag().equals("ACCEPT")) {
             holder.acceptBtn.setText(activity.getString(R.string.friedn_friend_cancel));
             holder.rejectbtn.setVisibility(View.GONE);
+            holder.frflag.setText("친구");
         }else{
+            holder.frflag.setText("친구요청");
             holder.acceptBtn.setText(activity.getString(R.string.friend_re_btn));
             holder.rejectbtn.setVisibility(View.VISIBLE);
         }
@@ -174,6 +181,18 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             }
         });
 
+        //요청된 사람 상세 정보
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, MyPageActivity.class);
+                intent.putExtra("pageflag","friend");
+                intent.putExtra("frienduid",uid);
+                activity.startActivity(intent);
+                activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+            }
+        });
+
     }
 
     @Override
@@ -189,7 +208,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         public ImageView imageView;
         public TextView username;
         public TextView level;
-        public TextView score,creation_date;
+        public TextView score,creation_date,frflag;
 
 
         /*
@@ -213,6 +232,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             acceptBtn = (Button) v.findViewById(R.id.acceptBtn);
             creation_date = (TextView) v.findViewById(R.id.creation_date);
             rejectbtn = (Button) v.findViewById(R.id.rejectbtn);
+            frflag = (TextView) v.findViewById(R.id.frflag);
 
 
             /*

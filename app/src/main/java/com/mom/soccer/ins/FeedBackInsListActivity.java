@@ -1,6 +1,6 @@
 package com.mom.soccer.ins;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,16 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.InsInfoRecyclerAdapter;
 import com.mom.soccer.common.PrefUtil;
-import com.mom.soccer.common.RecyclerItemClickListener;
 import com.mom.soccer.dataDto.InsInfoVo;
 import com.mom.soccer.dto.User;
-import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -43,11 +40,15 @@ public class FeedBackInsListActivity extends AppCompatActivity {
     InsInfoRecyclerAdapter recyclerAdapter;
     List<InsInfoVo> insInfoVoList = new ArrayList<>();
 
+    Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         setContentView(R.layout.activity_feed_back_ins_list);
+
+        activity = this;
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
@@ -83,7 +84,7 @@ public class FeedBackInsListActivity extends AppCompatActivity {
                     WaitingDialog.cancelWaitingDialog();
 
                     insInfoVoList = response.body();
-                    recyclerAdapter = new InsInfoRecyclerAdapter(getApplicationContext(),insInfoVoList);
+                    recyclerAdapter = new InsInfoRecyclerAdapter(activity,insInfoVoList);
                     recyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
                     recyclerView.getItemAnimator().setAddDuration(300);
                     recyclerView.getItemAnimator().setRemoveDuration(300);
@@ -96,7 +97,7 @@ public class FeedBackInsListActivity extends AppCompatActivity {
                     alphaAdapter.setDuration(500);
                     recyclerView.setAdapter(alphaAdapter);
 
-                    recyclerView.addOnItemTouchListener(
+/*                    recyclerView.addOnItemTouchListener(
                             new RecyclerItemClickListener(getApplicationContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, final int i) {
@@ -110,7 +111,7 @@ public class FeedBackInsListActivity extends AppCompatActivity {
                                 public void onLongItemClick(View view, int position) {
                                 }
                             })
-                    );
+                    );*/
 
                 }else{
                     WaitingDialog.cancelWaitingDialog();

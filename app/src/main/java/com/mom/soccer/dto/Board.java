@@ -12,21 +12,20 @@ public class Board {
     private String username;
     private String profileimgurl;
     private String comment;
+    private String teamname;
     private String change_creationdate;
     private String change_updatedate;
 
     public Board(){}
 
-    public Board(int boardid, int usermissionid, int uid, int writeuid, String username, String profileimgurl, String comment, String change_creationdate, String change_updatedate) {
-        this.boardid = boardid;
-        this.usermissionid = usermissionid;
-        this.uid = uid;
-        this.writeuid = writeuid;
-        this.username = username;
-        this.profileimgurl = profileimgurl;
-        this.comment = comment;
-        this.change_creationdate = change_creationdate;
-        this.change_updatedate = change_updatedate;
+
+
+    public String getTeamname() {
+        return teamname;
+    }
+
+    public void setTeamname(String teamname) {
+        this.teamname = teamname;
     }
 
     public int getBoardid() {
@@ -111,6 +110,7 @@ public class Board {
                 ", username='" + username + '\'' +
                 ", profileimgurl='" + profileimgurl + '\'' +
                 ", comment='" + comment + '\'' +
+                ", teamname='" + teamname + '\'' +
                 ", change_creationdate='" + change_creationdate + '\'' +
                 ", change_updatedate='" + change_updatedate + '\'' +
                 '}';

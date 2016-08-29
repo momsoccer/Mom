@@ -48,12 +48,12 @@
     <string name="app_myvideo_view_title">영상 보기</string>
 
     <string name="mission_toolbar_title">스테이지</string>
-    <string name="lifting">(리프팅)</string>
-    <string name="drrible">(드리블)</string>
-    <string name="around">(어라운드)</string>
-    <string name="crossbar">(콤플렉스)</string>
-    <string name="trapping">(트래핑)</string>
-    <string name="flick">(플릭)</string>
+    <string name="lifting">리프팅</string>
+    <string name="drrible">드리블</string>
+    <string name="around">어라운드</string>
+    <string name="crossbar">콤플렉스</string>
+    <string name="trapping">트래핑</string>
+    <string name="flick">플릭</string>
 
     <string name="mission_start">시작하기</string>
     <string name="mission_open">미션오픈</string>
@@ -189,6 +189,10 @@
     <string name="user_mission_n">심사대기중</string>
     <string name="user_mission_y">미션통과</string>
 
+    <string name="user_mission_fail">도전실패</string>
+
+    <string name="user_mission_pass_title">미션심사 상태/이력</string>
+
     <string name="user_mission_progress">강사께서 심사를 하고 있는 중입니다</string>
     <string name="user_mission_progress_msg">미션 심사 요청을 하신 상태입니다</string>
 
@@ -311,6 +315,17 @@
     <string name="mom_diaalog_feedback_title">피드백요청</string>
     <string name="mom_diaalog_title_logout">로그아웃</string>
     <string name="mom_diaalog_title_append">앱 종료</string>
+
+    <string name="mom_diaalog_pass_title">심사요청</string>
+    <string name="mom_diaalog_pass_apply_title">심사요청 접수</string>
+    <string name="mom_diaalog_pass_apply_msg">미션 심사 요청이 접수 되었습니다</string>
+    <string name="mom_diaalog_pass_apply_msg1">심사 통과 획득 점수 : </string>
+
+    <string name="mom_diaalog_pass_apply_msg2">미션심사 포인트 : </string>
+    <string name="mom_diaalog_pass_apply_msg3">심사를 신청 하시겠습니까?</string>
+
+    <string name="mom_diaalog_pass_apply_f_msg">미션 심사 요청중 문제가 발생되었습니다 \n 다시 시도 해보세요</string>
+
 
     <!--사진업로드 다이얼로그-->
     <string name="mom_diaalog_photo_title">사진설정</string>

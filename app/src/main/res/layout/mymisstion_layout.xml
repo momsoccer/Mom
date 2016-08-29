@@ -125,24 +125,24 @@
 
             <View
                 android:id="@+id/view_l1"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:background="@color/line_color1" />
 
             <TextView
                 android:id="@+id/tx_main_usermission"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:text="@string/my_mission_subject"
                 android:textColor="@color/color6"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <View
                 android:id="@+id/view_l2"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:background="@color/line_color1" />
@@ -247,6 +247,45 @@
                     />
             </LinearLayout>
 
+
+            <LinearLayout
+                android:id="@+id/li_pass_history"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color1" />
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/user_mission_pass_title"
+                    android:textColor="@color/color6"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color1" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/passrecyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mom_color1"
+                    />
+
+                </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/li_feedback_history"
                 android:orientation="vertical"
@@ -254,22 +293,22 @@
                 android:layout_height="wrap_content">
 
                 <View
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="1dp"
                     android:background="@color/line_color1" />
 
                 <TextView
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
                     android:text="@string/my_mission_feedback_subject"
                     android:textColor="@color/color6"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <View
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="1dp"
                     android:background="@color/line_color1" />
@@ -287,7 +326,7 @@
         </LinearLayout>
 
         <View
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:background="@color/line_color1" />
@@ -297,14 +336,14 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
         android:gravity="center"
         >
 
         <TextView
             android:text="@string/mission_user_video"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/color6"
             android:textStyle="bold"
             android:layout_width="match_parent"
@@ -319,8 +358,9 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:gravity="left|center_vertical"
             >
 
@@ -328,28 +368,28 @@
                 android:id="@+id/tx_main_mission_subject"
                 android:text="@string/default_mission_subject"
                 android:textColor="@color/color6"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <ImageButton
                 android:id="@+id/btnMainVideo"
                 android:background="@drawable/btn_video_list_click"
-                android:layout_marginLeft="60dp"
-                android:layout_width="25dp"
-                android:layout_height="25dp"/>
+                android:layout_marginLeft="100dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"/>
 
         </LinearLayout>
 
         <View
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:background="@color/line_color1" />
 
         <com.mom.soccer.common.ExpandableHeightGridView
             android:id="@+id/main_mission_gridview"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:numColumns="3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

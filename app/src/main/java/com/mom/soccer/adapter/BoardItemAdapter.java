@@ -6,20 +6,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dto.Board;
-import com.mom.soccer.holder.BoardItemViewHolder;
 
 import java.util.List;
 
 /**
  * Created by sungbo on 2016-08-14.
  */
-public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemViewHolder> {
+public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.BoardItemViewHolder> {
 
     private static final String TAG = "BoardItemAdapter";
     private Context context;
@@ -63,5 +64,22 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemViewHolder> 
     public void removeItem(int index){
         boardList.remove(index);
         notifyItemRemoved(index);
+    }
+
+    public class BoardItemViewHolder extends RecyclerView.ViewHolder {
+
+        public ImageView userImg;
+        public TextView username;
+        public TextView comment;
+        public TextView change_updatedate;
+
+
+        public BoardItemViewHolder(View itemView) {
+            super(itemView);
+            this.userImg = (ImageView) itemView.findViewById(R.id.board_user_img);
+            this.username = (TextView) itemView.findViewById(R.id.txt_board_user_name);
+            this.comment = (TextView) itemView.findViewById(R.id.txt_board_user_comment);
+            this.change_updatedate = (TextView) itemView.findViewById(R.id.txt_board_user_time);
+        }
     }
 }

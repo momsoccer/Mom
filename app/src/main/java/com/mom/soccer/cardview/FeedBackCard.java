@@ -15,7 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
+import com.mom.soccer.common.Auth;
+import com.mom.soccer.common.Common;
 import com.mom.soccer.dto.FeedbackHeader;
 import com.mom.soccer.dto.FeedbackLine;
 import com.mom.soccer.dto.Mission;
@@ -27,6 +32,7 @@ import com.mom.soccer.retrofitdao.FeedBackService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
+import com.mom.soccer.youtubeplayer.YoutubePlayerActivity;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -42,16 +48,20 @@ public class FeedBackCard extends Card{
 
     private FeedbackHeader feedbackHeader;
 
-    private LinearLayout li_feed_back_call,li_feed_back_send;
+    private LinearLayout li_feed_back_call,li_feed_back_send,li_youtube;
 
-    private TextView ins_content,user_conten;
-    private ImageView userimage,insimage;
+    private TextView ins_content,user_conten,TextfeedType,date,Textfeeddate,insname;
+    private ImageView userimage,insimage,vedioplay;
     private RatingBar mRatingBar;
+    private YouTubeThumbnailView video_ThumbnailView;
 
     private String title = null;
     private User user;
     private Mission mission;
     private Activity activity;
+
+    private String requestType = null;
+    private String videoAddr = null ;
 
     public FeedBackCard(final Activity activity, final FeedbackHeader feedbackHeader, final User user, final Mission mission) {
         super(activity, R.layout.feedback_card_item);
@@ -60,7 +70,15 @@ public class FeedBackCard extends Card{
         this.mission = mission;
         this.activity = activity;
 
-        CardHeader header = new CardHeader(getContext());
+        videoAddr  = feedbackHeader.getVideoaddr();
+
+                CardHeader header = new CardHeader(getContext());
+
+        if(feedbackHeader.getFeedbacktype().equals("video")){
+            requestType = getContext().getString(R.string.feedback_type_video);
+        }else{
+            requestType = getContext().getString(R.string.feedback_type_word);
+        }
 
         if(feedbackHeader.getType().equals("user")){
             title = getContext().getString(R.string.feedback_request_user_request) + " To."+feedbackHeader.getInsname();
@@ -86,9 +104,8 @@ public class FeedBackCard extends Card{
             });
         }
 
+
         header.setTitle(title);
-
-
         addCardHeader(header);
     }
 
@@ -97,7 +114,19 @@ public class FeedBackCard extends Card{
 
         li_feed_back_call = (LinearLayout) parent.findViewById(R.id.li_feed_back_call);
         li_feed_back_send = (LinearLayout) parent.findViewById(R.id.li_feed_back_send);
+        li_youtube = (LinearLayout) parent.findViewById(R.id.li_youtube);
+        vedioplay = (ImageView) parent.findViewById(R.id.vedioplay);
 
+        //TextfeedType,date,Textfeeddate
+        TextfeedType = (TextView) parent.findViewById(R.id.TextfeedType);
+        date    = (TextView) parent.findViewById(R.id.date);
+        Textfeeddate    = (TextView) parent.findViewById(R.id.Textfeeddate);
+        insname= (TextView) parent.findViewById(R.id.insname);
+        video_ThumbnailView = (YouTubeThumbnailView) parent.findViewById(R.id.video_ThumbnailView);
+
+        date.setText(feedbackHeader.getChange_creationdate());
+        Textfeeddate.setText(feedbackHeader.getChange_creationdate());
+        insname.setText(feedbackHeader.getInsname());
 
         if(feedbackHeader.getType().equals("user")){
             li_feed_back_send.setVisibility(View.VISIBLE);
@@ -107,7 +136,11 @@ public class FeedBackCard extends Card{
             userimage = (ImageView) parent.findViewById(R.id.userimage);
 
             user_conten.setText(feedbackHeader.getContent());
-
+            if(feedbackHeader.getFeedbacktype().equals("video")) {
+                TextfeedType.setText(getContext().getString(R.string.feedback_type_video));
+            }else{
+                TextfeedType.setText(getContext().getString(R.string.feedback_type_word));
+            }
             Glide.with(getContext())
                     .load(feedbackHeader.getProfileimgurl())
                     .into(userimage);
@@ -146,8 +179,48 @@ public class FeedBackCard extends Card{
 
         }
 
-    }
+        if(feedbackHeader.getFeedbacktype().equals("video")) {
+            //video_ThumbnailView.setVisibility(View.VISIBLE);
+            //vedioplay.setVisibility(View.VISIBLE);
 
+            TextfeedType.setText(getContext().getString(R.string.feedback_type_video));
+            video_ThumbnailView.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
+                @Override
+                public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+                    youTubeThumbnailLoader.setVideo(videoAddr);
+                }
+
+                @Override
+                public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+
+                }
+            });
+
+            video_ThumbnailView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(activity,YoutubePlayerActivity.class);
+                    intent.putExtra(Common.YOUTUBEVIDEO,videoAddr);
+                    activity.startActivity(intent);
+                }
+            });
+
+        }else{
+            TextfeedType.setText(getContext().getString(R.string.feedback_type_word));
+            video_ThumbnailView.setVisibility(View.GONE);
+            vedioplay.setVisibility(View.GONE);
+        }
+
+
+/*        video_ThumbnailView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity,YoutubePlayerActivity.class);
+                intent.putExtra(Common.YOUTUBEVIDEO,videoAddr);
+                activity.startActivity(intent);
+            }
+        });*/
+    }
 
     public void ratingEval(String trType, FeedbackLine line){
         FeedBackService feedBackService = ServiceGenerator.createService(FeedBackService.class,getContext(),user);

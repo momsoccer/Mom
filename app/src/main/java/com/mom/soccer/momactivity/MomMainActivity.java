@@ -1,10 +1,12 @@
 package com.mom.soccer.momactivity;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -131,14 +133,12 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
     public MomMainActivity(){};
 
-    @OnClick(R.id.im_batch)
-    public void im_batch(){
-        PubActivity pubActivity = new PubActivity(this,user,user.getUid());
-        pubActivity.showDialog();
-    }
 
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    //버젼 체크를 위한...private final int MY_PERMISSION_REQUEST_STORAGE = 100;
+    private final int MY_PERMISSION_REQUEST_STORAGE = 100;
+
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -250,6 +250,25 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             }
         });
 
+        Log.d(TAG, "onCreate 퍼미션 체크를 합니다 : " + Build.VERSION.SDK_INT);
+        //버젼체크 및 권한 설정 마쉬멜로 이상. 필수
+        if(Build.VERSION.SDK_INT  >= 23){
+
+            Log.d(TAG, "onCreate 퍼미션 체크를 합니다");
+
+            Log.i(TAG, "1.파일 쓰기 : " + checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE));
+            Log.i(TAG, "2.파일 읽기 : " + checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE));
+            Log.i(TAG, "3.네트워크   : " + checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE));
+            Log.i(TAG, "4 구글 계정: " + checkSelfPermission(Manifest.permission.GET_ACCOUNTS));
+            Log.i(TAG, "5 인텐트: " + checkSelfPermission(Manifest.permission.INTERNET));
+            Log.i(TAG, "6 폰정보: " + checkSelfPermission(Manifest.permission.READ_PHONE_STATE));
+            Log.i(TAG, "7 웨이크 락: " + checkSelfPermission(Manifest.permission.WAKE_LOCK));
+            Log.i(TAG, "8 파일로케이션: " + checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION));
+            Log.i(TAG, "9 SMS: " + checkSelfPermission(Manifest.permission.READ_SMS));
+
+            checkPermission();
+        }
+
     }
 
     @Override
@@ -268,15 +287,9 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             navHeaderUserEmail.setText(user.getUseremail());
         }
 
-        if(!Compare.isEmpty(user.getProfileimgurl())){
-            Glide.with(MomMainActivity.this)
-                    .load(user.getProfileimgurl())
-                    .asBitmap().transform(new CropCircleTransformation(this))
-                    .into(navHeaderImage);
-        }
-
         //강사정보 셋팅
         getInstructorInfo();
+
     }
 
 
@@ -446,9 +459,87 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         });
     }
 
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void checkPermission() {
+        //현재 퍼미션..
+
+        Log.i(TAG,"퍼미션 체크를 합니다--------------------------------------------------");
+
+        // Should we show an explanation?
+            /*if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // Explain to the user why we need to write the permission.
+                Toast.makeText(this, "외부 스토리지 파일 권한사용체크" + "", Toast.LENGTH_SHORT).show();
+            }*/
+            /*
+                    Log.i(TAG, "1 : " + checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE));
+                    Log.i(TAG, "2 : " + checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE));
+                    Log.i(TAG, "3 : " + checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE));
+                    Log.i(TAG, "4 : " + checkSelfPermission(Manifest.permission.GET_ACCOUNTS));
+                    Log.i(TAG, "5 : " + checkSelfPermission(Manifest.permission.INTERNET));
+                    Log.i(TAG, "6 : " + checkSelfPermission(Manifest.permission.READ_PHONE_STATE));
+                    Log.i(TAG, "7 : " + checkSelfPermission(Manifest.permission.WAKE_LOCK));
+                    Log.i(TAG, "8 : " + checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION));
+                    Log.i(TAG, "9 : " + checkSelfPermission(Manifest.permission.READ_SMS));
+
+             */
+        //1.핸드폰 사진저장 및 일기
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)  != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                ) {
+            requestPermissions(
+                    new String[]{
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    }, MY_PERMISSION_REQUEST_STORAGE);
+            Log.e(TAG, "permission deny");
+        }
+
+        //2.구글계정사용
+        if(checkSelfPermission(Manifest.permission.GET_ACCOUNTS)  != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(
+                    new String[]{
+                            Manifest.permission.GET_ACCOUNTS
+                    }, MY_PERMISSION_REQUEST_STORAGE);
+        }
+
+        //3.전화번호부
+/*        if(checkSelfPermission(Manifest.permission.READ_PHONE_STATE)  != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(
+                    new String[]{
+                            Manifest.permission.READ_PHONE_STATE
+                    }, MY_PERMISSION_REQUEST_STORAGE);
+        }*/
+
+        //4.폰상태
+        if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)  != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    }, MY_PERMISSION_REQUEST_STORAGE);
+        }
+
+        //5.전화번호
+        if(checkSelfPermission(Manifest.permission.READ_SMS)  != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(
+                    new String[]{
+                            Manifest.permission.READ_SMS
+                    }, MY_PERMISSION_REQUEST_STORAGE);
+        }
+
+
+    }
+
+
+
+
     public void OnClickHeader(View v){
         switch (v.getId()){
             case R.id.mom_hd_mk:
+
+                VeteranToast.makeToast(getApplicationContext(),"퍼미션",Toast.LENGTH_SHORT).show();
+
+
                 break;
             case R.id.hd_bell:
                 Intent intenti = new Intent(this, AlramActivity.class);
@@ -795,21 +886,10 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
     protected void onResume() {
         super.onResume();
 
-        Log.i(TAG,"onResume 1");
-
         if(!Compare.isEmpty(RealFilePath)){
             Log.i(TAG,"onResume 2");
             navHeaderImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             navHeaderImage.setImageBitmap(photo);
-        }else{
-            Log.i(TAG,"onResume 3");
-            if(!Compare.isEmpty(user.getProfileimgurl())){
-                Log.i(TAG,"onResume 4");
-                Glide.with(MomMainActivity.this)
-                        .load(user.getProfileimgurl())
-                        .asBitmap().transform(new CropCircleTransformation(this))
-                        .into(navHeaderImage);
-            }
         }
 
 
@@ -1045,14 +1125,13 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
             final File readFile = new File(RealFilePath);
 
-            navHeaderImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            navHeaderImage.setImageBitmap(photo);
-
             sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.fromFile(copyFile)));
             out.flush();
             out.close();
 
             //이미지 업로드
+            navHeaderImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            navHeaderImage.setImageBitmap(bitmap);
             Log.d(TAG,"User Upload End===================================================================");
             UserTRService userTRService = new UserTRService(this,user);
             userTRService.updateUserImage(String.valueOf(user.getUid()),fileName,RealFilePath);
@@ -1069,5 +1148,10 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         }
     }
 
+    @OnClick(R.id.im_batch)
+    public void im_batch(){
+        PubActivity pubActivity = new PubActivity(this,user,user.getUid());
+        pubActivity.showDialog();
+    }
 
 }

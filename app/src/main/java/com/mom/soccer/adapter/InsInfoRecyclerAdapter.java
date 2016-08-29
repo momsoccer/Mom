@@ -1,18 +1,22 @@
 package com.mom.soccer.adapter;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.common.Compare;
+import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dataDto.InsInfoVo;
+import com.mom.soccer.mission.MissionCommon;
 
 import java.util.List;
 
@@ -21,11 +25,11 @@ import java.util.List;
  */
 public class InsInfoRecyclerAdapter extends RecyclerView.Adapter<InsInfoRecyclerAdapter.InsInfoItemViewHoder> {
 
-    Context context;
+    Activity activity;
     List<InsInfoVo> infoVoList;
 
-    public InsInfoRecyclerAdapter(Context context, List<InsInfoVo> infoVoList) {
-        this.context = context;
+    public InsInfoRecyclerAdapter(Activity activity, List<InsInfoVo> infoVoList) {
+        this.activity = activity;
         this.infoVoList = infoVoList;
     }
 
@@ -40,14 +44,16 @@ public class InsInfoRecyclerAdapter extends RecyclerView.Adapter<InsInfoRecycler
         final InsInfoVo vo = infoVoList.get(position);
 
         if(!Compare.isEmpty(vo.getProfileimgurl())){
-            Glide.with(context)
+            Glide.with(activity)
                     .load(vo.getProfileimgurl())
+                    .asBitmap().transform(new RoundedCornersTransformation(activity,10,5))
                     .into(holder.insImage);
         }
 
         if(!Compare.isEmpty(vo.getEmblem())){
-            Glide.with(context)
+            Glide.with(activity)
                     .load(vo.getEmblem())
+                    .asBitmap().transform(new RoundedCornersTransformation(activity,10,5))
                     .into(holder.teamImage);
         }
 
@@ -66,6 +72,15 @@ public class InsInfoRecyclerAdapter extends RecyclerView.Adapter<InsInfoRecycler
         holder.tx_pubwordpoint.setText(String.valueOf(vo.getPubwordpoint()));
         holder.tx_pubpasspoint.setText(String.valueOf(vo.getPubpasspoint()));
         holder.tx_teampasspoint.setText(String.valueOf(vo.getTeampasspoint()));
+        holder.btnchoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.putExtra(MissionCommon.INS_OBJECT,vo);
+                activity.setResult(activity.RESULT_OK,intent);
+                activity.finish();
+            }
+        });
 
 
     }
@@ -96,6 +111,7 @@ public class InsInfoRecyclerAdapter extends RecyclerView.Adapter<InsInfoRecycler
         public TextView  tx_teampasspoint;
         public TextView  tx_pubpasspoint;
         public CardView cardview;
+        public Button btnchoose;
 
         public InsInfoItemViewHoder(View view) {
             super(view);
@@ -119,6 +135,7 @@ public class InsInfoRecyclerAdapter extends RecyclerView.Adapter<InsInfoRecycler
             tx_teampasspoint = (TextView) view.findViewById(R.id.teampasspoint);
             tx_pubpasspoint = (TextView) view.findViewById(R.id.pubpasspoint);
             cardview = (CardView) view.findViewById(R.id.cardview);
+            btnchoose = (Button) view.findViewById(R.id.btnchoose);
 
         }
     }

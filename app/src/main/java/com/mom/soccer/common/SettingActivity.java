@@ -26,9 +26,10 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         addPreferencesFromResource(R.xml.setting_layout);
 
         LinearLayout root = (LinearLayout)findViewById(android.R.id.list).getParent().getParent().getParent();
+
         Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
-        root.addView(bar, 0); // insert at top
         root.setBackgroundColor(getResources().getColor(R.color.mom_color2));
+        root.addView(bar, 0); // insert at top
 
         bar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

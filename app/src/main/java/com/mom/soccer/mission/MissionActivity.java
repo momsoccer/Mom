@@ -29,8 +29,6 @@ import com.mom.soccer.retrofitdao.PointService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
 
-import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +78,7 @@ public class MissionActivity extends AppCompatActivity {
     @Bind(R.id.btn_refresh)
     Button btn_refresh;
 
-    DiscreteSeekBar discreteSeekBar1;
+   //DiscreteSeekBar discreteSeekBar1;
 
 
 
@@ -227,6 +225,7 @@ public class MissionActivity extends AppCompatActivity {
                         );
                         mFlippableStack.setAdapter(mPageAdapter);
 
+                        /*
                         discreteSeekBar1 = (DiscreteSeekBar) findViewById(R.id.discrete1);
                         discreteSeekBar1.setMin(0);
                         //discreteSeekBar1.setProgress(NUMBER_OF_FRAGMENTS-1);
@@ -293,6 +292,7 @@ public class MissionActivity extends AppCompatActivity {
                                 return true;
                             }
                         });
+                        */
                     }
                 }else{
                     mFlippableStack.setVisibility(View.GONE);

@@ -19,7 +19,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.MediaController;
 import android.widget.Toast;
@@ -85,6 +84,7 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
     private static final int REQUEST_GOOGLE_PLAY_SERVICES = 0;
     private static final int REQUEST_ACCOUNT_PICKER = 2;
     private static final int REQUEST_AUTHORIZATION = 3;
+    private static final int REQUEST_RESOLVE_ERROR = 1001;
 
     public static final String REQUEST_AUTHORIZATION_INTENT = "com.mom.soccer.RequestAuth";
     public static final String REQUEST_AUTHORIZATION_INTENT_PARAM = "com.mom.soccer.RequestAuth.param";
@@ -103,9 +103,11 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_review_layout);
         ButterKnife.bind(this);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        getSupportActionBar().setTitle(getString(R.string.mission_upload_start));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        //getSupportActionBar().setTitle(getString(R.string.mission_upload_start));
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
@@ -175,10 +177,10 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
     @OnClick(R.id.btn_upload)
     public void uploadVideo(){
 
-        if(!uploadPossibility){
+/*        if(!uploadPossibility){
             VeteranToast.makeToast(getApplicationContext(),getString(R.string.need_google_auth),Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
 
         if (mFileUri != null) {
             final Intent uploadIntent = new Intent(this, UploadService.class);
@@ -319,8 +321,12 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
                             connectionResult.getErrorCode(),
                             connectionResult.toString()));
             try {
-                connectionResult.startResolutionForResult(this, 0);
+
+                connectionResult.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
+
             } catch (IntentSender.SendIntentException e) {
+                mGoogleApiClient.connect();
+                Log.i(TAG,"구글 에러로 다시 접속을 한다");
                 Log.e(TAG, e.toString(), e);
             }
         }else{

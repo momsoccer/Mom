@@ -18,6 +18,7 @@
         card_view:cardElevation="2dp"
         android:orientation="vertical"
         card_view:contentPadding="3dp"
+        card_view:cardBackgroundColor="@color/mom_color1"
         >
 
         <LinearLayout
@@ -38,6 +39,7 @@
                     android:layout_height="match_parent" />
 
                 <TextView
+                    android:id="@+id/frflag"
                     android:text="@string/friend_req_text"
                     android:textColor="@color/color6"
                     android:textSize="10sp"
@@ -73,7 +75,7 @@
                     android:layout_marginTop="2dp"
                     android:id="@+id/colorBorder"
                     android:background="@drawable/card_rectangle"
-                    android:layout_width="10dp"
+                    android:layout_width="5dp"
                     android:layout_height="40dp"
                     />
 

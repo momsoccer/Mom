@@ -48,6 +48,9 @@ public class FeedBackDataVo {
                 ", change_creationdate='" + change_creationdate + '\'' +
                 ", level=" + level +
                 ", totalscore=" + totalscore +
+                ", videoaddr='" + videoaddr + '\'' +
+                ", toname='" + toname + '\'' +
+                ", teamname='" + teamname + '\'' +
                 ", queryRow=" + queryRow +
                 ", orderbytype='" + orderbytype + '\'' +
                 '}';

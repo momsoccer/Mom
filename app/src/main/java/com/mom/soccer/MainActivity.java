@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseMessaging.getInstance().subscribeToTopic("news");
 
-
         if (!Compare.isEmpty(user.getUseremail())){
             Log.d(TAG,"로그인 유저입니다.. 메인 화면으로 이동합니다");
             Intent intent = new Intent(MainActivity.this, MomMainActivity.class); //유저라면 메인 화면으로 이동시킨다

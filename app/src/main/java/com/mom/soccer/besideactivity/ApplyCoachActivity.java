@@ -1,6 +1,5 @@
 package com.mom.soccer.besideactivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -13,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -170,11 +168,12 @@ public class ApplyCoachActivity extends AppCompatActivity {
         ins_career4 = (EditText) findViewById(R.id.ins_career4);
         ins_career5 = (EditText) findViewById(R.id.ins_career5);
 
-        TelephonyManager telManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        String phoneNumber = telManager.getLine1Number();
+        //TelephonyManager telManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        //String phoneNumber = telManager.getLine1Number();
 
         ins_name.setText(user.getUsername());
-        ins_phone.setText(phoneNumber);
+
+        //ins_phone.setText(phoneNumber);
 
         if(!Compare.isEmpty(user.getProfileimgurl())) {
             Glide.with(ApplyCoachActivity.this)

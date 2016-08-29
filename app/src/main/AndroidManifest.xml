@@ -51,10 +51,14 @@
         <!-- 기기셋팅 관련 -->
         <activity
             android:name=".common.SettingVideoUploadActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".common.SettingActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
 
         <!-- FireBase Cloud Message -->
         <service android:name=".fcmtoken.MyFirebaseMessagingService">
@@ -112,7 +116,9 @@
 
         <activity
             android:name=".mission.ReviewActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity android:name=".test.TestActivity" />
 
         <service
