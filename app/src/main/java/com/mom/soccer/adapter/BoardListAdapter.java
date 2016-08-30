@@ -14,15 +14,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.CropCircleTransformation;
 import com.mom.soccer.dto.Board;
+import com.mom.soccer.dto.ServerResult;
+import com.mom.soccer.dto.User;
+import com.mom.soccer.retrofitdao.BoardService;
+import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by sungbo on 2016-08-01.
@@ -35,6 +46,13 @@ public class BoardListAdapter extends BaseAdapter {
     private List<Board> boardList = new ArrayList<Board>();
     private int currentUid = 0;
 
+    private int writeuid = 0;
+    private int usermissionid = 0;
+    private User user;
+    private int missionuid = 0;
+    private int boardid = 0;
+    private int i = 0;
+
     static class BoardHolder{
         YouTubeThumbnailView thumb;
         ImageView image_userimg;
@@ -44,11 +62,13 @@ public class BoardListAdapter extends BaseAdapter {
         ImageView    btnHam;
     }
 
-    public BoardListAdapter(Activity activity, List<Board> boardList,int uid) {
+    public BoardListAdapter(Activity activity, List<Board> boardList,int uid,User user
+    ) {
         this.activity = activity;
         this.boardList = boardList;
         this.currentUid = uid;
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.user= user;
     }
 
     @Override
@@ -72,6 +92,12 @@ public class BoardListAdapter extends BaseAdapter {
         BoardHolder boardHolder;
 
         final Board board = boardList.get(position);
+        writeuid = board.getWriteuid();
+        usermissionid = board.getUsermissionid();
+        missionuid = board.getUid();
+        boardid = board.getBoardid();
+        i  = position;
+
 
         if(convertView==null){
             currentRow = inflater.inflate(R.layout.board_list_item_layout, parent, false);
@@ -137,12 +163,62 @@ public class BoardListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 PopupMenu p = new PopupMenu(activity,view); //
-                activity.getMenuInflater().inflate(R.menu.feedback_pop_menu, p.getMenu());
+                activity.getMenuInflater().inflate(R.menu.board_menu, p.getMenu());
                 // 이벤트 처리
                 p.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(activity, "팝업메뉴 이벤트 처리 - "+item.getTitle(), Toast.LENGTH_SHORT).show();
+
+                        switch (item.getOrder()){
+                            case 101:
+                                if(writeuid == currentUid){
+                                    WaitingDialog.showWaitingDialog(activity,false);
+                                    //자기가 쓴글 삭제할 수 있음
+                                    BoardService boardService = ServiceGenerator.createService(BoardService.class,activity,user);
+                                    Call<ServerResult> c = boardService.deleteBoard(boardid);
+                                    c.enqueue(new Callback<ServerResult>() {
+                                        @Override
+                                        public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                                            WaitingDialog.cancelWaitingDialog();
+                                            if(response.isSuccessful()){
+
+                                                /*
+                                                VeteranToast.makeToast(activity,activity.getString(R.string.board_delete_msg), Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(activity,BoardMainActivity.class);
+                                                intent.putExtra("usermissionid",usermissionid);
+                                                intent.putExtra("missionuid",missionuid);
+                                                activity.startActivity(intent);
+                                                */
+
+                                                boardList.remove(i);
+                                                notifyDataSetChanged();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<ServerResult> call, Throwable t) {
+                                            WaitingDialog.cancelWaitingDialog();
+                                            t.printStackTrace();
+                                        }
+                                    });
+                                }else{
+                                    new MaterialDialog.Builder(activity)
+                                            .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                            .title(R.string.mom_diaalog_alert)
+                                            .titleColor(activity.getResources().getColor(R.color.color6))
+                                            .content(R.string.board_caustion)
+                                            .contentColor(activity.getResources().getColor(R.color.color6))
+                                            .positiveText(R.string.mom_diaalog_confirm)
+                                            .show();
+                                }
+
+                                break;
+
+                            case 102:
+                                VeteranToast.makeToast(activity,"준비중입니다", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+
                         return false;
                     }
                 });
@@ -155,10 +231,8 @@ public class BoardListAdapter extends BaseAdapter {
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = activity.getMenuInflater();
-        //위에서 만들었던 xml 파일의 리소스아이디값을 넘겨줍니다.
-        inflater.inflate(R.menu.feedback_pop_menu, menu);
+        inflater.inflate(R.menu.board_menu, menu);
         return true;
     }
 }

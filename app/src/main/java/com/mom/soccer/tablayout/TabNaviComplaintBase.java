@@ -18,6 +18,7 @@ import com.mom.soccer.bottommenu.SearchActivity;
 import com.mom.soccer.common.SettingActivity;
 import com.mom.soccer.ins.InsDashboardActivity;
 import com.mom.soccer.momactivity.MomMainActivity;
+import com.mom.soccer.pubactivity.Param;
 
 import butterknife.Bind;
 
@@ -86,6 +87,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
 
                 Intent intent = new Intent(context,InsDashboardActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(Param.FRAGMENT_COUNT,0);
                 context.startActivity(intent);
 /*                if (context instanceof Activity) {
                     ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
@@ -120,6 +122,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
             public void onClick(View view) {
                 Intent intent = new Intent(context,PlayerMainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(Param.FRAGMENT_COUNT,0);
                 context.startActivity(intent);
 
             }

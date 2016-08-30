@@ -1,5 +1,6 @@
 package com.mom.soccer.retrofitdao;
 
+import com.mom.soccer.dataDto.FeedDataVo;
 import com.mom.soccer.dataDto.InsInfoVo;
 import com.mom.soccer.dataDto.MainTypeListVo;
 import com.mom.soccer.dataDto.UserLevelDataVo;
@@ -41,4 +42,6 @@ public interface DataService {
     @GET("/api/data/getUserLevelDataList")
     Call<List<UserLevelDataVo>> getUserLevelDataList(@Query("uid") int uid);
 
+    @GET("/api/data/getFeedData")
+    Call<FeedDataVo> getFeedData(@Query("insid") int insid);
 }

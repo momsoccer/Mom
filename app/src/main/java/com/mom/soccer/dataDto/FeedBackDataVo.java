@@ -23,6 +23,7 @@ public class FeedBackDataVo {
     private String videoaddr;
     private String toname;
     private String teamname;
+    private String content;
 
     //쿼리를 위한
     private int queryRow;
@@ -54,6 +55,14 @@ public class FeedBackDataVo {
                 ", queryRow=" + queryRow +
                 ", orderbytype='" + orderbytype + '\'' +
                 '}';
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getTeamname() {

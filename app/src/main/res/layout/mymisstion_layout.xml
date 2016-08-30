@@ -136,7 +136,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/my_mission_subject"
                 android:textColor="@color/color6"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -184,67 +184,86 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:id="@+id/linearLayout"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <ImageView
+                        android:layout_marginLeft="10dp"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/usermission_iv_hart"
+                        android:src="@drawable/ic_white_hart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/usermission_tx_hart"
+                        android:text="0"
+                        android:layout_marginLeft="35dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="7dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/usermission_iv_hart" />
 
 
-                <ImageView
-                    android:id="@+id/usermission_iv_hart"
-                    android:src="@drawable/ic_white_hart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <ImageView
+                        android:layout_marginLeft="15dp"
+                        android:id="@+id/usermission_iv_comment"
+                        android:src="@drawable/coment_ic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/usermission_iv_hart"
+                        android:layout_marginStart="56dp" />
 
-                <TextView
-                    android:id="@+id/usermission_tx_hart"
-                    android:text="0"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/color6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/usermission_tx_comment"
+                        android:text="0"
+                        android:textSize="16sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="110dp"
+                        android:layout_centerVertical="true"
+                        />
 
+                    <Button
+                        android:id="@+id/btnReqfeed"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="90dp"
+                        android:text="@string/mission_feedback_btn"
+                        android:textSize="10sp"
+                        android:layout_width="75dp"
+                        android:layout_height="35dp"
+                        style="@style/btnStylePaprika"
+                        android:onClick="reqBtnClick"
+                        />
 
-                <ImageView
-                    android:layout_marginLeft="15dp"
-                    android:id="@+id/usermission_iv_comment"
-                    android:src="@drawable/coment_ic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/usermission_tx_comment"
-                    android:text="0"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/color6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:id="@+id/btnReqfeed"
-                    android:layout_marginLeft="105dp"
-                    android:text="@string/mission_feedback_btn"
-                    android:textSize="10sp"
-                    android:layout_width="75dp"
-                    android:layout_height="35dp"
-                    style="@style/btnStylePaprika"
-                    android:onClick="reqBtnClick"
-                    />
-
-                <Button
-                    android:id="@+id/btnReqEval"
-                    android:layout_marginLeft="5dp"
-                    android:text="@string/mission_eval_btn"
-                    android:textSize="10sp"
-                    android:layout_width="75dp"
-                    android:layout_height="35dp"
-                    style="@style/btnStylePaprika"
-                    android:onClick="reqBtnClick"
-                    />
+                    <Button
+                        android:id="@+id/btnReqEval"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/mission_eval_btn"
+                        android:textSize="10sp"
+                        android:layout_width="75dp"
+                        android:layout_height="35dp"
+                        style="@style/btnStylePaprika"
+                        android:onClick="reqBtnClick"
+                        />
+                </RelativeLayout>
             </LinearLayout>
 
 
@@ -265,7 +284,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/user_mission_pass_title"
                     android:textColor="@color/color6"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -284,7 +303,7 @@
                     android:background="@color/mom_color1"
                     />
 
-                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/li_feedback_history"
@@ -303,7 +322,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/my_mission_feedback_subject"
                     android:textColor="@color/color6"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -331,25 +350,25 @@
             android:layout_height="1dp"
             android:background="@color/line_color1" />
 
-    <LinearLayout
-        android:id="@+id/li_no_data_found"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:gravity="center"
-        >
-
-        <TextView
-            android:text="@string/mission_user_video"
-            android:textSize="14sp"
-            android:textColor="@color/color6"
-            android:textStyle="bold"
+        <LinearLayout
+            android:id="@+id/li_no_data_found"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
             android:gravity="center"
-            />
+            >
+
+            <TextView
+                android:text="@string/mission_user_video"
+                android:textSize="14sp"
+                android:textColor="@color/color6"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                />
 
         </LinearLayout>
 
@@ -361,23 +380,32 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:gravity="left|center_vertical"
             >
 
-            <TextView
-                android:id="@+id/tx_main_mission_subject"
-                android:text="@string/default_mission_subject"
-                android:textColor="@color/color6"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
-            <ImageButton
-                android:id="@+id/btnMainVideo"
-                android:background="@drawable/btn_video_list_click"
-                android:layout_marginLeft="100dp"
-                android:layout_width="22dp"
-                android:layout_height="22dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/tx_main_mission_subject"
+                    android:text="@string/default_mission_subject"
+                    android:textColor="@color/color6"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageButton
+                    android:id="@+id/btnMainVideo"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ic_format_line_spacing_white_24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
 
         </LinearLayout>
 

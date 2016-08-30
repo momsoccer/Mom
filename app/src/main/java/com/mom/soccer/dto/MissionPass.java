@@ -21,14 +21,96 @@ public class MissionPass {
     private String change_creationdate;
     private String change_updatedate;
 
+    private String evaltype;
+    private int cashpoint;
+
     //non DB
+    private int level;
     private String insname;
     private String username;
     private String insimge;
     private String userimge;
     private String passgrade;
+    private String missionPassFlag;
+    private String teamname;
+    private String missionname;
+    private String uservideo;
+    private String missionvideo;
+    private int totalscore;
 
     public MissionPass() {
+    }
+
+    public int getTotalscore() {
+        return totalscore;
+    }
+
+    public void setTotalscore(int totalscore) {
+        this.totalscore = totalscore;
+    }
+
+    public String getUservideo() {
+        return uservideo;
+    }
+
+    public void setUservideo(String uservideo) {
+        this.uservideo = uservideo;
+    }
+
+    public String getMissionvideo() {
+        return missionvideo;
+    }
+
+    public void setMissionvideo(String missionvideo) {
+        this.missionvideo = missionvideo;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public String getMissionPassFlag() {
+        return missionPassFlag;
+    }
+
+    public void setMissionPassFlag(String missionPassFlag) {
+        this.missionPassFlag = missionPassFlag;
+    }
+
+    public String getTeamname() {
+        return teamname;
+    }
+
+    public void setTeamname(String teamname) {
+        this.teamname = teamname;
+    }
+
+    public String getMissionname() {
+        return missionname;
+    }
+
+    public void setMissionname(String missionname) {
+        this.missionname = missionname;
+    }
+
+    public int getCashpoint() {
+        return cashpoint;
+    }
+
+    public void setCashpoint(int cashpoint) {
+        this.cashpoint = cashpoint;
+    }
+
+    public String getEvaltype() {
+        return evaltype;
+    }
+
+    public void setEvaltype(String evaltype) {
+        this.evaltype = evaltype;
     }
 
     public String getPassgrade() {
@@ -182,10 +264,14 @@ public class MissionPass {
                 ", inscomment='" + inscomment + '\'' +
                 ", change_creationdate='" + change_creationdate + '\'' +
                 ", change_updatedate='" + change_updatedate + '\'' +
+                ", evaltype='" + evaltype + '\'' +
+                ", cashpoint=" + cashpoint +
                 ", insname='" + insname + '\'' +
                 ", username='" + username + '\'' +
                 ", insimge='" + insimge + '\'' +
                 ", userimge='" + userimge + '\'' +
+                ", passgrade='" + passgrade + '\'' +
+                ", missionPassFlag='" + missionPassFlag + '\'' +
                 '}';
     }
 }

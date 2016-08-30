@@ -207,6 +207,7 @@ public class MissionMainActivity extends AppCompatActivity {
     /*feedback*/
     private List<FeedbackHeader> feedbackHeaders;
 
+
     @Bind(R.id.feedback_recyclerview)
     CardRecyclerView cardRecyclerView;
 
@@ -221,6 +222,7 @@ public class MissionMainActivity extends AppCompatActivity {
     RecyclerView passrecyclerview;
     PassListAdapter passListAdapter;
     List<MissionPass> missionPasses = new ArrayList<>();
+    private String missionPassFlag;
 
     @Bind(R.id.li_pass_history)
     LinearLayout li_pass_history;
@@ -481,6 +483,7 @@ public class MissionMainActivity extends AppCompatActivity {
                             view_l2.setVisibility(View.GONE);
                             im_clear_marck.setVisibility(View.VISIBLE);
                             btnReqEval.setText(R.string.user_mission_y);
+                            missionPassFlag = "Y";
                         }else if(userMission.getPassflag().equals("P")){
 
                             img_missiontab.setVisibility(View.GONE);
@@ -491,12 +494,14 @@ public class MissionMainActivity extends AppCompatActivity {
                             im_clear_marck.setVisibility(View.GONE);
 
                             btnReqEval.setText(R.string.user_mission_p);
+                            missionPassFlag = "P";
 
                         }else if(userMission.getPassflag().equals("N")){
                             img_missiontab.setVisibility(View.GONE);
                             tx_main_usermission.setText(R.string.user_mission_n);
                             im_clear_marck.setVisibility(View.GONE);
                             btnReqEval.setText(R.string.mission_eval_btn);
+                            missionPassFlag = "N";
                         }
 
 
@@ -785,12 +790,16 @@ public class MissionMainActivity extends AppCompatActivity {
 
                 if(userMission.getPassflag().equals("Y")){
                     new MaterialDialog.Builder(this)
+                            .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                            .title(R.string.mom_diaalog_alert)
                             .content(R.string.user_mission_pass_msg)
                             .positiveText(R.string.mom_diaalog_confirm)
                             .widgetColor(getResources().getColor(R.color.enabled_red))
                             .show();
                 }else if(userMission.getPassflag().equals("P")){
                     new MaterialDialog.Builder(this)
+                            .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                            .title(R.string.mom_diaalog_pass_title_ing)
                             .content(R.string.user_mission_progress_msg)
                             .positiveText(R.string.mom_diaalog_confirm)
                             .widgetColor(getResources().getColor(R.color.enabled_red))
@@ -808,17 +817,11 @@ public class MissionMainActivity extends AppCompatActivity {
                                 public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
 
                                     if(USER_TEAM_ID==0){
-
-                                        if(which==0){  //다른팀강사
                                             Intent mintent = new Intent(MissionMainActivity.this,FeedBackInsListActivity.class);
                                             startActivityForResult(mintent,REQUEST_USERMISSION_PASS_CODE);
-                                        }else if(which==1){  //mom
-
-                                        }
-
                                     }else{
                                         if(which==0){  //자기 팀 강사
-
+                                            missionPass("myteam","save",feedbackInfo);
                                         }else if(which==1){  //다른팀 강사
                                             Intent mintent = new Intent(MissionMainActivity.this,FeedBackInsListActivity.class);
                                             startActivityForResult(mintent,REQUEST_USERMISSION_PASS_CODE);
@@ -906,22 +909,25 @@ public class MissionMainActivity extends AppCompatActivity {
 
     public void missionPass(String passType,String trtype,InsInfoVo insinfor){
 
-        if(passType.equals("another")){
+        MissionPass query = new MissionPass();
+        query.setUid(user.getUid());
+        query.setMissionid(userMission.getMissionid());
+        query.setUsermissionid(userMission.getUsermissionid());
+        query.setStatus("REQUEST");
 
+        if(passType.equals("another")){
+            query.setEvaltype("N");
+            query.setInstructorid(insinfor.getInstructorid());
+        }else{
+            query.setEvaltype("Y");
+            query.setInstructorid(insInfoVo.getInstructorid());
         }
 
         if(trtype.equals("save")){
+
             WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
+
             MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getApplicationContext(),user);
-
-            MissionPass query = new MissionPass();
-            query.setUid(user.getUid());
-            query.setInstructorid(insinfor.getInstructorid());
-            query.setMissionid(userMission.getMissionid());
-            query.setUsermissionid(userMission.getUsermissionid());
-            query.setStatus("REQUEST");
-
-            Log.i(TAG,"query : " + query.toString());
 
             Call<ServerResult> c = service.saveUserMissionPass(query);
             c.enqueue(new Callback<ServerResult>() {
@@ -929,7 +935,30 @@ public class MissionMainActivity extends AppCompatActivity {
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                     WaitingDialog.cancelWaitingDialog();
                     if(response.isSuccessful()){
-                        applyMissionPassMessage("S");
+
+                        ServerResult result = response.body();
+                        if(result.getCount()==0){
+                            new MaterialDialog.Builder(MissionMainActivity.this)
+                                    .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                    .title(R.string.feedback_lack)
+                                    .titleColor(getResources().getColor(R.color.color6))
+                                    .content(R.string.feedback_lack_msg)
+                                    .contentColor(getResources().getColor(R.color.color6))
+                                    .positiveText(R.string.mom_diaalog_confirm)
+                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                            Intent intent = new Intent(MissionMainActivity.this, PointMainActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    })
+                                    .negativeText(R.string.mom_diaalog_cancel)
+                                    .show();
+                            return;
+                        }else{
+                            applyMissionPassMessage("S");
+                        }
+
                     }else{
                         applyMissionPassMessage("N");
                     }
@@ -1176,13 +1205,10 @@ public class MissionMainActivity extends AppCompatActivity {
             }
         });
 
-
-
         feed_video = (RadioButton) dialog.getCustomView().findViewById(R.id.feed_Video);
         feed_word = (RadioButton) dialog.getCustomView().findViewById(R.id.feed_word);
 
         radioGroup = (RadioGroup) dialog.getCustomView().findViewById(R.id.feed_RadioGroup);
-
 
         positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
         dialog.show();
@@ -1320,7 +1346,7 @@ public class MissionMainActivity extends AppCompatActivity {
 
                             missionPasses = response.body();
 
-                            passListAdapter = new PassListAdapter(activity,missionPasses,user);
+                            passListAdapter = new PassListAdapter(activity,missionPasses,user,missionPassFlag,mission);
                             passrecyclerview.setHasFixedSize(true);
                             passrecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                             passrecyclerview.setAdapter(passListAdapter);

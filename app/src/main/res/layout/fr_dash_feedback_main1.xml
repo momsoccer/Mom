@@ -21,15 +21,6 @@
         android:gravity="center_horizontal"
         >
 
-        <TextView
-            android:id="@+id/no_feed_text"
-            android:text="@string/feedback_feed_back_no_data"
-            android:textColor="@color/color6"
-            android:textStyle="bold"
-            android:textSize="12sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
         <android.support.v7.widget.RecyclerView
             android:layout_gravity="center_horizontal"
             android:id="@+id/feedback_req_recyclerview"
@@ -39,6 +30,7 @@
             />
 
     </LinearLayout>
+
 
     <!-- SLIDING LAYOUT -->
     <LinearLayout
@@ -50,46 +42,14 @@
         android:focusable="false"
         android:id="@+id/dragView">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/bg_screen3"
-            >
-
-            <TextView
-                android:text="피드백 대쉬라인"
-                android:textColor="@color/color6"
-                android:textStyle="bold"
-                android:textSize="12sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
+        <include layout="@layout/bar_feed_sliding" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/bg_screen2"
+            android:background="@color/mom_color1"
             >
-
-            <TextView
-                android:text="리싸이클뷰"
-                android:textColor="@color/color6"
-                android:textStyle="bold"
-                android:textSize="12sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/no_feed_text_list"
-                android:text="@string/feedback_feed_back_no_data_result"
-                android:textColor="@color/color6"
-                android:textStyle="bold"
-                android:textSize="12sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
             <android.support.v7.widget.RecyclerView
                 android:layout_gravity="center_horizontal"
@@ -98,10 +58,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/mom_color1"
                 />
-
-
         </LinearLayout>
 
     </LinearLayout>
-
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

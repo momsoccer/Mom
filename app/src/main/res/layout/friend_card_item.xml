@@ -18,7 +18,7 @@
         card_view:cardElevation="2dp"
         android:orientation="vertical"
         card_view:contentPadding="3dp"
-        card_view:cardBackgroundColor="@color/mom_color1"
+        card_view:cardBackgroundColor="@color/mom_color3"
         >
 
         <LinearLayout
@@ -59,12 +59,14 @@
             </LinearLayout>
 
             <ImageView
+                android:layout_marginTop="2dp"
                 android:background="@drawable/card_rectangle"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 />
 
             <LinearLayout
+                android:layout_marginTop="2dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,7 +91,7 @@
                 <TextView
                     android:layout_marginLeft="3dp"
                     android:id="@+id/username"
-                    android:text="유유유유유로"
+                    android:text="유저명"
                     android:textSize="10sp"
                     android:textColor="@color/color6"
                     android:layout_width="70dp"
@@ -97,6 +99,14 @@
                     android:maxLines="1"
                     android:maxLength="8"
                     />
+
+                <TextView
+                    android:layout_marginLeft="2dp"
+                    android:text="@string/score_title"
+                    android:textColor="@color/color6"
+                    android:textSize="8sp"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:layout_marginLeft="3dp"

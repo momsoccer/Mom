@@ -20,6 +20,7 @@
 
     <string name="member_pass">시작하기</string>
 
+
     <string name="preparation">기능 준비 중입니다</string>
 
     <string name="valid_useremail">이메일 형식이 맞지 않습니다</string>
@@ -202,7 +203,7 @@
 
     <string name="mission_feedback_btn">피드백요청</string>
     <string name="mission_eval_btn">심사요청</string>
-
+    <string name="mission_eval_btn_cancel">요청취소</string>
     <string name="mission_user_video">등록된 영상이 없습니다</string>
 
     <!--layout text-->
@@ -233,6 +234,12 @@
     <!--board-->
     <string name="board_createbtn">작성</string>
     <string name="board_validation_word_empty">내용을 입력해주세요</string>
+
+    <string name="board_delete">댓글삭제</string>
+    <string name="board_report">신고하기</string>
+
+    <string name="board_delete_msg">댓글이 삭제 되었습니다</string>
+    <string name="board_caustion">자신이 작성한 글만 삭제가 가능합니다</string>
 
     <!--nav menu-->
     <string name="nav_header_name">닉네임</string>
@@ -319,6 +326,7 @@
     <string name="mom_diaalog_title_append">앱 종료</string>
 
     <string name="mom_diaalog_pass_title">심사요청</string>
+    <string name="mom_diaalog_pass_title_ing">심사중</string>
     <string name="mom_diaalog_pass_apply_title">심사요청 접수</string>
     <string name="mom_diaalog_pass_apply_msg">미션 심사 요청이 접수 되었습니다</string>
     <string name="mom_diaalog_pass_apply_msg1">심사 통과 획득 점수 : </string>
@@ -328,6 +336,12 @@
 
     <string name="mom_diaalog_pass_apply_f_msg">미션 심사 요청중 문제가 발생되었습니다 \n 다시 시도 해보세요</string>
 
+    <string name="mom_diaalog_pass_eval">미션을 통과하신 심사정보는 삭제 할 수 없습니다</string>
+    <string name="mom_diaalog_pass_eval_re">불합격 정보를 삭제 하셔도 포인트는 환급 되지 않습니다 \n심사정보를 삭제 하시겠습니까?</string>
+
+    <string name="mom_diaalog_pass_apply_cancel_msg">심사취소</string>
+
+    <string name="mom_diaalog_pass_apply_msg4">요청을 취소하시면 포인트가 환급됩니다 \n심사요청을 취소 하시겠습니까?</string>
 
     <!--사진업로드 다이얼로그-->
     <string name="mom_diaalog_photo_title">사진설정</string>
@@ -463,6 +477,8 @@
     <string name="my_fragment_title2">피드백</string>
     <string name="my_fragment_title3">친구</string>
 
+
+
     <string name="my_book_nodata_found">등록하신 관심 영상이 없습니다</string>
 
     <string name="feedback_request_user_request">요청</string>
@@ -491,6 +507,8 @@
 
     <string name="feedback_type_re">피드백 요청</string>
     <string name="feedback_type_an">피드백 답변</string>
+    <string name="feedback_content_type">질의/답변</string>
+
 
     <!--friend-->
     <string name="friend_req_text">친구요청</string>
@@ -504,10 +522,23 @@
     <string name="friend_progressing">친구요청을 보낸 상태입니다</string>
     <string name="friend_delete">친구끈기를 했습니다</string>
 
+    <string name="friend_no_data">친구가 없습니다</string>
+    <string name="friend__req_no_data">친구를 신청한 사람이 없습니다</string>
 
     <!--main ranking-->
     <string name="nodata_found_team">소속된 강사팀이 없습니다</string>
     <string name="nodata_found_friend">친구가 없습니다</string>
 
+    <string name="missionpass_get_grade">점 획득가능(심사통과시)</string>
+    <string name="missionpass_get_seq">회</string>
+    <string name="missionpass_delete">심사정보를 삭제 했습니다</string>
+
+    <string name="score_title">경험치</string>
+
+    <!--instruction menu-->
+    <string name="ins_pass_title">미션심사</string>
+    <string name="ins_common_title">기타</string>
+    <string name="ins_sliding_title">답변 완료 : </string>
+    <string name="ins_sliding_non_title">답변 미완료 : </string>
 
 </resources>

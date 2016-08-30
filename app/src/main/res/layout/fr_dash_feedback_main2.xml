@@ -19,17 +19,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:gravity="center"
-            android:text="Main Content"
-            android:clickable="true"
-            android:focusable="false"
-            android:focusableInTouchMode="true"
-            android:textSize="16sp" />
+        <android.support.v7.widget.RecyclerView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/pass_req_recyclerview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/mom_color1"
+            />
+
     </FrameLayout>
 
     <!-- SLIDING LAYOUT -->
@@ -42,28 +39,17 @@
         android:focusable="false"
         android:id="@+id/dragView">
 
+        <include layout="@layout/bar_mission_pass_sliding" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/follow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:gravity="center_vertical|right"
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp"/>
+            android:orientation="horizontal"
+            android:background="@color/mom_color1"
+            >
 
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-        </ListView>
 
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.mom.soccer.ins;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,7 @@ import com.mom.soccer.R;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.pubactivity.Param;
 
 import butterknife.ButterKnife;
 
@@ -29,11 +31,19 @@ public class InsDashboardActivity extends AppCompatActivity {
     private PrefUtil prefUtil;
     Instructor instructor;
 
+    private Intent intent;
+    private int pageCall = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_ins_dashboard_layout);
         ButterKnife.bind(this);
+
+        intent = getIntent();
+        pageCall = intent.getExtras().getInt(Param.FRAGMENT_COUNT);
+
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
@@ -50,6 +60,8 @@ public class InsDashboardActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.dash_viewpager);
 
+        viewPager.setCurrentItem(pageCall);
+
         insDashPagerAdapter pagerAdapter = new insDashPagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(pagerAdapter);
@@ -65,10 +77,10 @@ public class InsDashboardActivity extends AppCompatActivity {
 
     public class insDashPagerAdapter extends FragmentStatePagerAdapter {
 
-        final int PAGE_COUNT = 2;
+        final int PAGE_COUNT = 3;
 
         private String tabTitles[] = new String[] {
-               "피드백","강사메뉴"
+                getString(R.string.my_fragment_title2),getString(R.string.ins_pass_title),getString(R.string.ins_common_title)
         };
 
         public insDashPagerAdapter(FragmentManager fm) {

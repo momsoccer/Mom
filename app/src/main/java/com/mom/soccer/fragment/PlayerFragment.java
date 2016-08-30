@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mom.soccer.R;
@@ -20,9 +20,9 @@ import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.FriendService;
-import com.mom.soccer.retrofitdao.MissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +42,13 @@ public class PlayerFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
     private int mPage;
     private User user = new User();
+    private SlidingUpPanelLayout mLayout;
 
-    LinearLayout li_layout_page1,li_layout_page2,li_layout_page3;
-
+    ImageView slidingimg;
     RecyclerView recyclerView;
     FriendListAdapter recyclerAdapter,irecyclerAdapter;
 
-    RecyclerView recyclerview,friendi_recyclerview,mission_recyclerview;
+    RecyclerView recyclerview,friendi_recyclerview;
     List<FriendReqVo> friendReqVos = new ArrayList<>();
     TextView friend_no_data,friend_req_data;
 
@@ -80,64 +80,62 @@ public class PlayerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fr_player_fragment, container, false);
-
-        li_layout_page1 = (LinearLayout) view.findViewById(R.id.li_layout_page1);
-        li_layout_page2 = (LinearLayout) view.findViewById(R.id.li_layout_page2);
-        li_layout_page3 = (LinearLayout) view.findViewById(R.id.li_layout_page3);
-
-        friend_no_data = (TextView) view.findViewById(R.id.friend_no_data);
-        friend_req_data = (TextView) view.findViewById(R.id.friend_req_data);
+        View view = null;
 
         if(mPage==1){
-            li_layout_page1.setVisibility(View.VISIBLE);
-            li_layout_page2.setVisibility(View.GONE);
-            li_layout_page3.setVisibility(View.GONE);
-            friend_no_data.setVisibility(View.GONE);
-            friend_req_data.setVisibility(View.GONE);
-
-
-            //UserMissionAdapter
-
-        }else if(mPage==2){
-            li_layout_page1.setVisibility(View.GONE);
-            li_layout_page2.setVisibility(View.VISIBLE);
-            li_layout_page3.setVisibility(View.GONE);
-            friend_no_data.setVisibility(View.GONE);
-            friend_req_data.setVisibility(View.GONE);
-
-            mission_recyclerview = (RecyclerView) view.findViewById(R.id.mission_recyclerview);
-
-
-            MissionService missionService = ServiceGenerator.createService(MissionService.class,getContext(),user);
-            Call<List<Mission>> c = missionService.allMissionList();
-            c.enqueue(new Callback<List<Mission>>() {
+            view = inflater.inflate(R.layout.fr_player_fragment1, container, false);
+            slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
+            mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
+            mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
                 @Override
-                public void onResponse(Call<List<Mission>> call, Response<List<Mission>> response) {
-                    if(response.isSuccessful()){
-                        missions = response.body();
-                        userMissionAdapter = new UserMissionAdapter(getContext(),missions);
-                        mission_recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
-                        mission_recyclerview.setAdapter(userMissionAdapter);
+                public void onPanelSlide(View panel, float slideOffset) {}
 
-                    }else{
-
+                @Override
+                public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                    if(newState.toString().equals("COLLAPSED")){
+                        slidingimg.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
+                    }else if(newState.toString().equals("EXPANDED")){
+                        slidingimg.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
                     }
-                }
-
-                @Override
-                public void onFailure(Call<List<Mission>> call, Throwable t) {
-
                 }
             });
 
+        }else if(mPage==2){
+            view = inflater.inflate(R.layout.fr_player_fragment2, container, false);
+            slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
+            mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
+            mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+                @Override
+                public void onPanelSlide(View panel, float slideOffset) {}
 
+                @Override
+                public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                    if(newState.toString().equals("COLLAPSED")){
+                        slidingimg.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
+                    }else if(newState.toString().equals("EXPANDED")){
+                        slidingimg.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
+                    }
+                }
+            });
 
         }else if(mPage==3){
-            li_layout_page1.setVisibility(View.GONE);
-            li_layout_page2.setVisibility(View.GONE);
-            li_layout_page3.setVisibility(View.VISIBLE);
+            view = inflater.inflate(R.layout.fr_player_fragment3, container, false);
 
+            slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
+            mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
+            mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+                @Override
+                public void onPanelSlide(View panel, float slideOffset) {}
+
+                @Override
+                public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                    if(newState.toString().equals("COLLAPSED")){
+                        slidingimg.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
+                    }else if(newState.toString().equals("EXPANDED")){
+                        slidingimg.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
+                    }
+                }
+            });
             recyclerView = (RecyclerView) view.findViewById(R.id.friend_recyclerview);
             friendi_recyclerview = (RecyclerView) view.findViewById(R.id.friendi_recyclerview);
             friendReqList();
@@ -158,11 +156,6 @@ public class PlayerFragment extends Fragment {
                 if(response.isSuccessful()){
                     friendReqVos = response.body();
 
-                    if(friendReqVos.size()==0){
-                        friend_req_data.setVisibility(View.VISIBLE);
-                    }else{
-                        friend_req_data.setVisibility(View.GONE);
-                    }
 
                     recyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
                     recyclerView.getItemAnimator().setAddDuration(300);
@@ -198,15 +191,6 @@ public class PlayerFragment extends Fragment {
                 WaitingDialog.cancelWaitingDialog();
                 if (response.isSuccessful()) {
                     friendReqVos = response.body();
-
-                    Log.i(TAG, "정보는 : " + friendReqVos.toString());
-
-                    if(friendReqVos.size()==0){
-                        friend_no_data.setVisibility(View.VISIBLE);
-                    }else{
-                        friend_no_data.setVisibility(View.GONE);
-                    }
-
 
                     friendi_recyclerview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
                     friendi_recyclerview.getItemAnimator().setAddDuration(300);

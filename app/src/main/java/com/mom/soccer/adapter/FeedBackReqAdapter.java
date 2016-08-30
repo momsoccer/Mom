@@ -40,7 +40,7 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
     Instructor instructor;
 
     private String videoAddr;
-
+    private String youtubeMissionVideo;
     private FeedbackHeader paramFeed;
 
     public FeedBackReqAdapter(Activity activity, List<FeedbackHeader> feedbackHeaders, User user, Instructor instructor) {
@@ -65,6 +65,7 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
         paramFeed = feed;
 
         videoAddr = feed.getVideoaddr();
+        youtubeMissionVideo = feed.getYoutubeaddr();
 
         if (!Compare.isEmpty(feed.getProfileimgurl())) {
             Glide.with(activity)
@@ -104,6 +105,18 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
             }
         });
 
+        holder.mission_video_ThumbnailView.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+                youTubeThumbnailLoader.setVideo(feed.getYoutubeaddr());
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+
+            }
+        });
+
         holder.btnfeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +136,15 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
             }
         });
 
+        holder.mission_video_ThumbnailView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity,YoutubePlayerActivity.class);
+                intent.putExtra(Common.YOUTUBEVIDEO,youtubeMissionVideo);
+                activity.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -134,7 +156,7 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
 
         ImageView  userimg;
         TextView   subject,username,teamname,reqtype,point,content,date;
-        YouTubeThumbnailView  user_video_ThumbnailView;
+        YouTubeThumbnailView  user_video_ThumbnailView,mission_video_ThumbnailView;
         Button btnfeed;
         public CardView cardview;
 
@@ -152,6 +174,9 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
             user_video_ThumbnailView = (YouTubeThumbnailView) itemView.findViewById(R.id.user_video_ThumbnailView);
             btnfeed = (Button) itemView.findViewById(R.id.btnfeed);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
+            //mission_video= (ImageView) itemView.findViewById(R.id.mission_video);
+
+            mission_video_ThumbnailView = (YouTubeThumbnailView) itemView.findViewById(R.id.mission_video_ThumbnailView);
 
         }
     }

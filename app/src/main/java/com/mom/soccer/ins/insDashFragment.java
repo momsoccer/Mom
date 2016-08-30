@@ -9,23 +9,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.FeedBackEndAdapter;
 import com.mom.soccer.adapter.FeedBackReqAdapter;
+import com.mom.soccer.adapter.PassListInsAdapter;
 import com.mom.soccer.dataDto.FeedBackDataVo;
+import com.mom.soccer.dataDto.FeedDataVo;
 import com.mom.soccer.dto.FeedbackHeader;
 import com.mom.soccer.dto.Instructor;
+import com.mom.soccer.dto.MissionPass;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
+import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.FeedBackService;
+import com.mom.soccer.retrofitdao.MissionPassService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import retrofit2.Call;
@@ -56,7 +63,13 @@ public class insDashFragment extends Fragment {
     private List<FeedbackHeader> feedbackHeaders;
     private List<FeedBackDataVo> feedBackDataVos;
 
-    TextView no_feed_text,no_feed_text_list;
+    ImageView slidingimg;
+    TextView feedbackCount,feedbackNonCount;
+
+    //2번 페이지 심사관련
+    private RecyclerView pass_req_recyclerview;
+    private PassListInsAdapter passListInsAdapter;
+    private List<MissionPass> missionPasses;
 
 
     public static insDashFragment newInstance(int page, User user, Instructor ins){
@@ -75,12 +88,10 @@ public class insDashFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(getActivity());
         mPage = getArguments().getInt(ARG_PAGE);
         user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
         ins = (Instructor) getArguments().getSerializable(MissionCommon.INS_OBJECT);
-        Log.i(TAG,"onCreate : ==========================" + mPage);
-        Log.i(TAG,"user : " + user.toString());
-        Log.i(TAG,"ins : " + ins.toString());
     }
 
     @Override
@@ -88,16 +99,42 @@ public class insDashFragment extends Fragment {
 
         View view = null;
 
-        /****************************************************
-         * 피드백 답변 페이지
-         * ***************************************************/
-        if(mPage==1){
+        if(mPage==1){  //피드백 심사
             view = inflater.inflate(R.layout.fr_dash_feedback_main1, container, false);
-
+            slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
             feedback_req_recyclerview = (RecyclerView) view.findViewById(R.id.feedback_req_recyclerview);
-            no_feed_text = (TextView) view.findViewById(R.id.no_feed_text);
 
             FeedReqList(view,"req");
+            feedbackrecyclerview = (RecyclerView) view.findViewById(R.id.feedbackrecyclerview);
+
+            mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
+            mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+                @Override
+                public void onPanelSlide(View panel, float slideOffset) {
+
+                }
+
+                @Override
+                public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                    if(newState.toString().equals("COLLAPSED")){
+                        slidingimg.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
+                    }else if(newState.toString().equals("EXPANDED")){
+                        slidingimg.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
+                    }
+                }
+            });
+
+            FeedReqList(view,"req_end");
+
+
+            feedbackCount = (TextView) view.findViewById(R.id.feedbackCount);
+            feedbackNonCount = (TextView) view.findViewById(R.id.feedbackNonCount);
+            //카운터 구하기
+            FeedCount();
+
+        }else if(mPage == 2 ){ //심사
+            view = inflater.inflate(R.layout.fr_dash_feedback_main2, container, false);
+            slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
             mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
             mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
                 @Override
@@ -107,35 +144,72 @@ public class insDashFragment extends Fragment {
 
                 @Override
                 public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                    Log.i(TAG, "onPanelStateChanged " + newState);
+                    if(newState.toString().equals("COLLAPSED")){
+                        slidingimg.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
+                    }else if(newState.toString().equals("EXPANDED")){
+                        slidingimg.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
+                    }
                 }
             });
 
+            //피드내용
+            pass_req_recyclerview = (RecyclerView) view.findViewById(R.id.pass_req_recyclerview);
+            getMissionPassList();
 
-            mLayout.setFadeOnClickListener(new View.OnClickListener() {
+        }else if(mPage == 3 ) {//기타 강사 메뉴
+            view = inflater.inflate(R.layout.fr_dash_feedback_main3, container, false);
+            slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
+            mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
+            mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
                 @Override
-                public void onClick(View view) {
-                    mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                public void onPanelSlide(View panel, float slideOffset) {
+                    Log.i(TAG, "onPanelSlide, offset " + slideOffset);
+                }
+
+                @Override
+                public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                    if(newState.toString().equals("COLLAPSED")){
+                        slidingimg.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
+                    }else if(newState.toString().equals("EXPANDED")){
+                        slidingimg.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
+                    }
                 }
             });
 
-            feedbackrecyclerview = (RecyclerView) view.findViewById(R.id.feedbackrecyclerview);
-            no_feed_text_list = (TextView) view.findViewById(R.id.no_feed_text_list);
 
-            FeedReqList(view,"req_end");
-
-            /****************************************************
-             * 강사 영상 페이지
-             * ***************************************************/
-        }else if(mPage == 2 ){
-            view = inflater.inflate(R.layout.fr_dash_feedback_main2, container, false);
+            //내용
 
 
         }
-
         return view;
     }
 
+    //피드백 총 카운트구하기
+    public void FeedCount(){
+        WaitingDialog.showWaitingDialog(getActivity(),false);
+        DataService dataService = ServiceGenerator.createService(DataService.class,getContext(),user);
+        Call<FeedDataVo> c = dataService.getFeedData(ins.getInstructorid());
+        c.enqueue(new Callback<FeedDataVo>() {
+            @Override
+            public void onResponse(Call<FeedDataVo> call, Response<FeedDataVo> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    FeedDataVo vo = response.body();
+                    feedbackCount.setText(String.valueOf(vo.getCompletecount()));
+                    feedbackNonCount.setText(String.valueOf(vo.getIncompletecount()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FeedDataVo> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+    }
+
+
+    //피드백 답변전,후 자료
     public void FeedReqList(View view,String type){
 
         if(type.equals("req")){  //피드백 요청
@@ -157,7 +231,6 @@ public class insDashFragment extends Fragment {
                         if(feedbackHeaders.size()!=0){
 
                             feedback_req_recyclerview.setVisibility(View.VISIBLE);
-                            no_feed_text.setVisibility(View.GONE);
 
                             feedBackReqAdapter = new FeedBackReqAdapter(getActivity(),feedbackHeaders,user,ins);
                             feedback_req_recyclerview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
@@ -173,7 +246,6 @@ public class insDashFragment extends Fragment {
                             feedback_req_recyclerview.setAdapter(alphaAdapter);
                         }else{
                             feedback_req_recyclerview.setVisibility(View.GONE);
-                            no_feed_text.setVisibility(View.VISIBLE);
                         }
 
                     }else{
@@ -206,10 +278,6 @@ public class insDashFragment extends Fragment {
                         feedBackDataVos = response.body();
 
                         if(feedBackDataVos.size()!=0){
-                            Log.i(TAG,"데이터가 왔습니다...레이아웃을 그려주세요");
-                            feedbackrecyclerview.setVisibility(View.VISIBLE);
-                            no_feed_text_list.setVisibility(View.GONE);
-
                             feedBackEndAdapter = new FeedBackEndAdapter(getActivity(),feedBackDataVos);
                             feedbackrecyclerview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
                             feedbackrecyclerview.getItemAnimator().setAddDuration(300);
@@ -224,7 +292,6 @@ public class insDashFragment extends Fragment {
                             feedbackrecyclerview.setAdapter(alphaAdapter);
                         }else{
                             feedbackrecyclerview.setVisibility(View.GONE);
-                            no_feed_text_list.setVisibility(View.VISIBLE);
                         }
 
                     }else{
@@ -240,14 +307,54 @@ public class insDashFragment extends Fragment {
                 }
             });
         }
-
-
-
     }
 
+    /*
 
+        private RecyclerView pass_req_recyclerview;
+    private PassListInsAdapter passListInsAdapter;
+    private List<MissionPass> missionPasses;
 
+     */
 
+    //페이지2 강사심사...
+    public void getMissionPassList(){
+        MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getContext(),user);
 
+        MissionPass query  = new MissionPass();
+        query.setInstructorid(ins.getInstructorid());
+        query.setStatus("REQUEST");
+
+        Call<List<MissionPass>> c = service.getMissionPassList(query);
+        c.enqueue(new Callback<List<MissionPass>>() {
+            @Override
+            public void onResponse(Call<List<MissionPass>> call, Response<List<MissionPass>> response) {
+                if(response.isSuccessful()){
+                    missionPasses = response.body();
+
+                    Log.i(TAG,"미션 패스 응답 값은 : " + missionPasses.toString());
+
+                    passListInsAdapter = new PassListInsAdapter(getActivity(),missionPasses,ins);
+                    pass_req_recyclerview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                    pass_req_recyclerview.getItemAnimator().setAddDuration(300);
+                    pass_req_recyclerview.getItemAnimator().setRemoveDuration(300);
+                    pass_req_recyclerview.getItemAnimator().setMoveDuration(300);
+                    pass_req_recyclerview.getItemAnimator().setChangeDuration(300);
+
+                    pass_req_recyclerview.setHasFixedSize(true);
+                    pass_req_recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+                    AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(passListInsAdapter);
+                    alphaAdapter.setDuration(500);
+                    pass_req_recyclerview.setAdapter(alphaAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MissionPass>> call, Throwable t) {
+
+            }
+        });
+
+    }
 
 }

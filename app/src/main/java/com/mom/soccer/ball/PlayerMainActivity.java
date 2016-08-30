@@ -1,5 +1,6 @@
 package com.mom.soccer.ball;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +16,7 @@ import com.mom.soccer.R;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.fragment.PlayerFragment;
+import com.mom.soccer.pubactivity.Param;
 
 import butterknife.ButterKnife;
 
@@ -27,6 +29,9 @@ public class PlayerMainActivity extends AppCompatActivity {
 
     private User user;
     private PrefUtil prefUtil;
+    private Intent intent;
+
+    private int PageCall = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,11 @@ public class PlayerMainActivity extends AppCompatActivity {
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
+
+        intent = getIntent();
+        PageCall = intent.getExtras().getInt(Param.FRAGMENT_COUNT);
+
+        Log.i(TAG," 받은 값은 : " + PageCall);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.player_toolbar);
         setSupportActionBar(toolbar);
@@ -57,6 +67,9 @@ public class PlayerMainActivity extends AppCompatActivity {
         tabsStrip.setIndicatorColor(getResources().getColor(R.color.enabled_red));
         tabsStrip.setTextColor(getResources().getColor(R.color.color6));
         tabsStrip.setViewPager(viewPager);
+
+        viewPager.setCurrentItem(PageCall);
+
     }
 
 

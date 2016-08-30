@@ -19,12 +19,14 @@
         card_view:cardBackgroundColor="@color/mom_color3"
         >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_gravity="center"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
+                android:id="@+id/li_bi"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:gravity="center"
@@ -46,13 +48,23 @@
                     android:id="@+id/insimage"
                     android:src="@drawable/userimg"
                     android:layout_width="40dp"
-                    android:layout_height="40dp" />
+                    android:layout_height="40dp"
+                    />
 
                 <LinearLayout
                     android:layout_marginLeft="5dp"
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:id="@+id/insname"
+                        android:text="강사명"
+                        android:textSize="8sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/date"
@@ -62,94 +74,92 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:layout_marginTop="2dp"
-                        android:id="@+id/insname"
-                        android:text="강사명"
-                        android:textSize="10sp"
-                        android:textColor="@color/color6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginLeft="5dp"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
                     <TextView
-                        android:layout_marginTop="2dp"
                         android:id="@+id/status"
                         android:text="상태"
-                        android:textSize="10sp"
+                        android:textSize="8sp"
                         android:textColor="@color/color6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:layout_marginTop="2dp"
                         android:id="@+id/grade"
                         android:text="20점획득"
                         android:textSize="8sp"
                         android:textColor="@color/color6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
-
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/title_failuredisp"
-                        android:text="불합격사유"
-                        android:textSize="8sp"
-                        android:textColor="@color/enabled_red"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/failuredisp"
-                        android:textSize="10sp"
-                        android:textColor="@color/enabled_red"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="2"
-                        />
-
-                    <TextView
-                        android:id="@+id/title_comment"
-                        android:layout_marginTop="2dp"
-                        android:text="강사코멘트"
-                        android:textSize="8sp"
-                        android:textColor="@color/color6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_marginTop="2dp"
-                        android:id="@+id/incomment"
-                        android:textSize="10sp"
-                        android:textColor="@color/color6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="2"
-                        />
-
-                </LinearLayout>
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/cancelbtn"
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp"
-                android:text="심사취소"
-                android:textSize="10sp"
-                android:textColor="@color/color6"
-                style="@style/btnStylePaprika"
-                android:layout_width="330dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                />
-        </LinearLayout>
+            <ImageButton
+                android:layout_alignParentRight="true"
+                android:id="@+id/btnHam"
+                android:background="@color/mom_color3"
+                android:src="@drawable/ic_more_vert_white_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/li_bi"
+                >
+
+                <TextView
+                    android:id="@+id/title_failuredisp"
+                    android:text="불합격 사유"
+                    android:textSize="8sp"
+                    android:textColor="@color/enabled_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/failuredisp"
+                    android:textSize="8sp"
+                    android:textColor="@color/enabled_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:text=""
+                    />
+
+                <TextView
+                    android:id="@+id/title_comment"
+                    android:layout_marginTop="2dp"
+                    android:text="강사의 코멘트"
+                    android:textSize="8sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_marginTop="2dp"
+                    android:id="@+id/incomment"
+                    android:textSize="8sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    />
+            </LinearLayout>
+
+
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

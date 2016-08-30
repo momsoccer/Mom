@@ -494,8 +494,6 @@ public class MainMissionFragment extends Fragment {
                     Intent intent = new Intent(getContext(),MissionMainActivity.class);
                     intent.putExtra(MissionCommon.OBJECT,mission);
                     startActivityForResult(intent,REQUEST_MISSION_OPEN);
-                    //startActivity(intent);
-                    getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
                 }else{
                     WaitingDialog.cancelWaitingDialog();

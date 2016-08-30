@@ -25,4 +25,12 @@ public interface MissionPassService {
 
     @POST("/api/pass/getMissionPass")
     Call<MissionPass> getMissionPass(@Body MissionPass h);
+
+    @POST("/api/pass/deletePass")
+    Call<ServerResult> deletePass(@Body MissionPass h);
+
+    //강사 패스를 위함..
+    @POST("/api/pass/getMissionPassList")
+    Call<List<MissionPass>> getMissionPassList(@Body MissionPass h);
+
 }

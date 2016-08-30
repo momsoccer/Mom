@@ -17,14 +17,14 @@
         card_view:cardCornerRadius="5dp"
         card_view:cardElevation="5dp"
         card_view:contentPadding="5dp"
-        card_view:cardBackgroundColor="@color/mom_color2"
+        card_view:cardBackgroundColor="@color/mom_color3"
         >
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/mom_color1"
+            android:background="@color/mom_color3"
             >
 
             <LinearLayout
@@ -54,7 +54,7 @@
                         android:id="@+id/subject"
                         android:layout_marginTop="5dp"
                         android:text="Request subject"
-                        android:textSize="10sp"
+                        android:textSize="8dp"
                         android:maxLength="30"
                         android:textColor="@color/color6"
                         android:layout_width="180dp"
@@ -65,7 +65,7 @@
                         android:layout_marginTop="3dp"
                         android:text="Request userName"
                         android:textColor="@color/color6"
-                        android:textSize="10sp"
+                        android:textSize="8dp"
                         android:layout_width="180dp"
                         android:maxLength="30"
                         android:layout_height="13dp" />
@@ -74,7 +74,7 @@
                         android:id="@+id/teamname"
                         android:text="Request TeamName"
                         android:layout_marginTop="3dp"
-                        android:textSize="10sp"
+                        android:textSize="8dp"
                         android:textColor="@color/color6"
                         android:layout_width="180dp"
                         android:layout_height="13dp"
@@ -105,7 +105,7 @@
                         android:id="@+id/reqtype"
                         android:text="video request"
                         android:layout_marginTop="3dp"
-                        android:textSize="10sp"
+                        android:textSize="8dp"
                         android:textColor="@color/color6"
                         android:layout_width="100dp"
                         android:layout_height="13dp"
@@ -116,7 +116,7 @@
                         android:id="@+id/point"
                         android:text="video request"
                         android:layout_marginTop="3dp"
-                        android:textSize="10sp"
+                        android:textSize="8dp"
                         android:textColor="@color/color6"
                         android:layout_width="100dp"
                         android:layout_height="13dp"
@@ -154,20 +154,34 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:id="@+id/content"
-                    android:text="content"
-                    android:textColor="@color/color6"
-                    android:textSize="10sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@drawable/inputtext"
-                    />
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/ins_text_feed_q"
+                        android:textColor="@color/color6"
+                        android:textSize="8sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
 
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:id="@+id/content"
+                        android:text="content"
+                        android:textColor="@color/color6"
+                        android:textSize="8sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </LinearLayout>
             </LinearLayout>
 
 
@@ -179,10 +193,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <com.google.android.youtube.player.YouTubeThumbnailView
+                    android:id="@+id/mission_video_ThumbnailView"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/video_background"/>
+
                 <Button
+                    android:layout_gravity="center"
                     android:id="@+id/btnfeed"
+                    android:layout_marginLeft="5dp"
                     android:text="피드백작성"
-                    android:textSize="10sp"
+                    android:textSize="8dp"
                     style="@style/btnStylePaprika"
                     android:layout_width="match_parent"
                     android:layout_height="35sp" />

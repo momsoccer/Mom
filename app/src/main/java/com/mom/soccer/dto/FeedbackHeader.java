@@ -31,7 +31,7 @@ public class FeedbackHeader implements Serializable{
     private float   evalscore;
     private String description;
     private String typename;
-
+    private String youtubeaddr;
 
     //Line...
     private String type;
@@ -69,16 +69,26 @@ public class FeedbackHeader implements Serializable{
                 ", change_creationdate='" + change_creationdate + '\'' +
                 ", insprofileimgurl='" + insprofileimgurl + '\'' +
                 ", profileimgurl='" + profileimgurl + '\'' +
+                ", teamname='" + teamname + '\'' +
                 ", missionname='" + missionname + '\'' +
                 ", insname='" + insname + '\'' +
                 ", username='" + username + '\'' +
                 ", evalscore=" + evalscore +
                 ", description='" + description + '\'' +
                 ", typename='" + typename + '\'' +
+                ", youtubeaddr='" + youtubeaddr + '\'' +
                 ", type='" + type + '\'' +
                 ", videoaddr='" + videoaddr + '\'' +
                 ", feedbacklineid=" + feedbacklineid +
                 '}';
+    }
+
+    public String getYoutubeaddr() {
+        return youtubeaddr;
+    }
+
+    public void setYoutubeaddr(String youtubeaddr) {
+        this.youtubeaddr = youtubeaddr;
     }
 
     public int getFeedbackid() {

@@ -21,6 +21,7 @@ import com.mom.soccer.dto.FriendApply;
 import com.mom.soccer.dto.FriendReqVo;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.pubactivity.Param;
 import com.mom.soccer.retrofitdao.FriendService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -135,6 +136,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
                                 ServerResult result = response.body();
                                 Intent intent = new Intent(activity,PlayerMainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(Param.FRAGMENT_COUNT,3);
                                 activity.startActivity(intent);
                             }else{
 
@@ -165,6 +167,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
                                 ServerResult result = response.body();
                                 Intent intent = new Intent(activity,PlayerMainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(Param.FRAGMENT_COUNT,3);
                                 activity.startActivity(intent);
                             }else{
 
