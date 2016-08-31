@@ -19,7 +19,35 @@ public class TeamApply {
     private String change_creationdate;
     private String change_updatedate;
 
+    private int totalscore;
+    private int level;
+    private String userimge;
+
     public TeamApply(){}
+
+    public int getTotalscore() {
+        return totalscore;
+    }
+
+    public void setTotalscore(int totalscore) {
+        this.totalscore = totalscore;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public String getUserimge() {
+        return userimge;
+    }
+
+    public void setUserimge(String userimge) {
+        this.userimge = userimge;
+    }
 
     @Override
     public String toString() {

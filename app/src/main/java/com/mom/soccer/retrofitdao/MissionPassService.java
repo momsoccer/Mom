@@ -33,4 +33,8 @@ public interface MissionPassService {
     @POST("/api/pass/getMissionPassList")
     Call<List<MissionPass>> getMissionPassList(@Body MissionPass h);
 
+    //강사 심사한 내역들...지우게 하면 안됨
+    @POST("/api/pass/getMissionPassResultList")
+    Call<List<MissionPass>> getMissionPassResultList(@Body MissionPass h);
+
 }

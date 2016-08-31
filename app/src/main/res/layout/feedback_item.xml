@@ -10,7 +10,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/cardview"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
         android:orientation="vertical"
@@ -25,62 +25,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/mom_color3"
+            android:gravity="center"
             >
 
             <LinearLayout
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/userimg"
-                    android:layout_marginLeft="5dp"
-                    android:src="@drawable/userimg"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center_vertical"
-                    />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                >
 
                 <LinearLayout
-                    android:layout_marginLeft="5dp"
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/subject"
-                        android:layout_marginTop="5dp"
-                        android:text="Request subject"
-                        android:textSize="8dp"
-                        android:maxLength="30"
-                        android:textColor="@color/color6"
-                        android:layout_width="180dp"
-                        android:layout_height="13dp" />
-
-                    <TextView
-                        android:id="@+id/username"
-                        android:layout_marginTop="3dp"
-                        android:text="Request userName"
-                        android:textColor="@color/color6"
-                        android:textSize="8dp"
-                        android:layout_width="180dp"
-                        android:maxLength="30"
-                        android:layout_height="13dp" />
-
-                    <TextView
-                        android:id="@+id/teamname"
-                        android:text="Request TeamName"
-                        android:layout_marginTop="3dp"
-                        android:textSize="8dp"
-                        android:textColor="@color/color6"
-                        android:layout_width="180dp"
-                        android:layout_height="13dp"
-                        android:maxLength="30"
+                    <ImageView
+                        android:id="@+id/userimg"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/userimg"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
                         />
 
+                    <TextView
+                        android:id="@+id/level"
+                        android:text="0"
+                        android:textStyle="bold"
+                        android:textColor="@color/color6"
+                        android:gravity="center"
+                        android:background="@drawable/ic_levelmark"
+                        android:textSize="8sp"
+                        android:layout_width="18dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="-20dp"
+                        android:layout_marginLeft="26dp"
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -91,48 +71,64 @@
                     >
 
                     <TextView
-                        android:id="@+id/date"
-                        android:text="20150101"
-                        android:layout_marginTop="5dp"
-                        android:textSize="8sp"
+                        android:id="@+id/username"
+                        android:text="userName"
                         android:textColor="@color/color6"
-                        android:layout_width="100dp"
-                        android:layout_height="13dp"
+                        android:textSize="6sp"
+                        android:layout_width="wrap_content"
+                        android:maxLength="30"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/teamname"
+                        android:text="TeamName"
+                        android:textSize="6sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="30"
+                        />
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:text="2015년12월23일"
+                        android:textSize="6sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:maxLength="30"
                         />
 
                     <TextView
                         android:id="@+id/reqtype"
-                        android:text="video request"
-                        android:layout_marginTop="3dp"
-                        android:textSize="8dp"
+                        android:text="video"
+                        android:textSize="6sp"
                         android:textColor="@color/color6"
-                        android:layout_width="100dp"
-                        android:layout_height="13dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:maxLength="30"
                         />
 
                     <TextView
                         android:id="@+id/point"
-                        android:text="video request"
-                        android:layout_marginTop="3dp"
-                        android:textSize="8dp"
+                        android:text="500P"
+                        android:textSize="6sp"
                         android:textColor="@color/color6"
-                        android:layout_width="100dp"
-                        android:layout_height="13dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:maxLength="30"
                         />
 
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_marginTop="2dp"
-                android:layout_marginLeft="5dp"
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                >
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -141,75 +137,73 @@
 
                     <com.google.android.youtube.player.YouTubeThumbnailView
                         android:id="@+id/user_video_ThumbnailView"
-                        android:layout_marginTop="5dp"
-                        android:layout_width="100dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/video_background"/>
+                        android:layout_width="60dp"
+                        android:layout_height="45dp"
+                        android:background="@color/color8"
+                        />
 
                     <ImageView
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="-55dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginTop="-42dp"
                         android:src="@drawable/video_play_btn_white"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="15dp"
+                        android:layout_height="15dp" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:text="@string/ins_text_feed_q"
-                        android:textColor="@color/color6"
-                        android:textSize="8sp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        />
-
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:id="@+id/content"
-                        android:text="content"
-                        android:textColor="@color/color6"
-                        android:textSize="8sp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <com.google.android.youtube.player.YouTubeThumbnailView
+                        android:id="@+id/mission_video_ThumbnailView"
+                        android:layout_width="60dp"
+                        android:layout_height="45dp"
+                        android:background="@color/color8"
                         />
                 </LinearLayout>
+
             </LinearLayout>
 
-
             <LinearLayout
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="2dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/subject"
+                    android:text="Request subject"
+                    android:textSize="6sp"
+                    android:maxLength="30"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="@string/ins_text_feed_q"
+                    android:textColor="@color/color6"
+                    android:textSize="6sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
 
-                <com.google.android.youtube.player.YouTubeThumbnailView
-                    android:id="@+id/mission_video_ThumbnailView"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="100dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/video_background"/>
+                <TextView
+                    android:id="@+id/content"
+                    android:text="content"
+                    android:textColor="@color/color6"
+                    android:textSize="6sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
 
                 <Button
                     android:layout_gravity="center"
                     android:id="@+id/btnfeed"
-                    android:layout_marginLeft="5dp"
                     android:text="피드백작성"
-                    android:textSize="8dp"
+                    android:textSize="8sp"
                     style="@style/btnStylePaprika"
-                    android:layout_width="match_parent"
-                    android:layout_height="35sp" />
-
+                    android:layout_width="130dp"
+                    android:layout_height="20dp" />
             </LinearLayout>
 
         </LinearLayout>

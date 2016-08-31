@@ -32,6 +32,8 @@ public class FeedbackHeader implements Serializable{
     private String description;
     private String typename;
     private String youtubeaddr;
+    private int totalscore;
+    private int level;
 
     //Line...
     private String type;
@@ -49,6 +51,22 @@ public class FeedbackHeader implements Serializable{
 
     public FeedbackHeader(){
 
+    }
+
+    public int getTotalscore() {
+        return totalscore;
+    }
+
+    public void setTotalscore(int totalscore) {
+        this.totalscore = totalscore;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     @Override

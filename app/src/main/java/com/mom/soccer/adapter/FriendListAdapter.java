@@ -59,7 +59,6 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
     public void onBindViewHolder(FriendItemViewHoder holder, final int position) {
         final FriendReqVo data = manageList.get(position);
 
-        uid = data.getUid();
 
         if (!Compare.isEmpty(data.getProfileimgurl())) {
             Glide.with(activity)
@@ -190,7 +189,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             public void onClick(View view) {
                 Intent intent = new Intent(activity, MyPageActivity.class);
                 intent.putExtra("pageflag","friend");
-                intent.putExtra("frienduid",uid);
+                intent.putExtra("frienduid",data.getUid());
                 activity.startActivity(intent);
                 activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
             }

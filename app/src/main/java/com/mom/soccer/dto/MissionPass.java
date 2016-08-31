@@ -249,6 +249,8 @@ public class MissionPass {
         this.userimge = userimge;
     }
 
+
+
     @Override
     public String toString() {
         return "MissionPass{" +
@@ -266,12 +268,18 @@ public class MissionPass {
                 ", change_updatedate='" + change_updatedate + '\'' +
                 ", evaltype='" + evaltype + '\'' +
                 ", cashpoint=" + cashpoint +
+                ", level=" + level +
                 ", insname='" + insname + '\'' +
                 ", username='" + username + '\'' +
                 ", insimge='" + insimge + '\'' +
                 ", userimge='" + userimge + '\'' +
                 ", passgrade='" + passgrade + '\'' +
                 ", missionPassFlag='" + missionPassFlag + '\'' +
+                ", teamname='" + teamname + '\'' +
+                ", missionname='" + missionname + '\'' +
+                ", uservideo='" + uservideo + '\'' +
+                ", missionvideo='" + missionvideo + '\'' +
+                ", totalscore=" + totalscore +
                 '}';
     }
 }

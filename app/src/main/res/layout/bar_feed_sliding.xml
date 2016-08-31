@@ -33,7 +33,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent" />
+
                         <TextView
+                            android:text="@string/ins_sliding_feed_header_title"
+                            android:textSize="13sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_marginLeft="15dp"
                             android:text="@string/ins_sliding_title"
                             android:textSize="13sp"
                             android:textColor="@color/color6"

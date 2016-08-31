@@ -164,20 +164,69 @@
 
             </LinearLayout>
             <LinearLayout
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_marginTop="3dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 >
-                <Button
-                    android:id="@+id/resultbtn"
-                    android:gravity="center"
-                    android:text="@string/mission_pass_btn"
-                    android:textSize="8sp"
-                    style="@style/btnStylePaprika"
-                    android:layout_width="130dp"
-                    android:layout_height="20dp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/user_mission_pass_title1"
+                        android:textColor="@color/color6"
+                        android:textSize="6sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/f_content"
+                        android:text="불합격사유"
+                        android:textColor="@color/color6"
+                        android:textSize="6sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TextView
+                        android:text="@string/user_mission_pass_title2"
+                        android:textColor="@color/color6"
+                        android:textSize="6sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/comment"
+                        android:text="불합격사유"
+                        android:textColor="@color/color6"
+                        android:textSize="6sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/result_status"
+                    android:text="불합격"
+                    android:textColor="@color/color6"
+                    android:textSize="6sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
         </LinearLayout>

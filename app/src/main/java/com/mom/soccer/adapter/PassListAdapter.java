@@ -69,10 +69,8 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
     @Override
     public void onBindViewHolder(PassItemHolder holder, int position) {
 
-        MissionPass pass = passes.get(position);
+        final MissionPass pass = passes.get(position);
 
-        missionPass = pass;
-        i = position;
 
         if (!Compare.isEmpty(pass.getInsimge())) {
             Glide.with(activity)

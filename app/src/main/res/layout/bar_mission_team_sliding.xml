@@ -39,7 +39,7 @@
                             android:layout_height="match_parent" />
 
                         <TextView
-                            android:text="@string/ins_sliding_pass_header_title"
+                            android:text="@string/ins_sliding_team_header_title"
                             android:textSize="13sp"
                             android:textColor="@color/color6"
                             android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
 
                         <TextView
                             android:layout_marginLeft="15dp"
-                            android:text="@string/ins_sliding_pass_title"
+                            android:text="@string/ins_sliding_team_header_titl1"
                             android:textSize="13sp"
                             android:textColor="@color/color6"
                             android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
 
                         <TextView
                             android:id="@+id/feedbackCount"
-                            android:text="120"
+                            android:text="0"
                             android:textSize="13sp"
                             android:textColor="@color/enabled_red"
                             android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
 
                         <TextView
                             android:layout_marginLeft="10dp"
-                            android:text="@string/ins_sliding_pass_non_title"
+                            android:text="@string/ins_sliding_team_header_title2"
                             android:textSize="13sp"
                             android:textColor="@color/color6"
                             android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
 
                         <TextView
                             android:id="@+id/feedbackNonCount"
-                            android:text="10"
+                            android:text="0"
                             android:textSize="13sp"
                             android:textColor="@color/enabled_red"
                             android:layout_width="wrap_content"

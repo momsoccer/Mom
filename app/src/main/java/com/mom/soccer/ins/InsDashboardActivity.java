@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -44,6 +45,7 @@ public class InsDashboardActivity extends AppCompatActivity {
         intent = getIntent();
         pageCall = intent.getExtras().getInt(Param.FRAGMENT_COUNT);
 
+        Log.i(TAG,"페이지 새로 고침 변수 : "+pageCall);
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
@@ -59,14 +61,13 @@ public class InsDashboardActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.back_arrow);
 
         viewPager = (ViewPager) findViewById(R.id.dash_viewpager);
-
-        viewPager.setCurrentItem(pageCall);
-
         insDashPagerAdapter pagerAdapter = new insDashPagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(pagerAdapter);
 
         tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.dash_tabs);
+
+        viewPager.setCurrentItem(pageCall);
 
         //setting
         tabsStrip.setIndicatorColor(getResources().getColor(R.color.enabled_red));

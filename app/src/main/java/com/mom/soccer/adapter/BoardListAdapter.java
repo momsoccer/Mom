@@ -2,6 +2,7 @@ package com.mom.soccer.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
+import com.mom.soccer.board.BoardMainActivity;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.CropCircleTransformation;
 import com.mom.soccer.dto.Board;
@@ -47,11 +49,15 @@ public class BoardListAdapter extends BaseAdapter {
     private int currentUid = 0;
 
     private int writeuid = 0;
-    private int usermissionid = 0;
+
     private User user;
     private int missionuid = 0;
+    private int usermissionid = 0;
     private int boardid = 0;
     private int i = 0;
+
+    private int missionid;
+
 
     static class BoardHolder{
         YouTubeThumbnailView thumb;
@@ -93,9 +99,6 @@ public class BoardListAdapter extends BaseAdapter {
 
         final Board board = boardList.get(position);
         writeuid = board.getWriteuid();
-        usermissionid = board.getUsermissionid();
-        missionuid = board.getUid();
-        boardid = board.getBoardid();
         i  = position;
 
 
@@ -171,27 +174,27 @@ public class BoardListAdapter extends BaseAdapter {
 
                         switch (item.getOrder()){
                             case 101:
-                                if(writeuid == currentUid){
+                                //VeteranToast.makeToast(activity,"클릭한 것은 : " + board.getComment(),Toast.LENGTH_SHORT).show();
+
+                                if(board.getWriteuid() == currentUid){
                                     WaitingDialog.showWaitingDialog(activity,false);
                                     //자기가 쓴글 삭제할 수 있음
                                     BoardService boardService = ServiceGenerator.createService(BoardService.class,activity,user);
-                                    Call<ServerResult> c = boardService.deleteBoard(boardid);
+                                    Call<ServerResult> c = boardService.deleteBoard(board.getBoardid());
                                     c.enqueue(new Callback<ServerResult>() {
                                         @Override
                                         public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                                             WaitingDialog.cancelWaitingDialog();
                                             if(response.isSuccessful()){
 
-                                                /*
-                                                VeteranToast.makeToast(activity,activity.getString(R.string.board_delete_msg), Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(activity,BoardMainActivity.class);
-                                                intent.putExtra("usermissionid",usermissionid);
-                                                intent.putExtra("missionuid",missionuid);
+                                                intent.putExtra("usermissionid",board.getUsermissionid());
+                                                intent.putExtra("missionuid",board.getUid());
+                                                activity.finish();
                                                 activity.startActivity(intent);
-                                                */
 
-                                                boardList.remove(i);
-                                                notifyDataSetChanged();
+                                                //boardList.remove(i);
+                                                //notifyDataSetChanged();
                                             }
                                         }
 

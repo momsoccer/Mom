@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,6 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
         this.instructor = instructor;
     }
 
-
     @Override
     public FeedbackItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.feedback_item, null);
@@ -59,7 +59,7 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
     }
 
     @Override
-    public void onBindViewHolder(FeedbackItemHolder holder, int position) {
+    public void onBindViewHolder(final FeedbackItemHolder holder, int position) {
         final FeedbackHeader feed = feedbackHeaders.get(position);
 
         paramFeed = feed;
@@ -89,14 +89,27 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
             holder.reqtype.setText(activity.getString(R.string.feedback_type_word));
         }
 
+
+        holder.level.setText(String.valueOf(feed.getLevel()));
         holder.point.setText(feed.getCashpoint()+"P");
         holder.content.setText(feed.getContent());
         holder.date.setText(feed.getChange_creationdate());
 
         holder.user_video_ThumbnailView.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
             @Override
-            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
                 youTubeThumbnailLoader.setVideo(feed.getVideoaddr());
+                youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+                    @Override
+                    public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
+                        youTubeThumbnailLoader.release();
+                    }
+
+                    @Override
+                    public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+
+                    }
+                });
             }
 
             @Override
@@ -107,8 +120,19 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
 
         holder.mission_video_ThumbnailView.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
             @Override
-            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+            public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
                 youTubeThumbnailLoader.setVideo(feed.getYoutubeaddr());
+                youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+                    @Override
+                    public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
+                        youTubeThumbnailLoader.release();
+                    }
+
+                    @Override
+                    public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+
+                    }
+                });
             }
 
             @Override
@@ -120,8 +144,11 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
         holder.btnfeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity,FeedBackWrite.class);
-                intent.putExtra(MissionCommon.FEEDBACKHEADER,paramFeed);
+
+                //VeteranToast.makeToast(activity,"이름은 : " + feed.getContent(), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(activity,FeedBackWrite.class);
+                intent.putExtra(MissionCommon.FEEDBACKHEADER,feed);
+                Log.i("test","FEED : "+ feed.getContent());
                 activity.startActivity(intent);
             }
         });
@@ -131,7 +158,7 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity,YoutubePlayerActivity.class);
-                intent.putExtra(Common.YOUTUBEVIDEO,videoAddr);
+                intent.putExtra(Common.YOUTUBEVIDEO,feed.getVideoaddr());
                 activity.startActivity(intent);
             }
         });
@@ -140,7 +167,7 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity,YoutubePlayerActivity.class);
-                intent.putExtra(Common.YOUTUBEVIDEO,youtubeMissionVideo);
+                intent.putExtra(Common.YOUTUBEVIDEO,feed.getYoutubeaddr());
                 activity.startActivity(intent);
             }
         });
@@ -155,14 +182,14 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
     public class FeedbackItemHolder extends RecyclerView.ViewHolder {
 
         ImageView  userimg;
-        TextView   subject,username,teamname,reqtype,point,content,date;
+        TextView   subject,username,teamname,reqtype,point,content,date,level;
         YouTubeThumbnailView  user_video_ThumbnailView,mission_video_ThumbnailView;
         Button btnfeed;
         public CardView cardview;
 
         public FeedbackItemHolder(View itemView) {
             super(itemView);
-
+            level = (TextView) itemView.findViewById(R.id.level);
             userimg = (ImageView) itemView.findViewById(R.id.userimg);
             subject = (TextView) itemView.findViewById(R.id.subject);
             username = (TextView) itemView.findViewById(R.id.username);

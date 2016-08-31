@@ -26,6 +26,7 @@ import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
+import com.mom.soccer.pubactivity.Param;
 import com.mom.soccer.retrofitdao.FeedBackService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -171,6 +172,7 @@ public class FeedBackWrite extends AppCompatActivity {
                     if(result.getCount()==1){
                         //강사 화면으로 다시 이동해줍니다.
                         Intent intent = new Intent(FeedBackWrite.this,InsDashboardActivity.class);
+                        intent.putExtra(Param.FRAGMENT_COUNT,0);
                         finish();
                         startActivity(intent);
                     }

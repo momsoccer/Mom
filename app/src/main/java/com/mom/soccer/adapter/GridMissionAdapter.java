@@ -1,7 +1,6 @@
 package com.mom.soccer.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,9 +81,6 @@ public class GridMissionAdapter extends BaseAdapter implements YouTubeThumbnailV
 
         if(convertView==null){
             currentRow = inflater.inflate(layout, parent, false);
-
-            Log.i(TAG," 미션 명은 " + misstionVos.get(position).getMissionname());
-
             holder = new VideoHolder();
 
             holder.tx_missionname = (TextView) currentRow.findViewById(R.id.tx_missionname);

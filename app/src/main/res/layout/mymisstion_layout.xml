@@ -57,11 +57,11 @@
                 android:id="@+id/youtube_seed_frame_layout"
                 android:layout_margin="15dp"
                 android:background="@color/color8"
+                android:layout_centerHorizontal="true"
                 android:layout_width="400dp"
                 android:layout_height="230dp"
                 android:gravity="center"
                 android:layout_below="@+id/tx_main_mission_name"
-                android:layout_centerHorizontal="true"
                 >
 
 

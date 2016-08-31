@@ -1207,9 +1207,7 @@ public class MissionMainActivity extends AppCompatActivity {
 
         feed_video = (RadioButton) dialog.getCustomView().findViewById(R.id.feed_Video);
         feed_word = (RadioButton) dialog.getCustomView().findViewById(R.id.feed_word);
-
         radioGroup = (RadioGroup) dialog.getCustomView().findViewById(R.id.feed_RadioGroup);
-
         positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
         dialog.show();
         positiveAction.setEnabled(false); // disabled by default

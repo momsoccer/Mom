@@ -2,6 +2,7 @@ package com.mom.soccer.ins;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,16 +17,20 @@ import com.mom.soccer.R;
 import com.mom.soccer.adapter.FeedBackEndAdapter;
 import com.mom.soccer.adapter.FeedBackReqAdapter;
 import com.mom.soccer.adapter.PassListInsAdapter;
+import com.mom.soccer.adapter.PassResultListInsAdapter;
+import com.mom.soccer.adapter.TeamApplyAdapter;
 import com.mom.soccer.dataDto.FeedBackDataVo;
 import com.mom.soccer.dataDto.FeedDataVo;
 import com.mom.soccer.dto.FeedbackHeader;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.MissionPass;
+import com.mom.soccer.dto.TeamApply;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.FeedBackService;
 import com.mom.soccer.retrofitdao.MissionPassService;
+import com.mom.soccer.retrofitdao.TeamService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -53,12 +58,18 @@ public class insDashFragment extends Fragment {
     private Instructor ins = new Instructor();
     private SlidingUpPanelLayout mLayout;
 
-    private RecyclerView feedback_req_recyclerview;
+    private RecyclerView feedback_req_recyclerview,pass_req_recyclerview
+                          ,passRecyclerView,feedbackrecyclerview
+                        ,teamApplyRecyclerview,appRecyclerview;
+
     private FeedBackReqAdapter feedBackReqAdapter;
-
-    private RecyclerView feedbackrecyclerview;
-
     private FeedBackEndAdapter feedBackEndAdapter;
+    private PassListInsAdapter passListInsAdapter;
+    private PassResultListInsAdapter passResultListInsAdapter;
+
+    //팀원관련
+    private TeamApplyAdapter teamApplyAdapter, approvteamApplyAdapter;
+
 
     private List<FeedbackHeader> feedbackHeaders;
     private List<FeedBackDataVo> feedBackDataVos;
@@ -67,10 +78,8 @@ public class insDashFragment extends Fragment {
     TextView feedbackCount,feedbackNonCount;
 
     //2번 페이지 심사관련
-    private RecyclerView pass_req_recyclerview;
-    private PassListInsAdapter passListInsAdapter;
     private List<MissionPass> missionPasses;
-
+    private GridLayoutManager gaggeredGridLayoutManager;
 
     public static insDashFragment newInstance(int page, User user, Instructor ins){
 
@@ -132,6 +141,7 @@ public class insDashFragment extends Fragment {
             //카운터 구하기
             FeedCount();
 
+
         }else if(mPage == 2 ){ //심사
             view = inflater.inflate(R.layout.fr_dash_feedback_main2, container, false);
             slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
@@ -139,7 +149,6 @@ public class insDashFragment extends Fragment {
             mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
                 @Override
                 public void onPanelSlide(View panel, float slideOffset) {
-                    Log.i(TAG, "onPanelSlide, offset " + slideOffset);
                 }
 
                 @Override
@@ -156,6 +165,14 @@ public class insDashFragment extends Fragment {
             pass_req_recyclerview = (RecyclerView) view.findViewById(R.id.pass_req_recyclerview);
             getMissionPassList();
 
+            //심사총 자료
+            feedbackCount = (TextView) view.findViewById(R.id.feedbackCount);
+            feedbackNonCount = (TextView) view.findViewById(R.id.feedbackNonCount);
+            getPassData();
+
+            passRecyclerView = (RecyclerView) view.findViewById(R.id.passRecyclerView);
+            getPassResultData();
+
         }else if(mPage == 3 ) {//기타 강사 메뉴
             view = inflater.inflate(R.layout.fr_dash_feedback_main3, container, false);
             slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
@@ -163,7 +180,6 @@ public class insDashFragment extends Fragment {
             mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
                 @Override
                 public void onPanelSlide(View panel, float slideOffset) {
-                    Log.i(TAG, "onPanelSlide, offset " + slideOffset);
                 }
 
                 @Override
@@ -176,12 +192,92 @@ public class insDashFragment extends Fragment {
                 }
             });
 
+            teamApplyRecyclerview = (RecyclerView) view.findViewById(R.id.teamApplyRecyclerview);
+            appRecyclerview = (RecyclerView) view.findViewById(R.id.appRecyclerview);
+            getTeamApplyList();
+            getTeamMemberList();
 
-            //내용
+            feedbackCount = (TextView) view.findViewById(R.id.feedbackCount);
+            feedbackNonCount = (TextView) view.findViewById(R.id.feedbackNonCount);
 
-
+            getTeamCount();
         }
         return view;
+    }
+
+    public void getTeamApplyList(){
+
+        WaitingDialog.showWaitingDialog(getActivity(),false);
+        TeamService t = ServiceGenerator.createService(TeamService.class,getContext(),user);
+        Call<List<TeamApply>> c = t.getReqMember(ins.getInstructorid(),"REQUEST");
+        c.enqueue(new Callback<List<TeamApply>>() {
+            @Override
+            public void onResponse(Call<List<TeamApply>> call, Response<List<TeamApply>> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    List<TeamApply> applyList = response.body();
+
+
+                    teamApplyAdapter = new TeamApplyAdapter(getActivity(),applyList,ins);
+                    teamApplyRecyclerview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                    teamApplyRecyclerview.getItemAnimator().setAddDuration(300);
+                    teamApplyRecyclerview.getItemAnimator().setRemoveDuration(300);
+                    teamApplyRecyclerview.getItemAnimator().setMoveDuration(300);
+                    teamApplyRecyclerview.getItemAnimator().setChangeDuration(300);
+
+                    teamApplyRecyclerview.setHasFixedSize(true);
+                    gaggeredGridLayoutManager = new GridLayoutManager(getContext(),2);
+                    teamApplyRecyclerview.setLayoutManager(gaggeredGridLayoutManager);
+                    AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(teamApplyAdapter);
+                    alphaAdapter.setDuration(500);
+                    teamApplyRecyclerview.setAdapter(alphaAdapter);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TeamApply>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    public void getTeamMemberList(){
+
+        WaitingDialog.showWaitingDialog(getActivity(),false);
+        TeamService t = ServiceGenerator.createService(TeamService.class,getContext(),user);
+        Call<List<TeamApply>> c = t.getReqMember(ins.getInstructorid(),"APPROVAL");
+        c.enqueue(new Callback<List<TeamApply>>() {
+            @Override
+            public void onResponse(Call<List<TeamApply>> call, Response<List<TeamApply>> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    List<TeamApply> applyList = response.body();
+
+
+                    approvteamApplyAdapter = new TeamApplyAdapter(getActivity(),applyList,ins);
+                    appRecyclerview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                    appRecyclerview.getItemAnimator().setAddDuration(300);
+                    appRecyclerview.getItemAnimator().setRemoveDuration(300);
+                    appRecyclerview.getItemAnimator().setMoveDuration(300);
+                    appRecyclerview.getItemAnimator().setChangeDuration(300);
+
+                    appRecyclerview.setHasFixedSize(true);
+                    gaggeredGridLayoutManager = new GridLayoutManager(getContext(),2);
+                    appRecyclerview.setLayoutManager(gaggeredGridLayoutManager);
+                    AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(approvteamApplyAdapter);
+                    alphaAdapter.setDuration(500);
+                    appRecyclerview.setAdapter(alphaAdapter);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TeamApply>> call, Throwable t) {
+
+            }
+        });
     }
 
     //피드백 총 카운트구하기
@@ -240,7 +336,8 @@ public class insDashFragment extends Fragment {
                             feedback_req_recyclerview.getItemAnimator().setChangeDuration(300);
 
                             feedback_req_recyclerview.setHasFixedSize(true);
-                            feedback_req_recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+                            gaggeredGridLayoutManager = new GridLayoutManager(getContext(),2);
+                            feedback_req_recyclerview.setLayoutManager(gaggeredGridLayoutManager);
                             AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(feedBackReqAdapter);
                             alphaAdapter.setDuration(500);
                             feedback_req_recyclerview.setAdapter(alphaAdapter);
@@ -265,6 +362,7 @@ public class insDashFragment extends Fragment {
 
             FeedBackService feedBackService = ServiceGenerator.createService(FeedBackService.class,getContext(),user);
             FeedBackDataVo query = new FeedBackDataVo();
+            query.setOrderbytype("feedbackid");
             query.setInstructorid(ins.getInstructorid());
             query.setQueryRow(100);
 
@@ -278,6 +376,7 @@ public class insDashFragment extends Fragment {
                         feedBackDataVos = response.body();
 
                         if(feedBackDataVos.size()!=0){
+
                             feedBackEndAdapter = new FeedBackEndAdapter(getActivity(),feedBackDataVos);
                             feedbackrecyclerview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
                             feedbackrecyclerview.getItemAnimator().setAddDuration(300);
@@ -309,14 +408,6 @@ public class insDashFragment extends Fragment {
         }
     }
 
-    /*
-
-        private RecyclerView pass_req_recyclerview;
-    private PassListInsAdapter passListInsAdapter;
-    private List<MissionPass> missionPasses;
-
-     */
-
     //페이지2 강사심사...
     public void getMissionPassList(){
         MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getContext(),user);
@@ -342,7 +433,9 @@ public class insDashFragment extends Fragment {
                     pass_req_recyclerview.getItemAnimator().setChangeDuration(300);
 
                     pass_req_recyclerview.setHasFixedSize(true);
-                    pass_req_recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+                    gaggeredGridLayoutManager = new GridLayoutManager(getContext(),2);
+                    pass_req_recyclerview.setLayoutManager(gaggeredGridLayoutManager);
+
                     AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(passListInsAdapter);
                     alphaAdapter.setDuration(500);
                     pass_req_recyclerview.setAdapter(alphaAdapter);
@@ -354,7 +447,111 @@ public class insDashFragment extends Fragment {
 
             }
         });
+    }
+
+    //심사결과
+    public void getPassResultData(){
+        MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getContext(),user);
+
+        MissionPass query  = new MissionPass();
+        query.setInstructorid(ins.getInstructorid());
+        query.setStatus("SUCCESS");
+        Call<List<MissionPass>> c = service.getMissionPassResultList(query);
+        c.enqueue(new Callback<List<MissionPass>>() {
+            @Override
+            public void onResponse(Call<List<MissionPass>> call, Response<List<MissionPass>> response) {
+                if(response.isSuccessful()){
+                    List<MissionPass> pass = response.body();
+
+                    passResultListInsAdapter = new PassResultListInsAdapter(getActivity(),pass,ins);
+                    passRecyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                    passRecyclerView.getItemAnimator().setAddDuration(300);
+                    passRecyclerView.getItemAnimator().setRemoveDuration(300);
+                    passRecyclerView.getItemAnimator().setMoveDuration(300);
+                    passRecyclerView.getItemAnimator().setChangeDuration(300);
+
+                    passRecyclerView.setHasFixedSize(true);
+                    gaggeredGridLayoutManager = new GridLayoutManager(getContext(),2);
+                    passRecyclerView.setLayoutManager(gaggeredGridLayoutManager);
+
+                    AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(passResultListInsAdapter);
+                    alphaAdapter.setDuration(500);
+                    passRecyclerView.setAdapter(alphaAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MissionPass>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getPassData(){
+        WaitingDialog.showWaitingDialog(getActivity());
+        DataService dataService = ServiceGenerator.createService(DataService.class,getActivity(),user);
+        Call<FeedDataVo> passDataVoCall = dataService.getPassData(ins.getInstructorid());
+        passDataVoCall.enqueue(new Callback<FeedDataVo>() {
+            @Override
+            public void onResponse(Call<FeedDataVo> call, Response<FeedDataVo> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    FeedDataVo vo = response.body();
+                    feedbackCount.setText(String.valueOf(vo.getCompletecount()));
+                    feedbackNonCount.setText(String.valueOf(vo.getIncompletecount()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FeedDataVo> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
 
     }
 
+    public void getTeamCount(){
+        WaitingDialog.showWaitingDialog(getActivity(),false);
+        Log.i(TAG,"vo : ####################################");
+        TeamService teamService = ServiceGenerator.createService(TeamService.class,getContext(),ins);
+        Call<FeedDataVo> c = teamService.getTeamCount(ins.getInstructorid());
+        c.enqueue(new Callback<FeedDataVo>() {
+            @Override
+            public void onResponse(Call<FeedDataVo> call, Response<FeedDataVo> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    FeedDataVo vo = response.body();
+                    Log.i(TAG,"vo : " + vo.toString());
+
+                    feedbackCount.setText(String.valueOf(vo.getCompletecount()));
+                    feedbackNonCount.setText(String.valueOf(vo.getIncompletecount()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FeedDataVo> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+/*
+        feedBackReqAdapter.notifyDataSetChanged();
+        feedBackEndAdapter.notifyDataSetChanged();
+        passListInsAdapter.notifyDataSetChanged();
+       passResultListInsAdapter.notifyDataSetChanged();
+  */
+    }
 }
