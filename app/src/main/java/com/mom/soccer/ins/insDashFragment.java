@@ -135,12 +135,10 @@ public class insDashFragment extends Fragment {
 
             FeedReqList(view,"req_end");
 
-
             feedbackCount = (TextView) view.findViewById(R.id.feedbackCount);
             feedbackNonCount = (TextView) view.findViewById(R.id.feedbackNonCount);
             //카운터 구하기
             FeedCount();
-
 
         }else if(mPage == 2 ){ //심사
             view = inflater.inflate(R.layout.fr_dash_feedback_main2, container, false);

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -21,6 +22,7 @@ import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dataDto.FeedBackDataVo;
+import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.youtubeplayer.YoutubePlayerActivity;
 
 import java.util.List;
@@ -32,7 +34,6 @@ public class FeedBackEndAdapter extends RecyclerView.Adapter<FeedBackEndAdapter.
 
     Activity activity;
     private List<FeedBackDataVo> feedBackDataVos;
-    private String videoAddr;
 
     public FeedBackEndAdapter(Activity activity, List<FeedBackDataVo> feedBackDataVos) {
         this.activity = activity;
@@ -48,8 +49,8 @@ public class FeedBackEndAdapter extends RecyclerView.Adapter<FeedBackEndAdapter.
     @Override
     public void onBindViewHolder(ItemHolder holder, int position) {
 
-        FeedBackDataVo vo = feedBackDataVos.get(position);
-
+        final FeedBackDataVo vo = feedBackDataVos.get(position);
+        final int i = position;
         if(!Compare.isEmpty(vo.getProfileimgurl())){
             Glide.with(activity)
                     .load(vo.getProfileimgurl())
@@ -78,15 +79,12 @@ public class FeedBackEndAdapter extends RecyclerView.Adapter<FeedBackEndAdapter.
             holder.image_second.setBackground(activity.getResources().getDrawable(R.drawable.card_rectangle));
         }
 
-        videoAddr = vo.getVideoaddr();
-
-
         if(vo.getFeedbacktype().equals("video")){
             holder.video_ThumbnailView.setVisibility(View.VISIBLE);
             holder.video_ThumbnailView.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
                 @Override
                 public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
-                    youTubeThumbnailLoader.setVideo(videoAddr);
+                    youTubeThumbnailLoader.setVideo(vo.getVideoaddr());
                 }
 
                 @Override
@@ -101,8 +99,11 @@ public class FeedBackEndAdapter extends RecyclerView.Adapter<FeedBackEndAdapter.
         holder.video_ThumbnailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                VeteranToast.makeToast(activity,i +" 클릭 로우 : "+ vo.getContent(), Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(activity,YoutubePlayerActivity.class);
-                intent.putExtra(Common.YOUTUBEVIDEO,videoAddr);
+                intent.putExtra(Common.YOUTUBEVIDEO,vo.getVideoaddr());
                 activity.startActivity(intent);
             }
         });

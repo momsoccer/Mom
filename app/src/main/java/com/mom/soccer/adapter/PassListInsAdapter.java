@@ -53,7 +53,6 @@ public class PassListInsAdapter extends RecyclerView.Adapter<PassListInsAdapter.
     private Activity activity;
     private List<MissionPass> missionPasses;
     private Instructor instructor;
-    MissionPass vo;
 
     TextView text_mypoint;
     RadioGroup radioGroup;
@@ -83,7 +82,7 @@ public class PassListInsAdapter extends RecyclerView.Adapter<PassListInsAdapter.
 
     @Override
     public void onBindViewHolder(PassItemHolder h, int position) {
-        vo = missionPasses.get(position);
+        final MissionPass vo = missionPasses.get(position);
 
         if (!Compare.isEmpty(vo.getUserimge())) {
             Glide.with(activity)
@@ -265,7 +264,7 @@ public class PassListInsAdapter extends RecyclerView.Adapter<PassListInsAdapter.
 
         text_mypoint = (TextView) dialog.getCustomView().findViewById(R.id.text_mypoint);
         NumberFormat numberFormat = NumberFormat.getInstance();
-        text_mypoint.setText(numberFormat.format(vo.getCashpoint())+"P");
+        text_mypoint.setText(numberFormat.format(missionPass.getCashpoint())+"P");
         layout_ins_comment = (TextInputLayout) dialog.getCustomView().findViewById(R.id.layout_ins_comment);
         layout_f_reason = (TextInputLayout) dialog.getCustomView().findViewById(R.id.layout_f_reason);
     }

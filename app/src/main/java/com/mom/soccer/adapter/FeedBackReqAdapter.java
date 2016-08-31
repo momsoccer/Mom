@@ -42,7 +42,6 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
 
     private String videoAddr;
     private String youtubeMissionVideo;
-    private FeedbackHeader paramFeed;
 
     public FeedBackReqAdapter(Activity activity, List<FeedbackHeader> feedbackHeaders, User user, Instructor instructor) {
         this.activity = activity;
@@ -60,12 +59,9 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
 
     @Override
     public void onBindViewHolder(final FeedbackItemHolder holder, int position) {
+
         final FeedbackHeader feed = feedbackHeaders.get(position);
-
-        paramFeed = feed;
-
-        videoAddr = feed.getVideoaddr();
-        youtubeMissionVideo = feed.getYoutubeaddr();
+        final int i = position;
 
         if (!Compare.isEmpty(feed.getProfileimgurl())) {
             Glide.with(activity)
@@ -145,8 +141,8 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
             @Override
             public void onClick(View v) {
 
-                //VeteranToast.makeToast(activity,"이름은 : " + feed.getContent(), Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(activity,FeedBackWrite.class);
+                //VeteranToast.makeToast(activity,i + "이름은 : " + feed.getContent(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(activity,FeedBackWrite.class);
                 intent.putExtra(MissionCommon.FEEDBACKHEADER,feed);
                 Log.i("test","FEED : "+ feed.getContent());
                 activity.startActivity(intent);
