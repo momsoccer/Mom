@@ -14,6 +14,7 @@ import com.mom.soccer.R;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dto.Board;
+import com.mom.soccer.dto.User;
 
 import java.util.List;
 
@@ -25,10 +26,12 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
     private static final String TAG = "BoardItemAdapter";
     private Context context;
     private List<Board> boardList;
+    private User user;
 
-    public BoardItemAdapter(Context context, List<Board> boardList) {
+    public BoardItemAdapter(Context context, List<Board> boardList,User user) {
         this.context = context;
         this.boardList = boardList;
+        this.user = user;
     }
 
     @Override

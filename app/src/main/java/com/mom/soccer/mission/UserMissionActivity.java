@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,7 +30,6 @@ import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.fragment.UserMissionFragment;
-import com.mom.soccer.fragment.YoutubeFragment;
 import com.mom.soccer.retrofitdao.FollowService;
 import com.mom.soccer.retrofitdao.PickService;
 import com.mom.soccer.retrofitdao.UserMissionService;
@@ -88,9 +86,6 @@ public class UserMissionActivity extends AppCompatActivity {
     String pageTitle;
 
     private static int followingCount = 0;
-
-    @Bind(R.id.shrareBtn)
-    ImageButton shrareBtn;
 
     @Bind(R.id.level)
     TextView level;
@@ -158,11 +153,11 @@ public class UserMissionActivity extends AppCompatActivity {
         tx_date.setText(userMission.getChange_creationdate());
 
         //YoutubeFragment 유투브 플래그먼트
-        YoutubeFragment youtubeFragment = new YoutubeFragment(this, userMission.getYoutubeaddr());
+/*        YoutubeFragment youtubeFragment = new YoutubeFragment(this, userMission.getYoutubeaddr());
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction tc = fm.beginTransaction();
         tc.add(R.id.youtube_frame_layout, youtubeFragment, "");
-        tc.commit();
+        tc.commit();*/
 
         if (!Compare.isEmpty(userMission.getProfileimgurl())) {
             Glide.with(this)
@@ -177,12 +172,12 @@ public class UserMissionActivity extends AppCompatActivity {
         }
 
 
-        viewPager = (ViewPager) findViewById(R.id.dash_viewpager);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         UserMissionPagerAdapter pagerAdapter = new UserMissionPagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(pagerAdapter);
 
-        tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.dash_tabs);
+        tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.pagertabs);
 
         //viewPager.setCurrentItem(pageCall);
 
@@ -190,7 +185,6 @@ public class UserMissionActivity extends AppCompatActivity {
         tabsStrip.setIndicatorColor(getResources().getColor(R.color.enabled_red));
         tabsStrip.setTextColor(getResources().getColor(R.color.color6));
         tabsStrip.setViewPager(viewPager);
-
     }
 
     public class UserMissionPagerAdapter extends FragmentStatePagerAdapter {
@@ -198,7 +192,7 @@ public class UserMissionActivity extends AppCompatActivity {
         final int PAGE_COUNT = 2;
 
         private String tabTitles[] = new String[] {
-            "미션관련","댓글관련"
+            "미션관련",getString(R.string.user_mission_d_title2)
         };
 
         public UserMissionPagerAdapter(FragmentManager fm) {
@@ -212,7 +206,7 @@ public class UserMissionActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return UserMissionFragment.newInstance(position + 1);
+            return UserMissionFragment.newInstance(position + 1,user,userMission);
         }
 
         @Override
@@ -559,5 +553,6 @@ public class UserMissionActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //shrareBtn 카카오 공유
 
 }

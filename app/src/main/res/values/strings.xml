@@ -589,4 +589,7 @@
     <string name="user_mission_detail_tx2">평균점수</string>
     <string name="user_mission_detail_tx3">경험치</string>
     <string name="user_mission_detail_tx4">댓글이 아직 없습니다</string>
+
+    <string name="user_mission_d_title1">미션</string>
+    <string name="user_mission_d_title2">댓글</string>
 </resources>
