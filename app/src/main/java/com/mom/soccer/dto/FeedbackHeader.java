@@ -23,7 +23,7 @@ public class FeedbackHeader implements Serializable{
     private String insprofileimgurl;
     private String profileimgurl;
     private String teamname;
-
+    private String change_updatedate;
     //DB Quer
     private String missionname;
     private String insname;
@@ -34,12 +34,37 @@ public class FeedbackHeader implements Serializable{
     private String youtubeaddr;
     private int totalscore;
     private int level;
+    private int replaycount;
+    private String recontent;
 
     //Line...
     private String type;
     private String videoaddr;
     private int    feedbacklineid;
 
+    public String getRecontent() {
+        return recontent;
+    }
+
+    public void setRecontent(String recontent) {
+        this.recontent = recontent;
+    }
+
+    public String getChange_updatedate() {
+        return change_updatedate;
+    }
+
+    public void setChange_updatedate(String change_updatedate) {
+        this.change_updatedate = change_updatedate;
+    }
+
+    public int getReplaycount() {
+        return replaycount;
+    }
+
+    public void setReplaycount(int replaycount) {
+        this.replaycount = replaycount;
+    }
 
     public String getTeamname() {
         return teamname;

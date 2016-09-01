@@ -39,4 +39,8 @@ public interface FeedBackService {
 
  @POST("/api/feed/getFeedBackTotalList")
  Call<List<FeedBackDataVo>> getFeedBackTotalList(@Body FeedBackDataVo v);
+
+ @POST("/api/feed/getFeedAllList")
+ Call<List<FeedbackHeader>> getFeedAllList(@Body FeedbackHeader feedbackHeader);
+
 }

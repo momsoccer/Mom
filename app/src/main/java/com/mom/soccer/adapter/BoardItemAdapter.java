@@ -61,10 +61,10 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         return boardList.size();
     }
 
-    public void removeItem(int index){
+/*    public void removeItem(int index){
         boardList.remove(index);
         notifyItemRemoved(index);
-    }
+    }*/
 
     public class BoardItemViewHolder extends RecyclerView.ViewHolder {
 

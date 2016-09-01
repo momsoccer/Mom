@@ -173,7 +173,8 @@ public class FeedBackWrite extends AppCompatActivity {
                         //강사 화면으로 다시 이동해줍니다.
                         Intent intent = new Intent(FeedBackWrite.this,InsDashboardActivity.class);
                         intent.putExtra(Param.FRAGMENT_COUNT,0);
-                        finish();
+                        //finish();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
                 }

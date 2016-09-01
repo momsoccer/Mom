@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="15sp"
-            android:text="유저 미션영상"
+            android:text="@string/user_mission_detail_title"
             android:textColor="@color/color6"
             android:layout_gravity="center"
             />

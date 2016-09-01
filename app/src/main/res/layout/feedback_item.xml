@@ -171,21 +171,49 @@
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/subject"
-                    android:text="Request subject"
-                    android:textSize="6sp"
-                    android:maxLength="30"
-                    android:textColor="@color/color6"
+
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:text="@string/ins_text_feed_q"
-                    android:textColor="@color/color6"
-                    android:textSize="6sp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/subject"
+                        android:text="Request subject"
+                        android:textSize="6sp"
+                        android:maxLength="30"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:text="@string/ins_text_feed_q"
+                        android:textColor="@color/color6"
+                        android:textSize="6sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/content"

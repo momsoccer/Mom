@@ -26,6 +26,20 @@
             android:layout_gravity="center"
             />
 
+        <TextView
+            android:id="@+id/level"
+            android:text="10"
+            android:textStyle="bold"
+            android:textColor="@color/color6"
+            android:textSize="7sp"
+            android:layout_width="18dp"
+            android:layout_height="20dp"
+            android:background="@drawable/ic_levelmark"
+            android:gravity="center"
+            android:layout_marginLeft="-20dp"
+            android:layout_marginTop="20dp"
+            />
+
         <LinearLayout
             android:layout_marginLeft="10dp"
             android:orientation="vertical"

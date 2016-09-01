@@ -114,20 +114,33 @@
 
             <LinearLayout
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="35dp"
                 android:orientation="vertical"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_below="@+id/li_bi"
                 >
 
-                <TextView
-                    android:id="@+id/title_failuredisp"
-                    android:text="불합격 사유"
-                    android:textSize="8sp"
-                    android:textColor="@color/enabled_red"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/top_subject1"
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/title_failuredisp"
+                        android:text="불합격 사유"
+                        android:textSize="8sp"
+                        android:textColor="@color/enabled_red"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/failuredisp"
@@ -139,14 +152,29 @@
                     android:text=""
                     />
 
-                <TextView
-                    android:id="@+id/title_comment"
-                    android:layout_marginTop="2dp"
-                    android:text="강사의 코멘트"
-                    android:textSize="8sp"
-                    android:textColor="@color/color6"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    >
+
+                    <ImageView
+                        android:id="@+id/top_subject2"
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/title_comment"
+                        android:layout_marginTop="2dp"
+                        android:text="강사의 코멘트"
+                        android:textSize="8sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
                 <TextView
                     android:layout_marginTop="2dp"

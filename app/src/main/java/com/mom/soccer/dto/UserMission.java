@@ -27,8 +27,26 @@ public class UserMission implements Serializable {
 	private int queryRow;
 	private String orderbytype;  // 대량목록 조회시 sort 순서 해당 컬럼에 한해서 사용
 	private String missionname;
+	private int totalscore;
+	private int level;
 
 	public UserMission(){}
+
+	public int getTotalscore() {
+		return totalscore;
+	}
+
+	public void setTotalscore(int totalscore) {
+		this.totalscore = totalscore;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
 
 	public String getMissionname() {
 		return missionname;

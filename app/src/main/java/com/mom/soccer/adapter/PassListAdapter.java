@@ -43,12 +43,11 @@ import retrofit2.Response;
  * Created by sungbo on 2016-08-29.
  */
 public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassItemHolder>{
-
+    private static final String TAG = "PassListAdapter";
     Activity activity;
     List<MissionPass> passes;
     User user;
     String missionPassFlag;
-    MissionPass missionPass;
     int i = 0;
     Mission mission;
 
@@ -82,7 +81,7 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
         holder.seq.setText(String.valueOf(pass.getSeq())+activity.getString(R.string.missionpass_get_seq));
         holder.date.setText(pass.getChange_updatedate());
         holder.insname.setText(pass.getInsname());
-        holder.grade.setText(pass.getPassgrade()+activity.getString(R.string.missionpass_get_grade));
+
         holder.incomment.setText(pass.getInscomment());
         holder.failuredisp.setText(pass.getFailuredisp());
 
@@ -93,35 +92,51 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
             holder.failuredisp.setVisibility(View.GONE);
             holder.title_comment.setVisibility(View.GONE);
             holder.incomment.setVisibility(View.GONE);
+            holder.top_subject1.setVisibility(View.GONE);
+            holder.top_subject2.setVisibility(View.GONE);
+
+            holder.grade.setText(pass.getPassgrade()+activity.getString(R.string.missionpass_get_grade));
 
         }else if(pass.getStatus().equals("REJECT")){
             holder.status.setText(activity.getString(R.string.user_mission_fail));
 
             holder.title_failuredisp.setVisibility(View.VISIBLE);
             holder.failuredisp.setVisibility(View.VISIBLE);
+
+            holder.top_subject1.setVisibility(View.VISIBLE);
+            holder.top_subject2.setVisibility(View.VISIBLE);
+
+            holder.grade.setText(pass.getPassgrade()+activity.getString(R.string.missionpass_get_grade3));
+
         }else if(pass.getStatus().equals("SUCCESS")){
             holder.status.setText(activity.getString(R.string.user_mission_y));
 
             holder.title_failuredisp.setVisibility(View.GONE);
             holder.failuredisp.setVisibility(View.GONE);
 
+            holder.top_subject1.setVisibility(View.GONE);
+            holder.top_subject2.setVisibility(View.VISIBLE);
+            holder.grade.setText(pass.getPassgrade()+activity.getString(R.string.missionpass_get_grade2));
         }
 
 
         holder.btnHam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu p = new PopupMenu(activity,view); //
+
+                PopupMenu p = new PopupMenu(activity,view);
                 activity.getMenuInflater().inflate(R.menu.mission_pass_item, p.getMenu());
-                // 이벤트 처리
                 p.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
 
                         switch (item.getOrder()){
                             case 101:
-                                //패스신청 취소하기
-                                if(missionPass.getStatus().equals("REQUEST")){
+
+                                if(pass.getStatus().equals("REQUEST")){
+                                    //VeteranToast.makeToast(activity,"1:" + pass.toString(),Toast.LENGTH_SHORT).show();
+                                    //Log.i(TAG,"2 : " + pass.toString());
+
                                     new MaterialDialog.Builder(activity)
                                             .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
                                             .title(R.string.mom_diaalog_pass_apply_cancel_msg)
@@ -132,12 +147,12 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
                                             .onPositive(new MaterialDialog.SingleButtonCallback() {
                                                 @Override
                                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                    deletePass();
+                                                    deletePass(pass);
                                                 }
                                             })
                                             .negativeText(R.string.mom_diaalog_cancel)
                                             .show();
-                                }else if(missionPass.getStatus().equals("RESULT")){ //심사 통과 된 상태
+                                }else if(pass.getStatus().equals("RESULT")){ //심사 통과 된 상태
                                     new MaterialDialog.Builder(activity)
                                             .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
                                             .title(R.string.mom_diaalog_alert)
@@ -146,26 +161,28 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
                                             .contentColor(activity.getResources().getColor(R.color.color6))
                                             .positiveText(R.string.mom_diaalog_confirm)
                                             .show();
-                                }else if(missionPass.getStatus().equals("REJECT")){
-                                new MaterialDialog.Builder(activity)
-                                        .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
-                                        .title(R.string.mom_diaalog_alert)
-                                        .titleColor(activity.getResources().getColor(R.color.color6))
-                                        .content(R.string.mom_diaalog_pass_eval_re)
-                                        .contentColor(activity.getResources().getColor(R.color.color6))
-                                        .positiveText(R.string.mom_diaalog_confirm)
-                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                            @Override
-                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                deletePass();
-                                            }
-                                        })
-                                        .negativeText(R.string.mom_diaalog_cancel)
-                                        .show();
+                                }else if(pass.getStatus().equals("REJECT")){
 
+                                    //VeteranToast.makeToast(activity,"3:" + pass.toString(),Toast.LENGTH_SHORT).show();
+                                    //Log.i(TAG,"4 : " + pass.toString());
+                                    new MaterialDialog.Builder(activity)
+                                            .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                            .title(R.string.mom_diaalog_alert)
+                                            .titleColor(activity.getResources().getColor(R.color.color6))
+                                            .content(R.string.mom_diaalog_pass_eval_re)
+                                            .contentColor(activity.getResources().getColor(R.color.color6))
+                                            .positiveText(R.string.mom_diaalog_confirm)
+/*                                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                @Override
+                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                    deletePass();
+                                                }
+                                            })
+                                            .negativeText(R.string.mom_diaalog_cancel)*/
+                                            .show();
                                 }
 
-                            break;
+                                break;
                             case 102:
                                 VeteranToast.makeToast(activity,"준비중입니다", Toast.LENGTH_SHORT).show();
                                 break;
@@ -176,17 +193,18 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
                 });
                 p.show(); // 메뉴를 띄우기
             }
-        });
 
+        });
     }
 
-    public void deletePass(){
+    public void deletePass(MissionPass pass){
+
         WaitingDialog.showWaitingDialog(activity,false);
         MissionPassService service = ServiceGenerator.createService(MissionPassService.class,activity,user);
 
-        missionPass.setMissionPassFlag(missionPassFlag);
+        pass.setMissionPassFlag(missionPassFlag);
 
-        Call<ServerResult> c = service.deletePass(missionPass);
+        Call<ServerResult> c = service.deletePass(pass);
         c.enqueue(new Callback<ServerResult>() {
             @Override
             public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
@@ -210,6 +228,7 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
                 t.printStackTrace();
             }
         });
+
     }
 
     @Override
@@ -220,7 +239,7 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
     public class PassItemHolder extends RecyclerView.ViewHolder{
 
         TextView status,grade,failuredisp,incomment,date,seq,insname,title_failuredisp,title_comment;
-        ImageView insimage;
+        ImageView insimage,top_subject1,top_subject2;
         ImageButton btnHam;
 
         public PassItemHolder(View itemView) {
@@ -237,6 +256,9 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
 
             title_failuredisp = (TextView) itemView.findViewById(R.id.title_failuredisp);
             title_comment = (TextView) itemView.findViewById(R.id.title_comment);
+
+            top_subject1  = (ImageView) itemView.findViewById(R.id.top_subject1);
+            top_subject2  = (ImageView) itemView.findViewById(R.id.top_subject2);
 
         }
     }

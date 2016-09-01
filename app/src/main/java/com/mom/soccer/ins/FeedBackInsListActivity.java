@@ -76,6 +76,7 @@ public class FeedBackInsListActivity extends AppCompatActivity {
         WaitingDialog.showWaitingDialog(this,false);
         DataService service = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
         InsInfoVo vo = new InsInfoVo();
+        vo.setNouid(user.getUid());
         Call<List<InsInfoVo>> voCall = service.getInsInfoList(vo);
         voCall.enqueue(new Callback<List<InsInfoVo>>() {
             @Override

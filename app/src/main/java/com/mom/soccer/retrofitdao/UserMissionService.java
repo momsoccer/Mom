@@ -3,6 +3,7 @@ package com.mom.soccer.retrofitdao;
 
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.UserMission;
+import com.mom.soccer.dto.UserMissionEval;
 
 import java.util.List;
 
@@ -41,5 +42,8 @@ public interface UserMissionService {
     //my 영상
     @POST("/api/usermission/getumission")
     Call<UserMission> getUserMission(@Body UserMission userMission);
+
+    @POST("/api/usermission/saveUserMissionEval")
+    Call<ServerResult> saveUserMissionEval(@Body UserMissionEval userMissionEval);
 
 }

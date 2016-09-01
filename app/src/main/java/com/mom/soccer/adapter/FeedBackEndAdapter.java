@@ -2,6 +2,9 @@ package com.mom.soccer.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -22,7 +25,6 @@ import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dataDto.FeedBackDataVo;
-import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.youtubeplayer.YoutubePlayerActivity;
 
 import java.util.List;
@@ -73,18 +75,39 @@ public class FeedBackEndAdapter extends RecyclerView.Adapter<FeedBackEndAdapter.
 
         if(vo.getDatatype().equals("request")){
             holder.type.setText(activity.getString(R.string.feedback_type_re));
+            holder.mRatingBar.setVisibility(View.GONE);
+            holder.totalscore.setText(String.valueOf(vo.getTotalscore()));
         }else{
+            holder.li_score.setVisibility(View.GONE);
+
             holder.type.setText(activity.getString(R.string.feedback_type_an));
             holder.view_top.setBackground(activity.getResources().getDrawable(R.drawable.card_rectangle));
             holder.image_second.setBackground(activity.getResources().getDrawable(R.drawable.card_rectangle));
+
+            //답변 평가
+
+            holder.mRatingBar.setRating(vo.getEvalscore());
+            LayerDrawable star =  (LayerDrawable) holder.mRatingBar.getProgressDrawable();
+            star.getDrawable(2).setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
         }
 
         if(vo.getFeedbacktype().equals("video")){
             holder.video_ThumbnailView.setVisibility(View.VISIBLE);
             holder.video_ThumbnailView.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
                 @Override
-                public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+                public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
                     youTubeThumbnailLoader.setVideo(vo.getVideoaddr());
+                    youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+                        @Override
+                        public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
+                            youTubeThumbnailLoader.release();
+                        }
+
+                        @Override
+                        public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+
+                        }
+                    });
                 }
 
                 @Override
@@ -100,7 +123,7 @@ public class FeedBackEndAdapter extends RecyclerView.Adapter<FeedBackEndAdapter.
             @Override
             public void onClick(View view) {
 
-                VeteranToast.makeToast(activity,i +" 클릭 로우 : "+ vo.getContent(), Toast.LENGTH_SHORT).show();
+                //VeteranToast.makeToast(activity,i +" 클릭 로우 : "+ vo.getContent(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(activity,YoutubePlayerActivity.class);
                 intent.putExtra(Common.YOUTUBEVIDEO,vo.getVideoaddr());
@@ -117,14 +140,14 @@ public class FeedBackEndAdapter extends RecyclerView.Adapter<FeedBackEndAdapter.
 
     public class ItemHolder extends RecyclerView.ViewHolder{
 
-        LinearLayout li_video;
+        LinearLayout li_video,li_score;
         ImageView userimg;
         YouTubeThumbnailView video_ThumbnailView;
-        TextView date,toname,name,missionname,type,teamname,content;
+        TextView date,toname,name,missionname,type,teamname,content,totalscore;
         CardView cardview;
         View view_top;
         ImageView image_second;
-
+        RatingBar mRatingBar;
 
         public ItemHolder(View itemView) {
             super(itemView);
@@ -140,8 +163,11 @@ public class FeedBackEndAdapter extends RecyclerView.Adapter<FeedBackEndAdapter.
             teamname = (TextView) itemView.findViewById(R.id.teamname);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
             content= (TextView) itemView.findViewById(R.id.content);
+            totalscore= (TextView) itemView.findViewById(R.id.totalscore);
             image_second = (ImageView) itemView.findViewById(R.id.image_second);
             view_top = itemView.findViewById(R.id.view_top);
+            mRatingBar = (RatingBar) itemView.findViewById(R.id.eval_ratingbar);
+            li_score = (LinearLayout) itemView.findViewById(R.id.li_score);
 
         }
     }

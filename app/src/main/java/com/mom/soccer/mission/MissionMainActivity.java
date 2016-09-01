@@ -37,10 +37,9 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
-import com.mom.soccer.adapter.FeedBackAdapter;
+import com.mom.soccer.adapter.FeedBackAllListAdapter;
 import com.mom.soccer.adapter.GridMissionAdapter;
 import com.mom.soccer.adapter.PassListAdapter;
-import com.mom.soccer.cardview.FeedBackCard;
 import com.mom.soccer.common.Auth;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.ExpandableHeightGridView;
@@ -75,9 +74,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.recyclerview.internal.CardArrayRecyclerViewAdapter;
-import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -206,15 +202,10 @@ public class MissionMainActivity extends AppCompatActivity {
 
     /*feedback*/
     private List<FeedbackHeader> feedbackHeaders;
+    @Bind(R.id.feedbackRecylerView)
+    RecyclerView feedbackRecylerView;
+    FeedBackAllListAdapter feedBackAllListAdapter;
 
-
-    @Bind(R.id.feedback_recyclerview)
-    CardRecyclerView cardRecyclerView;
-
-    //@Bind(R.id.feedback_recyclerview)
-    //RecyclerView recyclerView;
-
-    private FeedBackAdapter   recyclerAdapter;
     Activity activity;
 
     //mitsstion pass function
@@ -308,6 +299,7 @@ public class MissionMainActivity extends AppCompatActivity {
         NotificationManager nm =
                 (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         nm.cancel(UPLOAD_NOTIFICATION_ID);
+        passrecyclerview = (RecyclerView)findViewById(R.id.passrecyclerview);
 
     }
 
@@ -1259,30 +1251,35 @@ public class MissionMainActivity extends AppCompatActivity {
 
     //피드백 리스트
     public void getFeedBack(){
-        Log.i(TAG,"feedbackHeaders() 피드백이 있는지 검사합니다");
-        WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
 
+        WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
         FeedBackService feedBackService = ServiceGenerator.createService(FeedBackService.class,getApplicationContext(),user);
         FeedbackHeader header = new FeedbackHeader();
 
         header.setUid(user.getUid());
         header.setUsermissionid(userMission.getUsermissionid());
 
-        Call<List<FeedbackHeader>> c = feedBackService.getFeedHeaderList(header);
+        Call<List<FeedbackHeader>> c = feedBackService.getFeedAllList(header);
         c.enqueue(new Callback<List<FeedbackHeader>>() {
             @Override
             public void onResponse(Call<List<FeedbackHeader>> call, Response<List<FeedbackHeader>> response) {
                 WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
+
                     feedbackHeaders = response.body();
-                    Log.i(TAG,"feedbackHeaders() " + feedbackHeaders.size());
 
                     if(feedbackHeaders.size()==0){
                         li_feedback_history.setVisibility(View.GONE);
                     }else{
                         li_feedback_history.setVisibility(View.VISIBLE);
 
+                        feedBackAllListAdapter = new FeedBackAllListAdapter(activity,feedbackHeaders,user,mission
+                        );
+                        feedbackRecylerView.setHasFixedSize(true);
+                        feedbackRecylerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        feedbackRecylerView.setAdapter(feedBackAllListAdapter);
 
+                        /*
                         ArrayList<Card> cards = new ArrayList<Card>();
 
                         for(int i=0 ; i < feedbackHeaders.size();i++){
@@ -1290,23 +1287,20 @@ public class MissionMainActivity extends AppCompatActivity {
                             cards.add(card);
                         }
 
-
                         CardArrayRecyclerViewAdapter feedbackAdapter = new CardArrayRecyclerViewAdapter(getApplicationContext(), cards);
-
                         cardRecyclerView.setHasFixedSize(false);
                         cardRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         cardRecyclerView.setAdapter(feedbackAdapter);
-
+                        */
                     }
 
                 }else{
-                    Log.i(TAG,"feedbackHeaders() error1");
+
                 }
             }
 
             @Override
             public void onFailure(Call<List<FeedbackHeader>> call, Throwable t) {
-                Log.i(TAG,"feedbackHeaders() error2");
                 WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
             }
@@ -1323,10 +1317,9 @@ public class MissionMainActivity extends AppCompatActivity {
 
     public void passHistory(){
         if(!Compare.isEmpty(userMission.getPassflag())){
-            if(userMission.getPassflag().equals("Y")||userMission.getPassflag().equals("P")){
+
                 li_pass_history.setVisibility(View.VISIBLE);
 
-                passrecyclerview = (RecyclerView)findViewById(R.id.passrecyclerview);
                 WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
                 MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getApplicationContext(),user);
 
@@ -1341,9 +1334,7 @@ public class MissionMainActivity extends AppCompatActivity {
                     public void onResponse(Call<List<MissionPass>> call, Response<List<MissionPass>> response) {
                         WaitingDialog.cancelWaitingDialog();
                         if(response.isSuccessful()){
-
                             missionPasses = response.body();
-
                             passListAdapter = new PassListAdapter(activity,missionPasses,user,missionPassFlag,mission);
                             passrecyclerview.setHasFixedSize(true);
                             passrecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -1358,10 +1349,6 @@ public class MissionMainActivity extends AppCompatActivity {
                     }
                 });
 
-
-            }else{
-                li_pass_history.setVisibility(View.GONE);
-            }
         }
     }
 }

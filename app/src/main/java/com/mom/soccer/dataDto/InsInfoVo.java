@@ -44,11 +44,20 @@ public class InsInfoVo implements Serializable{
     private String resume;
 
     //search object
+    private int nouid; //자기팀 제외가 필요할때
     private String searchname;
     private int queryRow;
     private String orderbytype;
 
     public InsInfoVo(){}
+
+    public int getNouid() {
+        return nouid;
+    }
+
+    public void setNouid(int nouid) {
+        this.nouid = nouid;
+    }
 
     @Override
     public String toString() {

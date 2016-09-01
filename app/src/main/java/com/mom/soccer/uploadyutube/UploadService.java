@@ -77,6 +77,8 @@ public class UploadService extends IntentService {
         String appName = "몸 싸커 업로드";
 
         Log.d(TAG, "====================업로드 Intent 시작합니다.");
+        Log.d(TAG, "====================업로드 자료는 : "  + userMission.toString());
+
         final YouTube youtube =  new YouTube.Builder(transport, jsonFactory, credential).setApplicationName(appName).build();
 
         try {

@@ -25,11 +25,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
+                android:gravity="center"
                 >
 
                 <TextView
@@ -58,6 +60,17 @@
                     android:textColor="@color/color6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+
+                <RatingBar
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/eval_ratingbar"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:rating="0.5"
+                    android:isIndicator="true"
+                    />
 
             </LinearLayout>
 
@@ -142,24 +155,59 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
+                    <LinearLayout
+                        android:id="@+id/li_score"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="@string/ins_team_msg2"
+                            android:textSize="6sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/totalscore"
+                            android:text="190"
+                            android:textSize="6sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:layout_marginTop="3dp"
                     android:layout_marginLeft="3dp"
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     >
-
-                    <TextView
-                        android:textSize="6sp"
-                        android:textColor="@color/color6"
+                    <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/feedback_content_type"
-                        />
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:src="@drawable/ic_ball_subject"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:textSize="6sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/feedback_content_type"
+                            />
+
+                    </LinearLayout>
+
 
                     <TextView
                         android:layout_marginTop="2dp"
@@ -184,8 +232,9 @@
 
                     <com.google.android.youtube.player.YouTubeThumbnailView
                         android:id="@+id/video_ThumbnailView"
-                        android:layout_width="55dp"
+                        android:layout_width="65dp"
                         android:layout_height="50dp"
+                        android:background="@color/color8"
                         />
 
                     <ImageView

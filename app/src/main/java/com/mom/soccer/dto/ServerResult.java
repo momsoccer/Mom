@@ -10,6 +10,7 @@ public class ServerResult {
     private String result;
     private String errorMsg;
     private int getid;
+    private float avg;
 
     public ServerResult(){}
 
@@ -29,6 +30,14 @@ public class ServerResult {
         this.result = result;
         this.errorMsg = errorMsg;
         this.getid = getid;
+    }
+
+    public float getAvg() {
+        return avg;
+    }
+
+    public void setAvg(float avg) {
+        this.avg = avg;
     }
 
     public int getCount() {
@@ -70,6 +79,7 @@ public class ServerResult {
                 ", result='" + result + '\'' +
                 ", errorMsg='" + errorMsg + '\'' +
                 ", getid=" + getid +
+                ", avg=" + avg +
                 '}';
     }
 }

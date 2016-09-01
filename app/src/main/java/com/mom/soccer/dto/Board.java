@@ -15,10 +15,26 @@ public class Board {
     private String teamname;
     private String change_creationdate;
     private String change_updatedate;
+    private int totalscore;
+    private int level;
 
     public Board(){}
 
+    public int getTotalscore() {
+        return totalscore;
+    }
 
+    public void setTotalscore(int totalscore) {
+        this.totalscore = totalscore;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
     public String getTeamname() {
         return teamname;

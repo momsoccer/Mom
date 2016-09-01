@@ -248,6 +248,8 @@
     <string name="board_delete_msg">댓글이 삭제 되었습니다</string>
     <string name="board_caustion">자신이 작성한 글만 삭제가 가능합니다</string>
 
+
+
     <!--nav menu-->
     <string name="nav_header_name">닉네임</string>
     <string name="nav_header_email">메일주소</string>
@@ -344,7 +346,7 @@
     <string name="mom_diaalog_pass_apply_f_msg">미션 심사 요청중 문제가 발생되었습니다 \n 다시 시도 해보세요</string>
 
     <string name="mom_diaalog_pass_eval">미션을 통과하신 심사정보는 삭제 할 수 없습니다</string>
-    <string name="mom_diaalog_pass_eval_re">불합격 정보를 삭제 하셔도 포인트는 환급 되지 않습니다 \n심사정보를 삭제 하시겠습니까?</string>
+    <string name="mom_diaalog_pass_eval_re">강사분의 심사결과는 삭제 할 수 없습니다</string>
     <string name="mom_diaalog_pass_apply_cancel_msg">심사취소</string>
     <string name="mom_diaalog_pass_apply_msg4">요청을 취소하시면 포인트가 환급됩니다 \n심사요청을 취소 하시겠습니까?</string>
 
@@ -371,6 +373,7 @@
 
     <string name="mom_diaalog_alert">알림</string>
 
+
     <string name="mom_diaalog_content_logout">로그아웃 하시겠습니까?</string>
 
     <!--설정사항-->
@@ -392,6 +395,14 @@
     <string name="ins_text_feed_a">피드백 답변</string>
     <string name="ins_text_feed_e">답변평가(5점 만점)</string>
     <string name="ins_text_feed_v">강사등록 강의</string>
+
+    <string name="ins_text_feed_all_msg1">답변완료</string>
+    <string name="ins_text_feed_all_msg2">답변전</string>
+    <string name="ins_text_feed_all_msg3">강사의 답변</string>
+
+    <string name="ins_text_feed_all_msg4">피드백 요청 타입 : 비디오</string>
+    <string name="ins_text_feed_all_msg5">피드백 요청 타입 : 문자</string>
+    <string name="ins_text_feed_all_msg6">답변 전 상태입니다 \n답변 후 피드백 평가를 하실 수 있습니다</string>
 
     <string name="ins_text_p_pub_video">기본-영상 피드백</string>
     <string name="ins_text_p_pub_word">기본-문자 피드백</string>
@@ -498,7 +509,7 @@
     <string name="feedback_modifyi">요청내용 수정</string>
     <string name="feedback_deletei">피드백 삭제</string>
 
-    <string name="feedback_report">신고</string>
+    <string name="feedback_report">신고하기</string>
 
     <string name="feedback_feedback_eval_save">피드백 평가가 등록 되었습니다</string>
     <string name="feedback_feedback_delete">피드백 요청이 삭제 되었고 \n 포인트가 환급 되었습니다</string>
@@ -541,6 +552,9 @@
     <string name="nodata_found_friend">친구가 없습니다</string>
 
     <string name="missionpass_get_grade">점 획득가능(심사통과시)</string>
+    <string name="missionpass_get_grade2">점 획득 (축하합니다!)</string>
+    <string name="missionpass_get_grade3">점 획득 실패(힘내셔서 다시 도전하세요!)</string>
+
     <string name="missionpass_get_seq">회</string>
     <string name="missionpass_delete">심사정보를 삭제 했습니다</string>
 
@@ -568,4 +582,11 @@
     <string name="ins_team_msg2">경험치 : </string>
     <string name="ins_team_msg3">지원일자 : </string>
     <string name="ins_team_msg4">거절</string>
+
+    <!--user detail page-->
+    <string name="user_mission_detail_title">유저 미션 영상</string>
+    <string name="user_mission_detail_tx1">평점인원</string>
+    <string name="user_mission_detail_tx2">평균점수</string>
+    <string name="user_mission_detail_tx3">경험치</string>
+    <string name="user_mission_detail_tx4">댓글이 아직 없습니다</string>
 </resources>

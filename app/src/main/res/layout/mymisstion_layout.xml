@@ -153,24 +153,32 @@
                 android:layout_height="wrap_content"
                 >
 
-                <com.google.android.youtube.player.YouTubeThumbnailView
-                    android:id="@+id/youtybe_Thumbnail"
-                    android:layout_margin="5dp"
-                    android:layout_width="350dp"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:background="@android:color/black"
-                    android:layout_gravity="center"
-                    android:layout_centerInParent="true"
-                    />
-                <ImageView
-                    android:id="@+id/im_clear_marck"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="280dp"
-                    android:background="@color/mom_color1"
-                    android:src="@drawable/ic_clear"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.youtube.player.YouTubeThumbnailView
+                        android:id="@+id/youtybe_Thumbnail"
+                        android:layout_margin="5dp"
+                        android:layout_width="350dp"
+                        android:layout_height="200dp"
+                        android:scaleType="centerCrop"
+                        android:background="@android:color/black"
+                        android:layout_gravity="center"
+                        android:layout_centerInParent="true"
+                        />
+
+                    <ImageView
+                        android:id="@+id/im_clear_marck"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="-30dp"
+                        android:background="@color/mom_color1"
+                        android:src="@drawable/ic_clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
 
                 <ImageView
                     android:id="@+id/im_video_play"
@@ -295,9 +303,9 @@
                     android:background="@color/line_color1" />
 
                 <android.support.v7.widget.RecyclerView
+                    android:id="@+id/passrecyclerview"
                     android:layout_marginTop="5dp"
                     android:layout_gravity="center_horizontal"
-                    android:id="@+id/passrecyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/mom_color1"
@@ -332,12 +340,21 @@
                     android:layout_height="1dp"
                     android:background="@color/line_color1" />
 
-                <it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView
+<!--                <it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView
                     android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     card:list_card_layout_resourceID="@layout/native_recyclerview_card_layout"
-                    android:id="@+id/feedback_recyclerview"/>
+                    android:id="@+id/feedback_recyclerview"/>-->
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/feedbackRecylerView"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mom_color1"
+                    />
 
             </LinearLayout>
 

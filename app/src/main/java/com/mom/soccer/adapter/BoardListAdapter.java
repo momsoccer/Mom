@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
@@ -21,13 +20,12 @@ import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
 import com.mom.soccer.board.BoardMainActivity;
 import com.mom.soccer.common.Compare;
-import com.mom.soccer.common.CropCircleTransformation;
+import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dto.Board;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.retrofitdao.BoardService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.ArrayList;
@@ -66,6 +64,7 @@ public class BoardListAdapter extends BaseAdapter {
         TextView  text_comment;
         TextView  text_date;
         ImageView    btnHam;
+        TextView  level;
     }
 
     public BoardListAdapter(Activity activity, List<Board> boardList,int uid,User user
@@ -114,6 +113,7 @@ public class BoardListAdapter extends BaseAdapter {
             boardHolder.text_username = (TextView) currentRow.findViewById(R.id.txt_board_user_name);
             boardHolder.text_comment = (TextView) currentRow.findViewById(R.id.txt_board_user_comment);
             boardHolder.text_date = (TextView) currentRow.findViewById(R.id.txt_board_user_time);
+            boardHolder.level = (TextView) currentRow.findViewById(R.id.level);
 
             boardHolder.text_username.setText(boardList.get(position).getUsername());
 
@@ -121,11 +121,12 @@ public class BoardListAdapter extends BaseAdapter {
 
             boardHolder.text_comment.setText(boardList.get(position).getComment());
             boardHolder.text_date.setText(boardList.get(position).getChange_creationdate());
+            boardHolder.level.setText(String.valueOf(boardList.get(position).getLevel()));
 
             if(!Compare.isEmpty(boardList.get(position).getProfileimgurl())){
                 Glide.with(activity)
                         .load(boardList.get(position).getProfileimgurl())
-                        .asBitmap().transform(new CropCircleTransformation(activity))
+                        .asBitmap().transform(new RoundedCornersTransformation(activity,10,5))
                         .into(boardHolder.image_userimg);
             }
 
@@ -146,11 +147,12 @@ public class BoardListAdapter extends BaseAdapter {
                 boardHolder.text_username.setText(boardList.get(position).getUsername());
                 boardHolder.text_comment.setText(boardList.get(position).getComment());
                 boardHolder.text_date.setText(boardList.get(position).getChange_creationdate());
+                boardHolder.level.setText(String.valueOf(boardList.get(position).getLevel()));
 
                 if(!Compare.isEmpty(boardList.get(position).getProfileimgurl())){
                     Glide.with(activity)
                             .load(boardList.get(position).getProfileimgurl())
-                            .asBitmap().transform(new CropCircleTransformation(activity))
+                            .asBitmap().transform(new RoundedCornersTransformation(activity,10,5))
                             .into(boardHolder.image_userimg);
                 }
 
@@ -218,7 +220,14 @@ public class BoardListAdapter extends BaseAdapter {
                                 break;
 
                             case 102:
-                                VeteranToast.makeToast(activity,"준비중입니다", Toast.LENGTH_SHORT).show();
+                                new MaterialDialog.Builder(activity)
+                                        .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                        .title(R.string.mom_diaalog_alert)
+                                        .titleColor(activity.getResources().getColor(R.color.color6))
+                                        .content("기능을 준비 중입니다. \n조금만 기다려 주세요")
+                                        .contentColor(activity.getResources().getColor(R.color.color6))
+                                        .positiveText(R.string.mom_diaalog_confirm)
+                                        .show();
                                 break;
                         }
 

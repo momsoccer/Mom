@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.mom.soccer.R;
@@ -38,9 +37,7 @@ public class UserMissionDteail extends AppCompatActivity {
         mission = (Mission) intent.getSerializableExtra(MissionCommon.OBJECT);
         userMission = (UserMission) intent.getSerializableExtra(MissionCommon.USER_MISSTION_OBJECT);
 
-        user_mission_title.setText("유저미션 영상");
+        user_mission_title.setText(R.string.user_mission_detail_title);
 
-        Log.i(TAG,"mission : " + mission.toString());
-        Log.i(TAG,"userMission : " + userMission.toString());
     }
 }

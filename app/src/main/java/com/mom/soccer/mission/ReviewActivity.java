@@ -199,6 +199,7 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
 
             Log.d(TAG,"업로드 유저 미션 정보는 : " + userMission.toString());
 
+
             uploadIntent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMission);
             uploadIntent.putExtra(MissionCommon.USER_OBJECT,user);
 

@@ -70,7 +70,7 @@
 
             <TextView
                 android:gravity="center"
-                android:text="댓글이 아직 없습니다"
+                android:text="@string/user_mission_detail_tx4"
                 android:textSize="12sp"
                 android:textColor="@color/color6"
                 android:layout_width="match_parent"

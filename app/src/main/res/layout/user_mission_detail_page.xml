@@ -1,51 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.sothree.slidinguppanel.SlidingUpPanelLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:sothree="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sliding_layout"
-    android:layout_width="match_parent"
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="bottom"
-    sothree:umanoPanelHeight="68dp"
-    sothree:umanoShadowHeight="4dp"
-    sothree:umanoParallaxOffset="100dp"
-    sothree:umanoDragView="@+id/dragView"
-    sothree:umanoOverlay="true"
-    sothree:umanoScrollableView="@+id/list">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             >
 
-            <LinearLayout
-                android:orientation="horizontal"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                >
+                android:layout_height="wrap_content">
+
 
                 <ImageView
                     android:id="@+id/ac_user_mission_image"
                     android:src="@drawable/userimg"
                     android:layout_gravity="center"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_height="50dp" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true"
+                    />
+
+                <TextView
+                    android:id="@+id/level"
+                    android:text="12"
+                    android:textStyle="bold"
+                    android:textColor="@color/color6"
+                    android:textSize="8sp"
+                    android:src="@drawable/ic_levelmark"
+                    android:layout_width="20dp"
+                    android:layout_height="22dp"
+                    android:background="@drawable/ic_levelmark"
+                    android:gravity="center"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="29dp"
+                    />
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_gravity="center"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.8"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="60dp"
+                    android:layout_centerVertical="true"
                     >
 
                     <TextView
@@ -60,8 +69,8 @@
                     <TextView
                         android:id="@+id/ac_user_mission_team"
                         android:text="소속 팀"
-                        android:textColor="@color/line_color1"
-                        android:textSize="8sp"
+                        android:textColor="@color/color6"
+                        android:textSize="12sp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -70,41 +79,72 @@
                         />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="120dp"
+                    >
+                    <TextView
+                        android:id="@+id/tx_score"
+                        android:text="@string/user_mission_detail_tx3"
+                        android:textColor="@color/color6"
+                        android:textSize="10sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+                    <TextView
+                        android:id="@+id/tx_date"
+                        android:text="2014년12월 11일"
+                        android:textColor="@color/color6"
+                        android:textSize="8sp"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        />
+
+                </LinearLayout>
                 <Button
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
                     android:id="@+id/btn_fllow"
                     android:layout_marginLeft="50dp"
                     style="@style/btnStylePaprika"
                     android:text="@string/app_fllow"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.6"
+                    android:layout_width="100dp"
                     android:layout_height="35dp"
-                    android:layout_gravity="right|center_vertical"
                     android:visibility="visible"
                     android:textSize="10dp"
                     />
 
-            </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
 
-            <FrameLayout
-                android:id="@+id/youtube_frame_layout"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@color/color8"
-                android:layout_width="match_parent"
-                android:layout_height="180dp">
-            </FrameLayout>
+        <FrameLayout
+            android:layout_margin="3dp"
+            android:id="@+id/youtube_frame_layout"
+            android:background="@color/color8"
+            android:layout_width="match_parent"
+            android:layout_height="180dp">
+        </FrameLayout>
 
+        <LinearLayout
+            android:layout_marginTop="1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:orientation="horizontal"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <ImageButton
+                    android:layout_centerVertical="true"
                     android:id="@+id/ac_user_mission_video_pickup"
                     android:src="@drawable/ic_white_hart"
                     android:layout_width="wrap_content"
@@ -113,8 +153,9 @@
                     />
 
                 <TextView
+                    android:layout_centerVertical="true"
                     android:id="@+id/ac_user_mission_video_pickcount"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="25dp"
                     android:text="0"
                     android:textColor="@color/color6"
                     android:textSize="12sp"
@@ -122,71 +163,66 @@
                     android:layout_height="wrap_content" />
 
                 <ImageButton
+                    android:layout_centerVertical="true"
                     android:id="@+id/ac_user_mission_video_comment"
                     android:src="@drawable/coment_ic"
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginLeft="50dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/mom_color1"
                     />
 
                 <TextView
+                    android:layout_centerVertical="true"
                     android:id="@+id/ac_user_mission_video_commentcount"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="75dp"
                     android:text="0"
                     android:textColor="@color/color6"
                     android:textSize="12sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-            </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/shrareBtn"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="250dp"
+                    android:src="@drawable/ic_screen_share_white_24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mom_color1"
+                    />
+            </RelativeLayout>
+
         </LinearLayout>
-
-
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#ffffff"
             android:orientation="vertical"
-            android:clickable="true"
-            android:focusable="false"
-            android:id="@+id/dragView">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <LinearLayout
+            <com.astuetz.PagerSlidingTabStrip
+                android:layout_marginTop="2dp"
+                android:background="@color/mom_color2"
+                android:id="@+id/dash_tabs"
+                app:pstsShouldExpand="true"
+                app:pstsTextAllCaps="true"
+                app:pstsDividerColor="@color/enabled_red"
+                app:pstsIndicatorHeight="1dp"
+                app:pstsUnderlineHeight="1dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/bg_screen3"
-                >
+                android:layout_height="48dp"
+                />
 
-                <TextView
-                    android:text="피드백 대쉬라인"
-                    android:textColor="@color/color6"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
+            <android.support.v4.view.ViewPager
+                android:id="@+id/dash_viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/bg_screen2"
-                >
-
-                <TextView
-                    android:text="테스트 입니다"
-                    android:textColor="@color/color6"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
-            </LinearLayout>
-
+                android:layout_height="match_parent"
+                />
         </LinearLayout>
 
-</com.sothree.slidinguppanel.SlidingUpPanelLayout>
+    </LinearLayout>
+
+</ScrollView>
+
+
+

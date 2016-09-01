@@ -178,6 +178,11 @@
                     android:layout_height="wrap_content"
                     >
 
+                    <ImageView
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
                     <TextView
                         android:text="@string/user_mission_pass_title1"
                         android:textColor="@color/color6"
@@ -201,6 +206,11 @@
                     android:layout_height="wrap_content"
                     >
 
+                    <ImageView
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
                     <TextView
                         android:text="@string/user_mission_pass_title2"
                         android:textColor="@color/color6"
@@ -220,6 +230,8 @@
 
 
                 <TextView
+                    android:layout_marginTop="2dp"
+                    android:layout_marginLeft="5dp"
                     android:id="@+id/result_status"
                     android:text="불합격"
                     android:textColor="@color/color6"
