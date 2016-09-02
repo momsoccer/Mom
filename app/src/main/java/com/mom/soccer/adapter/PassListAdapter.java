@@ -51,6 +51,8 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
     int i = 0;
     Mission mission;
 
+    private String getViewFlag = "N";
+
     public PassListAdapter(Activity activity, List<MissionPass> passes, User user, String missionPassFlag, Mission mission) {
         this.activity = activity;
         this.passes = passes;
@@ -59,9 +61,18 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
         this.mission = mission;
     }
 
+    public PassListAdapter(Activity activity, List<MissionPass> passes, User user, String missionPassFlag,String getViewFlag) {
+        this.activity = activity;
+        this.passes = passes;
+        this.user = user;
+        this.missionPassFlag = missionPassFlag;
+        this.getViewFlag = getViewFlag;
+    }
+
     @Override
     public PassItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.pass_card_item, null);
+
         return new PassItemHolder(v);
     }
 
@@ -124,11 +135,25 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
             @Override
             public void onClick(View view) {
 
+                if(getViewFlag.equals("Y")){
+                    new MaterialDialog.Builder(activity)
+                            .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                            .title(R.string.mom_diaalog_alert)
+                            .titleColor(activity.getResources().getColor(R.color.color6))
+                            .content(R.string.user_mission_d_title5)
+                            .contentColor(activity.getResources().getColor(R.color.color6))
+                            .positiveText(R.string.mom_diaalog_confirm)
+                            .show();
+                    return;
+                }
+
+
                 PopupMenu p = new PopupMenu(activity,view);
                 activity.getMenuInflater().inflate(R.menu.mission_pass_item, p.getMenu());
                 p.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+
 
                         switch (item.getOrder()){
                             case 101:

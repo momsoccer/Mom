@@ -2,40 +2,62 @@ package com.mom.soccer.mission;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.astuetz.PagerSlidingTabStrip;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
-import com.mom.soccer.board.BoardMainActivity;
+import com.mom.soccer.adapter.BoardListAdapter;
+import com.mom.soccer.adapter.FeedBackAllListAdapter;
+import com.mom.soccer.adapter.PassListAdapter;
 import com.mom.soccer.bottommenu.MyPageActivity;
+import com.mom.soccer.common.Auth;
+import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
+import com.mom.soccer.common.ExpandableHeightListView;
 import com.mom.soccer.common.PrefUtil;
+import com.mom.soccer.dto.Board;
+import com.mom.soccer.dto.FeedbackHeader;
 import com.mom.soccer.dto.FollowManage;
+import com.mom.soccer.dto.Mission;
+import com.mom.soccer.dto.MissionPass;
 import com.mom.soccer.dto.MyBookMark;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.fragment.UserMissionFragment;
+import com.mom.soccer.retrofitdao.BoardService;
+import com.mom.soccer.retrofitdao.FeedBackService;
 import com.mom.soccer.retrofitdao.FollowService;
+import com.mom.soccer.retrofitdao.MissionPassService;
+import com.mom.soccer.retrofitdao.MissionService;
 import com.mom.soccer.retrofitdao.PickService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
+import com.mom.soccer.youtubeplayer.YoutubePlayerActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,7 +66,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserMissionActivity extends AppCompatActivity {
+public class UserMissionActivity extends AppCompatActivity
+{
 
     private static final String TAG = "UserMissionActivity";
     private UserMission userMission;
@@ -78,6 +101,8 @@ public class UserMissionActivity extends AppCompatActivity {
     MyBookMark myBookMark = new MyBookMark();
     PickService pickService;
 
+    Mission mission;
+
     private String pickUpFlag = "N";
 
     @Bind(R.id.user_missionview_title)
@@ -96,9 +121,75 @@ public class UserMissionActivity extends AppCompatActivity {
     @Bind(R.id.tx_date)
     TextView tx_date;
 
-    //view...sliding
-    ViewPager viewPager;
-    PagerSlidingTabStrip tabsStrip;
+
+    @Bind(R.id.li_mission_info)
+    LinearLayout li_mission_info;
+
+    @Bind(R.id.li_board_tab_layout)
+    LinearLayout li_board_tab_layout;
+
+    @Bind(R.id.board_list_view)
+    ExpandableHeightListView board_list_view;
+
+    BoardListAdapter boardListAdapter;
+    List<Board> boardList;
+
+    @Bind(R.id.tabpage2)
+    TextView tabpage2;
+
+    @Bind(R.id.mission_message)
+    TextView mission_message;
+
+    //색갈조정
+    LinearLayout li_back_layout,li_bottom_layout,li_icon_layout;
+    LinearLayout page1,page2;
+
+    RecyclerView passrecyclerview,feedbackRecylerView;
+    PassListAdapter passListAdapter;
+    List<MissionPass> missionPasses = new ArrayList<>();
+
+    FeedBackAllListAdapter feedBackAllListAdapter;
+    private List<FeedbackHeader> feedbackHeaders;
+
+
+    @Bind(R.id.li_pass_history)
+    LinearLayout li_pass_history;
+
+    //심사없을때
+    @Bind(R.id.li_pass_no_found)
+    LinearLayout li_pass_no_found;
+
+    //피드백 없을때
+    @Bind(R.id.li_feedback_no_found)
+    LinearLayout li_feedback_no_found;
+
+    @Bind(R.id.youtube_YouTubeThumbnailView)
+    YouTubeThumbnailView youtube_YouTubeThumbnailView;
+
+    @Bind(R.id.missionprecon)
+    TextView missionprecon;
+
+    @Bind(R.id.missionname)
+    TextView missionname;
+
+    @Bind(R.id.missiondisp)
+    TextView missiondisp;
+
+    @Bind(R.id.li_board_no_found)
+    LinearLayout li_board_no_found;
+
+    @Bind(R.id.et_board_contnet)
+    EditText et_board_contnet;
+
+    //통과관련
+    @Bind(R.id.mission_pass_li)
+    LinearLayout mission_pass_li;
+
+    @Bind(R.id.mission_sequence)
+    TextView mission_sequence;
+
+    @Bind(R.id.mission_medal)
+    ImageView mission_medal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,12 +208,74 @@ public class UserMissionActivity extends AppCompatActivity {
 
         Log.i(TAG,"userMission : " + userMission.toString());
 
-/*        if(userMission.getPassflag().equals("Y")){
-            missionClear.setVisibility(View.VISIBLE);
-        }else{
-            missionClear.setVisibility(View.GONE);
-        }*/
+        if(userMission.getPassflag().equals("Y")){
+            mission_pass_li.setVisibility(View.VISIBLE);
+            mission_sequence.setText("Level : "+userMission.getSequence());
+            mission_message.setText(getString(R.string.user_mission_d_title8));
 
+            if(userMission.getMissiontype().equals("DRIBLE")){
+                mission_medal.setImageDrawable(getResources().getDrawable(R.drawable.batch_drible_a));
+            }else if(userMission.getMissiontype().equals("LIFTING")){
+                mission_medal.setImageDrawable(getResources().getDrawable(R.drawable.batch_lifting_a));
+            }else if(userMission.getMissiontype().equals("TRAPING")){
+                mission_medal.setImageDrawable(getResources().getDrawable(R.drawable.batch_traping_a));
+            }else if(userMission.getMissiontype().equals("AROUND")){
+                mission_medal.setImageDrawable(getResources().getDrawable(R.drawable.batch_around_a));
+            }else if(userMission.getMissiontype().equals("FLICK")){
+                mission_medal.setImageDrawable(getResources().getDrawable(R.drawable.batch_flick_a));
+            }else if(userMission.getMissiontype().equals("COMPLEX")){
+                mission_medal.setImageDrawable(getResources().getDrawable(R.drawable.batch_complex_a));
+            }
+
+        }else{
+            mission_pass_li.setVisibility(View.GONE);
+        }
+
+        li_back_layout = (LinearLayout) findViewById(R.id.li_back_layout);   //바탕 이미지
+        li_bottom_layout = (LinearLayout) findViewById(R.id.li_bottom_layout);  //바탕 선
+        li_icon_layout = (LinearLayout) findViewById(R.id.li_icon_layout);  //바탕 색
+        //바탕색
+        page1 = (LinearLayout) findViewById(R.id.page1);
+        page2 = (LinearLayout) findViewById(R.id.page2);
+
+        Log.i(TAG,"미션 타입은요 .... " + userMission.getMissiontype());
+
+        if(userMission.getMissiontype().equals("DRIBLE")){
+
+            li_back_layout.setBackground(getResources().getDrawable(R.drawable.xml_back_drible));
+            li_bottom_layout.setBackground(getResources().getDrawable(R.drawable.xml_back_drible));
+
+
+        }else if(userMission.getMissiontype().equals("LIFTING")){
+
+            li_back_layout.setBackground(getResources().getDrawable(R.drawable.xml_back_lifting));
+            li_bottom_layout.setBackground(getResources().getDrawable(R.drawable.xml_back_lifting));
+
+
+        }else if(userMission.getMissiontype().equals("TRAPING")){
+
+            li_back_layout.setBackground(getResources().getDrawable(R.drawable.xml_back_traping));
+            li_bottom_layout.setBackground(getResources().getDrawable(R.drawable.xml_back_traping));
+
+
+        }else if(userMission.getMissiontype().equals("AROUND")){
+
+            li_back_layout.setBackground(getResources().getDrawable(R.drawable.xml_back_around));
+            li_bottom_layout.setBackground(getResources().getDrawable(R.drawable.xml_back_around));
+
+        }else if(userMission.getMissiontype().equals("FLICK")){
+
+            li_back_layout.setBackground(getResources().getDrawable(R.drawable.xml_back_flick));
+            li_bottom_layout.setBackground(getResources().getDrawable(R.drawable.xml_back_flick));
+
+
+        }else if(userMission.getMissiontype().equals("COMPLEX")){
+
+            li_back_layout.setBackground(getResources().getDrawable(R.drawable.xml_back_complex));
+            li_bottom_layout.setBackground(getResources().getDrawable(R.drawable.xml_back_complex));
+
+
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.user_missionview_title_toolbar);
         setSupportActionBar(toolbar);
@@ -152,12 +305,6 @@ public class UserMissionActivity extends AppCompatActivity {
         tx_score.setText(getString(R.string.user_mission_detail_tx3) +":"+userMission.getTotalscore());
         tx_date.setText(userMission.getChange_creationdate());
 
-        //YoutubeFragment 유투브 플래그먼트
-/*        YoutubeFragment youtubeFragment = new YoutubeFragment(this, userMission.getYoutubeaddr());
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction tc = fm.beginTransaction();
-        tc.add(R.id.youtube_frame_layout, youtubeFragment, "");
-        tc.commit();*/
 
         if (!Compare.isEmpty(userMission.getProfileimgurl())) {
             Glide.with(this)
@@ -172,53 +319,93 @@ public class UserMissionActivity extends AppCompatActivity {
         }
 
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        UserMissionPagerAdapter pagerAdapter = new UserMissionPagerAdapter(getSupportFragmentManager());
+        //어댑터 설정
+        passrecyclerview = (RecyclerView)findViewById(R.id.passrecyclerview);
 
-        viewPager.setAdapter(pagerAdapter);
+        //탭1,탭2
+        li_board_tab_layout.setVisibility(View.VISIBLE);
+        li_mission_info.setVisibility(View.GONE);
 
-        tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.pagertabs);
-
-        //viewPager.setCurrentItem(pageCall);
-
-        //setting
-        tabsStrip.setIndicatorColor(getResources().getColor(R.color.enabled_red));
-        tabsStrip.setTextColor(getResources().getColor(R.color.color6));
-        tabsStrip.setViewPager(viewPager);
+        passHistory();
+        youtube_YouTubeThumbnailView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserMissionActivity.this,YoutubePlayerActivity.class);
+                intent.putExtra(Common.YOUTUBEVIDEO,mission.getYoutubeaddr());
+                startActivity(intent);
+            }
+        });
     }
 
-    public class UserMissionPagerAdapter extends FragmentStatePagerAdapter {
+    public void tabChangeClick(View v){
+        switch (v.getId()){
+            case R.id.page1:
+                li_board_tab_layout.setVisibility(View.GONE);
+                li_mission_info.setVisibility(View.VISIBLE);
+                break;
 
-        final int PAGE_COUNT = 2;
+            case R.id.page2:
+                li_board_tab_layout.setVisibility(View.VISIBLE);
+                li_mission_info.setVisibility(View.GONE);
+                break;
 
-        private String tabTitles[] = new String[] {
-            "미션관련",getString(R.string.user_mission_d_title2)
-        };
+            case R.id.img1:
+                li_board_tab_layout.setVisibility(View.GONE);
+                li_mission_info.setVisibility(View.VISIBLE);
+            break;
 
-        public UserMissionPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
+            case R.id. img2:
+                li_board_tab_layout.setVisibility(View.VISIBLE);
+                li_mission_info.setVisibility(View.GONE);
+                break;
 
-        @Override
-        public int getCount() {
-            return PAGE_COUNT;
-        }
 
-        @Override
-        public Fragment getItem(int position) {
-            return UserMissionFragment.newInstance(position + 1,user,userMission);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return tabTitles[position];
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
         }
     }
+
+    public void getBoarderList(){
+        WaitingDialog.showWaitingDialog(UserMissionActivity.this,false);
+        BoardService boardService = ServiceGenerator.createService(BoardService.class,this,user);
+
+        Board board = new Board();
+        board.setUsermissionid(userMission.getUsermissionid());
+        board.setUid(userMission.getUid());
+        Call<List<Board>> call = boardService.getboardlist(board);
+
+        call.enqueue(new Callback<List<Board>>() {
+            @Override
+            public void onResponse(Call<List<Board>> call, Response<List<Board>> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+
+                    List<Board> boardList = response.body();
+
+                    if(boardList.size()==0){
+                        li_board_no_found.setVisibility(View.VISIBLE);
+                    }else{
+                        li_board_no_found.setVisibility(View.GONE);
+                    }
+
+                    tabpage2.setText("("+boardList.size()+")");
+
+                    boardListAdapter = new BoardListAdapter(UserMissionActivity.this,boardList,user.getUid(),user);
+                    board_list_view.setExpanded(true);
+                    board_list_view.setAdapter(boardListAdapter);
+                }else{
+                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Board>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
+    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -340,50 +527,21 @@ public class UserMissionActivity extends AppCompatActivity {
         //좋아요체크
         initialPickCheck();
 
+        //댓글리스트
+        getBoarderList();
 
-        /*
-        WaitingDialog.showWaitingDialog(this,false);
-        BoardService boardService = ServiceGenerator.createService(BoardService.class,this,user);
+        //시드미션
+        getMission();
 
-        Board board = new Board();
-        board.setUsermissionid(userMission.getUsermissionid());
-        board.setUid(userMission.getUid());
-        Call<List<Board>> c = boardService.getboardlist(board);
+        //피드백 리스트
+        getFeedBack();
 
-        c.enqueue(new Callback<List<Board>>() {
-            @Override
-            public void onResponse(Call<List<Board>> call, Response<List<Board>> response) {
-                WaitingDialog.cancelWaitingDialog();
-                if(response.isSuccessful()){
-                    List<Board> boardList = response.body();
-
-                    Log.i(TAG,"보더 자료는 : " + boardList.size());
-
-                    boardListAdapter = new BoardItemAdapter(UserMissionActivity.this,boardList);
-                    rvSample.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
-                    rvSample.getItemAnimator().setAddDuration(300);
-                    rvSample.getItemAnimator().setRemoveDuration(300);
-                    rvSample.getItemAnimator().setMoveDuration(300);
-                    rvSample.getItemAnimator().setChangeDuration(300);
-
-                    rvSample.setHasFixedSize(true);
-                    rvSample.setLayoutManager(new LinearLayoutManager(UserMissionActivity.this));
-
-                    AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(boardListAdapter);
-                    alphaAdapter.setDuration(500);
-                    rvSample.setAdapter(alphaAdapter);
-                    WaitingDialog.cancelWaitingDialog();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Board>> call, Throwable t) {
-                WaitingDialog.cancelWaitingDialog();
-                t.printStackTrace();
-            }
-        });
-        */
-
+        //UserMissionFragment 유투브 플래그먼트
+        UserMissionFragment youtubeFragment = new UserMissionFragment(this,userMission.getYoutubeaddr());
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction tc = fm.beginTransaction();
+        tc.add(R.id.youtube_seed_frame_layout,youtubeFragment,"");
+        tc.commit();
 
     }
 
@@ -435,7 +593,7 @@ public class UserMissionActivity extends AppCompatActivity {
         });
     }
 
-    //댓글쓰기
+/*    //댓글쓰기
     @OnClick(R.id.ac_user_mission_video_comment)
     public void boardMain() {
         Intent intent = new Intent(this, BoardMainActivity.class);
@@ -443,7 +601,7 @@ public class UserMissionActivity extends AppCompatActivity {
         intent.putExtra("missionuid", userMission.getUid());
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-    }
+    }*/
 
     //팔로잉 관련 트랜잭션
     @OnClick(R.id.btn_fllow)
@@ -554,5 +712,175 @@ public class UserMissionActivity extends AppCompatActivity {
     }
 
     //shrareBtn 카카오 공유
+
+
+    public void passHistory(){
+        if(!Compare.isEmpty(userMission.getPassflag())){
+
+            WaitingDialog.showWaitingDialog(UserMissionActivity.this,false);
+            MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getApplicationContext(),user);
+
+            MissionPass query = new MissionPass();
+            query.setUid(user.getUid());
+            query.setUsermissionid(userMission.getUsermissionid());
+            query.setMissionid(userMission.getMissionid());
+
+            Call<List<MissionPass>> c = service.getPassList(query);
+            c.enqueue(new Callback<List<MissionPass>>() {
+                @Override
+                public void onResponse(Call<List<MissionPass>> call, Response<List<MissionPass>> response) {
+                    WaitingDialog.cancelWaitingDialog();
+                    if(response.isSuccessful()){
+                        missionPasses = response.body();
+
+                        if(missionPasses.size()==0){
+                            li_pass_no_found.setVisibility(View.VISIBLE);
+                        }else{
+                            li_pass_no_found.setVisibility(View.GONE);
+                        }
+
+                        passListAdapter = new PassListAdapter(UserMissionActivity.this,missionPasses,user,userMission.getPassflag(),"Y");
+                        passrecyclerview.setHasFixedSize(true);
+                        passrecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        passrecyclerview.setAdapter(passListAdapter);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<MissionPass>> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
+                    t.printStackTrace();
+                }
+            });
+
+        }
+    }
+
+    public void getMission(){
+        WaitingDialog.showWaitingDialog(UserMissionActivity.this,false);
+        MissionService missionService = ServiceGenerator.createService(MissionService.class,getApplicationContext(),user);
+        Mission query = new Mission();
+        query.setMissionid(userMission.getMissionid());
+        Call<Mission> c = missionService.getMission(query);
+        c.enqueue(new Callback<Mission>() {
+            @Override
+            public void onResponse(Call<Mission> call, Response<Mission> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    mission = response.body();
+
+                    missionname.setText(mission.getMissionname());
+                    missionprecon.setText(mission.getPrecon());
+                    missiondisp.setText(mission.getDescription());
+
+                    youtube_YouTubeThumbnailView.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
+                        @Override
+                        public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader youTubeThumbnailLoader) {
+                            youTubeThumbnailLoader.setVideo(mission.getYoutubeaddr());
+                        }
+
+                        @Override
+                        public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Mission> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void getFeedBack(){
+
+        WaitingDialog.showWaitingDialog(UserMissionActivity.this,false);
+        FeedBackService feedBackService = ServiceGenerator.createService(FeedBackService.class,getApplicationContext(),user);
+        FeedbackHeader header = new FeedbackHeader();
+
+        header.setUid(user.getUid());
+        header.setUsermissionid(userMission.getUsermissionid());
+
+        Call<List<FeedbackHeader>> c = feedBackService.getFeedAllList(header);
+        c.enqueue(new Callback<List<FeedbackHeader>>() {
+            @Override
+            public void onResponse(Call<List<FeedbackHeader>> call, Response<List<FeedbackHeader>> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+
+                    feedbackHeaders = response.body();
+
+                    if(feedbackHeaders.size()==0){
+                        li_feedback_no_found.setVisibility(View.VISIBLE);
+                    }else{
+                        li_feedback_no_found.setVisibility(View.GONE);
+                    }
+
+                    feedbackRecylerView = (RecyclerView)findViewById(R.id.feedbackRecylerView);
+                    feedBackAllListAdapter = new FeedBackAllListAdapter(UserMissionActivity.this,feedbackHeaders,user,"Y");
+                    feedbackRecylerView.setHasFixedSize(true);
+                    feedbackRecylerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    feedbackRecylerView.setAdapter(feedBackAllListAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FeedbackHeader>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+    }
+
+    //댓글을 입력한다
+    @OnClick(R.id.btn_boardcreate)
+    public void createContent(){
+
+        if(et_board_contnet.getText().length()== 0){
+            new MaterialDialog.Builder(UserMissionActivity.this)
+                    .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                    .title(R.string.mom_diaalog_alert)
+                    .titleColor(getResources().getColor(R.color.color6))
+                    .content(R.string.board_validation_word_empty)
+                    .contentColor(getResources().getColor(R.color.color6))
+                    .positiveText(R.string.mom_diaalog_confirm)
+                    .show();
+            return;
+        }
+
+        WaitingDialog.showWaitingDialog(UserMissionActivity.this,false);
+        BoardService boardService = ServiceGenerator.createService(BoardService.class,this,user);
+
+        Board board = new Board();
+        board.setUid(userMission.getUid());
+        board.setWriteuid(user.getUid());
+        board.setUsermissionid(userMission.getUsermissionid());
+        board.setComment(et_board_contnet.getText().toString());
+
+        Call<ServerResult> call = boardService.saveBoard(board);
+        call.enqueue(new Callback<ServerResult>() {
+            @Override
+            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    ServerResult result = response.body();
+                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_create_complete),Toast.LENGTH_SHORT).show();
+                    finish();
+                    Intent intent = new Intent(UserMissionActivity.this, UserMissionActivity.class);
+                    intent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMission);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResult> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+    }
 
 }

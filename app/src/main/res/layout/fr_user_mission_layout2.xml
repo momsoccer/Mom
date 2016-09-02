@@ -2,9 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/mom_color1"
     >
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:background="@color/mom_color2"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        >
+
+        <EditText
+            android:id="@+id/et_board_contnet"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/color6"
+            android:background="@drawable/inputtext"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="32dp"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            android:gravity="center_vertical"
+            />
+
+        <Button
+            android:id="@+id/btn_boardcreate"
+            style="@style/btnStylePaprika"
+            android:text="@string/board_createbtn"
+            android:textSize="10sp"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="34dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center" />
+    </LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:layout_gravity="center_horizontal"
@@ -13,5 +52,6 @@
         android:layout_height="wrap_content"
         android:background="@color/mom_color1"
         />
+
 
 </LinearLayout>

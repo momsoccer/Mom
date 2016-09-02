@@ -8,8 +8,17 @@ public class FeedDataVo {
     private int completecount;
     private int incompletecount;
     private int instructorid;
+    private int uid;
 
     public FeedDataVo(){}
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
 
     public int getInstructorid() {
         return instructorid;

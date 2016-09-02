@@ -148,7 +148,7 @@ public class ResumableUpload {
                         //This was the only way I found to abort the download
 
                         Log.d(TAG,"업로드를 취소합니다");
-                        throw new CancellationException("업로드 취소");
+                        throw new CancellationException(context.getString(R.string.upload_msg2));
                     }
 
                     switch (uploader.getUploadState()) {
@@ -181,7 +181,7 @@ public class ResumableUpload {
                             Log.d(TAG,"MEDIA_COMPLETE ========================");
 
                             builder.setContentTitle(context.getString(R.string.upload_complate))
-                                    .setContentText("업로드 파일명 : " + userMission.getFilename())
+                                    .setContentText(context.getString(R.string.upload_msg1) + userMission.getFilename())
                                     .setProgress(0, 0, false)
                                     .setSound(defaultSoundUri)
                             ;

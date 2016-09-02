@@ -177,8 +177,6 @@ public class BoardMainActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
-
-
     }
 
     @Override

@@ -29,8 +29,26 @@ public class UserMission implements Serializable {
 	private String missionname;
 	private int totalscore;
 	private int level;
+	private String missiontype;
+	private int sequence;
 
 	public UserMission(){}
+
+	public int getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(int sequence) {
+		this.sequence = sequence;
+	}
+
+	public String getMissiontype() {
+		return missiontype;
+	}
+
+	public void setMissiontype(String missiontype) {
+		this.missiontype = missiontype;
+	}
 
 	public int getTotalscore() {
 		return totalscore;
@@ -258,6 +276,10 @@ public class UserMission implements Serializable {
 				", queryRow=" + queryRow +
 				", orderbytype='" + orderbytype + '\'' +
 				", missionname='" + missionname + '\'' +
+				", totalscore=" + totalscore +
+				", level=" + level +
+				", missiontype='" + missiontype + '\'' +
+				", sequence=" + sequence +
 				'}';
 	}
 }

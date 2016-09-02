@@ -158,7 +158,9 @@
         <activity
             android:name=".mission.UserMissionActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"
+            />
         <activity
             android:name=".mission.UserMissionListActivity"
             android:label="@string/title_activity_user_mission_list"

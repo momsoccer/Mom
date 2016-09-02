@@ -98,22 +98,6 @@ public class FeedBackInsListActivity extends AppCompatActivity {
                     alphaAdapter.setDuration(500);
                     recyclerView.setAdapter(alphaAdapter);
 
-/*                    recyclerView.addOnItemTouchListener(
-                            new RecyclerItemClickListener(getApplicationContext(), recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(View view, final int i) {
-                                    Intent intent = new Intent();
-                                    intent.putExtra(MissionCommon.INS_OBJECT,insInfoVoList.get(i));
-                                    setResult(RESULT_OK,intent);
-                                    finish();
-                                }
-
-                                @Override
-                                public void onLongItemClick(View view, int position) {
-                                }
-                            })
-                    );*/
-
                 }else{
                     WaitingDialog.cancelWaitingDialog();
                 }

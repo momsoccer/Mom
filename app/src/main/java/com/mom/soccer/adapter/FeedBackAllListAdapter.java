@@ -56,12 +56,20 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
     List<FeedbackHeader> feedbackHeaders;
     User user;
     Mission mission;
+    private String getViewFlag = "N";
 
     public FeedBackAllListAdapter(Activity context, List<FeedbackHeader> feedbackHeaders,User user,Mission mission) {
         this.activity = context;
         this.feedbackHeaders = feedbackHeaders;
         this.user = user;
         this.mission = mission;
+    }
+
+    public FeedBackAllListAdapter(Activity context, List<FeedbackHeader> feedbackHeaders,User user,String getViewFlag) {
+        this.activity = context;
+        this.feedbackHeaders = feedbackHeaders;
+        this.user = user;
+        this.getViewFlag = getViewFlag;
     }
 
     @Override
@@ -150,6 +158,19 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
         holder.ratingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+
+                if(getViewFlag.equals("Y")){
+                    new MaterialDialog.Builder(activity)
+                            .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                            .title(R.string.mom_diaalog_alert)
+                            .titleColor(activity.getResources().getColor(R.color.color6))
+                            .content(R.string.user_mission_d_title5)
+                            .contentColor(activity.getResources().getColor(R.color.color6))
+                            .positiveText(R.string.mom_diaalog_confirm)
+                            .show();
+                    return;
+                }
+
                 FeedBackService feedBackService = ServiceGenerator.createService(FeedBackService.class,activity,user);
                 WaitingDialog.showWaitingDialog(activity,false);
 
@@ -183,11 +204,25 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
         holder.btnHam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(getViewFlag.equals("Y")){
+                    new MaterialDialog.Builder(activity)
+                            .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                            .title(R.string.mom_diaalog_alert)
+                            .titleColor(activity.getResources().getColor(R.color.color6))
+                            .content(R.string.user_mission_d_title5)
+                            .contentColor(activity.getResources().getColor(R.color.color6))
+                            .positiveText(R.string.mom_diaalog_confirm)
+                            .show();
+                    return;
+                }
+
                 PopupMenu popupMenu = new PopupMenu(activity,view); //
                 activity.getMenuInflater().inflate(R.menu.feedback_pop_menu, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+
                         switch (item.getOrder()){
                             case 101:
                                 if(vo.getReplaycount()==0){

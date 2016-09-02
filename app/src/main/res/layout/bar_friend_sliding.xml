@@ -33,15 +33,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
+            <ImageView
+                android:src="@drawable/ic_ball_subject"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
             <TextView
-                android:text="@string/ins_sliding_title"
+                android:text="@string/ball_friend_title3"
                 android:textSize="13sp"
                 android:textColor="@color/color6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/feedbackCount"
+                android:layout_marginLeft="10dp"
+                android:text="@string/ball_friend_title1"
+                android:textSize="13sp"
+                android:textColor="@color/color6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/friend_count"
                 android:text="120"
                 android:textSize="13sp"
                 android:textColor="@color/enabled_red"
@@ -50,14 +63,14 @@
 
             <TextView
                 android:layout_marginLeft="10dp"
-                android:text="@string/ins_sliding_non_title"
+                android:text="@string/ball_friend_title2"
                 android:textSize="13sp"
                 android:textColor="@color/color6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/feedbackNonCount"
+                android:id="@+id/friend_no_count"
                 android:text="10"
                 android:textSize="13sp"
                 android:textColor="@color/enabled_red"

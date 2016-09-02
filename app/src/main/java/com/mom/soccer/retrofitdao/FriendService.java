@@ -1,6 +1,7 @@
 package com.mom.soccer.retrofitdao;
 
 
+import com.mom.soccer.dataDto.FeedDataVo;
 import com.mom.soccer.dto.FollowManage;
 import com.mom.soccer.dto.FriendApply;
 import com.mom.soccer.dto.FriendReqVo;
@@ -55,4 +56,8 @@ public interface FriendService {
 
     @POST("/api/common/getFollowUserCount")
     public Call<ServerResult> getFollowUserCount(@Body FollowManage followManage);
+
+    @POST("/api/common/getAllfriend")
+    public Call<FeedDataVo> getAllfriend(@Body FeedDataVo feedDataVo);
+
 }

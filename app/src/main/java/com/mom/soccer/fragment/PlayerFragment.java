@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.FriendListAdapter;
 import com.mom.soccer.adapter.UserMissionAdapter;
+import com.mom.soccer.dataDto.FeedDataVo;
 import com.mom.soccer.dto.FriendReqVo;
 import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.User;
@@ -50,11 +52,13 @@ public class PlayerFragment extends Fragment {
 
     RecyclerView recyclerview,friendi_recyclerview;
     List<FriendReqVo> friendReqVos = new ArrayList<>();
-    TextView friend_no_data,friend_req_data;
+
 
     List<Mission> missions;
     UserMissionAdapter userMissionAdapter;
 
+    LinearLayout li_no_found,li_req_no_found;
+    TextView tx_nodata_found,tx_req_nodata_found,friend_count,friend_no_count;
 
     public static PlayerFragment newInstance(int page, User user){
 
@@ -84,6 +88,9 @@ public class PlayerFragment extends Fragment {
 
         if(mPage==1){
             view = inflater.inflate(R.layout.fr_player_fragment1, container, false);
+
+
+
             slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
             mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
             mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
@@ -99,6 +106,12 @@ public class PlayerFragment extends Fragment {
                     }
                 }
             });
+
+            li_no_found = (LinearLayout) view.findViewById(R.id.li_no_found);
+            tx_nodata_found = (TextView) view.findViewById(R.id.tx_nodata_found);
+
+            li_req_no_found = (LinearLayout) view.findViewById(R.id.li_req_no_found);
+            tx_req_nodata_found = (TextView) view.findViewById(R.id.tx_req_nodata_found);
 
         }else if(mPage==2){
             view = inflater.inflate(R.layout.fr_player_fragment2, container, false);
@@ -118,8 +131,24 @@ public class PlayerFragment extends Fragment {
                 }
             });
 
+            li_no_found = (LinearLayout) view.findViewById(R.id.li_no_found);
+            tx_nodata_found = (TextView) view.findViewById(R.id.tx_nodata_found);
+
+            li_req_no_found = (LinearLayout) view.findViewById(R.id.li_req_no_found);
+            tx_req_nodata_found = (TextView) view.findViewById(R.id.tx_req_nodata_found);
+
+
         }else if(mPage==3){
             view = inflater.inflate(R.layout.fr_player_fragment3, container, false);
+
+            li_no_found = (LinearLayout) view.findViewById(R.id.li_no_found);
+            tx_nodata_found = (TextView) view.findViewById(R.id.tx_nodata_found);
+
+            li_req_no_found = (LinearLayout) view.findViewById(R.id.li_req_no_found);
+            tx_req_nodata_found = (TextView) view.findViewById(R.id.tx_req_nodata_found);
+
+            friend_count = (TextView) view.findViewById(R.id.friend_count);
+            friend_no_count = (TextView) view.findViewById(R.id.friend_no_count);
 
             slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
             mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
@@ -140,9 +169,35 @@ public class PlayerFragment extends Fragment {
             friendi_recyclerview = (RecyclerView) view.findViewById(R.id.friendi_recyclerview);
             friendReqList();
             friendRList();
+            getfriendCount();
         }
 
         return view;
+    }
+
+    public void getfriendCount(){
+        WaitingDialog.showWaitingDialog(getActivity(),false);
+        FriendService friendService = ServiceGenerator.createService(FriendService.class,getContext(),user);
+        FeedDataVo query =  new FeedDataVo();
+        query.setUid(user.getUid());
+        Call<FeedDataVo> c = friendService.getAllfriend(query);
+        c.enqueue(new Callback<FeedDataVo>() {
+            @Override
+            public void onResponse(Call<FeedDataVo> call, Response<FeedDataVo> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    FeedDataVo vo = response.body();
+                    friend_count.setText(String.valueOf(vo.getCompletecount()));
+                    friend_no_count.setText(String.valueOf(vo.getIncompletecount()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FeedDataVo> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
     }
 
     public void friendReqList(){
@@ -156,7 +211,14 @@ public class PlayerFragment extends Fragment {
                 if(response.isSuccessful()){
                     friendReqVos = response.body();
 
+                    Log.i(TAG,"*************" + friendReqVos.size());
 
+                    if(friendReqVos.size()==0){
+                        li_req_no_found.setVisibility(View.VISIBLE);
+                        tx_req_nodata_found.setText(getString(R.string.friend__req_no_data));
+                    }else{
+                        li_no_found.setVisibility(View.GONE);
+                    }
                     recyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
                     recyclerView.getItemAnimator().setAddDuration(300);
                     recyclerView.getItemAnimator().setRemoveDuration(300);
@@ -191,6 +253,13 @@ public class PlayerFragment extends Fragment {
                 WaitingDialog.cancelWaitingDialog();
                 if (response.isSuccessful()) {
                     friendReqVos = response.body();
+
+                    if(friendReqVos.size()==0){
+                        li_no_found.setVisibility(View.VISIBLE);
+                        tx_nodata_found.setText(getString(R.string.friend_no_data));
+                    }else{
+                        li_no_found.setVisibility(View.GONE);
+                    }
 
                     friendi_recyclerview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
                     friendi_recyclerview.getItemAnimator().setAddDuration(300);
