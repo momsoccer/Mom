@@ -130,15 +130,33 @@
                 android:layout_height="1dp"
                 android:background="@color/line_color1" />
 
-            <TextView
-                android:id="@+id/tx_main_usermission"
+            <LinearLayout
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
-                android:text="@string/my_mission_subject"
-                android:textColor="@color/color6"
-                android:textSize="12sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                >
+
+                <ImageView
+                    android:background="@color/mom_color1"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_video_library_white_24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/tx_main_usermission"
+                    android:text="@string/my_mission_subject"
+                    android:textColor="@color/color6"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    />
+
+            </LinearLayout>
 
             <View
                 android:id="@+id/view_l2"
@@ -287,14 +305,33 @@
                     android:layout_height="1dp"
                     android:background="@color/line_color1" />
 
-                <TextView
+                <LinearLayout
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
-                    android:text="@string/user_mission_pass_title"
-                    android:textColor="@color/color6"
-                    android:textSize="12sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    >
+
+                    <ImageView
+                        android:background="@color/mom_color1"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_verified_user_white_24dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/user_mission_pass_title"
+                        android:text="@string/user_mission_pass_title"
+                        android:textColor="@color/color6"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        />
+
+                </LinearLayout>
 
                 <View
                     android:layout_marginTop="5dp"
@@ -325,14 +362,33 @@
                     android:layout_height="1dp"
                     android:background="@color/line_color1" />
 
-                <TextView
+                <LinearLayout
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
-                    android:text="@string/my_mission_feedback_subject"
-                    android:textColor="@color/color6"
-                    android:textSize="12sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    >
+
+                    <ImageView
+                        android:background="@color/mom_color1"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_feedback_white_24dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/my_mission_feedback_subject"
+                        android:text="@string/my_mission_feedback_subject"
+                        android:textColor="@color/color6"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        />
+
+                </LinearLayout>
 
                 <View
                     android:layout_marginTop="5dp"
@@ -340,12 +396,12 @@
                     android:layout_height="1dp"
                     android:background="@color/line_color1" />
 
-<!--                <it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    card:list_card_layout_resourceID="@layout/native_recyclerview_card_layout"
-                    android:id="@+id/feedback_recyclerview"/>-->
+                <!--                <it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView
+                                    android:layout_marginTop="5dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    card:list_card_layout_resourceID="@layout/native_recyclerview_card_layout"
+                                    android:id="@+id/feedback_recyclerview"/>-->
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/feedbackRecylerView"
@@ -399,14 +455,22 @@
             android:layout_marginRight="10dp"
             >
 
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
 
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:background="@color/mom_color1"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_video_library_white_24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
                 <TextView
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
                     android:id="@+id/tx_main_mission_subject"
                     android:text="@string/default_mission_subject"
                     android:textColor="@color/color6"

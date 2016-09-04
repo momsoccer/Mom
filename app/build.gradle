@@ -118,12 +118,15 @@ dependencies {
 
     //cardslib
     //Core card library
-    compile 'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
-    compile 'com.github.gabrielemariotti.cards:cardslib-recyclerview:2.1.0'
+    //compile 'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
+    //compile 'com.github.gabrielemariotti.cards:cardslib-recyclerview:2.1.0'
 
     //seekbar
     compile 'org.adw.library:discrete-seekbar:1.0.1'
     compile 'com.sothree.slidinguppanel:library:3.3.0'
+
+    //floating bar
+    compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

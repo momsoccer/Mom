@@ -77,7 +77,6 @@
             android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="@integer/list_card_swipe_distance_divisor"
             android:theme="@style/TextLabelinput"
             >
 
@@ -104,7 +103,6 @@
             android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="@integer/list_card_swipe_distance_divisor"
             android:theme="@style/TextLabelinput"
             >
 

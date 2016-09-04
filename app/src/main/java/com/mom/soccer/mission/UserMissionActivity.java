@@ -12,14 +12,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
@@ -28,6 +26,7 @@ import com.mom.soccer.R;
 import com.mom.soccer.adapter.BoardListAdapter;
 import com.mom.soccer.adapter.FeedBackAllListAdapter;
 import com.mom.soccer.adapter.PassListAdapter;
+import com.mom.soccer.board.BoardMainActivity;
 import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.common.Auth;
 import com.mom.soccer.common.Common;
@@ -55,6 +54,7 @@ import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 import com.mom.soccer.youtubeplayer.YoutubePlayerActivity;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,15 +134,12 @@ public class UserMissionActivity extends AppCompatActivity
     BoardListAdapter boardListAdapter;
     List<Board> boardList;
 
-    @Bind(R.id.tabpage2)
-    TextView tabpage2;
 
     @Bind(R.id.mission_message)
     TextView mission_message;
 
     //색갈조정
     LinearLayout li_back_layout,li_bottom_layout,li_icon_layout;
-    LinearLayout page1,page2;
 
     RecyclerView passrecyclerview,feedbackRecylerView;
     PassListAdapter passListAdapter;
@@ -178,8 +175,9 @@ public class UserMissionActivity extends AppCompatActivity
     @Bind(R.id.li_board_no_found)
     LinearLayout li_board_no_found;
 
-    @Bind(R.id.et_board_contnet)
-    EditText et_board_contnet;
+    //화면에서 댓글입력
+    //@Bind(R.id.et_board_contnet)
+    //EditText et_board_contnet;
 
     //통과관련
     @Bind(R.id.mission_pass_li)
@@ -206,7 +204,6 @@ public class UserMissionActivity extends AppCompatActivity
         Intent intent = getIntent();
         userMission = (UserMission) intent.getSerializableExtra(MissionCommon.USER_MISSTION_OBJECT);
 
-        Log.i(TAG,"userMission : " + userMission.toString());
 
         if(userMission.getPassflag().equals("Y")){
             mission_pass_li.setVisibility(View.VISIBLE);
@@ -235,8 +232,7 @@ public class UserMissionActivity extends AppCompatActivity
         li_bottom_layout = (LinearLayout) findViewById(R.id.li_bottom_layout);  //바탕 선
         li_icon_layout = (LinearLayout) findViewById(R.id.li_icon_layout);  //바탕 색
         //바탕색
-        page1 = (LinearLayout) findViewById(R.id.page1);
-        page2 = (LinearLayout) findViewById(R.id.page2);
+
 
         Log.i(TAG,"미션 타입은요 .... " + userMission.getMissiontype());
 
@@ -335,28 +331,48 @@ public class UserMissionActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        //floating button
+        final ImageView fabIconNew = new ImageView(this);
+
+        fabIconNew.setImageDrawable(getResources().getDrawable(R.drawable.ic_border_color_white_24dp));
+        int redActionButtonSize = 70;
+        int redActionButtonMargin = 10;
+
+        FloatingActionButton.LayoutParams starParams = new FloatingActionButton.LayoutParams(redActionButtonSize, redActionButtonSize);
+        starParams.setMargins(redActionButtonMargin,
+                redActionButtonMargin,
+                redActionButtonMargin,
+                redActionButtonMargin);
+        fabIconNew.setLayoutParams(starParams);
+
+        final FloatingActionButton rightLowerButton = new FloatingActionButton.Builder(this)
+                .setContentView(fabIconNew)
+                .setBackgroundDrawable(R.drawable.button_action_red_selector)
+                .setPosition(FloatingActionButton.POSITION_RIGHT_CENTER)
+                .build();
+
+        rightLowerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(UserMissionActivity.this, BoardMainActivity.class);
+                intent1.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMission);
+                startActivity(intent1);
+            }
+        });
+
     }
 
     public void tabChangeClick(View v){
         switch (v.getId()){
-            case R.id.page1:
-                li_board_tab_layout.setVisibility(View.GONE);
-                li_mission_info.setVisibility(View.VISIBLE);
-                break;
-
-            case R.id.page2:
+            case R.id.tabBtn1:
                 li_board_tab_layout.setVisibility(View.VISIBLE);
                 li_mission_info.setVisibility(View.GONE);
-                break;
-
-            case R.id.img1:
-                li_board_tab_layout.setVisibility(View.GONE);
-                li_mission_info.setVisibility(View.VISIBLE);
             break;
 
-            case R.id. img2:
-                li_board_tab_layout.setVisibility(View.VISIBLE);
-                li_mission_info.setVisibility(View.GONE);
+            case R.id.tabBtn2:
+                li_board_tab_layout.setVisibility(View.GONE);
+                li_mission_info.setVisibility(View.VISIBLE);
                 break;
 
 
@@ -386,9 +402,7 @@ public class UserMissionActivity extends AppCompatActivity
                         li_board_no_found.setVisibility(View.GONE);
                     }
 
-                    tabpage2.setText("("+boardList.size()+")");
-
-                    boardListAdapter = new BoardListAdapter(UserMissionActivity.this,boardList,user.getUid(),user);
+                    boardListAdapter = new BoardListAdapter(UserMissionActivity.this,boardList,user.getUid(),user,userMission);
                     board_list_view.setExpanded(true);
                     board_list_view.setAdapter(boardListAdapter);
                 }else{
@@ -712,6 +726,10 @@ public class UserMissionActivity extends AppCompatActivity
     }
 
     //shrareBtn 카카오 공유
+    @OnClick(R.id.shrareBtn)
+    public void shrareBtn(){
+        VeteranToast.makeToast(getApplicationContext(),"준비중 입니다",Toast.LENGTH_SHORT).show();
+    }
 
 
     public void passHistory(){
@@ -835,11 +853,14 @@ public class UserMissionActivity extends AppCompatActivity
         });
     }
 
+
+
+/*
     //댓글을 입력한다
     @OnClick(R.id.btn_boardcreate)
     public void createContent(){
 
-        if(et_board_contnet.getText().length()== 0){
+       if(et_board_contnet.getText().length()== 0){
             new MaterialDialog.Builder(UserMissionActivity.this)
                     .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
                     .title(R.string.mom_diaalog_alert)
@@ -849,7 +870,7 @@ public class UserMissionActivity extends AppCompatActivity
                     .positiveText(R.string.mom_diaalog_confirm)
                     .show();
             return;
-        }
+
 
         WaitingDialog.showWaitingDialog(UserMissionActivity.this,false);
         BoardService boardService = ServiceGenerator.createService(BoardService.class,this,user);
@@ -882,5 +903,5 @@ public class UserMissionActivity extends AppCompatActivity
             }
         });
     }
-
+*/
 }

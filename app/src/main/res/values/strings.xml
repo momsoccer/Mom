@@ -97,10 +97,10 @@
     <string name="network_logout_user">안전하게 로그아웃 중입니다</string>
     <string name="network_get_list">서버로부터 정보를 받아 오는 중입니다</string>
     <string name="network_create_comment">댓글을 등록합니다</string>
-    <string name="network_create_complete">댓글이 등록 되었습니다. 댓글 리스트를 갱신 합니다</string>
+    <string name="network_create_complete">댓글이 등록 되었습니다 \n댓글 리스트를 갱신 합니다</string>
 
-    <string name="network_nodata_found_user">입력하신 검색어에 맞는 \n 유저가 존재하지 않습니다</string>
-    <string name="network_nodata_found_coach">입력하신 검색어에 맞는 \n 코치가 존재하지 않습니다</string>
+    <string name="network_nodata_found_user">입력하신 검색어에 맞는 \n유저가 존재하지 않습니다</string>
+    <string name="network_nodata_found_coach">입력하신 검색어에 맞는 \n코치가 존재하지 않습니다</string>
 
     <string name="network_nodata_error">데이터를 불러오는데 실패했습니다 \n 통신 상태를 확인하고 눌러주세요</string>
     <string name="no_mission_noty">미션이 곧 추가 됩니다. 기다려주실꺼죠?~~</string>
@@ -240,7 +240,7 @@
 
     <!--board-->
     <string name="mission_pass_btn">심사</string>
-    <string name="board_createbtn">작성</string>
+    <string name="board_createbtn">게시</string>
     <string name="board_validation_word_empty">내용을 입력해주세요</string>
 
     <string name="board_delete">댓글삭제</string>
@@ -606,5 +606,7 @@
     <string name="ball_friend_title1">친구수 : </string>
     <string name="ball_friend_title2">친구요청 수 : </string>
     <string name="ball_friend_title3">내친구</string>
+    <string name="ball_friend_title4">댓글</string>
+    <string name="ball_friend_title5">피드백/심사이력</string>
 
 </resources>

@@ -18,12 +18,14 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
-import com.mom.soccer.board.BoardMainActivity;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dto.Board;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.dto.UserMission;
+import com.mom.soccer.mission.MissionCommon;
+import com.mom.soccer.mission.UserMissionActivity;
 import com.mom.soccer.retrofitdao.BoardService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -45,6 +47,7 @@ public class BoardListAdapter extends BaseAdapter {
     private LayoutInflater inflater = null;
     private List<Board> boardList = new ArrayList<Board>();
     private int currentUid = 0;
+    UserMission usermission;
 
     private int writeuid = 0;
 
@@ -67,13 +70,14 @@ public class BoardListAdapter extends BaseAdapter {
         TextView  level;
     }
 
-    public BoardListAdapter(Activity activity, List<Board> boardList,int uid,User user
+    public BoardListAdapter(Activity activity, List<Board> boardList,int uid,User user,UserMission usermission
     ) {
         this.activity = activity;
         this.boardList = boardList;
         this.currentUid = uid;
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.user= user;
+        this.usermission = usermission;
     }
 
     @Override
@@ -189,9 +193,10 @@ public class BoardListAdapter extends BaseAdapter {
                                             WaitingDialog.cancelWaitingDialog();
                                             if(response.isSuccessful()){
 
-                                                Intent intent = new Intent(activity,BoardMainActivity.class);
-                                                intent.putExtra("usermissionid",board.getUsermissionid());
-                                                intent.putExtra("missionuid",board.getUid());
+                                                Intent intent = new Intent(activity,UserMissionActivity.class);
+                                                intent.putExtra(MissionCommon.USER_MISSTION_OBJECT,usermission);
+                                                //intent.putExtra("usermissionid",board.getUsermissionid());
+                                                //intent.putExtra("missionuid",board.getUid());
                                                 activity.finish();
                                                 activity.startActivity(intent);
 

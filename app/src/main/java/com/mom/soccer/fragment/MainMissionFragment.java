@@ -94,10 +94,6 @@ public class MainMissionFragment extends Fragment {
         mission = (Mission) getArguments().getSerializable(MissionCommon.OBJECT);
         user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
 
-        Log.i(TAG,"미션 객체 값 : " + mission.toString());
-        Log.i(TAG,"유저 객체 값 : " + user.toString());
-
-
     }
 
     public static MainMissionFragment newInstance(int page,
@@ -127,7 +123,6 @@ public class MainMissionFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        Log.i(TAG,"onCreateView() ======================");
 
         if(reflashMission.getMissionid()!=0){
             mission = reflashMission;

@@ -1,50 +1,11 @@
 package com.mom.soccer.cardview;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.LayerDrawable;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubeThumbnailLoader;
-import com.google.android.youtube.player.YouTubeThumbnailView;
-import com.mom.soccer.R;
-import com.mom.soccer.common.Auth;
-import com.mom.soccer.common.Common;
-import com.mom.soccer.dto.FeedbackHeader;
-import com.mom.soccer.dto.FeedbackLine;
-import com.mom.soccer.dto.Mission;
-import com.mom.soccer.dto.ServerResult;
-import com.mom.soccer.dto.User;
-import com.mom.soccer.mission.MissionCommon;
-import com.mom.soccer.mission.MissionMainActivity;
-import com.mom.soccer.retrofitdao.FeedBackService;
-import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.VeteranToast;
-import com.mom.soccer.widget.WaitingDialog;
-import com.mom.soccer.youtubeplayer.YoutubePlayerActivity;
-
-import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.internal.base.BaseCard;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 /**
  * Created by sungbo on 2016-08-23.
  */
-public class FeedBackCard extends Card{
+public class FeedBackCard {
+        /*
+        extends Card{
 
     private FeedbackHeader feedbackHeader;
 
@@ -212,14 +173,14 @@ public class FeedBackCard extends Card{
         }
 
 
-/*        video_ThumbnailView.setOnClickListener(new View.OnClickListener() {
+       video_ThumbnailView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity,YoutubePlayerActivity.class);
                 intent.putExtra(Common.YOUTUBEVIDEO,videoAddr);
                 activity.startActivity(intent);
             }
-        });*/
+        });
     }
 
     public void ratingEval(String trType, FeedbackLine line){
@@ -281,5 +242,5 @@ public class FeedBackCard extends Card{
         }
 
     }
-
+*/
 }
