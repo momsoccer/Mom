@@ -130,6 +130,7 @@
     <string name="toolbar_ranking_team">랭킹 팀</string>
 
     <string name="toolbar_ins_page">강사전용</string>
+    <string name="toolbar_ins_point_page_title">강사포인트 수입내역</string>
 
     <string name="toolbar_apply_coach">코치신청</string>
     <string name="toolbar_umission_list_page_title">유저 미션 영상 리스트</string>
@@ -201,6 +202,7 @@
     <string name="user_mission_progress_msg">미션 심사 요청을 하신 상태입니다</string>
 
     <string name="user_mission_pass_msg">미션 심사를 통과하셨습니다</string>
+    <string name="mission_eval_title">미션 심사</string>
 
     <string name="mission_feedback_btn">피드백요청</string>
     <string name="mission_eval_btn">심사요청</string>
@@ -248,7 +250,6 @@
 
     <string name="board_delete_msg">댓글이 삭제 되었습니다</string>
     <string name="board_caustion">자신이 작성한 글만 삭제가 가능합니다</string>
-
 
 
     <!--nav menu-->
@@ -501,7 +502,6 @@
     <string name="my_fragment_title3">친구</string>
 
 
-
     <string name="my_book_nodata_found">등록하신 관심 영상이 없습니다</string>
 
     <string name="feedback_request_user_request">요청</string>
@@ -608,5 +608,16 @@
     <string name="ball_friend_title3">내친구</string>
     <string name="ball_friend_title4">댓글</string>
     <string name="ball_friend_title5">피드백/심사이력</string>
+
+    <string name="ins_poin_balance1">정산전</string>
+    <string name="ins_poin_balance2">정산완료</string>
+    <string name="ins_poin_balance3">포인트 수입내역이 없습니다</string>
+
+    <string name="ins_poin_sliding_msg1">정산메뉴</string>
+    <string name="ins_poin_sliding_msg2">미정산 : </string>
+    <string name="ins_poin_sliding_msg3">정산 : </string>
+    <string name="ins_poin_sliding_msg4">누적 포인트 : </string>
+
+    <string name="main_mission_no_data_found">등록된 데이터가 없습니다</string>
 
 </resources>

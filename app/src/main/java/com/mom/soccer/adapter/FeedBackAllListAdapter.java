@@ -246,6 +246,7 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
                                                     //리프레쉬
                                                     Intent intent = new Intent(activity, MissionMainActivity.class);
                                                     intent.putExtra(MissionCommon.OBJECT,mission);
+                                                    intent.putExtra(MissionCommon.MISSIONTYPE,mission.getTypename());
                                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                     activity.startActivity(intent);
 

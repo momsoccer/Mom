@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <com.sothree.slidinguppanel.SlidingUpPanelLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,10 +15,33 @@
     sothree:umanoScrollableView="@+id/list">
 
     <!-- MAIN CONTENT -->
-    <FrameLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar"
+            app:titleTextColor="@color/color6"
+            android:background="@color/mom_color1"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/toolbar_ins_point_page_title"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:textColor="@color/color6"
+                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                />
+
+        </android.support.v7.widget.Toolbar>
 
         <LinearLayout
             android:layout_marginTop="50dp"
@@ -35,17 +59,25 @@
                 />
 
             <TextView
-                android:id="@+id/tx_nodata_found"
                 android:gravity="center"
-                android:text="데이터가 없습니다"
+                android:text="@string/ins_poin_balance3"
                 android:textSize="12sp"
                 android:textColor="@color/color6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-    </FrameLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/insPointRecylerView"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/mom_color1"
+            android:gravity="center"
+            />
 
+    </LinearLayout>
 
     <!-- SLIDING LAYOUT -->
     <LinearLayout
@@ -55,24 +87,24 @@
         android:orientation="vertical"
         android:clickable="true"
         android:focusable="false"
-        android:id="@+id/dragView">
+        android:id="@+id/dragView"
+        >
 
-        <include layout="@layout/bar_user_mission_sliding" />
+        <include layout="@layout/bar_ins_point_sliding" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/mom_color1">
+            android:orientation="vertical"
+            android:background="@color/mom_color1"
+            >
 
             <LinearLayout
-                android:layout_marginTop="5dp"
-                android:id="@+id/li_req_no_found"
+                android:layout_marginTop="50dp"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:background="@color/mom_color1"
                 >
                 <ImageView
                     android:src="@drawable/ic_info_white_24dp"
@@ -82,16 +114,17 @@
                     />
 
                 <TextView
-                    android:id="@+id/tx_req_nodata_found"
                     android:gravity="center"
-                    android:text="데이터가 없습니다"
+                    android:text="기능을 준비 중입니다"
                     android:textSize="12sp"
                     android:textColor="@color/color6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-       </LinearLayout>
-</LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

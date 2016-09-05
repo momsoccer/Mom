@@ -73,7 +73,6 @@
                 <TextView
                     android:layout_marginTop="3dp"
                     android:id="@+id/txt_board_team_name"
-                    android:text="팀명"
                     android:textColor="@color/color6"
                     android:textSize="8sp"
                     android:layout_width="match_parent"

@@ -52,13 +52,11 @@
         <activity
             android:name=".common.SettingVideoUploadActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".common.SettingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- FireBase Cloud Message -->
         <service android:name=".fcmtoken.MyFirebaseMessagingService">
@@ -117,8 +115,7 @@
         <activity
             android:name=".mission.ReviewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".test.TestActivity" />
 
         <service
@@ -159,8 +156,7 @@
             android:name=".mission.UserMissionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"
-            />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".mission.UserMissionListActivity"
             android:label="@string/title_activity_user_mission_list"
@@ -199,7 +195,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".youtubeplayer.YoutubePlayerActivity" />
-        <activity android:name=".ins.FeedBackWrite"></activity>
+        <activity android:name=".ins.FeedBackWrite" />
+        <activity android:name=".ins.InsPointHistory"></activity>
     </application>
 
 </manifest>

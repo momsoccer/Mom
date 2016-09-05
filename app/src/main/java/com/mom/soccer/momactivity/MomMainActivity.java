@@ -254,8 +254,8 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         //버젼체크 및 권한 설정 마쉬멜로 이상. 필수
         if(Build.VERSION.SDK_INT  >= 23){
 
+            /*
             Log.d(TAG, "onCreate 퍼미션 체크를 합니다");
-
             Log.i(TAG, "1.파일 쓰기 : " + checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE));
             Log.i(TAG, "2.파일 읽기 : " + checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE));
             Log.i(TAG, "3.네트워크   : " + checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE));
@@ -265,6 +265,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             Log.i(TAG, "7 웨이크 락: " + checkSelfPermission(Manifest.permission.WAKE_LOCK));
             Log.i(TAG, "8 파일로케이션: " + checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION));
             Log.i(TAG, "9 SMS: " + checkSelfPermission(Manifest.permission.READ_SMS));
+            */
 
             checkPermission();
         }
@@ -800,9 +801,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                         if(response.isSuccessful()){
                             List<UserRangkinVo> listVos = response.body();
                             WaitingDialog.cancelWaitingDialog();
-
-                            Log.i(TAG,"친구랭킹");
-                            Log.i(TAG,"친구랭킹 : " + listVos.get(0).toString());
 
                             if(listVos.size()==0){
                                 li_main_noData_layout.setVisibility(View.VISIBLE);

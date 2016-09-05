@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -75,38 +76,17 @@
         android:layout_marginTop="5dp"
         android:id="@+id/user_flippable_stack_view"
         android:layout_width="match_parent"
-        android:layout_height="420dp"
-        />
+        android:layout_height="380dp" />
 
-    <LinearLayout
-        android:id="@+id/li_no_data"
-        android:orientation="vertical"
+    <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:id="@+id/discreteSeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:visibility="gone"
-        >
-
-        <ImageView
-            android:src="@drawable/ic_wifi_notification"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
-
-        <TextView
-            android:text="@string/network_nodata_error"
-            android:textColor="@color/color6"
-            android:textSize="12dp"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/btn_refresh"
-            android:layout_marginTop="10dp"
-            android:text="@string/page_refresh"
-            style="@style/btnRefresh"
-            />
-    </LinearLayout>
+        app:dsb_indicatorElevation="0dp"
+        />
 
     <LinearLayout
         android:layout_marginTop="5dp"

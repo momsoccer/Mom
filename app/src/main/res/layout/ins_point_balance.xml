@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mom_color1"
+    android:layout_gravity="center"
+    >
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:orientation="vertical"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="5dp"
+        card_view:contentPadding="5dp"
+        card_view:cardBackgroundColor="@color/mom_color3"
+        >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/mom_color3"
+            android:gravity="center_vertical"
+            >
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <ImageView
+                    android:id="@+id/userimage"
+                    android:src="@drawable/userimg"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" />
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:text="김유신"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/color6"
+                    android:textSize="10sp"
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/balancetype"
+                    android:layout_marginLeft="10dp"
+                    android:text="피드백/미션심사"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/color6"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/cashpoint"
+                    android:layout_marginLeft="10dp"
+                    android:text="1000P"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/color6"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/cacflag"
+                    android:layout_marginLeft="10dp"
+                    android:text="정산완료//정산전"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/color6"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="45dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:text="2015년 12월 31일 오후12시30분"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/color6"
+                        android:textSize="6sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+
+                    <TextView
+                        android:layout_marginTop="2dp"
+                        android:id="@+id/missionname"
+                        android:text="레벨1 드리블"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/color6"
+                        android:textSize="10sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

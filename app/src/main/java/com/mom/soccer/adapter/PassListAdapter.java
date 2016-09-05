@@ -241,6 +241,7 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
 
                     Intent intent = new Intent(activity,MissionMainActivity.class);
                     intent.putExtra(MissionCommon.OBJECT,mission);
+                    intent.putExtra(MissionCommon.MISSIONTYPE,mission.getTypename());
                     activity.finish();
                     activity.startActivity(intent);
 

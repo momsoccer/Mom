@@ -1,11 +1,13 @@
 package com.mom.soccer.ins;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.animation.OvershootInterpolator;
@@ -15,6 +17,7 @@ import com.mom.soccer.adapter.InsInfoRecyclerAdapter;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dataDto.InsInfoVo;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -41,6 +44,8 @@ public class FeedBackInsListActivity extends AppCompatActivity {
     List<InsInfoVo> insInfoVoList = new ArrayList<>();
 
     Activity activity;
+    Intent intent;
+    String missionType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,11 @@ public class FeedBackInsListActivity extends AppCompatActivity {
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
+
+        intent = getIntent();
+        missionType = intent.getExtras().getString(MissionCommon.MISSIONTYPE);
+
+        Log.i(TAG,"미션 타입은 %% : " + missionType);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.feddback_toolbar);
         setSupportActionBar(toolbar);
@@ -85,7 +95,7 @@ public class FeedBackInsListActivity extends AppCompatActivity {
                     WaitingDialog.cancelWaitingDialog();
 
                     insInfoVoList = response.body();
-                    recyclerAdapter = new InsInfoRecyclerAdapter(activity,insInfoVoList);
+                    recyclerAdapter = new InsInfoRecyclerAdapter(activity,insInfoVoList,missionType);
                     recyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
                     recyclerView.getItemAnimator().setAddDuration(300);
                     recyclerView.getItemAnimator().setRemoveDuration(300);

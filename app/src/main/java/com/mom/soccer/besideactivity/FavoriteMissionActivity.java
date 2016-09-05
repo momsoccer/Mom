@@ -1,7 +1,5 @@
 package com.mom.soccer.besideactivity;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,9 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,13 +24,14 @@ import com.mom.soccer.retrofitdao.PointService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,21 +61,8 @@ public class FavoriteMissionActivity extends AppCompatActivity {
     @Bind(R.id.fuser_point)
     TextView tx_mission_point;
 
-    //네트워크 error
-    @Bind(R.id.li_point)
-    LinearLayout li_point;
-    @Bind(R.id.li_no_data)
-    LinearLayout li_no_data;
-
-    @Bind(R.id.btn_refresh)
-    Button btn_refresh;
-
-    @OnClick(R.id.btn_refresh)
-    public void btn_refresh(){
-        Intent intent = new Intent(this,FavoriteMissionActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-    }
+    @Bind(R.id.discreteSeekBar)
+    DiscreteSeekBar discreteSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +75,6 @@ public class FavoriteMissionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        //빽버튼?
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(R.drawable.back_arrow);
@@ -117,7 +99,7 @@ public class FavoriteMissionActivity extends AppCompatActivity {
     private void createViewPagerFragments() {
         mViewPagerFragments = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_FRAGMENTS; ++i) {
-            mViewPagerFragments.add(MainMissionFragment.newInstance(i, missionList.get(i),user));
+            mViewPagerFragments.add(MainMissionFragment.newInstance(i, missionList.get(i),user,"FAV"));
         }
     }
 
@@ -130,10 +112,6 @@ public class FavoriteMissionActivity extends AppCompatActivity {
     }
 
     public void getMissionList(){
-
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(this, "", getString(R.string.network_get_list), true);
-        dialog.show();
 
         Mission mission = new Mission();
         mission.setUid(user.getUid());
@@ -150,21 +128,11 @@ public class FavoriteMissionActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     missionList = response.body();
                     Log.d(TAG,"이곳은 missionService()");
-                    dialog.dismiss();
-
-                    if(missionList.size()==0){
-                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.valid_mission_nodata_found), Toast.LENGTH_SHORT).show();
-                    }else{
-
 
                         NUMBER_OF_FRAGMENTS = missionList.size();
                         createViewPagerFragments();
                         mPageAdapter = new MissionFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
                         boolean portrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-
-                        mFlippableStack.setVisibility(View.VISIBLE);
-                        li_point.setVisibility(View.VISIBLE);
-                        li_no_data.setVisibility(View.GONE);
 
                         mFlippableStack.initStack(NUMBER_OF_FRAGMENTS,
                                 portrait ? StackPageTransformer.Orientation.VERTICAL : StackPageTransformer.Orientation.HORIZONTAL
@@ -174,33 +142,46 @@ public class FavoriteMissionActivity extends AppCompatActivity {
                                 ,StackPageTransformer.Gravity.CENTER
                         );
 
-                        /*
-          public void initStack(int numberOfStacked,
-                      StackPageTransformer.Orientation orientation,
-                      float currentPageScale,
-                      float topStackedScale,
-                      float overlapFactor,
-                      StackPageTransformer.Gravity gravity)
-
-                         */
                         mFlippableStack.setAdapter(mPageAdapter);
-                    }
-                }else{
-                    mFlippableStack.setVisibility(View.GONE);
-                    li_point.setVisibility(View.GONE);
-                    li_no_data.setVisibility(View.VISIBLE);
 
-                    dialog.dismiss();
-                }
+                    //Seekbar apply
+                    discreteSeekBar.setMin(0);
+                    //discreteSeekBar.setProgress(NUMBER_OF_FRAGMENTS-1);
+                    discreteSeekBar.setMax(NUMBER_OF_FRAGMENTS-1);
+                    discreteSeekBar.setProgress(NUMBER_OF_FRAGMENTS);
+
+                    discreteSeekBar.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
+                    discreteSeekBar.setScrubberColor(getResources().getColor(R.color.enabled_red));  //진행색
+                    discreteSeekBar.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
+                    discreteSeekBar.setRippleColor(getResources().getColor(R.color.enabled_red));
+                    discreteSeekBar.setThumbColor(getResources().getColor(R.color.enabled_red),getResources().getColor(R.color.enabled_red)); //시크바 풍선 바탕색
+
+                    discreteSeekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+                        @Override
+                        public int transform(int value) {
+                            mFlippableStack.setCurrentItem(value);
+                            return value+1;
+                        }
+
+                        @Override
+                        public String transformToString(int value) {
+                            mFlippableStack.setCurrentItem(value);
+                            value = value + 1 ;
+                            return "";
+                        }
+
+                        @Override
+                        public boolean useStringTransform() {
+                            return true;
+                        }
+                    });
+
+                    }
             }
 
             @Override
             public void onFailure(Call<List<Mission>> call, Throwable t) {
-                mFlippableStack.setVisibility(View.GONE);
-                li_point.setVisibility(View.GONE);
-                li_no_data.setVisibility(View.VISIBLE);
-                Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
-                dialog.dismiss();
+                t.printStackTrace();
             }
         });
     }

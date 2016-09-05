@@ -149,14 +149,15 @@
         <item name="colorControlActivated">@color/enabled_red</item>
     </style>
 
-    <style name="TextLabelinput" parent="TextAppearance.AppCompat">
+    <style name="TextLabelinput">
         <!-- Hint color and label color in FALSE state -->
         <item name="android:textColorHint">@color/color2</item>
+        <item name="android:textColorLink">@color/enabled_red</item>
         <item name="android:textSize">10sp</item>
-        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
         <item name="colorAccent">@color/enabled_red</item>
         <item name="colorControlNormal">@color/edit_tx_off</item>
         <item name="colorControlActivated">@color/color6</item>
+        <item name="textColorError">@color/enabled_red</item>
     </style>
 
 

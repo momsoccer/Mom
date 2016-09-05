@@ -64,6 +64,7 @@ public class BoardListAdapter extends BaseAdapter {
         YouTubeThumbnailView thumb;
         ImageView image_userimg;
         TextView  text_username;
+        TextView txt_board_team_name;
         TextView  text_comment;
         TextView  text_date;
         ImageView    btnHam;
@@ -118,10 +119,18 @@ public class BoardListAdapter extends BaseAdapter {
             boardHolder.text_comment = (TextView) currentRow.findViewById(R.id.txt_board_user_comment);
             boardHolder.text_date = (TextView) currentRow.findViewById(R.id.txt_board_user_time);
             boardHolder.level = (TextView) currentRow.findViewById(R.id.level);
+            boardHolder.txt_board_team_name = (TextView) currentRow.findViewById(R.id.txt_board_team_name);
+
 
             boardHolder.text_username.setText(boardList.get(position).getUsername());
-
             boardHolder.text_username.setTextColor(activity.getResources().getColor(R.color.color6));
+
+
+            if(!Compare.isEmpty(boardList.get(position).getTeamname())){
+                boardHolder.txt_board_team_name.setText(boardList.get(position).getTeamname());
+            }else{
+                boardHolder.txt_board_team_name.setText(activity.getResources().getString(R.string.user_team_yet_join));
+            }
 
             boardHolder.text_comment.setText(boardList.get(position).getComment());
             boardHolder.text_date.setText(boardList.get(position).getChange_creationdate());
@@ -163,6 +172,13 @@ public class BoardListAdapter extends BaseAdapter {
                 if(currentUid == boardList.get(position).getWriteuid()){
                     boardHolder.text_username.setTextColor(activity.getResources().getColor(R.color.bg_screen3));
                 }
+
+                if(!Compare.isEmpty(boardList.get(position).getTeamname())){
+                    boardHolder.txt_board_team_name.setText(boardList.get(position).getTeamname());
+                }else{
+                    boardHolder.txt_board_team_name.setText(activity.getResources().getString(R.string.user_team_yet_join));
+                }
+
             }
         }
 
@@ -180,8 +196,6 @@ public class BoardListAdapter extends BaseAdapter {
 
                         switch (item.getOrder()){
                             case 101:
-                                //VeteranToast.makeToast(activity,"클릭한 것은 : " + board.getComment(),Toast.LENGTH_SHORT).show();
-
                                 if(board.getWriteuid() == currentUid){
                                     WaitingDialog.showWaitingDialog(activity,false);
                                     //자기가 쓴글 삭제할 수 있음
@@ -200,8 +214,6 @@ public class BoardListAdapter extends BaseAdapter {
                                                 activity.finish();
                                                 activity.startActivity(intent);
 
-                                                //boardList.remove(i);
-                                                //notifyDataSetChanged();
                                             }
                                         }
 

@@ -19,6 +19,7 @@ import com.mom.soccer.dto.User;
 import com.mom.soccer.pubactivity.Param;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class InsDashboardActivity extends AppCompatActivity {
 
@@ -119,5 +120,11 @@ public class InsDashboardActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.im_point)
+    public void im_point(){
+        Intent intent = new Intent(InsDashboardActivity.this,InsPointHistory.class);
+        startActivity(intent);
     }
 }

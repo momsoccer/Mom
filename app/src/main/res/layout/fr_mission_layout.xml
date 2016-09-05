@@ -5,14 +5,15 @@
     android:id="@+id/mission_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mom_color2"
+    android:background="@color/mom_color1"
     tools:ignore="MissingPrefix">
 
     <LinearLayout
         android:id="@+id/li_mission_back"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/lifting_back"
         >
 
         <TextView
@@ -23,7 +24,7 @@
             android:textSize="20sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             />
 
@@ -36,7 +37,7 @@
             >
 
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="vertical"
@@ -57,9 +58,8 @@
 
                 <TextView
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
                     android:id="@+id/tx_mission_name"
-                    android:textSize="22sp"
+                    android:textSize="15sp"
                     android:text="@string/default_mission_name"
                     android:textColor="@color/color6"
                     android:textStyle="bold"
@@ -73,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     >
 
 
@@ -91,54 +91,55 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/mission_back_boder"
                     android:orientation="vertical"
-                    android:layout_width="330dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:visibility="visible"
                     >
 
                     <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:id="@+id/tx_mission_description"
-                        android:text="@string/default_mission_disp"
-                        android:textSize="16sp"
+                        android:text="미션 설명 양발 인사이드를 이용해서 몸 중앙에 공을 위치 한후 좌후로...."
+                        android:textSize="12sp"
                         android:textStyle="bold"
                         android:textColor="@color/color6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="5dp"
                         />
 
 
                     <TextView
+                        android:layout_margin="10dp"
                         android:id="@+id/tx_mission_precon"
-                        android:text="@string/default_mission_precon"
-                        android:textSize="16sp"
+                        android:text="미션 설명 양발 인사이드를 이용해서 몸 중앙에 공을 위치 한후 좌후로...."
+                        android:textSize="12sp"
                         android:textColor="@color/color2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
                         />
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:layout_marginTop="5dp"
                     android:orientation="vertical"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/mission_back_boder"
-                    android:layout_width="330dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
-                    android:layout_marginTop="5dp"
                     >
 
                     <TextView
                         android:id="@+id/tx_mission_open"
                         android:text="미션 오픈 1000포인트 소모(1회)"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:textColor="@color/color6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -148,7 +149,7 @@
                     <TextView
                         android:id="@+id/tx_mission_upload"
                         android:text="업로드시 20점 획득"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:textColor="@color/color6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -158,7 +159,7 @@
                     <TextView
                         android:id="@+id/tx_mission_pass"
                         android:text="미션클리어시 30점 획득"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:textColor="@color/color6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -166,26 +167,43 @@
                         />
 
                     <TextView
+                        android:layout_marginTop="5dp"
                         android:id="@+id/tx_mission_cash_point"
                         android:text="미션클리어시 500 포인트 획득"
-                        android:textSize="12sp"
+                        android:textSize="10sp"
                         android:textColor="@color/color6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         />
                 </LinearLayout>
             </LinearLayout>
-            <Button
-                android:id="@+id/btn_mission_start"
-                android:text="시작하기"
-                style="@style/btnStylePaprika"
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_margin="12dp"
-                />
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/btn_mission_start"
+                    android:textSize="10sp"
+                    android:text="시작하기"
+                    style="@style/btnStylePaprika"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    />
+
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+
+
+
 </LinearLayout>
 

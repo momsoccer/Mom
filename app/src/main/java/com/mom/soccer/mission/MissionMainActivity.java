@@ -40,6 +40,7 @@ import com.mom.soccer.R;
 import com.mom.soccer.adapter.FeedBackAllListAdapter;
 import com.mom.soccer.adapter.GridMissionAdapter;
 import com.mom.soccer.adapter.PassListAdapter;
+import com.mom.soccer.besideactivity.FavoriteMissionActivity;
 import com.mom.soccer.common.Auth;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.ExpandableHeightGridView;
@@ -120,8 +121,8 @@ public class MissionMainActivity extends AppCompatActivity {
     @Bind(R.id.img_missiontab)
     ImageView img_missiontab;
 
-    @Bind(R.id.li_mymittion)
-    LinearLayout linearLayout;
+    @Bind(R.id.li_mymission)
+    LinearLayout li_mymission;
 
     @Bind(R.id.tx_main_usermission)
     TextView tx_main_usermission;
@@ -155,8 +156,6 @@ public class MissionMainActivity extends AppCompatActivity {
     @Bind(R.id.li_video_list)
     LinearLayout li_video_list;
 
-    @Bind(R.id.li_no_data_found)
-    LinearLayout li_no_data_found;
 
     @Bind(R.id.li_feedback_history)
     LinearLayout li_feedback_history;
@@ -189,6 +188,7 @@ public class MissionMainActivity extends AppCompatActivity {
     private RadioButton feed_video, feed_word;
     private TextView feed_video_point,feed_word_point,text_mypoint;
     private CheckBox pub_status;
+    private String actName = "NOL";
 
     String viewTitle = null;
     int videoPoint = 0;
@@ -218,6 +218,27 @@ public class MissionMainActivity extends AppCompatActivity {
     @Bind(R.id.li_pass_history)
     LinearLayout li_pass_history;
 
+    private String missionType;
+
+    // 1. No Data Found
+    @Bind(R.id.li_mymission_back)
+    LinearLayout li_mymission_back;
+
+    @Bind(R.id.li_mymission_no_data_back)
+    LinearLayout li_mymission_no_data_back;
+
+    // 2. pass mission
+    @Bind(R.id.li_mission_no_pass)
+    LinearLayout li_mission_no_pass;
+
+    // 3. feed back
+    @Bind(R.id.li_feedback_no_data_back)
+    LinearLayout li_feedback_no_data_back;
+
+    // 4.another vidio data
+    @Bind(R.id.li_another_no_data_back)
+    LinearLayout li_another_no_data_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -231,7 +252,10 @@ public class MissionMainActivity extends AppCompatActivity {
 
         intent = getIntent();
         mission = (Mission) intent.getSerializableExtra(MissionCommon.OBJECT);
+        missionType = intent.getExtras().getString(MissionCommon.MISSIONTYPE);
+        actName = intent.getExtras().getString("actName");
 
+        Log.i(TAG,"미션 타입은 :: " + missionType);
 
         thumbnailView = (YouTubeThumbnailView) findViewById(R.id.youtybe_Thumbnail);
 
@@ -303,11 +327,6 @@ public class MissionMainActivity extends AppCompatActivity {
 
     }
 
-
-
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -317,7 +336,6 @@ public class MissionMainActivity extends AppCompatActivity {
         String uploadflag = intent.getStringExtra("uploadflag");
         Log.i(TAG,"받은 값은 : " + uploadflag);
     }
-
 
     @Override
     protected void onStart() {
@@ -386,21 +404,7 @@ public class MissionMainActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
-
-
     }
-
-
-    /*
-    BroadcastReceiver uploadReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String uploadMessage = intent.getStringExtra("uploadMessage");
-            String upflag = intent.getStringExtra("upflag");
-
-        }
-    };
-    */
 
     //다른 사람들의 영상 목록
     public void userGrid_MissionList(final UserMission userMission){
@@ -422,11 +426,9 @@ public class MissionMainActivity extends AppCompatActivity {
                     videoGridView.setAdapter(gridMissionAdapter);
 
                     if(userMissionList.size()==0){
-                        li_video_list.setVisibility(View.GONE);
-                        li_no_data_found.setVisibility(View.VISIBLE);
+                        li_another_no_data_back.setVisibility(View.VISIBLE);
                     }else{
-                        li_video_list.setVisibility(View.VISIBLE);
-                        li_no_data_found.setVisibility(View.GONE);
+                        li_another_no_data_back.setVisibility(View.GONE);
                     }
 
                 }else{
@@ -458,16 +460,20 @@ public class MissionMainActivity extends AppCompatActivity {
                     WaitingDialog.cancelWaitingDialog();
                     userMission = response.body();
 
-                    Log.i(TAG,"my Mission info : " + userMission.toString());
+                    getFeedBack(userMission);
+                    passHistory();
+
 
                     usermission_tx_hart.setText(String.valueOf(userMission.getBookmarkcount()));
                     usermission_tx_comment.setText(String.valueOf(userMission.getBoardcount()));
 
                     if(userMission.getUid()==0){
                         img_missiontab.setVisibility(View.GONE);
-                        linearLayout.setVisibility(View.GONE);
+                        li_mymission_back.setVisibility(View.GONE);
+                        li_mymission_no_data_back.setVisibility(View.VISIBLE);
                     }else{
-
+                        li_mymission_back.setVisibility(View.VISIBLE);
+                        li_mymission_no_data_back.setVisibility(View.GONE);
 
                         if(userMission.getPassflag().equals("Y")){
                             img_missiontab.setVisibility(View.VISIBLE);
@@ -505,7 +511,6 @@ public class MissionMainActivity extends AppCompatActivity {
                             usermission_iv_hart.setImageResource(R.drawable.ic_hart_red);
                         }
 
-                        linearLayout.setVisibility(View.VISIBLE);
 
                         thumbnailView.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
                             @Override
@@ -520,9 +525,6 @@ public class MissionMainActivity extends AppCompatActivity {
                         });
                     }
 
-                    //피드백이 있는지 검사.
-                    getFeedBack();
-                    passHistory();
 
                 }else{
                     WaitingDialog.cancelWaitingDialog();
@@ -760,12 +762,14 @@ public class MissionMainActivity extends AppCompatActivity {
 
                                 if(USER_TEAM_ID==0){
                                     Intent intent = new Intent(MissionMainActivity.this,FeedBackInsListActivity.class);
+                                    intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
                                     startActivityForResult(intent,REQUEST_FEED_BACK_CODE);
                                 }else{
                                     if(which==0){
                                         popUpFeedBack("myins");
                                     }else if(which==1){
                                         Intent intent = new Intent(MissionMainActivity.this,FeedBackInsListActivity.class);
+                                        intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
                                         startActivityForResult(intent,REQUEST_FEED_BACK_CODE);
                                     }
                                 }
@@ -810,12 +814,14 @@ public class MissionMainActivity extends AppCompatActivity {
 
                                     if(USER_TEAM_ID==0){
                                             Intent mintent = new Intent(MissionMainActivity.this,FeedBackInsListActivity.class);
+                                            mintent.putExtra(MissionCommon.MISSIONTYPE,missionType);
                                             startActivityForResult(mintent,REQUEST_USERMISSION_PASS_CODE);
                                     }else{
                                         if(which==0){  //자기 팀 강사
                                             missionPass("myteam","save",feedbackInfo);
                                         }else if(which==1){  //다른팀 강사
                                             Intent mintent = new Intent(MissionMainActivity.this,FeedBackInsListActivity.class);
+                                            mintent.putExtra(MissionCommon.MISSIONTYPE,missionType);
                                             startActivityForResult(mintent,REQUEST_USERMISSION_PASS_CODE);
                                         }
                                     }
@@ -865,17 +871,18 @@ public class MissionMainActivity extends AppCompatActivity {
             case REQUEST_FEED_BACK_CODE:
                 if (resultCode == RESULT_OK) {
                     feedbackInfo = (InsInfoVo) data.getSerializableExtra(MissionCommon.INS_OBJECT);
-                    Log.i(TAG,"insInfoVo 값은 : " + feedbackInfo.toString());
+                    missionType = data.getExtras().getString(MissionCommon.MISSIONTYPE);
+                    Log.i(TAG,"**********************************");
+                    Log.i(TAG,"받은 미션 타입1 " + missionType);
                     popUpFeedBack("pubins");
                 }
                 break;
             case REQUEST_USERMISSION_PASS_CODE:
                 if(resultCode == RESULT_OK){
                     feedbackInfo = (InsInfoVo) data.getSerializableExtra(MissionCommon.INS_OBJECT);
-                    /*
-                    feedbackInfo.getTeampasspoint()
-                    feedbackInfo.getPubpasspoint()
-                     */
+                    missionType = data.getExtras().getString(MissionCommon.MISSIONTYPE);
+                    Log.i(TAG,"**********************************");
+                    Log.i(TAG,"받은 미션 타입2 " + missionType);
 
                     String question = getString(R.string.mom_diaalog_pass_apply_msg2)+feedbackInfo.getPubpasspoint()+"P"
                             +"\n"+getString(R.string.mom_diaalog_pass_apply_msg3);
@@ -981,6 +988,7 @@ public class MissionMainActivity extends AppCompatActivity {
                             Intent intent = new Intent(MissionMainActivity.this, MissionMainActivity.class);
                             finish();
                             intent.putExtra(MissionCommon.OBJECT,mission);
+                            intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
                             startActivity(intent);
                         }
                     })
@@ -1142,6 +1150,7 @@ public class MissionMainActivity extends AppCompatActivity {
                                                         Intent intent = new Intent(MissionMainActivity.this, MissionMainActivity.class);
                                                         finish();
                                                         intent.putExtra(MissionCommon.OBJECT,mission);
+                                                        intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
                                                         startActivity(intent);
 
                                                     }
@@ -1250,7 +1259,7 @@ public class MissionMainActivity extends AppCompatActivity {
 
 
     //피드백 리스트
-    public void getFeedBack(){
+    public void getFeedBack(UserMission userMission){
 
         WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
         FeedBackService feedBackService = ServiceGenerator.createService(FeedBackService.class,getApplicationContext(),user);
@@ -1259,66 +1268,68 @@ public class MissionMainActivity extends AppCompatActivity {
         header.setUid(user.getUid());
         header.setUsermissionid(userMission.getUsermissionid());
 
-        Call<List<FeedbackHeader>> c = feedBackService.getFeedAllList(header);
-        c.enqueue(new Callback<List<FeedbackHeader>>() {
-            @Override
-            public void onResponse(Call<List<FeedbackHeader>> call, Response<List<FeedbackHeader>> response) {
-                WaitingDialog.cancelWaitingDialog();
-                if(response.isSuccessful()){
+        if(userMission.getUsermissionid()==0){
+            li_feedback_no_data_back.setVisibility(View.VISIBLE);
+        }else {
 
-                    feedbackHeaders = response.body();
+            Call<List<FeedbackHeader>> c = feedBackService.getFeedAllList(header);
+            c.enqueue(new Callback<List<FeedbackHeader>>() {
+                @Override
+                public void onResponse(Call<List<FeedbackHeader>> call, Response<List<FeedbackHeader>> response) {
+                    WaitingDialog.cancelWaitingDialog();
+                    if (response.isSuccessful()) {
 
-                    if(feedbackHeaders.size()==0){
-                        li_feedback_history.setVisibility(View.GONE);
-                    }else{
-                        li_feedback_history.setVisibility(View.VISIBLE);
+                        feedbackHeaders = response.body();
 
-                        feedBackAllListAdapter = new FeedBackAllListAdapter(activity,feedbackHeaders,user,mission
-                        );
+                        if (feedbackHeaders.size() == 0) {
+                            li_feedback_no_data_back.setVisibility(View.VISIBLE);
+                        } else {
+                            li_feedback_no_data_back.setVisibility(View.GONE);
+                        }
+
+                        feedBackAllListAdapter = new FeedBackAllListAdapter(activity, feedbackHeaders, user, mission);
                         feedbackRecylerView.setHasFixedSize(true);
                         feedbackRecylerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                         feedbackRecylerView.setAdapter(feedBackAllListAdapter);
-
-                        /*
-                        ArrayList<Card> cards = new ArrayList<Card>();
-
-                        for(int i=0 ; i < feedbackHeaders.size();i++){
-                            Card card = new FeedBackCard(activity,feedbackHeaders.get(i),user,mission);
-                            cards.add(card);
-                        }
-
-                        CardArrayRecyclerViewAdapter feedbackAdapter = new CardArrayRecyclerViewAdapter(getApplicationContext(), cards);
-                        cardRecyclerView.setHasFixedSize(false);
-                        cardRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                        cardRecyclerView.setAdapter(feedbackAdapter);
-                        */
                     }
-
-                }else{
-
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<FeedbackHeader>> call, Throwable t) {
-                WaitingDialog.cancelWaitingDialog();
-                t.printStackTrace();
-            }
-        });
+                @Override
+                public void onFailure(Call<List<FeedbackHeader>> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
+                    t.printStackTrace();
+                }
+            });
+        }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        //setResult(RESULT_OK);
 
-        setResult(RESULT_OK);
-        finish();
+        if(actName == null ){
+            actName = "NOL";
+        }
+
+        Log.i(TAG,"onBackPressed() " + missionType);
+
+        if(actName.equals("NOL")){
+            Intent intent = new Intent(MissionMainActivity.this,MissionActivity.class);
+            intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(MissionMainActivity.this,FavoriteMissionActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
+            startActivity(intent);
+        }
+
     }
 
     public void passHistory(){
         if(!Compare.isEmpty(userMission.getPassflag())){
-
-                li_pass_history.setVisibility(View.VISIBLE);
 
                 WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
                 MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getApplicationContext(),user);
@@ -1335,6 +1346,13 @@ public class MissionMainActivity extends AppCompatActivity {
                         WaitingDialog.cancelWaitingDialog();
                         if(response.isSuccessful()){
                             missionPasses = response.body();
+
+                            if(missionPasses.size()==0){
+                                li_mission_no_pass.setVisibility(View.VISIBLE);
+                            }else{
+                                li_mission_no_pass.setVisibility(View.GONE);
+                            }
+
                             passListAdapter = new PassListAdapter(activity,missionPasses,user,missionPassFlag,mission);
                             passrecyclerview.setHasFixedSize(true);
                             passrecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

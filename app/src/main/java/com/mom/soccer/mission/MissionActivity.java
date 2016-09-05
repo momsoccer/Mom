@@ -10,8 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bartoszlipinski.flippablestackview.FlippableStackView;
@@ -29,6 +27,8 @@ import com.mom.soccer.retrofitdao.PointService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,6 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,35 +65,20 @@ public class MissionActivity extends AppCompatActivity {
     @Bind(R.id.user_point)
     TextView tx_mission_point;
 
-    //네트워크 error
-    @Bind(R.id.li_point)
-    LinearLayout li_point;
-    @Bind(R.id.li_no_data)
-    LinearLayout li_no_data;
+    @Bind(R.id.discreteSeekBar)
+    DiscreteSeekBar discreteSeekBar;
 
-    @Bind(R.id.li_no_regester)
-    LinearLayout li_no_regester;
-
-    @Bind(R.id.btn_refresh)
+/*    @Bind(R.id.btn_refresh)
     Button btn_refresh;
 
-   //DiscreteSeekBar discreteSeekBar1;
-
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.i(TAG,"onActivityResult() ===============================");
-    }
-
-    @OnClick(R.id.btn_refresh)
+        @OnClick(R.id.btn_refresh)
     public void btn_refresh(){
         Intent intent = new Intent(this,MissionActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
         startActivity(intent);
-    }
+    }*/
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -147,7 +131,7 @@ public class MissionActivity extends AppCompatActivity {
         Log.d(TAG,"이곳은 createViewPagerFragments()");
         mViewPagerFragments = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_FRAGMENTS; ++i) {
-            mViewPagerFragments.add(MainMissionFragment.newInstance(i, missionList.get(i),user));
+            mViewPagerFragments.add(MainMissionFragment.newInstance(i, missionList.get(i),user,"NOL"));
         }
     }
 
@@ -197,21 +181,12 @@ public class MissionActivity extends AppCompatActivity {
                 WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     missionList = response.body();
-                    if(missionList.size()==0){
-                        li_no_regester.setVisibility(View.VISIBLE);
-                        mFlippableStack.setVisibility(View.GONE);
-                        li_point.setVisibility(View.GONE);
-                        li_no_data.setVisibility(View.GONE);
-                    }else{
+
                         NUMBER_OF_FRAGMENTS = missionList.size();
 
                         createViewPagerFragments();
 
                         mPageAdapter = new MissionFragmentAdapter(getSupportFragmentManager(), mViewPagerFragments);
-
-                        mFlippableStack.setVisibility(View.VISIBLE);
-                        li_point.setVisibility(View.VISIBLE);
-                        li_no_data.setVisibility(View.GONE);
 
 
                         boolean portrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
@@ -225,55 +200,54 @@ public class MissionActivity extends AppCompatActivity {
                         );
                         mFlippableStack.setAdapter(mPageAdapter);
 
-                        /*
-                        discreteSeekBar1 = (DiscreteSeekBar) findViewById(R.id.discrete1);
-                        discreteSeekBar1.setMin(0);
-                        //discreteSeekBar1.setProgress(NUMBER_OF_FRAGMENTS-1);
-                        discreteSeekBar1.setMax(NUMBER_OF_FRAGMENTS-1);
-                        discreteSeekBar1.setProgress(NUMBER_OF_FRAGMENTS);
+
+                        discreteSeekBar.setMin(0);
+                        //discreteSeekBar.setProgress(NUMBER_OF_FRAGMENTS-1);
+                        discreteSeekBar.setMax(NUMBER_OF_FRAGMENTS-1);
+                        discreteSeekBar.setProgress(NUMBER_OF_FRAGMENTS);
 
                         //미션 시크바 색조절
-                        //discreteSeekBar1.setBackgroundColor(getResources().getColor(R.color.bg_screen2)); 시크바 바탕화면
+                        //discreteSeekBar.setBackgroundColor(getResources().getColor(R.color.bg_screen2)); 시크바 바탕화면
 
                         if(missionType.equals("DRIBLE")){
-                            discreteSeekBar1.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
-                            discreteSeekBar1.setScrubberColor(getResources().getColor(R.color.mission_color_dribble));  //진행색
-                            discreteSeekBar1.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
-                            discreteSeekBar1.setRippleColor(getResources().getColor(R.color.enabled_red));
-                            discreteSeekBar1.setThumbColor(getResources().getColor(R.color.mission_color_dribble),getResources().getColor(R.color.mission_color_dribble)); //시크바 풍선 바탕색
+                            discreteSeekBar.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
+                            discreteSeekBar.setScrubberColor(getResources().getColor(R.color.mission_color_dribble));  //진행색
+                            discreteSeekBar.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
+                            discreteSeekBar.setRippleColor(getResources().getColor(R.color.enabled_red));
+                            discreteSeekBar.setThumbColor(getResources().getColor(R.color.mission_color_dribble),getResources().getColor(R.color.mission_color_dribble)); //시크바 풍선 바탕색
                         }else if(missionType.equals("LIFTING")){
-                            discreteSeekBar1.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
-                            discreteSeekBar1.setScrubberColor(getResources().getColor(R.color.mission_color_lifting));  //진행색
-                            discreteSeekBar1.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
-                            discreteSeekBar1.setRippleColor(getResources().getColor(R.color.enabled_red));
-                            discreteSeekBar1.setThumbColor(getResources().getColor(R.color.mission_color_lifting),getResources().getColor(R.color.mission_color_lifting)); //시크바 풍선 바탕색
+                            discreteSeekBar.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
+                            discreteSeekBar.setScrubberColor(getResources().getColor(R.color.mission_color_lifting));  //진행색
+                            discreteSeekBar.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
+                            discreteSeekBar.setRippleColor(getResources().getColor(R.color.enabled_red));
+                            discreteSeekBar.setThumbColor(getResources().getColor(R.color.mission_color_lifting),getResources().getColor(R.color.mission_color_lifting)); //시크바 풍선 바탕색
                         }else if(missionType.equals("TRAPING")){
-                            discreteSeekBar1.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
-                            discreteSeekBar1.setScrubberColor(getResources().getColor(R.color.mission_color_trraping));  //진행색
-                            discreteSeekBar1.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
-                            discreteSeekBar1.setRippleColor(getResources().getColor(R.color.enabled_red));
-                            discreteSeekBar1.setThumbColor(getResources().getColor(R.color.mission_color_trraping),getResources().getColor(R.color.mission_color_trraping)); //시크바 풍선 바탕색
+                            discreteSeekBar.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
+                            discreteSeekBar.setScrubberColor(getResources().getColor(R.color.mission_color_trraping));  //진행색
+                            discreteSeekBar.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
+                            discreteSeekBar.setRippleColor(getResources().getColor(R.color.enabled_red));
+                            discreteSeekBar.setThumbColor(getResources().getColor(R.color.mission_color_trraping),getResources().getColor(R.color.mission_color_trraping)); //시크바 풍선 바탕색
                         }else if(missionType.equals("AROUND")){
-                            discreteSeekBar1.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
-                            discreteSeekBar1.setScrubberColor(getResources().getColor(R.color.mission_color_around));  //진행색
-                            discreteSeekBar1.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
-                            discreteSeekBar1.setRippleColor(getResources().getColor(R.color.enabled_red));
-                            discreteSeekBar1.setThumbColor(getResources().getColor(R.color.mission_color_around),getResources().getColor(R.color.mission_color_around)); //시크바 풍선 바탕색
+                            discreteSeekBar.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
+                            discreteSeekBar.setScrubberColor(getResources().getColor(R.color.mission_color_around));  //진행색
+                            discreteSeekBar.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
+                            discreteSeekBar.setRippleColor(getResources().getColor(R.color.enabled_red));
+                            discreteSeekBar.setThumbColor(getResources().getColor(R.color.mission_color_around),getResources().getColor(R.color.mission_color_around)); //시크바 풍선 바탕색
                         }else if(missionType.equals("FLICK")){
-                            discreteSeekBar1.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
-                            discreteSeekBar1.setScrubberColor(getResources().getColor(R.color.mission_color_flick));  //진행색
-                            discreteSeekBar1.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
-                            discreteSeekBar1.setRippleColor(getResources().getColor(R.color.enabled_red));
-                            discreteSeekBar1.setThumbColor(getResources().getColor(R.color.mission_color_flick),getResources().getColor(R.color.mission_color_flick)); //시크바 풍선 바탕색
+                            discreteSeekBar.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
+                            discreteSeekBar.setScrubberColor(getResources().getColor(R.color.mission_color_flick));  //진행색
+                            discreteSeekBar.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
+                            discreteSeekBar.setRippleColor(getResources().getColor(R.color.enabled_red));
+                            discreteSeekBar.setThumbColor(getResources().getColor(R.color.mission_color_flick),getResources().getColor(R.color.mission_color_flick)); //시크바 풍선 바탕색
                         }else if(missionType.equals("COMPLEX")){
-                            discreteSeekBar1.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
-                            discreteSeekBar1.setScrubberColor(getResources().getColor(R.color.mission_color_complex));  //진행색
-                            discreteSeekBar1.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
-                            discreteSeekBar1.setRippleColor(getResources().getColor(R.color.enabled_red));
-                            discreteSeekBar1.setThumbColor(getResources().getColor(R.color.mission_color_complex),getResources().getColor(R.color.mission_color_complex)); //시크바 풍선 바탕색
+                            discreteSeekBar.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
+                            discreteSeekBar.setScrubberColor(getResources().getColor(R.color.mission_color_complex));  //진행색
+                            discreteSeekBar.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
+                            discreteSeekBar.setRippleColor(getResources().getColor(R.color.enabled_red));
+                            discreteSeekBar.setThumbColor(getResources().getColor(R.color.mission_color_complex),getResources().getColor(R.color.mission_color_complex)); //시크바 풍선 바탕색
                         }
 
-                        discreteSeekBar1.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+                        discreteSeekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
                             @Override
                             public int transform(int value) {
                                 mFlippableStack.setCurrentItem(value);
@@ -292,26 +266,15 @@ public class MissionActivity extends AppCompatActivity {
                                 return true;
                             }
                         });
-                        */
                     }
-                }else{
-                    mFlippableStack.setVisibility(View.GONE);
-                    li_point.setVisibility(View.GONE);
-                    li_no_data.setVisibility(View.VISIBLE);
-                }
             }
-
             @Override
             public void onFailure(Call<List<Mission>> call, Throwable t) {
                 WaitingDialog.cancelWaitingDialog();
-                mFlippableStack.setVisibility(View.GONE);
-                li_point.setVisibility(View.GONE);
-                li_no_data.setVisibility(View.VISIBLE);
                 t.printStackTrace();
             }
         });
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -329,6 +292,12 @@ public class MissionActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PointMainActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG,"onActivityResult() ===============================");
     }
 
 }

@@ -83,6 +83,7 @@ public class MainMissionFragment extends Fragment {
     Mission queryMission;
     Mission reflashMission = new Mission();
     String checkDuplicateFlag;
+    String actName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,12 +94,14 @@ public class MainMissionFragment extends Fragment {
         mPage = getArguments().getInt(ARG_PAGE);
         mission = (Mission) getArguments().getSerializable(MissionCommon.OBJECT);
         user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
+        actName = getArguments().getString("actName");
 
     }
 
     public static MainMissionFragment newInstance(int page,
                                                   Mission mission,
-                                                  User pramUser) {
+                                                  User pramUser,
+                                                  String actName) {
 
         MainMissionFragment fragment = new MainMissionFragment();
         //각 프래그먼트에 넘길 함수
@@ -109,6 +112,7 @@ public class MainMissionFragment extends Fragment {
         //mission 객체에 담기
         bdl.putSerializable(MissionCommon.OBJECT,mission);
         bdl.putSerializable(MissionCommon.USER_OBJECT,pramUser);
+        bdl.putString("actName",actName);
         fragment.setArguments(bdl);
 
 
@@ -238,14 +242,19 @@ public class MainMissionFragment extends Fragment {
                         public void onResponse(Call<MissionHistory> call, Response<MissionHistory> response) {
                             if (response.isSuccessful()) {
                                 MissionHistory missionHistory = response.body();
-                                Log.i(TAG, "1.결과값을 받았습니다 : " + missionHistory.toString());
+
+
                                 if (missionHistory.getUid() == user.getUid() && mission.getOpencount() == 0) {
+
                                     //이미 결재를 했다면... 그런데...openCount가 0이라면...중복결재이기 때문에 넘긴다
                                     Intent intent = new Intent(getContext(), MissionMainActivity.class);
                                     intent.putExtra(MissionCommon.OBJECT, mission);
+                                    intent.putExtra("actName", actName);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
                                     getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                                     checkDuplicateFlag = "duble";
+
                                 } else {
                                     checkDuplicateFlag = "initial";
 
@@ -307,13 +316,14 @@ public class MainMissionFragment extends Fragment {
                                         } else {
                                             Intent intent = new Intent(getContext(), MissionMainActivity.class);
                                             intent.putExtra(MissionCommon.OBJECT, mission);
+                                            intent.putExtra("actName", actName);
+                                            intent.putExtra(MissionCommon.MISSIONTYPE,mission.getTypename());
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                             startActivity(intent);
                                             getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                                         }
                                     }
-
                                 }
-                                Log.i(TAG, "2.결과값을 받았습니다 : " + checkDuplicateFlag);
                             } else {
 
                             }
@@ -488,8 +498,11 @@ public class MainMissionFragment extends Fragment {
 
                     Intent intent = new Intent(getContext(),MissionMainActivity.class);
                     intent.putExtra(MissionCommon.OBJECT,mission);
-                    startActivityForResult(intent,REQUEST_MISSION_OPEN);
-
+                    intent.putExtra(MissionCommon.MISSIONTYPE,mission.getTypename());
+                    intent.putExtra("actName", actName);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    //startActivityForResult(intent,REQUEST_MISSION_OPEN);
+                    startActivity(intent);
                 }else{
                     WaitingDialog.cancelWaitingDialog();
                 }

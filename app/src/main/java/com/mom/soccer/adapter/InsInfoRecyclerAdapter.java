@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +26,16 @@ import java.util.List;
  */
 public class InsInfoRecyclerAdapter extends RecyclerView.Adapter<InsInfoRecyclerAdapter.InsInfoItemViewHoder> {
 
+    private static final String TAG = "FeedBackInsListActivity";
+
     Activity activity;
     List<InsInfoVo> infoVoList;
+    String missionType;
 
-    public InsInfoRecyclerAdapter(Activity activity, List<InsInfoVo> infoVoList) {
+    public InsInfoRecyclerAdapter(Activity activity, List<InsInfoVo> infoVoList,String missionType) {
         this.activity = activity;
         this.infoVoList = infoVoList;
+        this.missionType = missionType;
     }
 
     @Override
@@ -75,8 +80,12 @@ public class InsInfoRecyclerAdapter extends RecyclerView.Adapter<InsInfoRecycler
         holder.btnchoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Log.i(TAG,"미션 타입은 %% : " + missionType);
+
                 Intent intent = new Intent();
                 intent.putExtra(MissionCommon.INS_OBJECT,vo);
+                intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
                 activity.setResult(activity.RESULT_OK,intent);
                 activity.finish();
             }

@@ -64,6 +64,7 @@ public class ResumableUpload {
         //notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         notificationIntent.putExtra(MissionCommon.OBJECT,mission);
         notificationIntent.putExtra("uploadflag","Y");
+        notificationIntent.putExtra(MissionCommon.MISSIONTYPE,mission.getTypename());
         notificationIntent.setAction(Intent.ACTION_VIEW);
 
 

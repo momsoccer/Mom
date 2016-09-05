@@ -30,7 +30,6 @@
                 style="@style/mom_m_edit_text"
                 android:hint=" Useremail"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="20dp"
                 android:inputType="textEmailAddress"
                 android:textColorHint="@color/color6"
                 android:textSize="12sp"
@@ -42,6 +41,7 @@
             android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:textColorHint="@color/color6"
+            android:theme="@style/TextLabelinput"
             >
 
             <EditText
@@ -51,7 +51,6 @@
                 android:hint=" Password"
                 android:layout_marginTop="30dp"
                 android:inputType="textPassword"
-                android:layout_marginBottom="10dp"
                 android:maxLength="40"
                 android:singleLine="true"
                 android:textColorHint="@color/color6"

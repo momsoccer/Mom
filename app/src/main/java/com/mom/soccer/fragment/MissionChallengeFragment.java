@@ -15,7 +15,6 @@ import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.widget.VeteranToast;
 
-import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,6 @@ public class MissionChallengeFragment extends Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
     private int mPage;
-    private DiscreteSeekBar discreteSeekBar;
 
     private User user;
     private List<Mission> missionList;
@@ -80,7 +78,7 @@ public class MissionChallengeFragment extends Fragment {
         Log.d(TAG,"이곳은 createViewPagerFragments()");
         mViewPagerFragments = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_FRAGMENTS; ++i) {
-            mViewPagerFragments.add(MainMissionFragment.newInstance(i, missionList.get(i),user));
+            mViewPagerFragments.add(MainMissionFragment.newInstance(i, missionList.get(i),user,"NOL"));
         }
     }
 

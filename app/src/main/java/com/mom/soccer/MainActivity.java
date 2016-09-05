@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
 
-        Log.d(TAG,"유저 정보 : " + user.toString());
-
         FirebaseMessaging.getInstance().subscribeToTopic("news");
 
         if (!Compare.isEmpty(user.getUseremail())){
