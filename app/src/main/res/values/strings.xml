@@ -372,6 +372,7 @@
 
     <string name="mom_diaalog_confirm">확인</string>
     <string name="mom_diaalog_cancel">취소</string>
+    <string name="mom_diaalog_find">찾기</string>
 
     <string name="mom_diaalog_alert">알림</string>
 
@@ -498,8 +499,9 @@
 
     <!--mymenu-->
     <string name="my_fragment_title1">미션</string>
-    <string name="my_fragment_title2">피드백</string>
-    <string name="my_fragment_title3">친구</string>
+    <string name="my_fragment_title2">팀게시판</string>
+    <string name="my_fragment_title3">친구/팀 미션</string>
+    <string name="my_fragment_title4">친구관리</string>
 
 
     <string name="my_book_nodata_found">등록하신 관심 영상이 없습니다</string>
@@ -620,4 +622,22 @@
 
     <string name="main_mission_no_data_found">등록된 데이터가 없습니다</string>
 
+    <string name="usermain_misison_feedback">피드백</string>
+    <string name="usermain_misison_title1">미션제목</string>
+    <string name="usermain_misison_title2">미션설명</string>
+    <string name="usermain_misison_title3">심사상태</string>
+    <string name="usermain_misison_title4">업로드 점수:</string>
+    <string name="usermain_misison_title5">심사통과 점수:</string>
+    <string name="usermain_misison_title6">오픈미션:</string>
+    <string name="usermain_misison_title7">성공미션:</string>
+
+    <string name="usermain_misison_filter">필터</string>
+    <string name="usermain_misison_filter1">미션구분</string>
+    <string name="usermain_misison_filter2">유저구분</string>
+    <string name="usermain_misison_filter3">심사구분</string>
+
+    <string name="usermain_misison_filter4">친구</string>
+    <string name="usermain_misison_filter5">팀원</string>
+    <string name="usermain_misison_filter6">심사통과</string>
+    <string name="usermain_misison_filter7">심사대기</string>
 </resources>

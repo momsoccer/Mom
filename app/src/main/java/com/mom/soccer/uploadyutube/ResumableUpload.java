@@ -109,7 +109,7 @@ public class ResumableUpload {
        */
 
             snippet.setTitle(userMission.getSubject());
-            snippet.setDescription("["+ mission.getMissionname()+"("+mission.getSequence()+")]   "+userMission.getDescroption());
+            snippet.setDescription("["+ mission.getMissionname()+"("+mission.getSequence()+")]   "+userMission.getDescription());
 
             //태그를 입력합니다.
             snippet.setTags(Arrays.asList(Constants.DEFAULT_KEYWORD

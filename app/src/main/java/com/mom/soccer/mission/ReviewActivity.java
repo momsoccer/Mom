@@ -191,7 +191,7 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
             userMission.setSubject(et_subject.getText().toString());
             userMission.setMissionid(mission.getMissionid());
             userMission.setUid(user.getUid());
-            userMission.setDescroption(et_content.getText().toString());
+            userMission.setDescription(et_content.getText().toString());
             userMission.setUploadflag("Y");
             userMission.setPassflag("N");
             userMission.setFilename(getFileName(mFileUri));

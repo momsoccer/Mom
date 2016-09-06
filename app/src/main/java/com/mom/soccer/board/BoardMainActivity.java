@@ -130,6 +130,7 @@ public class BoardMainActivity extends AppCompatActivity {
                     VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_create_complete),Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(activity,UserMissionActivity.class);
                     intent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMission);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     finish();
                     startActivity(intent);
                 }

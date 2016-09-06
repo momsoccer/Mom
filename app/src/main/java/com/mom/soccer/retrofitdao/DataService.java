@@ -47,4 +47,7 @@ public interface DataService {
 
     @GET("/api/data/getPassData")
     Call<FeedDataVo> getPassData(@Query("insid") int insid);
+
+    @GET("/api/data/getUserMissionCount")
+    Call<FeedDataVo> getUserMissionCount(@Query("uid") int uid);
 }

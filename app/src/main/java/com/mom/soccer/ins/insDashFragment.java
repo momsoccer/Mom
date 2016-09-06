@@ -495,6 +495,9 @@ public class insDashFragment extends Fragment {
                 WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     FeedDataVo vo = response.body();
+
+                    Log.i(TAG,"FeedDataVo : "+ vo.toString());
+
                     feedbackCount.setText(String.valueOf(vo.getCompletecount()));
                     feedbackNonCount.setText(String.valueOf(vo.getIncompletecount()));
                 }

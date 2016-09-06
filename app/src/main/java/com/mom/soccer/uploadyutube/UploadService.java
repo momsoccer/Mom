@@ -182,6 +182,7 @@ public class UploadService extends IntentService {
         Log.d(TAG, "IntentService onDestroy  ========================================");
         userMission.setYoutubeaddr(videoId);
         userMission.setVideoaddr(Common.YOUTUBE_ADDR + videoId);
+        userMission.setPassgrade(mission.getPassgrade());
 
         Log.d(TAG,"업 미션 정보 : " + userMission.toString());
         Log.d(TAG,"유저 정보는? 가능? : " + user.toString());

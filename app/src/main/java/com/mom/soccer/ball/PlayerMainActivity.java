@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.mom.soccer.R;
@@ -17,7 +20,9 @@ import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.fragment.PlayerFragment;
 import com.mom.soccer.pubactivity.Param;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class PlayerMainActivity extends AppCompatActivity {
@@ -33,6 +38,11 @@ public class PlayerMainActivity extends AppCompatActivity {
 
     private int PageCall = 0;
 
+    @Bind(R.id.search_bar)
+    ImageButton search_bar;
+
+    public static FloatingActionButton rightLowerButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +56,6 @@ public class PlayerMainActivity extends AppCompatActivity {
         intent = getIntent();
         PageCall = intent.getExtras().getInt(Param.FRAGMENT_COUNT);
 
-        Log.i(TAG," 받은 값은 : " + PageCall);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.player_toolbar);
         setSupportActionBar(toolbar);
@@ -67,8 +76,56 @@ public class PlayerMainActivity extends AppCompatActivity {
         tabsStrip.setIndicatorColor(getResources().getColor(R.color.enabled_red));
         tabsStrip.setTextColor(getResources().getColor(R.color.color6));
         tabsStrip.setViewPager(viewPager);
-
         viewPager.setCurrentItem(PageCall);
+        search_bar.setVisibility(View.GONE);
+
+
+        //floating button
+        final ImageView fabIconNew = new ImageView(this);
+
+        fabIconNew.setImageDrawable(getResources().getDrawable(R.drawable.ic_tune_white_24dp));
+        int redActionButtonSize = 70;
+        int redActionButtonMargin = 10;
+
+        FloatingActionButton.LayoutParams starParams = new FloatingActionButton.LayoutParams(redActionButtonSize, redActionButtonSize);
+        starParams.setMargins(redActionButtonMargin,
+                redActionButtonMargin,
+                redActionButtonMargin,
+                redActionButtonMargin);
+        fabIconNew.setLayoutParams(starParams);
+
+        rightLowerButton = new FloatingActionButton.Builder(this)
+                .setContentView(fabIconNew)
+                .setBackgroundDrawable(R.drawable.button_action_red_selector)
+                .setPosition(FloatingActionButton.POSITION_BOTTOM_RIGHT)
+                .build();
+
+        rightLowerButton.setVisibility(View.GONE);
+
+        tabsStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+
+                if(position==2){
+                    rightLowerButton.setVisibility(View.VISIBLE);
+                }else{
+                    rightLowerButton.setVisibility(View.GONE);
+                }
+
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 
@@ -92,12 +149,13 @@ public class PlayerMainActivity extends AppCompatActivity {
 
     public class PlayerViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        final int PAGE_COUNT = 3;
+        final int PAGE_COUNT = 4;
 
         private String tabTitles[] = new String[] {
                 getString(R.string.my_fragment_title1),
                 getString(R.string.my_fragment_title2),
-                getString(R.string.my_fragment_title3)
+                getString(R.string.my_fragment_title3),
+                getString(R.string.my_fragment_title4)
         };
 
         public PlayerViewPagerAdapter(FragmentManager fm) {

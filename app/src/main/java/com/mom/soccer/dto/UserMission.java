@@ -14,7 +14,7 @@ public class UserMission implements Serializable {
 	private String boardcount;
 	private int mycheck;
 	private String subject;
-	private String descroption;
+	private String description;
 	private String uploadflag;
 	private String youtubeaddr;
 	private String passflag;
@@ -122,12 +122,12 @@ public class UserMission implements Serializable {
 		this.subject = subject;
 	}
 
-	public String getDescroption() {
-		return descroption;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescroption(String descroption) {
-		this.descroption = descroption;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getUploadflag() {
@@ -263,7 +263,7 @@ public class UserMission implements Serializable {
 				", boardcount='" + boardcount + '\'' +
 				", mycheck=" + mycheck +
 				", subject='" + subject + '\'' +
-				", descroption='" + descroption + '\'' +
+				", description='" + description + '\'' +
 				", uploadflag='" + uploadflag + '\'' +
 				", youtubeaddr='" + youtubeaddr + '\'' +
 				", passflag='" + passflag + '\'' +

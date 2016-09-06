@@ -14,7 +14,7 @@
     sothree:umanoScrollableView="@+id/list">
 
     <!-- MAIN CONTENT -->
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:orientation="vertical">
@@ -37,7 +37,7 @@
             <TextView
                 android:id="@+id/tx_nodata_found"
                 android:gravity="center"
-                android:text="@string/main_mission_no_data_found"
+                android:text="@string/friend_no_data"
                 android:textSize="12sp"
                 android:textColor="@color/color6"
                 android:layout_width="match_parent"
@@ -47,13 +47,13 @@
         <android.support.v7.widget.RecyclerView
             android:layout_marginTop="5dp"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/userMissionRecyclerview"
+            android:id="@+id/friendi_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/mom_color1"
             />
 
-    </LinearLayout>
+    </FrameLayout>
 
 
     <!-- SLIDING LAYOUT -->
@@ -66,13 +66,15 @@
         android:focusable="false"
         android:id="@+id/dragView">
 
-        <include layout="@layout/bar_user_mission_sliding" />
+        <include layout="@layout/bar_friend_sliding" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/mom_color1">
+            android:background="@color/mom_color1"
+            android:gravity="center"
+            >
 
             <LinearLayout
                 android:layout_marginTop="5dp"
@@ -81,7 +83,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:background="@color/mom_color1"
                 >
                 <ImageView
                     android:src="@drawable/ic_info_white_24dp"
@@ -93,7 +94,7 @@
                 <TextView
                     android:id="@+id/tx_req_nodata_found"
                     android:gravity="center"
-                    android:text="@string/main_mission_no_data_found"
+                    android:text="@string/friend__req_no_data"
                     android:textSize="12sp"
                     android:textColor="@color/color6"
                     android:layout_width="match_parent"
@@ -103,13 +104,15 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_marginTop="5dp"
                 android:layout_gravity="center_horizontal"
-                android:id="@+id/userMissionPassRecyclerview"
+                android:id="@+id/friend_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/mom_color1"
                 />
 
-       </LinearLayout>
-</LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

@@ -357,6 +357,7 @@ public class UserMissionActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent1 = new Intent(UserMissionActivity.this, BoardMainActivity.class);
                 intent1.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMission);
+                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent1);
             }
         });
@@ -418,7 +419,6 @@ public class UserMissionActivity extends AppCompatActivity
             }
         });
     }
-
 
 
     @Override
@@ -607,15 +607,6 @@ public class UserMissionActivity extends AppCompatActivity
         });
     }
 
-/*    //댓글쓰기
-    @OnClick(R.id.ac_user_mission_video_comment)
-    public void boardMain() {
-        Intent intent = new Intent(this, BoardMainActivity.class);
-        intent.putExtra("usermissionid", userMission.getUsermissionid());
-        intent.putExtra("missionuid", userMission.getUid());
-        startActivity(intent);
-        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-    }*/
 
     //팔로잉 관련 트랜잭션
     @OnClick(R.id.btn_fllow)
@@ -852,56 +843,4 @@ public class UserMissionActivity extends AppCompatActivity
             }
         });
     }
-
-
-
-/*
-    //댓글을 입력한다
-    @OnClick(R.id.btn_boardcreate)
-    public void createContent(){
-
-       if(et_board_contnet.getText().length()== 0){
-            new MaterialDialog.Builder(UserMissionActivity.this)
-                    .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
-                    .title(R.string.mom_diaalog_alert)
-                    .titleColor(getResources().getColor(R.color.color6))
-                    .content(R.string.board_validation_word_empty)
-                    .contentColor(getResources().getColor(R.color.color6))
-                    .positiveText(R.string.mom_diaalog_confirm)
-                    .show();
-            return;
-
-
-        WaitingDialog.showWaitingDialog(UserMissionActivity.this,false);
-        BoardService boardService = ServiceGenerator.createService(BoardService.class,this,user);
-
-        Board board = new Board();
-        board.setUid(userMission.getUid());
-        board.setWriteuid(user.getUid());
-        board.setUsermissionid(userMission.getUsermissionid());
-        board.setComment(et_board_contnet.getText().toString());
-
-        Call<ServerResult> call = boardService.saveBoard(board);
-        call.enqueue(new Callback<ServerResult>() {
-            @Override
-            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                WaitingDialog.cancelWaitingDialog();
-                if(response.isSuccessful()){
-                    ServerResult result = response.body();
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_create_complete),Toast.LENGTH_SHORT).show();
-                    finish();
-                    Intent intent = new Intent(UserMissionActivity.this, UserMissionActivity.class);
-                    intent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMission);
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ServerResult> call, Throwable t) {
-                WaitingDialog.cancelWaitingDialog();
-                t.printStackTrace();
-            }
-        });
-    }
-*/
 }

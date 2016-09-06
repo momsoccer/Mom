@@ -71,6 +71,12 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         holder.score.setText(String.valueOf(data.getScore()));
         holder.creation_date.setText(data.getChange_creationdate());
 
+        if(!Compare.isEmpty(data.getTeamname())){
+            holder.teamname.setText(data.getTeamname());
+        }else{
+            holder.teamname.setText(activity.getResources().getString(R.string.user_team_yet_join));
+        }
+
         if(data.getFlag().equals("ACCEPT")) {
             holder.acceptBtn.setText(activity.getString(R.string.friedn_friend_cancel));
             holder.rejectbtn.setVisibility(View.GONE);
@@ -209,7 +215,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
         public CardView cardview;
         public ImageView imageView;
         public TextView username;
-        public TextView level;
+        public TextView level,teamname;
         public TextView score,creation_date,frflag;
 
 
@@ -235,6 +241,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
             creation_date = (TextView) v.findViewById(R.id.creation_date);
             rejectbtn = (Button) v.findViewById(R.id.rejectbtn);
             frflag = (TextView) v.findViewById(R.id.frflag);
+            teamname = (TextView) v.findViewById(R.id.teamname);
 
 
             /*

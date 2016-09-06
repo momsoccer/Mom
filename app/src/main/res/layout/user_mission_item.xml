@@ -1,12 +1,467 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@color/mom_color1"
+    >
 
-    <com.google.android.youtube.player.YouTubeThumbnailView
-        android:id="@+id/youtybe_Thumbnail"
-        android:layout_width="300dp"
-        android:layout_height="150dp" />
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardElevation="2dp"
+        android:orientation="vertical"
+        card_view:contentPadding="5dp"
+        card_view:cardBackgroundColor="@color/mom_color3"
+        >
+
+        <RelativeLayout
+            android:id="@+id/ri_back_ground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/xml_back_around"
+            >
+
+            <LinearLayout
+                android:layout_margin="3dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/mom_color3"
+                >
+
+                <RelativeLayout
+                    android:orientation="horizontal"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/userimg"
+                            android:src="@drawable/userimg"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp" />
+
+                        <TextView
+                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="-18dp"
+                            android:id="@+id/level"
+                            android:text="22"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:textColor="@color/color6"
+                            android:textSize="6sp"
+                            android:background="@drawable/ic_levelmark"
+                            android:layout_width="18dp"
+                            android:layout_height="20dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="50dp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        >
+
+                        <TextView
+                            android:id="@+id/username"
+                            android:textSize="13sp"
+                            android:textColor="@color/color6"
+                            android:text="김유저"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_marginTop="3dp"
+                            android:id="@+id/teamname"
+                            android:text="Mom FC Club"
+                            android:textSize="10sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/smallbox"
+                        android:layout_marginRight="5dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/xml_boder_around">
+
+                        <LinearLayout
+                            android:layout_margin="3dp"
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:id="@+id/missionbatch"
+                                android:layout_marginLeft="15dp"
+                                android:orientation="vertical"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                >
+
+                                <ImageView
+                                    android:src="@drawable/ic_send_white_24dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                                <TextView
+                                    android:text="@string/usermain_misison_feedback"
+                                    android:textStyle="bold"
+                                    android:textSize="8sp"
+                                    android:textColor="@color/color6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/feedbackcount"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"
+                                android:text="0"
+                                android:textStyle="bold"
+                                android:textSize="20sp"
+                                android:textColor="@color/color6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+
+                            <LinearLayout
+                                android:layout_marginLeft="15dp"
+                                android:orientation="vertical"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                >
+
+                                <ImageView
+                                    android:src="@drawable/ic_verified_user_white_24dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                                <TextView
+                                    android:text="@string/usermain_misison_title3"
+                                    android:textStyle="bold"
+                                    android:textSize="8sp"
+                                    android:textColor="@color/color6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+
+
+                            <TextView
+                                android:id="@+id/feedbackstatus"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:text="심사대기"
+                                android:textStyle="bold"
+                                android:textSize="10sp"
+                                android:textColor="@color/color6"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/missionline"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/rec_xml_around"
+                    >
+
+                </View>
+
+                <LinearLayout
+                    android:layout_marginTop="3dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+
+                        <com.google.android.youtube.player.YouTubeThumbnailView
+                            android:id="@+id/uservideo"
+                            android:layout_width="132dp"
+                            android:layout_height="75dp"
+                            android:background="@color/color8"
+                            />
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="60dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            >
+
+                            <ImageView
+                                android:src="@drawable/ic_white_hart"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp" />
+
+                            <TextView
+                                android:id="@+id/favoritecount"
+                                android:layout_marginLeft="5dp"
+                                android:text="0"
+                                android:textColor="@color/color6"
+                                android:textSize="10sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <ImageView
+                                android:layout_marginLeft="10dp"
+                                android:src="@drawable/coment_ic"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp" />
+
+                            <TextView
+                                android:id="@+id/boardcount"
+                                android:layout_marginLeft="5dp"
+                                android:text="0"
+                                android:textColor="@color/color6"
+                                android:textSize="10sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/missionclearMark"
+                            android:layout_marginLeft="105dp"
+                            android:src="@drawable/ic_clear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_marginLeft="3dp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            >
+
+                            <ImageView
+                                android:src="@drawable/ic_ball_subject"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:text="@string/usermain_misison_title4"
+                                android:textColor="@color/color6"
+                                android:textSize="8sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_marginLeft="3dp"
+                                android:id="@+id/grade"
+                                android:text="30"
+                                android:textColor="@color/color6"
+                                android:textSize="8sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+
+                            <ImageView
+                                android:layout_marginLeft="30dp"
+                                android:src="@drawable/ic_ball_subject"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:text="@string/usermain_misison_title5"
+                                android:textColor="@color/color6"
+                                android:textSize="8sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_marginLeft="3dp"
+                                android:id="@+id/passgrade"
+                                android:text="50"
+                                android:textColor="@color/color6"
+                                android:textSize="8sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_marginTop="3dp"
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            >
+
+                            <ImageView
+                                android:src="@drawable/ic_ball_subject"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:text="@string/usermain_misison_title1"
+                                android:textColor="@color/color6"
+                                android:textSize="8sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_marginLeft="3dp"
+                            android:id="@+id/misisonname"
+                            android:text="레벨 1 드리블 팬덤"
+                            android:textColor="@color/color6"
+                            android:textSize="10sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_marginTop="3dp"
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            >
+
+                            <ImageView
+                                android:src="@drawable/ic_ball_subject"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:text="@string/usermain_misison_title2"
+                                android:textColor="@color/color6"
+                                android:textSize="8sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_marginLeft="3dp"
+                            android:id="@+id/description"
+                            android:text="양발 인사이드 부분을 사용해서 제자리에서 드리블 연습을 한다"
+                            android:textColor="@color/color6"
+                            android:textSize="10sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="3dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    >
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        >
+
+                        <ImageView
+                            android:id="@+id/batch"
+                            android:src="@drawable/batch_around_a"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/sequence"
+                            android:text="level 1"
+                            android:textColor="@color/color6"
+                            android:textSize="10sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_marginTop="3dp"
+                            android:layout_marginLeft="3dp"
+                            android:id="@+id/date"
+                            android:text="2015년 12월 31일 오후 12시 30분"
+                            android:textSize="8sp"
+                            android:textColor="@color/color8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_marginLeft="3dp"
+                            android:id="@+id/usersubject"
+                            android:text="내 미션 영상"
+                            android:textColor="@color/color6"
+                            android:textSize="10sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/userdescription"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginLeft="3dp"
+                            android:text="양발 인사이드 부분을 사용해서 제자리에서 드리블 연습을 한다"
+                            android:textColor="@color/color6"
+                            android:textSize="10sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>
