@@ -196,7 +196,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".youtubeplayer.YoutubePlayerActivity" />
         <activity android:name=".ins.FeedBackWrite" />
-        <activity android:name=".ins.InsPointHistory"></activity>
+        <activity android:name=".ins.InsPointHistory" />
+
+        <service
+            android:name=".ins.UploadFeedService"
+            android:exported="true"/>
     </application>
 
 </manifest>

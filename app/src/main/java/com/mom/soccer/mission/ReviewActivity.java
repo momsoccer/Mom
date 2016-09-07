@@ -197,9 +197,6 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
             userMission.setFilename(getFileName(mFileUri));
             userMission.setGrade(mission.getGrade());
 
-            Log.d(TAG,"업로드 유저 미션 정보는 : " + userMission.toString());
-
-
             uploadIntent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMission);
             uploadIntent.putExtra(MissionCommon.USER_OBJECT,user);
 
@@ -214,12 +211,10 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
                         ServerResult result = response.body();
 
                         if(result.getResult().equals("F")){
-                            Log.d(TAG,"동일한 파일 명.....");
                             VeteranToast.makeToast(getApplicationContext(),getString(R.string.upload_duplicate_validate),Toast.LENGTH_SHORT).show();
                             return;
                         }else{
                             VeteranToast.makeToast(getApplicationContext(),getString(R.string.upload_disp),Toast.LENGTH_SHORT).show();
-                            Log.d(TAG,"정상 작업.....");
                             startService(uploadIntent);
                             finish();
                         }

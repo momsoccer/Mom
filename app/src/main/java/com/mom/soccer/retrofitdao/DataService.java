@@ -5,6 +5,7 @@ import com.mom.soccer.dataDto.InsInfoVo;
 import com.mom.soccer.dataDto.MainTypeListVo;
 import com.mom.soccer.dataDto.UserLevelDataVo;
 import com.mom.soccer.dataDto.UserRangkinVo;
+import com.mom.soccer.dto.ServerResult;
 
 import java.util.List;
 
@@ -50,4 +51,9 @@ public interface DataService {
 
     @GET("/api/data/getUserMissionCount")
     Call<FeedDataVo> getUserMissionCount(@Query("uid") int uid);
+
+    @GET("/api/data/getInsFileCount")
+    Call<ServerResult> getInsFileCount(@Query("uid") int uid,
+                                       @Query("insid") int insid,
+                                       @Query("filename") String filename);
 }

@@ -37,6 +37,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -133,7 +134,8 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
     public MomMainActivity(){};
 
-
+    ImageButton imageBtnBall;
+    ImageButton ib_appbar_coach;
 
     //버젼 체크를 위한...private final int MY_PERMISSION_REQUEST_STORAGE = 100;
     private final int MY_PERMISSION_REQUEST_STORAGE = 100;
@@ -148,7 +150,11 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         activity = this;
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
-        instructor = prefUtil.getIns();
+
+        Log.d(TAG,"onCreate() missiontype : " + user.toString());
+
+        Intent intent = getIntent();
+        instructor = (Instructor) intent.getSerializableExtra("INS");
 
         Log.d(TAG, "onCreate ===========================================================");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -194,10 +200,8 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                     .load(user.getProfileimgurl())
                     .asBitmap().transform(new CropCircleTransformation(this))
                     .into(navHeaderImage);
-
-            Log.d(TAG,"유저 이미지 있다면... : " + user.getProfileimgurl());
         }else {
-            Log.d(TAG,"유저 이미지 없다면...: " + user.getProfileimgurl());
+
         }
 
 
@@ -241,7 +245,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             }
         });
 
-        Log.d(TAG, "onCreate ===========================================================" + user.getProfileimgurl());
 
         navHeaderImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,8 +252,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                 changeImage();
             }
         });
-
-        Log.d(TAG, "onCreate 퍼미션 체크를 합니다 : " + Build.VERSION.SDK_INT);
         //버젼체크 및 권한 설정 마쉬멜로 이상. 필수
         if(Build.VERSION.SDK_INT  >= 23){
 
@@ -270,14 +271,14 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             checkPermission();
         }
 
+        imageBtnBall    = (ImageButton) findViewById(R.id.ib_appbar_ball);
+        ib_appbar_coach = (ImageButton) findViewById(R.id.ib_appbar_coach);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG,"on Start ======================================================");
-
-        user = prefUtil.getUser();
 
         //만약 앱을 연 상태에서 설정을 했다면 다시 불러오기
         if(user.getUseremail() != null){
@@ -290,7 +291,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
         //강사정보 셋팅
         getInstructorInfo();
-
     }
 
 
@@ -952,7 +952,13 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                     prefUtil.saveIns(instructor);
                     WaitingDialog.cancelWaitingDialog();
 
-                    Log.i(TAG,"ins : " + instructor.toString());
+                    if(instructor.getInstructorid()==0){
+                        ib_appbar_coach.setVisibility(View.GONE);
+                        imageBtnBall.setVisibility(View.VISIBLE);
+                    }else{
+                        ib_appbar_coach.setVisibility(View.VISIBLE);
+                        imageBtnBall.setVisibility(View.GONE);
+                    }
 
                     if(instructor.getUid()==0){
                         navigationView.getMenu().findItem(R.id.mn_item_coachreq).setTitle(getString(R.string.mom_menu_title_coach_apply));
@@ -975,9 +981,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                         editor.commit();
 
                     }
-
-                }else{
-                    WaitingDialog.cancelWaitingDialog();
+                    Log.i(TAG,"강사정보는 : " + instructor.toString());
                 }
             }
 

@@ -719,7 +719,12 @@ public class UserMissionActivity extends AppCompatActivity
     //shrareBtn 카카오 공유
     @OnClick(R.id.shrareBtn)
     public void shrareBtn(){
-        VeteranToast.makeToast(getApplicationContext(),"준비중 입니다",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, user.getUsername() +" : "+userMission.getSubject());
+        intent.putExtra(Intent.EXTRA_TEXT,"https://youtu.be/"+userMission.getYoutubeaddr());
+        intent.putExtra(Intent.EXTRA_TITLE, userMission.getDescription());
+        startActivity(Intent.createChooser(intent, "Mom Soccer"));
     }
 
 

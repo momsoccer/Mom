@@ -239,6 +239,17 @@ public class MissionMainActivity extends AppCompatActivity {
     @Bind(R.id.li_another_no_data_back)
     LinearLayout li_another_no_data_back;
 
+    @OnClick(R.id.btn_shre)
+    public void btn_shre(){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, user.getUsername() +" : "+userMission.getSubject());
+        intent.putExtra(Intent.EXTRA_TEXT,"https://youtu.be/"+userMission.getYoutubeaddr());
+        intent.putExtra(Intent.EXTRA_TITLE, userMission.getDescription());
+        startActivity(Intent.createChooser(intent, "Mom Soccer"));
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -404,6 +415,7 @@ public class MissionMainActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+
     }
 
     //다른 사람들의 영상 목록
@@ -1243,19 +1255,6 @@ public class MissionMainActivity extends AppCompatActivity {
             }
         });
     }
-
-/*    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-
-        final ScrollView scroll_layout;
-        scroll_layout = (ScrollView) findViewById(R.id.scroll_layout);
-        scroll_layout.post(new Runnable(){
-            public void run() {
-                scroll_layout.scrollTo(1, 1);
-            }
-        });
-    }*/
 
 
     //피드백 리스트

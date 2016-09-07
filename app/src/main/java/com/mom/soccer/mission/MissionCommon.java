@@ -13,5 +13,6 @@ public class MissionCommon {
     public static String INS_OBJECT = "INS_OBJECT";
 
     public static String FEEDBACKHEADER = "FEEDBACKHEADER";
+    public static String FEEDBACKLINE = "FEEDBACKLINE";
 
 }

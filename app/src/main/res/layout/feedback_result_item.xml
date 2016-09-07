@@ -60,11 +60,15 @@
                     android:textColor="@color/color6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <RatingBar
-                    android:layout_marginLeft="5dp"
                     android:id="@+id/eval_ratingbar"
-                    style="?android:attr/ratingBarStyleIndicator"
+                    style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:numStars="5"
@@ -233,13 +237,13 @@
                     <com.google.android.youtube.player.YouTubeThumbnailView
                         android:id="@+id/video_ThumbnailView"
                         android:layout_width="65dp"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:background="@color/color8"
                         />
 
                     <ImageView
                         android:src="@drawable/video_play_btn_white"
-                        android:layout_marginTop="-44dp"
+                        android:layout_marginTop="-38dp"
                         android:layout_marginLeft="2dp"
                         android:layout_width="15dp"
                         android:layout_height="15dp" />

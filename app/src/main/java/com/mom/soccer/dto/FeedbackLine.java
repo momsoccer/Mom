@@ -1,9 +1,11 @@
 package com.mom.soccer.dto;
 
+import java.io.Serializable;
+
 /**
  * Created by sungbo on 2016-08-21.
  */
-public class FeedbackLine {
+public class FeedbackLine implements Serializable {
 
     private int feedbacklineid;
     private int feedbackid;
@@ -16,7 +18,63 @@ public class FeedbackLine {
     private float evalscore;
     private String change_creationdate;
 
+    //Upload using
+    private String subject;
+    private String username;
+    private String filename;
+    private String missionname;
+    private String description;
+    private String profileimgurl;
+
+    public String getMissionname() {
+        return missionname;
+    }
+
+    public void setMissionname(String missionname) {
+        this.missionname = missionname;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getProfileimgurl() {
+        return profileimgurl;
+    }
+
+    public void setProfileimgurl(String profileimgurl) {
+        this.profileimgurl = profileimgurl;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public FeedbackLine(){}
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
     public float getEvalscore() {
         return evalscore;
@@ -111,6 +169,12 @@ public class FeedbackLine {
                 ", image3='" + image3 + '\'' +
                 ", evalscore=" + evalscore +
                 ", change_creationdate='" + change_creationdate + '\'' +
+                ", subject='" + subject + '\'' +
+                ", username='" + username + '\'' +
+                ", filename='" + filename + '\'' +
+                ", missionname='" + missionname + '\'' +
+                ", description='" + description + '\'' +
+                ", profileimgurl='" + profileimgurl + '\'' +
                 '}';
     }
 }

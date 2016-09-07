@@ -131,6 +131,7 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
                     @Override
                     public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
                         youTubeThumbnailLoader.setVideo(vo.getVideoaddr());
+
                         youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
                             @Override
                             public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
@@ -142,6 +143,7 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
 
                             }
                         });
+
                     }
 
                     @Override

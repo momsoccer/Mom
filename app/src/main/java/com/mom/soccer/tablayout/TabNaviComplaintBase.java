@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -71,15 +70,14 @@ public class TabNaviComplaintBase extends RelativeLayout {
 
         }
 
-        Log.i("여기는","값은 " + ins_id);
 
-        if(ins_id==0){
+/*        if(ins_id==0){
             ib_appbar_coach.setVisibility(GONE);
             imageBtnBall.setVisibility(VISIBLE);
         }else{
             ib_appbar_coach.setVisibility(VISIBLE);
             imageBtnBall.setVisibility(GONE);
-        }
+        }*/
 
         ib_appbar_coach.setOnClickListener(new OnClickListener() {
             @Override
@@ -89,9 +87,6 @@ public class TabNaviComplaintBase extends RelativeLayout {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(Param.FRAGMENT_COUNT,0);
                 context.startActivity(intent);
-/*                if (context instanceof Activity) {
-                    ((Activity) context).overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
-                }*/
             }
         });
 

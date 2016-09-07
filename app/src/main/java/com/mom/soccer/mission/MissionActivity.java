@@ -102,7 +102,9 @@ public class MissionActivity extends AppCompatActivity {
         Intent intent = getIntent();
         missionType = intent.getExtras().getString(MissionCommon.MISSIONTYPE);
 
-        Log.d(TAG,"onCreate() missiontype : " + missionType);
+
+
+        Log.d(TAG,"onCreate() missiontype : " + user.toString());
 
         if(missionType.equals("DRIBLE")){
             textViewTitle.setText(getString(R.string.mission_toolbar_title)+getString(R.string.drrible));

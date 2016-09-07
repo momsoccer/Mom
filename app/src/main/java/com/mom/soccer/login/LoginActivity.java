@@ -35,6 +35,7 @@ import com.mom.soccer.R;
 import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
+import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.momactivity.MomMainActivity;
@@ -96,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText et_Login_password;
 
     private String tempEmail = null;
+    private Instructor instructor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -424,6 +426,11 @@ public class LoginActivity extends AppCompatActivity {
         Log.i("User Info", "EMAIL : " + SERVERUSER.getUseremail());
         Log.i("User Info", "PW : " + SERVERUSER.getPassword());
         Log.i("User Info", "************************************************");
+
+        //InstructorService service = ServiceGenerator.createService(InstructorService.class);
+        //Call<Instructor> c = service.getFindIns(SERVERUSER.getUid());
+
+
 
         Intent intent = new Intent(getApplicationContext(), MomMainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);

@@ -48,7 +48,7 @@
                 android:textColor="@color/color6"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:text="피드백 요청 타입"
+                android:text="FeedBack Request Type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -61,16 +61,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:src="@drawable/ic_ball_subject"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-
             <TextView
                 android:layout_marginLeft="5dp"
                 android:textColor="@color/color6"
                 android:textSize="14sp"
-                android:text="영상"
+                android:text="@string/ins_feedback_msg6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -81,20 +76,30 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+
+                <VideoView
+                    android:id="@+id/videoView"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_gravity="center"
+                    />
+
             <LinearLayout
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="@drawable/xml_back_white"
-                android:gravity="center"
-                android:onClick="videoAttach"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
                 >
 
-                <ImageView
-                    android:src="@drawable/btn_uploadvideoadd"
+                <Button
+                    android:id="@+id/feedvideoBtn"
+                    android:text="@string/ins_feedback_msg7"
+                    style="@style/btnStylePaprika"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
+                    android:textSize="10sp"
                     android:onClick="videoAttach"
                     />
             </LinearLayout>
@@ -104,19 +109,14 @@
 
 
         <LinearLayout
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:src="@drawable/ic_ball_subject"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-
             <TextView
                 android:layout_marginLeft="5dp"
-                android:text="피드백"
+                android:text="@string/ins_text_feed_a"
                 android:textColor="@color/color6"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -148,18 +148,8 @@
             >
 
             <Button
-                android:id="@+id/feedvideoBtn"
-                android:text="영상첨부"
-                style="@style/btnStylePaprika"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:textSize="10sp"
-                android:onClick="videoAttach"
-                />
-
-            <Button
                 android:id="@+id/feedBtn"
-                android:text="완료"
+                android:text="@string/ins_feedback_msg9"
                 android:layout_marginLeft="5dp"
                 style="@style/btnStylePaprika"
                 android:layout_width="wrap_content"

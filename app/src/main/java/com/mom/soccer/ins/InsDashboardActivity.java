@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -46,8 +45,6 @@ public class InsDashboardActivity extends AppCompatActivity {
         intent = getIntent();
         pageCall = intent.getExtras().getInt(Param.FRAGMENT_COUNT);
 
-        Log.i(TAG,"페이지 새로 고침 변수 : "+pageCall);
-
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
         instructor = prefUtil.getIns();
@@ -82,7 +79,7 @@ public class InsDashboardActivity extends AppCompatActivity {
         final int PAGE_COUNT = 3;
 
         private String tabTitles[] = new String[] {
-                getString(R.string.my_fragment_title2),getString(R.string.ins_pass_title),getString(R.string.ins_common_title)
+                getString(R.string.my_fragment_title5),getString(R.string.ins_pass_title),getString(R.string.ins_common_title)
         };
 
         public insDashPagerAdapter(FragmentManager fm) {
@@ -127,4 +124,6 @@ public class InsDashboardActivity extends AppCompatActivity {
         Intent intent = new Intent(InsDashboardActivity.this,InsPointHistory.class);
         startActivity(intent);
     }
+
+
 }

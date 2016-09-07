@@ -37,14 +37,16 @@ public class PrefUtil {
         pre.putString("ins_phone", ins.getPhone());
         pre.putInt("ins_location", ins.getLocation());
         pre.putString("ins_feedbackflag",ins.getFeedbackflag());
-        pre.putString("appushflag",ins.getApppushflag());
-        pre.putString("serialnumber",ins.getSerialnumber());
-        pre.putInt("commontokenid",ins.getCommontokenid());
-        pre.putInt("pointhistoryid",ins.getPointhistoryid());
+        pre.putString("ins_appushflag",ins.getApppushflag());
+        pre.putString("ins_serialnumber",ins.getSerialnumber());
+        pre.putInt("ins_commontokenid",ins.getCommontokenid());
+        pre.putInt("ins_pointhistoryid",ins.getPointhistoryid());
+        pre.putInt("ins_uid",ins.getUid());
 
-        pre.putString("teamname",ins.getTeamname());
-        pre.putString("emblem",ins.getEmblem());
+        pre.putString("ins_teamname",ins.getTeamname());
+        pre.putString("ins_emblem",ins.getEmblem());
         pre.putString("change_teamcreationdate",ins.getChange_teamcreationdate());
+
 
         pre.commit();
     }
@@ -63,14 +65,15 @@ public class PrefUtil {
         instructor.setPhone(sp.getString("ins_phone",null));
         instructor.setLocation(sp.getInt("ins_location",0));
         instructor.setFeedbackflag(sp.getString("ins_feedbackflag",null));
-        instructor.setApppushflag(sp.getString("appushflag",null));
-        instructor.setSerialnumber(sp.getString("serialnumber",null));
-        instructor.setCommontokenid(sp.getInt("commontokenid",0));
-        instructor.setPointhistoryid(sp.getInt("pointhistoryid",0));
+        instructor.setApppushflag(sp.getString("ins_appushflag",null));
+        instructor.setSerialnumber(sp.getString("ins_serialnumber",null));
+        instructor.setCommontokenid(sp.getInt("ins_commontokenid",0));
+        instructor.setPointhistoryid(sp.getInt("ins_pointhistoryid",0));
 
-        instructor.setTeamname(sp.getString("teamname",null));
-        instructor.setEmblem(sp.getString("emblem",null));
+        instructor.setTeamname(sp.getString("ins_teamname",null));
+        instructor.setEmblem(sp.getString("ins_emblem",null));
         instructor.setChange_teamcreationdate(sp.getString("change_teamcreationdate",null));
+        instructor.setUid(sp.getInt("ins_uid",0));
 
         return instructor;
     }

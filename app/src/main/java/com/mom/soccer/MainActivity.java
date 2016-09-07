@@ -127,7 +127,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (!Compare.isEmpty(user.getUseremail())){
-            Log.d(TAG,"로그인 유저입니다.. 메인 화면으로 이동합니다");
+
+            //InstructorService service = ServiceGenerator.createService(InstructorService.class);
+            //Call<Instructor> c = service.getFindIns(SERVERUSER.getUid());
+
+
             Intent intent = new Intent(this, MomMainActivity.class); //유저라면 메인 화면으로 이동시킨다
             startActivity(intent);
         }else{
