@@ -13,24 +13,28 @@ public class Team {
     private String instructorname;
     private String creationdate;
     private String updatedate;
+    private String insname;
+    private String insimg;
 
     private String change_creationdate;
     private String change_updatedate;
 
     public Team(){}
 
-    public Team(int teamid, int instructorid, String name, String emblem, String description, String enabled, String instructorname, String creationdate, String updatedate, String change_creationdate, String change_updatedate) {
-        this.teamid = teamid;
-        this.instructorid = instructorid;
-        this.name = name;
-        this.emblem = emblem;
-        this.description = description;
-        this.enabled = enabled;
-        this.instructorname = instructorname;
-        this.creationdate = creationdate;
-        this.updatedate = updatedate;
-        this.change_creationdate = change_creationdate;
-        this.change_updatedate = change_updatedate;
+    public String getInsname() {
+        return insname;
+    }
+
+    public void setInsname(String insname) {
+        this.insname = insname;
+    }
+
+    public String getInsimg() {
+        return insimg;
+    }
+
+    public void setInsimg(String insimg) {
+        this.insimg = insimg;
     }
 
     public String getInstructorname() {

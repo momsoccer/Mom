@@ -1,7 +1,13 @@
 package com.mom.soccer.bottommenu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -22,7 +29,7 @@ import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.GridMissionAdapter;
 import com.mom.soccer.ball.PlayerMainActivity;
-import com.mom.soccer.common.BlurTransformation;
+import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
@@ -44,9 +51,13 @@ import com.mom.soccer.retrofitdao.FriendService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.trservice.UserTRService;
 import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import butterknife.Bind;
@@ -175,7 +186,22 @@ public class MyPageActivity extends AppCompatActivity {
     @Bind(R.id.add_follwing)
     Button add_follwing;
 
+    @Bind(R.id.backImageCamera)
+    ImageButton backImageCamera;
+
     private String friendStatus = "N";
+
+    private static final int PICK_FROM_CAMERA = 0;
+    private static final int PICK_FROM_ALBUM = 1;
+    private static final int CROP_FROM_IMAGE = 2;
+
+    private Uri mImageCaptureUri;
+    private String absoultePath;
+    private String RealFilePath;
+    private String fileName;
+
+    private String imgtype;
+    private String uploadflag="N";
 
     @OnClick(R.id.im_batch)
     public void im_batch(){
@@ -236,7 +262,6 @@ public class MyPageActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG,"onStart() 사용자 프로필 조회 =================================");
 
         if(pageFlag.equals("me")){
             findUser = user;
@@ -327,28 +352,27 @@ public class MyPageActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     findUser = response.body();
                     WaitingDialog.cancelWaitingDialog();
-                    Log.i(TAG,"1.조회 유저정보는 : " + findUser.toString());
+
 
                     if(youUid!=0){
                         mypage_title.setText(findUser.getUsername());
                         text_title.setText(findUser.getUsername()+" "+ getString(R.string.app_myvideo_view_title));
                     }
 
-                    if(!Compare.isEmpty(findUser.getProfileimgurl())) {
+                    if(uploadflag.equals("N")){ //업로드시 시간차에 의해 업데이트보다 먼저 onstart 메소드가 실행되버린다
+                        if(!Compare.isEmpty(findUser.getProfileimgurl())) {
+                            Glide.with(MyPageActivity.this)
+                                    .load(findUser.getProfileimgurl())
+                                    .asBitmap().transform(new RoundedCornersTransformation(MyPageActivity.this,10,5))
+                                    .into(mypageImage);
+                        }
 
-                        Glide.with(MyPageActivity.this)
-                                .load(findUser.getProfileimgurl())
-                                .asBitmap().transform(new RoundedCornersTransformation(MyPageActivity.this,10,5))
-                                .into(mypageImage);
+                        if(!Compare.isEmpty(findUser.getBackimage())){
 
-
-
-                        //리니어 레이아웃에 블러드 효과 주기
-                        Glide.with(MyPageActivity.this)
-                                .load(findUser.getProfileimgurl())
-                                .asBitmap().transform(new BlurTransformation(MyPageActivity.this, 10))
-                                //.transform(new RoundedCornersTransformation(MyPageActivity.this,5,2))
-                                .into(mypageBackImage);
+                            Glide.with(MyPageActivity.this)
+                                    .load(findUser.getBackimage())
+                                    .into(mypageBackImage);
+                        }
                     }
 
                     /*************************************************************************************
@@ -726,9 +750,205 @@ public class MyPageActivity extends AppCompatActivity {
             });
         }
     }
-
-
     //사진변경
+    @OnClick(R.id.backImageCamera)
+    public void backImageCamera(){
+
+        if(pageFlag.equals("me")){
+            imgtype="background";
+            changeImage();
+        }
+
+    }
+
+    public void changeImage(){
+
+        new MaterialDialog.Builder(MyPageActivity.this)
+                .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                .title(R.string.mom_diaalog_photo_title)
+                .titleColor(getResources().getColor(R.color.color6))
+                .content(R.string.mom_diaalog_photo_contnet)
+                .contentColor(getResources().getColor(R.color.color6))
+                .positiveText(R.string.mom_diaalog_photo_gallery)
+                .neutralText(R.string.mom_diaalog_photo_camera)
+                .negativeText(R.string.mom_diaalog_cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        doTakeAlbumAction();
+                    }
+                })
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        doTakePhotoAction();
+                    }
+                })
+                .show();
+    }
+
+    //앨범에서 이미지 가져오기
+    public void doTakeAlbumAction(){
+        //앨범호출
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, PICK_FROM_ALBUM);
+    }
+
+    //카메라에서 사진촬영
+    public void doTakePhotoAction(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        String uri = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
+        mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),uri));
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+        startActivityForResult(intent,PICK_FROM_CAMERA);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode != RESULT_OK){
+            return;
+        }
+
+        switch (requestCode){
+            case PICK_FROM_ALBUM:
+
+                mImageCaptureUri = data.getData();
+                Intent intenti = new Intent("com.android.camera.action.CROP");
+                intenti.setDataAndType(mImageCaptureUri, "image/*");
+
+                //서버에가기전 적용해주기
+                if(imgtype.equals("front")){
+                    intenti.putExtra("outputX",100);
+                    intenti.putExtra("outputY",100);
+                    intenti.putExtra("aspectX",100);
+                    intenti.putExtra("aspectY",100);
+                }else{
+                    intenti.putExtra("outputX",200);
+                    intenti.putExtra("outputY",150);
+                    intenti.putExtra("aspectX",200);
+                    intenti.putExtra("aspectY",150);
+                }
+                intenti.putExtra("scale",true);
+                intenti.putExtra("return-data", true);
+                startActivityForResult(intenti,CROP_FROM_IMAGE);
+
+                break;
+
+            case PICK_FROM_CAMERA:
+                Intent intent = new Intent("com.android.camera.action.CROP");
+                intent.setDataAndType(mImageCaptureUri, "image/*");
 
 
+                //서버에가기전 적용해주기
+                if(imgtype.equals("front")){
+                    intent.putExtra("outputX",100);
+                    intent.putExtra("outputY",100);
+                    intent.putExtra("aspectX",100);
+                    intent.putExtra("aspectY",100);
+                }else{
+                    intent.putExtra("outputX",200);
+                    intent.putExtra("outputY",150);
+                    intent.putExtra("aspectX",200);
+                    intent.putExtra("aspectY",150);
+                }
+
+                intent.putExtra("scale",true);
+                intent.putExtra("return-data", true);
+                startActivityForResult(intent,CROP_FROM_IMAGE);
+                break;
+
+            case CROP_FROM_IMAGE:
+                if(resultCode != RESULT_OK){
+                    return;
+                }
+
+                final Bundle extras = data.getExtras();
+
+                //크롭된 이미지를 저장하기 위한 file 경로
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+ Common.IMAGE_MOM_PATH+System.currentTimeMillis()+".jpg";
+
+                RealFilePath = filePath;
+                fileName    = System.currentTimeMillis()+".jpg";
+
+                if(extras != null){
+                    Bitmap photo = extras.getParcelable("data");
+
+                    //서버에가기전 적용해주기
+                    if(imgtype.equals("front")){
+                        mypageImage.setImageBitmap(photo);
+                    }else{
+                        mypageBackImage.setImageBitmap(photo);
+                    }
+
+                    storeCropImage(photo, filePath);
+                    absoultePath = filePath;
+                    break;
+                }
+                File file = new File(mImageCaptureUri.getPath());
+                if(file.exists()){
+                    file.delete();
+                }
+        }
+    }
+
+    private void storeCropImage(Bitmap bitmap,String filePath){
+
+        String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath()+Common.IMAGE_MOM_PATH;
+        File directory_SmartWheel = new File(dirPath);
+
+        if(!directory_SmartWheel.exists())
+            directory_SmartWheel.mkdir();
+
+        //서버에 파일을 업로드 합니다
+        String profileimgurl = Common.SERVER_USER_IMGFILEADRESS + fileName;
+        String StrUid = String.valueOf(user.getUid());
+
+        File copyFile = new File(filePath);
+        BufferedOutputStream out = null;
+
+        try{
+            copyFile.createNewFile();
+            out = new BufferedOutputStream(new FileOutputStream(copyFile));
+            bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+
+            Log.i(TAG," ############################# sendBroadcast");
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.fromFile(copyFile)));
+            out.flush();
+            out.close();
+
+            //이미지 업로드
+            UserTRService userTRService = new UserTRService(this,user);
+            userTRService.updateUserImage(StrUid,fileName,RealFilePath,imgtype);
+
+            uploadflag = "Y";
+
+            //유저사진을 쉐어퍼런스에 저장해준다(업데이트)
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor pre = sp.edit();
+
+            if(imgtype.equals("front")){
+                pre.putString("profileImgUrl", profileimgurl);
+            }else{
+                pre.putString("backimage", profileimgurl);
+            }
+            pre.commit();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @OnClick(R.id.mypage_image_user_image)
+    public void mypage_image_user_image(){
+        if(pageFlag.equals("me")){
+            imgtype="front";
+            changeImage();
+        }
+    }
 }

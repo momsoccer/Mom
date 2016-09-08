@@ -22,7 +22,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="댓글"
+                android:text="@string/board_title"
                 android:id="@+id/comment_title"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:gravity="center"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="5dp"
                 />
 
         </RelativeLayout>
@@ -89,16 +89,16 @@
             android:layout_height="match_parent">
 
             <EditText
+                android:id="@+id/et_board_contnet"
                 android:hint="@string/board_validation_word_empty"
                 android:textColorHint="@color/color8"
                 android:gravity="top"
                 android:layout_gravity="top|left"
-                android:id="@+id/et_board_contnet"
-                android:textSize="15sp"
+                android:textSize="20sp"
                 android:textColor="@color/color6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/inputtext"
+                android:background="@color/mom_color1"
                 />
 
         </LinearLayout>

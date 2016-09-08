@@ -56,7 +56,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
 
         holder.username.setText(boardList.get(i).getUsername());
         holder.comment.setText(boardList.get(i).getComment());
-        holder.change_updatedate.setText(boardList.get(i).getChange_creationdate());
+        holder.change_updatedate.setText(boardList.get(i).getFormatDataSign());
     }
 
     @Override

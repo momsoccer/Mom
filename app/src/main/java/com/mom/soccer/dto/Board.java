@@ -17,8 +17,17 @@ public class Board {
     private String change_updatedate;
     private int totalscore;
     private int level;
+    private String formatDataSign;
 
     public Board(){}
+
+    public String getFormatDataSign() {
+        return formatDataSign;
+    }
+
+    public void setFormatDataSign(String formatDataSign) {
+        this.formatDataSign = formatDataSign;
+    }
 
     public int getTotalscore() {
         return totalscore;

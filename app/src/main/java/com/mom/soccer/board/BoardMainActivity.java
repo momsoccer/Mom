@@ -95,7 +95,6 @@ public class BoardMainActivity extends AppCompatActivity {
         }
 
 
-
     }
 
     @Override

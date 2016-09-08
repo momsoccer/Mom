@@ -1,8 +1,10 @@
 package com.mom.soccer.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +23,7 @@ import com.mom.soccer.R;
 import com.mom.soccer.adapter.FriendListAdapter;
 import com.mom.soccer.adapter.UserMissionAdapter;
 import com.mom.soccer.ball.PlayerMainActivity;
+import com.mom.soccer.common.Common;
 import com.mom.soccer.dataDto.FeedDataVo;
 import com.mom.soccer.dataDto.UserMainVo;
 import com.mom.soccer.dto.FriendReqVo;
@@ -44,7 +47,7 @@ import retrofit2.Response;
 /**
  * Created by sungbo on 2016-08-17.
  */
-public class PlayerFragment extends Fragment {
+public class PlayerFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "PlayerFragment";
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -62,8 +65,11 @@ public class PlayerFragment extends Fragment {
 
     UserMissionAdapter userMissionAdapter;
 
-    LinearLayout li_no_found,li_req_no_found;
+    LinearLayout li_no_found,li_req_no_found,li_team_no_data;
     TextView tx_nodata_found,tx_req_nodata_found,friend_count,friend_no_count,usermissionnocount,usermissioncount;
+
+    //팀게시판기능
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public static PlayerFragment newInstance(int page, User user){
 
@@ -82,70 +88,28 @@ public class PlayerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
         user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
-        Log.i(TAG,"onCreate : ==========================" + mPage);
-        Log.i(TAG,"user : " + user.toString());
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
 
         View view = null;
-        /****************************************************************************************
-         * 1page User Mission Start
-         * **************************************************************************************/
-
 
         if(mPage==1){
 
-            view = inflater.inflate(R.layout.fr_player_fragment1, container, false);
-
-
-            slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
-            mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
-            mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-                @Override
-                public void onPanelSlide(View panel, float slideOffset) {}
-
-                @Override
-                public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                    if(newState.toString().equals("COLLAPSED")){
-                        slidingimg.setImageResource(R.drawable.ic_vertical_align_top_white_24dp);
-                    }else if(newState.toString().equals("EXPANDED")){
-                        slidingimg.setImageResource(R.drawable.ic_vertical_align_bottom_white_24dp);
-                    }
-                }
-            });
-
-            li_no_found = (LinearLayout) view.findViewById(R.id.li_no_found);
-            li_req_no_found = (LinearLayout) view.findViewById(R.id.li_req_no_found);
-
-            usermissioncount = (TextView) view.findViewById(R.id.usermissioncount);
-            usermissionnocount = (TextView) view.findViewById(R.id.usermissionnocount);
-
-            userMissionRecyclerview = (RecyclerView) view.findViewById(R.id.userMissionRecyclerview);
-            userMissionPassRecyclerview = (RecyclerView) view.findViewById(R.id.userMissionPassRecyclerview);
-            //allCount
-            getUserMissionCount();
-            //userMainData
-            getUserMainData("N");
-            getUserMainData("Y");
-
-
-
-            /****************************************************************************************
-             * 2page Start
-             * **************************************************************************************/
-        }else if(mPage==2){
-
             view = inflater.inflate(R.layout.fr_player_fragment2, container, false);
+            li_team_no_data = (LinearLayout) view.findViewById(R.id.li_team_no_data);
 
-            /****************************************************************************************
-             * 3page Friend List Start
-             * **************************************************************************************/
+            swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+            swipeRefreshLayout.setOnRefreshListener(this);
 
+            if(Common.teamid == 0){
+                li_team_no_data.setVisibility(View.VISIBLE);
+            }else{
+                li_team_no_data.setVisibility(View.GONE);
+            }
 
-        }else if(mPage==3){
+        }else if(mPage==2){
 
             view = inflater.inflate(R.layout.fr_player_fragment3, container, false);
 
@@ -156,8 +120,6 @@ public class PlayerFragment extends Fragment {
             searchUserMissionRecyclerview = (RecyclerView) view.findViewById(R.id.searchUserMissionRecyclerview);
             UserMainVo query = new UserMainVo();
             getSearchUserMission(query);
-
-            final String item[] = {"드리블","트래핑","리프팅","친구","팀원","국가","수원","강남","메롱"};
 
             PlayerMainActivity.rightLowerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -180,7 +142,7 @@ public class PlayerFragment extends Fragment {
                 }
             });
 
-        }else if(mPage==4){
+        }else if(mPage==3){
 
             view = inflater.inflate(R.layout.fr_player_fragment4, container, false);
 
@@ -213,12 +175,33 @@ public class PlayerFragment extends Fragment {
             friendReqList();
             friendRList();
             getfriendCount();
-
-
-
         }
 
         return view;
+    }
+
+    @Override public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 5000);
+    }
+
+    void refreshItems() {
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                onItemsLoadComplete();
+            }
+        }, 3000);
+
+    }
+
+    void onItemsLoadComplete() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     public void getUserMainData(final String passflag){
@@ -437,4 +420,9 @@ public class PlayerFragment extends Fragment {
             }
         });
     }
+
+    public void getTeamBoarderList(View view){
+
+    }
+
 }

@@ -27,8 +27,8 @@
             />
 
         <ImageButton
-            android:id="@+id/search_bar"
-            android:src="@drawable/ic_tune_white_24dp"
+            android:id="@+id/ic_board_write"
+            android:src="@drawable/ic_border_color_white_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"

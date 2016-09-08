@@ -52,7 +52,7 @@
 
                 <TextView
                     android:id="@+id/txt_board_user_time"
-                    android:text="20160101 2시20분"
+                    android:text="1일전"
                     android:textColor="@color/color6"
                     android:textSize="8sp"
                     android:layout_width="match_parent"

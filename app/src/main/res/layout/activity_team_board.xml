@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mom.soccer.ball.TeamBoardActivity"
+    android:background="@color/mom_color1"
+    >
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        app:titleTextColor="@color/color6"
+        android:background="@color/mom_color1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/action_bar_title"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:textColor="@color/color6"
+                android:layout_gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/commit"
+                android:text="@string/board_submit"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/color6"
+                android:layout_gravity="center"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                />
+
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/userimg"
+                android:src="@drawable/userimg"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                >
+
+                <TextView
+                    android:id="@+id/txt_username"
+                    android:text="User Name"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:textColor="@color/color6"
+                    android:layout_gravity="left"
+                    />
+
+                <TextView
+                    android:id="@+id/txt_pub"
+                    android:background="@drawable/xml_boder_input"
+                    android:text="@string/board_pubtype_Y"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="80dp"
+                    android:layout_height="25dp"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:textColor="@color/color6"
+                    android:layout_gravity="left"
+                    android:gravity="center"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/content"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/color6"
+                        android:textColorHint="@color/color8"
+                        android:textSize="20sp"
+                        android:hint="@string/board_team_contnet"
+                        android:gravity="top"
+                        android:layout_below="@+id/subject"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/mom_color1" />
+
+                    <LinearLayout
+                        android:layout_alignParentBottom="true"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        >
+
+                        <ImageView
+                            android:id="@+id/imageBtnCamera1"
+                            android:src="@drawable/instagram"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="45dp"
+                            android:background="@color/mom_color1"
+                            />
+
+                        <ImageView
+                            android:id="@+id/imageBtnCamera2"
+                            android:src="@drawable/instagram"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="45dp"
+                            android:background="@color/mom_color1"
+                            />
+
+                        <ImageView
+                            android:id="@+id/imageBtnCamera3"
+                            android:src="@drawable/instagram"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="45dp"
+                            android:background="@color/mom_color1"
+                            />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

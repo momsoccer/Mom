@@ -98,7 +98,9 @@ public class PrefUtil {
         pre.putString("teampushflag", user.getTeampushflag());
         pre.putString("apppushflag", user.getApppushflag());
         pre.putString("password",user.getPassword());
+        pre.putString("backimage",user.getBackimage());
         pre.putInt("commontokenid",user.getCommontokenid());
+        pre.putString("wifi",user.getWifi());
 
         pre.commit();
     }
@@ -121,6 +123,8 @@ public class PrefUtil {
         user.setTeampushflag(sp.getString("teampushflag", null));
         user.setApppushflag(sp.getString("apppushflag", null));
         user.setPassword(sp.getString("password", null));
+        user.setWifi(sp.getString("wifi", null));
+        user.setBackimage(sp.getString("backimage", null));
         user.setCommontokenid(sp.getInt("commontokenid", 0));
         return user;
     }

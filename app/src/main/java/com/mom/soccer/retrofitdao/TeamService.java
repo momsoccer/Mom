@@ -59,4 +59,8 @@ public interface TeamService {
     @GET("/api/team/getTeamCount")
     Call<FeedDataVo> getTeamCount(@Query("insid")int insid);
 
+    @GET("/api/team/getMyTeaminfo")
+    Call<Team> getMyTeaminfo(@Query("uid")int uid);
+
+
 }

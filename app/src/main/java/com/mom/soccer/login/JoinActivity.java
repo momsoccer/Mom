@@ -125,6 +125,7 @@ public class JoinActivity extends AppCompatActivity {
             userVo.setLocation(0);
             userVo.setTeampushflag("Y");
             userVo.setApppushflag("Y");
+            userVo.setWifi("Y");
             userVo.setSerialnumber(Common.getDeviceSerialNumber());
             userVo.setFcmToken(FirebaseInstanceId.getInstance().getToken());
         }else{
@@ -209,6 +210,7 @@ public class JoinActivity extends AppCompatActivity {
                         userVo.setLocation(0);
                         userVo.setTeampushflag("Y");
                         userVo.setApppushflag("Y");
+                        userVo.setWifi("Y");
                         userVo.setSerialnumber(Common.getDeviceSerialNumber());
                         userVo.setFcmToken(FirebaseInstanceId.getInstance().getToken());
                     }

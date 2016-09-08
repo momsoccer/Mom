@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.mom.soccer.R;
+import com.mom.soccer.common.Common;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.fragment.PlayerFragment;
@@ -38,8 +39,8 @@ public class PlayerMainActivity extends AppCompatActivity {
 
     private int PageCall = 0;
 
-    @Bind(R.id.search_bar)
-    ImageButton search_bar;
+    @Bind(R.id.ic_board_write)
+    ImageButton ic_board_write;
 
     public static FloatingActionButton rightLowerButton;
 
@@ -56,6 +57,7 @@ public class PlayerMainActivity extends AppCompatActivity {
         intent = getIntent();
         PageCall = intent.getExtras().getInt(Param.FRAGMENT_COUNT);
 
+        //템체크체
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.player_toolbar);
         setSupportActionBar(toolbar);
@@ -77,7 +79,6 @@ public class PlayerMainActivity extends AppCompatActivity {
         tabsStrip.setTextColor(getResources().getColor(R.color.color6));
         tabsStrip.setViewPager(viewPager);
         viewPager.setCurrentItem(PageCall);
-        search_bar.setVisibility(View.GONE);
 
 
         //floating button
@@ -102,32 +103,48 @@ public class PlayerMainActivity extends AppCompatActivity {
 
         rightLowerButton.setVisibility(View.GONE);
 
+        //팀 게시판 기능
+        ic_board_write.setVisibility(View.VISIBLE);
+
         tabsStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
-
-
-                if(position==2){
+                if(position==0) {
+                    if(Common.teamid != 0){
+                        ic_board_write.setVisibility(View.VISIBLE);
+                    }
+                    rightLowerButton.setVisibility(View.GONE);
+                }else if(position==1){
+                    ic_board_write.setVisibility(View.GONE);
                     rightLowerButton.setVisibility(View.VISIBLE);
-                }else{
+                }else if(position==2){
+                    ic_board_write.setVisibility(View.GONE);
+                    rightLowerButton.setVisibility(View.GONE);
+                }else if(position==3){
+                    ic_board_write.setVisibility(View.GONE);
                     rightLowerButton.setVisibility(View.GONE);
                 }
-
-
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onPageScrollStateChanged(int state) {}
+        });
 
+
+        //상단글쓰기 버튼 클릭시
+        ic_board_write.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    Intent intent = new Intent(PlayerMainActivity.this,TeamBoardActivity.class);
+                    startActivity(intent);
             }
         });
 
     }
+
 
 
     @Override
@@ -149,10 +166,9 @@ public class PlayerMainActivity extends AppCompatActivity {
 
     public class PlayerViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        final int PAGE_COUNT = 4;
+        final int PAGE_COUNT = 3;
 
         private String tabTitles[] = new String[] {
-                getString(R.string.my_fragment_title1),
                 getString(R.string.my_fragment_title2),
                 getString(R.string.my_fragment_title3),
                 getString(R.string.my_fragment_title4)

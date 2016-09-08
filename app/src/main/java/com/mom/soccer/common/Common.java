@@ -31,6 +31,8 @@ public class Common {
     public static String IMAGE_CHOOSE_FALG = "";
     public static String YOUTUBEVIDEO = "YOUTUBEVIDEO";
 
+    public static int teamid = 0;
+
     public static String getDeviceSerialNumber() {
         try {
             return (String) Build.class.getField("SERIAL").get(null);

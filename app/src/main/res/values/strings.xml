@@ -247,7 +247,7 @@
 
     <string name="board_delete">댓글삭제</string>
     <string name="board_report">신고하기</string>
-
+    <string name="board_title">미션댓글</string>
     <string name="board_delete_msg">댓글이 삭제 되었습니다</string>
     <string name="board_caustion">자신이 작성한 글만 삭제가 가능합니다</string>
 
@@ -654,4 +654,19 @@
 
     <string name="ins_feedback_upload">유투브 업로드가 완전히 종료 될때까지 \n앱을 종료하지 말아주시기 바랍니다</string>
     <string name="ins_feedback_upload_duplicate">선택하신 파일은 이미 YouTube에 \n업로드를 했던 파일입니다 \n다른 파일을 선택해주세요</string>
+    <string name="user_image_update">사진을 업데이트 했습니다</string>
+
+    <!--board-->
+    <string name="board_no_team_msg">소속된 강사 팀이 없습니다</string>
+    <string name="board_find">가입할 강사팀 찾기</string>
+    <string name="board_submit">완료</string>
+    <string name="board_title_msg">게시판에 글쓰기</string>
+    <string name="board_team_subject">제목</string>
+    <string name="board_team_contnet">멤버들에게 전할 소식을 남기세요.\n(클릭후 작성해주세요)</string>
+    <string name="board_team_subject_vali">제목 글이 없습니다</string>
+    <string name="board_team_content_vali">본문 글이 없습니다</string>
+    <string name="board_team_content_complate">글이 게시되었습니다</string>
+
+    <string name="board_pubtype_Y">전체공개</string>
+    <string name="board_pubtype_N">팀인원만</string>
 </resources>

@@ -99,8 +99,12 @@ public class InsFragmentTeamApply extends Fragment{
     }
 
     public void setPageInsInfo(final View v){
+
         WaitingDialog.showWaitingDialog(getContext(),false);
         InstructorService instructorService = ServiceGenerator.createService(InstructorService.class,getContext(),user);
+
+        Log.i(TAG,"Error 체크");
+
         final Call<InsInfoVo> infoVoCall = instructorService.getInsInfoApply(ins.getInstructorid());
         infoVoCall.enqueue(new Callback<InsInfoVo>() {
             @Override
@@ -169,6 +173,9 @@ public class InsFragmentTeamApply extends Fragment{
                     teampasspoint.setText(String.valueOf(insInfoVo.getTeampasspoint()));
 
                     //화면이 처음 실행 될때. 내가 강사라면 다른팀 지원 불가
+
+                    Log.i(TAG,"강사 검색 1 " + Auth.insFlag);
+
                     if(Auth.insFlag.equals("Y")){
                         btnTeamRequest.setVisibility(View.GONE);
                     }else {
@@ -177,10 +184,11 @@ public class InsFragmentTeamApply extends Fragment{
                         btnTeamRequest.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                Log.i(TAG,"강사 검색 2 " + teamApply.getTeamid());
                                 if (teamApply.getTeamid() == 0) {
                                     applyTeam("REQUEST", null);
                                 } else {
-                                    //현재 누군가의 제자이거나, 제자 요청을 했다면..
+
                                     if (teamApply.getTeamid() == insInfoVo.getTeamid()) { //제자요청을 했거나 현재 제자이라면
                                         if (teamApply.getApproval().equals("REQUEST") || teamApply.getApproval().equals("APPROVAL")) {
                                             applyTeam("WITHDRAWAL", null);
@@ -201,6 +209,7 @@ public class InsFragmentTeamApply extends Fragment{
 
             @Override
             public void onFailure(Call<InsInfoVo> call, Throwable t) {
+                //Log.i(TAG,"Error 체크 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
                 WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
             }

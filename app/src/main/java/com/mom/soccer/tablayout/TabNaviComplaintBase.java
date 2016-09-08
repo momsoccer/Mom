@@ -1,9 +1,7 @@
 package com.mom.soccer.tablayout;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,6 @@ import com.mom.soccer.R;
 import com.mom.soccer.ball.PlayerMainActivity;
 import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.bottommenu.SearchActivity;
-import com.mom.soccer.common.SettingActivity;
 import com.mom.soccer.ins.InsDashboardActivity;
 import com.mom.soccer.momactivity.MomMainActivity;
 import com.mom.soccer.pubactivity.Param;
@@ -41,13 +38,13 @@ public class TabNaviComplaintBase extends RelativeLayout {
     @Bind(R.id.ib_appbar_search)
     ImageButton imageBtnSearch;
 
-    @Bind(R.id.ib_appbar_setup)
-    ImageButton imageBtnSetup;
 
     @Bind(R.id.ib_appbar_coach)
     ImageButton ib_appbar_coach;
 
-    int ins_id;
+    @Bind(R.id.ib_board)
+    ImageButton ib_board;
+
 
     public TabNaviComplaintBase(final Context context, AttributeSet attrs) {
         super(context,attrs);
@@ -59,25 +56,12 @@ public class TabNaviComplaintBase extends RelativeLayout {
         imageBtnProfile = (ImageButton) findViewById(R.id.ib_appbar_profile);
         imageBtnBall    = (ImageButton) findViewById(R.id.ib_appbar_ball);
         imageBtnSearch  = (ImageButton) findViewById(R.id.ib_appbar_search);
-        imageBtnSetup   = (ImageButton) findViewById(R.id.ib_appbar_setup);
+
         ib_appbar_coach = (ImageButton) findViewById(R.id.ib_appbar_coach);
+        ib_board    = (ImageButton) findViewById(R.id.ib_board);
 
-        SharedPreferences pref = context.getSharedPreferences("insinfo", Activity.MODE_PRIVATE);
+        //imageBtnSetup   = (ImageButton) findViewById(R.id.ib_appbar_setup);
 
-        try {
-            ins_id = pref.getInt("ins_id",0);
-        } catch (Exception e) {
-
-        }
-
-
-/*        if(ins_id==0){
-            ib_appbar_coach.setVisibility(GONE);
-            imageBtnBall.setVisibility(VISIBLE);
-        }else{
-            ib_appbar_coach.setVisibility(VISIBLE);
-            imageBtnBall.setVisibility(GONE);
-        }*/
 
         ib_appbar_coach.setOnClickListener(new OnClickListener() {
             @Override
@@ -133,7 +117,14 @@ public class TabNaviComplaintBase extends RelativeLayout {
             }
         });
 
-        imageBtnSetup.setOnClickListener(new OnClickListener() {
+        ib_board.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+/*        imageBtnSetup.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,SettingActivity.class);
@@ -141,7 +132,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
                 context.startActivity(intent);
 
             }
-        });
+        });*/
 
     }
 

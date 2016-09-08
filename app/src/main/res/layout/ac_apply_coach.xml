@@ -154,14 +154,15 @@
                     >
 
                     <ImageView
+                        android:scaleType="centerCrop"
                         android:layout_marginTop="5dp"
                         android:id="@+id/im_ins_insimg"
                         android:layout_width="75dp"
                         android:layout_height="75dp"
-                        android:src="@drawable/camera"
+                        android:src="@drawable/userimg"
                         android:adjustViewBounds="true"
                         android:layout_gravity="center"
-                        android:background="@drawable/video_background"
+                        android:background="@color/mom_color1"
                         android:onClick="imageOnClick"
                         />
 
@@ -185,15 +186,15 @@
                     >
 
                     <ImageView
-                        android:layout_marginTop="5dp"
                         android:id="@+id/im_ins_teaimg"
-                        android:adjustViewBounds="true"
+                        android:layout_marginTop="5dp"
                         android:layout_gravity="center"
                         android:layout_width="75dp"
                         android:layout_height="75dp"
                         android:src="@drawable/camera"
-                        android:background="@drawable/video_background"
+                        android:background="@color/mom_color1"
                         android:onClick="imageOnClick"
+                        android:scaleType="centerCrop"
                         />
 
                     <TextView

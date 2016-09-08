@@ -40,6 +40,7 @@ public interface UserService {
     @Multipart
     @POST("/api/user/fileupload")
     Call<ServerResult> fileupload(
+            @Part("imgtype") RequestBody imgtype,
             @Part("uid") RequestBody uid,
             @Part("filename") RequestBody filename,
             @Part("profileimgurl") RequestBody profileimgurl,

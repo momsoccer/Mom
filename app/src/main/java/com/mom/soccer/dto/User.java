@@ -24,6 +24,8 @@ public class User implements Serializable{
 	private String change_creationdate;
 	private String teamname;
 	private int teamid;
+	private String wifi;
+	private String backimage;
 
 	//DB
 	private String fcmToken;
@@ -33,31 +35,20 @@ public class User implements Serializable{
 	public User() {
 	}
 
-	@Override
-	public String toString() {
-		return "User{" +
-				"uid=" + uid +
-				", useremail='" + useremail + '\'' +
-				", username='" + username + '\'' +
-				", snsid='" + snsid + '\'' +
-				", snsname='" + snsname + '\'' +
-				", snstype='" + snstype + '\'' +
-				", phone='" + phone + '\'' +
-				", password='" + password + '\'' +
-				", profileimgurl='" + profileimgurl + '\'' +
-				", googleemail='" + googleemail + '\'' +
-				", location=" + location +
-				", apppushflag='" + apppushflag + '\'' +
-				", teampushflag='" + teampushflag + '\'' +
-				", commontokenid=" + commontokenid +
-				", serialnumber='" + serialnumber + '\'' +
-				", creationdate='" + creationdate + '\'' +
-				", change_creationdate='" + change_creationdate + '\'' +
-				", teamname='" + teamname + '\'' +
-				", fcmToken='" + fcmToken + '\'' +
-				", queryRow=" + queryRow +
-				", orderbytype='" + orderbytype + '\'' +
-				'}';
+	public String getBackimage() {
+		return backimage;
+	}
+
+	public void setBackimage(String backimage) {
+		this.backimage = backimage;
+	}
+
+	public String getWifi() {
+		return wifi;
+	}
+
+	public void setWifi(String wifi) {
+		this.wifi = wifi;
 	}
 
 	public User(String useremail) {
@@ -240,5 +231,33 @@ public class User implements Serializable{
 		this.serialnumber = serialnumber;
 	}
 
-
+	@Override
+	public String toString() {
+		return "User{" +
+				"uid=" + uid +
+				", useremail='" + useremail + '\'' +
+				", username='" + username + '\'' +
+				", snsid='" + snsid + '\'' +
+				", snsname='" + snsname + '\'' +
+				", snstype='" + snstype + '\'' +
+				", phone='" + phone + '\'' +
+				", password='" + password + '\'' +
+				", profileimgurl='" + profileimgurl + '\'' +
+				", googleemail='" + googleemail + '\'' +
+				", location=" + location +
+				", apppushflag='" + apppushflag + '\'' +
+				", teampushflag='" + teampushflag + '\'' +
+				", commontokenid=" + commontokenid +
+				", serialnumber='" + serialnumber + '\'' +
+				", creationdate='" + creationdate + '\'' +
+				", change_creationdate='" + change_creationdate + '\'' +
+				", teamname='" + teamname + '\'' +
+				", teamid=" + teamid +
+				", wifi='" + wifi + '\'' +
+				", backimage='" + backimage + '\'' +
+				", fcmToken='" + fcmToken + '\'' +
+				", queryRow=" + queryRow +
+				", orderbytype='" + orderbytype + '\'' +
+				'}';
+	}
 }

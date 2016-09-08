@@ -24,7 +24,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
-import com.mom.soccer.common.BlurTransformation;
 import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
@@ -95,23 +94,22 @@ public class UserProfile extends AppCompatActivity {
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
 
-        Log.d(TAG,"유저 정보 : " + user.toString());
         et_nicName.setText(user.getUsername());
 
         if(!Compare.isEmpty(user.getProfileimgurl())) {
             Glide.with(UserProfile.this)
                     .load(user.getProfileimgurl())
                     .into(user_image);
+        }
 
+        if(!Compare.isEmpty(user.getBackimage())){
             backImage = (ImageView) findViewById(R.id.back_image);
-
             //리니어 레이아웃에 블러드 효과 주기
             Glide.with(UserProfile.this)
-                    .load(user.getProfileimgurl())
-                    .asBitmap().transform(new BlurTransformation(this, 25))
+                    .load(user.getBackimage())
                     .into(backImage);
-
         }
+
 
         //TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         //String phoneNum = tm.getLine1Number();
@@ -176,10 +174,7 @@ public class UserProfile extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ServerResult> call, Throwable t) {
-                        Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
-                        //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1), Toast.LENGTH_LONG).show();
                         t.printStackTrace();
-                        //dialog.dismiss();
                     }
                 });
             }
@@ -309,7 +304,7 @@ public class UserProfile extends AppCompatActivity {
         //이미지 업로드
         Log.d(TAG,"User Upload End===================================================================");
         UserTRService userTRService = new UserTRService(this,user);
-        userTRService.updateUserImage(StrUid,fileName,RealFilePath);
+        userTRService.updateUserImage(StrUid,fileName,RealFilePath,"front");
 
         //유저사진을 쉐어퍼런스에 저장해준다(업데이트)
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);

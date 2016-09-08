@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.mom.soccer.R;
 import com.mom.soccer.common.Common;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
@@ -36,7 +37,7 @@ public class UserTRService {
         this.user = user;
     }
 
-    public void updateUserImage(String uid, String filename, String realFilePath){
+    public void updateUserImage(String uid, String filename, String realFilePath, String imgetype){
 
         WaitingDialog.showWaitingDialog(activity,false);
 
@@ -44,6 +45,10 @@ public class UserTRService {
         profileimgurl = Common.SERVER_USER_IMGFILEADRESS + filename;
 
         //유저아이디
+        RequestBody imgtype =
+                RequestBody.create(
+                        MediaType.parse("multipart/form-data"), imgetype);
+
         RequestBody userid =
                 RequestBody.create(
                         MediaType.parse("multipart/form-data"), String.valueOf(uid));
@@ -68,7 +73,7 @@ public class UserTRService {
         Log.d(TAG,"유저 사진 없로드 : " + user.toString());
         Log.d(TAG,"픽업된 사진은 : " + realFilePath);
 
-        final Call<ServerResult> resultCall = userService.fileupload(userid,fileName,serverPath,file);
+        final Call<ServerResult> resultCall = userService.fileupload(imgtype,userid,fileName,serverPath,file);
 
         //프로그레스바 준비
 
@@ -80,7 +85,7 @@ public class UserTRService {
                 if(response.isSuccessful()){
                     ServerResult serverResult = response.body();
                     Log.d(TAG,"값 : "+serverResult.toString());
-                    VeteranToast.makeToast(activity,"프로파일 사진을 업데이트 했습니다", Toast.LENGTH_SHORT).show();
+                    VeteranToast.makeToast(activity,activity.getResources().getString(R.string.user_image_update), Toast.LENGTH_SHORT).show();
                 }else{
                     Log.d(TAG,"서버 컨트롤러에서 값을 받지 못했습니다");
                 }

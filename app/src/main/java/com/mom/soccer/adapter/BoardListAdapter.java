@@ -133,7 +133,7 @@ public class BoardListAdapter extends BaseAdapter {
             }
 
             boardHolder.text_comment.setText(boardList.get(position).getComment());
-            boardHolder.text_date.setText(boardList.get(position).getChange_creationdate());
+            boardHolder.text_date.setText(boardList.get(position).getFormatDataSign());
             boardHolder.level.setText(String.valueOf(boardList.get(position).getLevel()));
 
             if(!Compare.isEmpty(boardList.get(position).getProfileimgurl())){

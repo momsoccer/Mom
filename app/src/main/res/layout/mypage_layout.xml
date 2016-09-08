@@ -14,17 +14,33 @@
         android:background="@color/mom_color2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         >
 
-        <ImageView
-            android:scaleType="fitXY"
-            android:id="@+id/mypage_back_image"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            />
+            android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/mypage_back_image"
+                android:src="@drawable/mybackgrounddefalut"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                />
 
+            <ImageButton
+                android:id="@+id/backImageCamera"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="-60dp"
+                android:src="@drawable/camera"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:background="#00ff"
+                />
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/mypage_image_user_image"

@@ -70,6 +70,7 @@ import com.mom.soccer.common.SettingActivity;
 import com.mom.soccer.dataDto.UserRangkinVo;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.ServerResult;
+import com.mom.soccer.dto.TeamMember;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionActivity;
 import com.mom.soccer.mission.MissionCommon;
@@ -77,6 +78,7 @@ import com.mom.soccer.pubactivity.PubActivity;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.InstructorService;
 import com.mom.soccer.retrofitdao.MomComService;
+import com.mom.soccer.retrofitdao.TeamService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.trservice.UserTRService;
 import com.mom.soccer.widget.VeteranToast;
@@ -137,6 +139,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
     ImageButton imageBtnBall;
     ImageButton ib_appbar_coach;
 
+    private String imgtype;
     //버젼 체크를 위한...private final int MY_PERMISSION_REQUEST_STORAGE = 100;
     private final int MY_PERMISSION_REQUEST_STORAGE = 100;
 
@@ -200,8 +203,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                     .load(user.getProfileimgurl())
                     .asBitmap().transform(new CropCircleTransformation(this))
                     .into(navHeaderImage);
-        }else {
-
         }
 
 
@@ -249,6 +250,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         navHeaderImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                imgtype="front";
                 changeImage();
             }
         });
@@ -291,8 +293,40 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
         //강사정보 셋팅
         getInstructorInfo();
+
+        //팀아이디 구하기
+        getTeamid(user.getUid());
     }
 
+    public void getTeamid(int uid){
+        //유저가 강사 팀에 소속되어 있는지 체크
+        WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
+        TeamService teamService = ServiceGenerator.createService(TeamService.class,getApplicationContext(),user);
+        TeamMember query = new TeamMember();
+        query.setUid(user.getUid());
+        Call<TeamMember> c = teamService.getTeamMemeber(query);
+
+        c.enqueue(new Callback<TeamMember>() {
+            @Override
+            public void onResponse(Call<TeamMember> call, Response<TeamMember> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    TeamMember member = response.body();
+                    if(member.getTeamid()==0){
+                        Common.teamid = 0;
+                    }else{
+                        Common.teamid = member.getTeamid();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TeamMember> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+    }
 
     @Override
     public void onBackPressed() {
@@ -1136,7 +1170,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             navHeaderImage.setImageBitmap(bitmap);
             Log.d(TAG,"User Upload End===================================================================");
             UserTRService userTRService = new UserTRService(this,user);
-            userTRService.updateUserImage(String.valueOf(user.getUid()),fileName,RealFilePath);
+            userTRService.updateUserImage(String.valueOf(user.getUid()),fileName,RealFilePath,imgtype);
 
             //유저사진을 쉐어퍼런스에 저장해준다(업데이트)
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
