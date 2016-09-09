@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -57,15 +58,22 @@ public class TeamBoardActivity extends AppCompatActivity {
     TextView txt_pub;
     private int tag=1;
 
+    private String pageFlag = "non";  //write , view, modify
+    Intent intent;
+
+    @Bind(R.id.replyRecview)
+    RecyclerView replyRecview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team_board);
+        setContentView(R.layout.activity_team_board_reply);
         ButterKnife.bind(this);
 
         activity = this;
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -135,6 +143,7 @@ public class TeamBoardActivity extends AppCompatActivity {
         momBoard.setUid(user.getUid());
         momBoard.setContent(content.getText().toString());
         momBoard.setBoardtype("team");
+        momBoard.setCategory("B");
         momBoard.setBoardtypeid(team.getTeamid());
 
         if(tag == 1){

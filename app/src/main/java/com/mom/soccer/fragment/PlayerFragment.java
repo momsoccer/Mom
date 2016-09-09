@@ -1,7 +1,8 @@
 package com.mom.soccer.fragment;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mom.soccer.R;
+import com.mom.soccer.adapter.BoardItemAdapter;
 import com.mom.soccer.adapter.FriendListAdapter;
 import com.mom.soccer.adapter.UserMissionAdapter;
 import com.mom.soccer.ball.PlayerMainActivity;
@@ -27,10 +29,12 @@ import com.mom.soccer.common.Common;
 import com.mom.soccer.dataDto.FeedDataVo;
 import com.mom.soccer.dataDto.UserMainVo;
 import com.mom.soccer.dto.FriendReqVo;
+import com.mom.soccer.dto.MomBoard;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.FriendService;
+import com.mom.soccer.retrofitdao.MomBoardService;
 import com.mom.soccer.retrofitdao.UserMainService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -47,17 +51,22 @@ import retrofit2.Response;
 /**
  * Created by sungbo on 2016-08-17.
  */
-public class PlayerFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class PlayerFragment extends Fragment{
 
     private static final String TAG = "PlayerFragment";
     public static final String ARG_PAGE = "ARG_PAGE";
     private int mPage;
     private User user = new User();
     private SlidingUpPanelLayout mLayout;
+    private List<MomBoard> momBoardList;
+
+    LinearLayoutManager linearLayoutManager;
 
     ImageView slidingimg;
 
-    RecyclerView recyclerView,userMissionRecyclerview,friendi_recyclerview,userMissionPassRecyclerview,searchUserMissionRecyclerview;
+    RecyclerView recyclerView,userMissionRecyclerview,friendi_recyclerview,
+                 userMissionPassRecyclerview,searchUserMissionRecyclerview
+            ,boardRecview; //board
 
     FriendListAdapter recyclerAdapter,irecyclerAdapter;
 
@@ -70,6 +79,14 @@ public class PlayerFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     //팀게시판기능
     SwipeRefreshLayout swipeRefreshLayout;
+    BoardItemAdapter boardItemAdapter;
+
+    private int previousTotal = 0;
+    private boolean loading = true;
+    private int visibleThreshold = 5;
+    int firstVisibleItem, visibleItemCount, totalItemCount;
+
+    private int mColumnCount=0;
 
     public static PlayerFragment newInstance(int page, User user){
 
@@ -90,6 +107,7 @@ public class PlayerFragment extends Fragment implements SwipeRefreshLayout.OnRef
         user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
 
@@ -101,13 +119,36 @@ public class PlayerFragment extends Fragment implements SwipeRefreshLayout.OnRef
             li_team_no_data = (LinearLayout) view.findViewById(R.id.li_team_no_data);
 
             swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
-            swipeRefreshLayout.setOnRefreshListener(this);
-
             if(Common.teamid == 0){
                 li_team_no_data.setVisibility(View.VISIBLE);
             }else{
                 li_team_no_data.setVisibility(View.GONE);
             }
+
+            boardRecview = (RecyclerView) view.findViewById(R.id.boardRecview);
+            linearLayoutManager = new LinearLayoutManager(getContext());
+            getTeamBoarderList();
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    getTeamBoarderList();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+
+            boardRecview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+
+                @Override
+                public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                    if(linearLayoutManager.findFirstCompletelyVisibleItemPosition()==0){
+                        swipeRefreshLayout.setEnabled(true);
+                    }else{
+                        swipeRefreshLayout.setEnabled(false);
+                    }
+                }
+            });
+
+
 
         }else if(mPage==2){
 
@@ -180,25 +221,6 @@ public class PlayerFragment extends Fragment implements SwipeRefreshLayout.OnRef
         return view;
     }
 
-    @Override public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        }, 5000);
-    }
-
-    void refreshItems() {
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                onItemsLoadComplete();
-            }
-        }, 3000);
-
-    }
 
     void onItemsLoadComplete() {
         swipeRefreshLayout.setRefreshing(false);
@@ -421,8 +443,45 @@ public class PlayerFragment extends Fragment implements SwipeRefreshLayout.OnRef
         });
     }
 
-    public void getTeamBoarderList(View view){
 
+    public void getTeamBoarderList(){
+        WaitingDialog.showWaitingDialog(getActivity(),false);
+        MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getContext(),user);
+
+        MomBoard query = new MomBoard();
+        query.setBoardtypeid(Common.teamid);
+        query.setCategory("B");
+
+        Call<List<MomBoard>> c = momBoardService.getBoardHeaderList(query);
+        c.enqueue(new Callback<List<MomBoard>>() {
+            @Override
+            public void onResponse(Call<List<MomBoard>> call, Response<List<MomBoard>> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    momBoardList = response.body();
+                    boardRecview.setHasFixedSize(true);
+                    boardRecview.setLayoutManager(linearLayoutManager);
+                    boardItemAdapter = new BoardItemAdapter(getActivity(),momBoardList,user);
+
+                    boardRecview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                    boardRecview.getItemAnimator().setAddDuration(300);
+                    boardRecview.getItemAnimator().setRemoveDuration(300);
+                    boardRecview.getItemAnimator().setMoveDuration(300);
+                    boardRecview.getItemAnimator().setChangeDuration(300);
+                    boardRecview.setHasFixedSize(true);
+                    AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(boardItemAdapter);
+                    alphaAdapter.setDuration(500);
+                    boardRecview.setAdapter(boardItemAdapter);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MomBoard>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
     }
 
 }

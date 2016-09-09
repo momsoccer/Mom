@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:divider="?android:dividerHorizontal"
+    android:verticalSpacing="10dp"
     android:horizontalSpacing="10dp"
     android:orientation="vertical"
     android:showDividers="middle"
-    android:verticalSpacing="10dp"
     android:background="@color/mom_color1"
     >
 
@@ -17,7 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         >
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -121,8 +120,6 @@
     </ScrollView>
 
     <Button
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
         android:id="@+id/btn_upload"
         style="@style/btnStylePaprika"
         android:text="@string/mission_upload_start"

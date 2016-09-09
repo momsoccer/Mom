@@ -202,7 +202,14 @@
             android:name=".ins.UploadFeedService"
             android:exported="true" />
 
-        <activity android:name=".ball.TeamBoardActivity"></activity>
+        <activity android:name=".ball.TeamBoardActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".ball.TeamBoardReply"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>

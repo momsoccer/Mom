@@ -15,6 +15,7 @@ public class MomBoard {
     private int boardtypeid;
     private String pubtype;
     private String change_creationdate;
+    private String category;
 
     //line
     private int lineid;
@@ -48,6 +49,7 @@ public class MomBoard {
                 ", boardtypeid=" + boardtypeid +
                 ", pubtype='" + pubtype + '\'' +
                 ", change_creationdate='" + change_creationdate + '\'' +
+                ", category='" + category + '\'' +
                 ", lineid=" + lineid +
                 ", likeid=" + likeid +
                 ", fileid=" + fileid +
@@ -63,6 +65,14 @@ public class MomBoard {
                 ", likecount=" + likecount +
                 ", formatDataSign='" + formatDataSign + '\'' +
                 '}';
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getFormatDataSign() {

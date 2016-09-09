@@ -14,40 +14,43 @@ import retrofit2.http.POST;
  */
 public interface MomBoardService {
 
+    @POST("/momboard/getBoardHeader")
+    Call<MomBoard> getBoardHeader(@Body MomBoard momBoard);
+
     @POST("/momboard/getBoardHeaderList")
-    public List<MomBoard> getBoardHeaderList(@Body MomBoard momBoard);
+    Call<List<MomBoard>> getBoardHeaderList(@Body MomBoard momBoard);
 
     @POST("/momboard/saveBoardheader")
-    public Call<ServerResult> saveBoardheader(@Body MomBoard momBoard);
+    Call<ServerResult> saveBoardheader(@Body MomBoard momBoard);
 
     @POST("/momboard/deleteBoardheader")
-    public void deleteBoardheader(@Body MomBoard momBoard);
+    Call<ServerResult> deleteBoardheader(@Body MomBoard momBoard);
 
     @POST("/momboard/getBoardLineList")
-    public List<MomBoard> getBoardLineList(@Body MomBoard momBoard);
+    Call<List<MomBoard>> getBoardLineList(@Body MomBoard momBoard);
 
     @POST("/momboard/getBoardLineCount")
-    public int getBoardLineCount(@Body MomBoard momBoard);
+    Call<ServerResult> getBoardLineCount(@Body MomBoard momBoard);
 
     @POST("/momboard/saveBoardLine")
-    public void saveBoardLine(@Body MomBoard momBoard);
+    Call<ServerResult> saveBoardLine(@Body MomBoard momBoard);
 
     @POST("/momboard/deleteBoardLine")
-    public void deleteBoardLine(@Body MomBoard momBoard);
+    Call<ServerResult> deleteBoardLine(@Body MomBoard momBoard);
 
     @POST("/momboard/getBoardLikeCount")
-    public int getBoardLikeCount(@Body MomBoard momBoard);
+    Call<ServerResult> getBoardLikeCount(@Body MomBoard momBoard);
 
     @POST("/momboard/saveBoardLike")
-    public void saveBoardLike(@Body MomBoard momBoard);
+    Call<ServerResult> saveBoardLike(@Body MomBoard momBoard);
 
     @POST("/momboard/deleteBoardLike")
-    public void deleteBoardLike(@Body MomBoard momBoard);
+    Call<ServerResult> deleteBoardLike(@Body MomBoard momBoard);
 
     @POST("/momboard/saveBoardFile")
-    public void saveBoardFile(@Body MomBoard momBoard);
+    Call<ServerResult> saveBoardFile(@Body MomBoard momBoard);
 
     @POST("/momboard/deleteBoardFile")
-    public void deleteBoardFile(@Body MomBoard momBoard);
+    Call<ServerResult> deleteBoardFile(@Body MomBoard momBoard);
 
 }

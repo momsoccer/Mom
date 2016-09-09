@@ -374,6 +374,9 @@
     <string name="mom_diaalog_cancel">취소</string>
     <string name="mom_diaalog_find">찾기</string>
 
+    <string name="mom_diaalog_confirm_y">예</string>
+    <string name="mom_diaalog_cancel_n">아니오</string>
+
     <string name="mom_diaalog_alert">알림</string>
 
 
@@ -669,4 +672,20 @@
 
     <string name="board_pubtype_Y">전체공개</string>
     <string name="board_pubtype_N">팀인원만</string>
+    <string name="board_write">댓글쓰기</string>
+    <string name="board_share">공유하기</string>
+
+    <string name="board_main_delete">글을 삭제 하시겠습니까?</string>
+
+    <string name="momboard_pubwrite">공지로 등록</string>
+    <string name="momboard_modify">글 수정</string>
+    <string name="momboard_delete">삭제하기</string>
+    <string name="momboard_more_view">...더보기</string>
+
+    <string name="momboard_comment_msg">댓글</string>
+    <string name="momboard_comment_ea">개</string>
+    <string name="momboard_edit">댓글을 남겨주세요</string>
+    <string name="momboard_edit_send">보내기</string>
+
+
 </resources>
