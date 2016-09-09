@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -78,7 +77,7 @@ public class PlayerFragment extends Fragment{
     TextView tx_nodata_found,tx_req_nodata_found,friend_count,friend_no_count,usermissionnocount,usermissioncount;
 
     //팀게시판기능
-    SwipeRefreshLayout swipeRefreshLayout;
+    //SwipeRefreshLayout swipeRefreshLayout;    //젤리빈 17? 이하는 주석처리로 분기...
     BoardItemAdapter boardItemAdapter;
 
     private int previousTotal = 0;
@@ -118,7 +117,8 @@ public class PlayerFragment extends Fragment{
             view = inflater.inflate(R.layout.fr_player_fragment2, container, false);
             li_team_no_data = (LinearLayout) view.findViewById(R.id.li_team_no_data);
 
-            swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+            //swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+
             if(Common.teamid == 0){
                 li_team_no_data.setVisibility(View.VISIBLE);
             }else{
@@ -128,6 +128,9 @@ public class PlayerFragment extends Fragment{
             boardRecview = (RecyclerView) view.findViewById(R.id.boardRecview);
             linearLayoutManager = new LinearLayoutManager(getContext());
             getTeamBoarderList();
+
+/*
+
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -148,6 +151,7 @@ public class PlayerFragment extends Fragment{
                 }
             });
 
+*/
 
 
         }else if(mPage==2){
@@ -222,9 +226,11 @@ public class PlayerFragment extends Fragment{
     }
 
 
+/*
     void onItemsLoadComplete() {
         swipeRefreshLayout.setRefreshing(false);
     }
+*/
 
     public void getUserMainData(final String passflag){
         WaitingDialog.showWaitingDialog(getActivity(),false);
