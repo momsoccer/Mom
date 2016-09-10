@@ -3,32 +3,39 @@ package com.mom.soccer.ball;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.BoardLineItemAdapter;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
+import com.mom.soccer.common.RecyclerItemClickListener;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dto.MomBoard;
+import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.Team;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.retrofitdao.MomBoardService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -74,11 +81,14 @@ public class TeamBoardReply extends AppCompatActivity {
     @Bind(R.id.sendBtn)
     Button sendBtn;
 
+    @Bind(R.id.level)
+    TextView level;
+
     private Intent intent;
     private int boardid = 0;
     private MomBoard momBoard;
     private BoardLineItemAdapter boardLineItemAdapter;
-    private List<MomBoard> momBoardList;
+    private List<MomBoard> momBoardList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,8 +138,9 @@ public class TeamBoardReply extends AppCompatActivity {
                     action_bar_title.setText(momBoard.getTeamname());
                     txt_date.setText(momBoard.getChange_creationdate());
                     content.setText(momBoard.getContent());
+                    level.setText(String.valueOf(momBoard.getLevel()));
 
-                    String replayString = getString(R.string.momboard_comment_msg) +" "+ String.valueOf(momBoard.getLikecount())+getString(R.string.momboard_comment_ea);
+                    String replayString = getString(R.string.momboard_comment_msg) +" "+ String.valueOf(momBoard.getCommentcount())+getString(R.string.momboard_comment_ea);
                     boardlineCount.setText(replayString);
                 }
             }
@@ -161,12 +172,119 @@ public class TeamBoardReply extends AppCompatActivity {
 
         sendBtn.setEnabled(false);
 
+        replyRecview.addOnItemTouchListener(
+
+                new RecyclerItemClickListener(getApplicationContext(), replyRecview ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // do whatever
+                    }
+
+                    //삭제하기
+                    @Override public void onLongItemClick(View view, final int position) {
+                        MomBoard vo = boardLineItemAdapter.getBoardLine(position);
+
+                        if(user.getUid()==vo.getUid()){
+                            new MaterialDialog.Builder(activity)
+                                    .content(R.string.board_main_coment_delete)
+                                    .contentColor(activity.getResources().getColor(R.color.color6))
+                                    .positiveText(R.string.mom_diaalog_confirm)
+                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                            boardLineItemAdapter.deleteLine(position);
+                                        }
+                                    })
+                                    .show();
+                        }else{
+                            final View positiveAction;
+                            EditText report_content;
+
+                            MaterialDialog dialog = new MaterialDialog.Builder(activity)
+                                    .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                    .title(R.string.mom_diaalog_board_report)
+                                    .titleColor(getResources().getColor(R.color.color6))
+                                    .customView(R.layout.dialog_report_view, true)
+                                    .positiveText(R.string.momboard_edit_send)
+                                    .negativeText(R.string.cancel)
+                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                            //신고하기는 comment으로 빼서 모듈화한다.
+                                        }
+                                    })
+                                    .build();
+
+                            report_content = (EditText) dialog.findViewById(R.id.report_content);
+                            positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+
+                            report_content.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                                }
+
+                                @Override
+                                public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                                    positiveAction.setEnabled(s.toString().trim().length() > 0);
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable editable) {
+
+                                }
+                            });
+
+                            dialog.show();
+                            positiveAction.setEnabled(false);
+                        }
+
+                    }
+                })
+
+        );
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG,"onStart ---------------------------------------------------------------------");
+        getBoardLineList();
+    }
+
+    @OnClick(R.id.sendBtn)
+    public void sendBtn(){
+        WaitingDialog.showWaitingDialog(activity,false);
+        MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
+        MomBoard momBoard = new MomBoard();
+        momBoard.setBoardid(boardid);
+        momBoard.setUid(user.getUid());
+        momBoard.setContent(comment.getText().toString());
+        Call<ServerResult> c = momBoardService.saveBoardLine(momBoard);
+        c.enqueue(new Callback<ServerResult>() {
+            @Override
+            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    ServerResult result = response.body();
+                    if(result.getResult().equals("S")){
+                        getBoardLineList();
+                        comment.setText(null);
+                    }else{
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResult> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.getMessage();
+            }
+        });
+
+    }
+
+
+    public void getBoardLineList(){
 
         WaitingDialog.showWaitingDialog(activity,false);
         MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
@@ -176,8 +294,13 @@ public class TeamBoardReply extends AppCompatActivity {
         c.enqueue(new Callback<List<MomBoard>>() {
             @Override
             public void onResponse(Call<List<MomBoard>> call, Response<List<MomBoard>> response) {
+                WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     momBoardList = response.body();
+
+                    String replayString = getString(R.string.momboard_comment_msg) +" "+ String.valueOf(momBoardList.size())+getString(R.string.momboard_comment_ea);
+                    boardlineCount.setText(replayString);
+
                     replyRecview.setHasFixedSize(true);
                     replyRecview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     boardLineItemAdapter = new BoardLineItemAdapter(activity,momBoardList,user);
@@ -191,21 +314,26 @@ public class TeamBoardReply extends AppCompatActivity {
                     AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(boardLineItemAdapter);
                     alphaAdapter.setDuration(500);
                     replyRecview.setAdapter(boardLineItemAdapter);
+                    replyRecview.scrollToPosition(momBoardList.size()-1); //입력후 맨아래 자기 자신의 글 보이기
+
                 }
             }
 
             @Override
             public void onFailure(Call<List<MomBoard>> call, Throwable t) {
-
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
             }
         });
     }
 
-    @OnClick(R.id.sendBtn)
-    public void sendBtn(){
-        MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
-        MomBoard momBoard = new MomBoard();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
-
-
 }

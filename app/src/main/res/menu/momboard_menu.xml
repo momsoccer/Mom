@@ -7,9 +7,15 @@
         app:showAsAction="always"
         />
 
-    <item android:id="@+id/board_report"
+    <item android:id="@+id/board_delete"
         android:title="@string/momboard_delete"
         android:orderInCategory="102"
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/board_report"
+        android:title="@string/board_report"
+        android:orderInCategory="103"
         app:showAsAction="always"
         />
 

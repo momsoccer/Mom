@@ -17,6 +17,9 @@ public interface MomBoardService {
     @POST("/momboard/getBoardHeader")
     Call<MomBoard> getBoardHeader(@Body MomBoard momBoard);
 
+    @POST("/momboard/updateBoardHeader")
+    Call<ServerResult> updateBoardHeader(@Body MomBoard momBoard);
+
     @POST("/momboard/getBoardHeaderList")
     Call<List<MomBoard>> getBoardHeaderList(@Body MomBoard momBoard);
 

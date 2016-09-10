@@ -3,31 +3,42 @@ package com.mom.soccer.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
+import com.mom.soccer.adapter.TeamMemberAdapter;
 import com.mom.soccer.common.Auth;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dataDto.InsInfoVo;
+import com.mom.soccer.dataDto.UserMainVo;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.TeamApply;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.ins.InsMainActivity;
 import com.mom.soccer.mission.MissionCommon;
+import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.InstructorService;
 import com.mom.soccer.retrofitdao.TeamService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,10 +60,12 @@ public class InsFragmentTeamApply extends Fragment{
 
     Button btnTeamRequest;
 
+    //TeamMember List
+    private List<UserMainVo> userMainVos = new ArrayList<UserMainVo>();
+    private RecyclerView memberRecyclerView;
+    private TeamMemberAdapter teamMemberAdapter;
+
     public static InsFragmentTeamApply newInstance(int page, User user,Instructor ins){
-
-        Log.i(TAG,"FollowerFragment : ==========================");
-
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         args.putSerializable(MissionCommon.USER_OBJECT,user);
@@ -68,9 +81,6 @@ public class InsFragmentTeamApply extends Fragment{
         mPage = getArguments().getInt(ARG_PAGE);
         user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
         ins = (Instructor) getArguments().getSerializable(MissionCommon.INS_OBJECT);
-        Log.i(TAG,"onCreate : ==========================" + mPage);
-        Log.i(TAG,"user : " + user.toString());
-        Log.i(TAG,"ins : " + ins.toString());
     }
 
     @Override
@@ -80,26 +90,66 @@ public class InsFragmentTeamApply extends Fragment{
 
 
         if(mPage==1){
-            //페이지가 복잡해지니까 분기를 함.
             v = inflater.inflate(R.layout.fr_ins_apply_fragment_layout, container, false);
             setPageInsInfo(v);
 
         }else if(mPage==2){
-
-
+            v = inflater.inflate(R.layout.fr_ins_member_fragment_layout, container, false);
+            memberRecyclerView = (RecyclerView) v.findViewById(R.id.memberRecyclerView);
+            getTeamMemberList();
 
         }else if(mPage==3){
 
-
-
-
         }
-
         return v;
     }
 
-    public void setPageInsInfo(final View v){
+    //TeamMember 현황
+    public void getTeamMemberList(){
+        WaitingDialog.showWaitingDialog(getActivity(),false);
+        DataService dataService = ServiceGenerator.createService(DataService.class,getContext(),user);
+        Call<List<UserMainVo>> c = dataService.getTeamMemberList(ins.getInstructorid());
+        c.enqueue(new Callback<List<UserMainVo>>() {
+            @Override
+            public void onResponse(Call<List<UserMainVo>> call, Response<List<UserMainVo>> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
 
+                    userMainVos = response.body();
+
+                    if(userMainVos.size()==0){
+
+                    }else{
+                        memberRecyclerView.setHasFixedSize(true);
+                        memberRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        teamMemberAdapter = new TeamMemberAdapter(getActivity(),userMainVos,user);
+
+                        memberRecyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                        memberRecyclerView.getItemAnimator().setAddDuration(300);
+                        memberRecyclerView.getItemAnimator().setRemoveDuration(300);
+                        memberRecyclerView.getItemAnimator().setMoveDuration(300);
+                        memberRecyclerView.getItemAnimator().setChangeDuration(300);
+                        memberRecyclerView.setHasFixedSize(true);
+                        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(teamMemberAdapter);
+                        alphaAdapter.setDuration(500);
+                        memberRecyclerView.setAdapter(teamMemberAdapter);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserMainVo>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+    }
+
+
+    //제자 요청 관련
+    public void setPageInsInfo(final View v){
+        Log.i(TAG,"팀지원을 위한 강사 선택 화면");
         WaitingDialog.showWaitingDialog(getContext(),false);
         InstructorService instructorService = ServiceGenerator.createService(InstructorService.class,getContext(),user);
 
@@ -209,7 +259,7 @@ public class InsFragmentTeamApply extends Fragment{
 
             @Override
             public void onFailure(Call<InsInfoVo> call, Throwable t) {
-                //Log.i(TAG,"Error 체크 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+                Log.i(TAG,"Error 체크 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
                 WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
             }

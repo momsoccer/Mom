@@ -15,6 +15,7 @@ public class MomBoard {
     private int boardtypeid;
     private String pubtype;
     private String change_creationdate;
+    private String change_updatedate;
     private String category;
 
     //line
@@ -65,6 +66,14 @@ public class MomBoard {
                 ", likecount=" + likecount +
                 ", formatDataSign='" + formatDataSign + '\'' +
                 '}';
+    }
+
+    public String getChange_updatedate() {
+        return change_updatedate;
+    }
+
+    public void setChange_updatedate(String change_updatedate) {
+        this.change_updatedate = change_updatedate;
     }
 
     public String getCategory() {

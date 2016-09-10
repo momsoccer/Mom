@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.bottommenu.MyPageActivity;
+import com.mom.soccer.common.Compare;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.ins.InsMainActivity;
@@ -107,20 +108,25 @@ public class GridSearchAdapter extends BaseAdapter {
                     listHolder.team_name.setText(userList.get(i).getTeamname());
                 }
 
-                Glide.with(mContext)
-                        .load(userList.get(i).getProfileimgurl())
-                        .override(180, 120)
-                        .centerCrop()
-                        .into(listHolder.user_imag);
+                if(!Compare.isEmpty(userList.get(i).getProfileimgurl())){
+                    Glide.with(mContext)
+                            .load(userList.get(i).getProfileimgurl())
+                            .override(180, 120)
+                            .centerCrop()
+                            .into(listHolder.user_imag);
+                }
+
             }else{
                 listHolder.user_name.setText(instructorList.get(i).getName());
                 listHolder.team_name.setText(instructorList.get(i).getTeamname()); //선생님은 항상 팀이 있음
 
-                Glide.with(mContext)
-                        .load(instructorList.get(i).getProfileimgurl())
-                        .override(180, 120)
-                        .centerCrop()
-                        .into(listHolder.user_imag);
+                if(!Compare.isEmpty(instructorList.get(i).getProfileimgurl())){
+                    Glide.with(mContext)
+                            .load(instructorList.get(i).getProfileimgurl())
+                            .override(180, 120)
+                            .centerCrop()
+                            .into(listHolder.user_imag);
+                }
 
             }
             currentRow.setTag(listHolder);
@@ -137,11 +143,15 @@ public class GridSearchAdapter extends BaseAdapter {
                     }else{
                         listHolder.team_name.setText(userList.get(i).getTeamname());
                     }
-                    Glide.with(mContext)
-                            .load(userList.get(i).getProfileimgurl())
-                            .override(180, 120)
-                            .centerCrop()
-                            .into(listHolder.user_imag);
+
+                    if(!Compare.isEmpty(userList.get(i).getProfileimgurl())){
+                        Glide.with(mContext)
+                                .load(userList.get(i).getProfileimgurl())
+                                .override(180, 120)
+                                .centerCrop()
+                                .into(listHolder.user_imag);
+                    }
+
                 }
             }else{
                 if(instructorList.get(i) != null) {
@@ -152,11 +162,14 @@ public class GridSearchAdapter extends BaseAdapter {
                     }else{
                         listHolder.team_name.setText(instructorList.get(i).getTeamname());
                     }
-                    Glide.with(mContext)
-                            .load(instructorList.get(i).getProfileimgurl())
-                            .override(180, 120)
-                            .centerCrop()
-                            .into(listHolder.user_imag);
+                    if(!Compare.isEmpty(instructorList.get(i).getProfileimgurl())){
+                        Glide.with(mContext)
+                                .load(instructorList.get(i).getProfileimgurl())
+                                .override(180, 120)
+                                .centerCrop()
+                                .into(listHolder.user_imag);
+                    }
+
                 }
             }
 

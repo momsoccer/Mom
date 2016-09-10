@@ -118,7 +118,6 @@ public class SearchFragment extends Fragment {
             queryIns.setName(searchWord);
         }
         queryIns.setUid(uid); //자신은 빼고
-        //queryIns.setQueryRow(500);
         Call<List<Instructor>> c = service.getCoachSearchList(queryIns);
         c.enqueue(new Callback<List<Instructor>>() {
             @Override

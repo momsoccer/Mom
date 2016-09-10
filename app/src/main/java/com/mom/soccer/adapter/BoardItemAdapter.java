@@ -6,12 +6,15 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +24,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
+import com.mom.soccer.ball.TeamBoardActivity;
 import com.mom.soccer.ball.TeamBoardReply;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.RoundedCornersTransformation;
@@ -75,7 +79,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         holder.username.setText(vo.getUsername());
         holder.formatingdate.setText(vo.getFormatDataSign());
         holder.content.setText(vo.getContent());
-        holder.commentCount.setText(String.valueOf(vo.getLikecount()));
+        holder.commentCount.setText(String.valueOf(vo.getCommentcount()));
 
         holder.liWriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,38 +100,95 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         holder.btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 PopupMenu popupMenu = new PopupMenu(activity,view);
                 activity.getMenuInflater().inflate(R.menu.momboard_menu, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getOrder()){
-                            case 101:
 
-                                break;
+                if(user.getUid()==vo.getUid()){
+                    popupMenu.getMenu().getItem(0).setVisible(true);
+                    popupMenu.getMenu().getItem(1).setVisible(true);
+                    popupMenu.getMenu().getItem(2).setVisible(false);
+                }else{
+                    popupMenu.getMenu().getItem(0).setVisible(false);
+                    popupMenu.getMenu().getItem(1).setVisible(false);
+                    popupMenu.getMenu().getItem(2).setVisible(true);
+                }
 
-                            case 102:
-                                new MaterialDialog.Builder(activity)
-                                        .content(R.string.board_main_delete)
-                                        .contentColor(activity.getResources().getColor(R.color.color6))
-                                        .positiveText(R.string.mom_diaalog_confirm_y)
-                                        .positiveColor(activity.getResources().getColor(R.color.enabled_red))
-                                        .negativeText(R.string.mom_diaalog_cancel_n)
-                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                            @Override
-                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
-                                                //VeteranToast.makeToast(activity,"오잉 : " + vo.getBoardid(), Toast.LENGTH_SHORT).show();
-                                                deleteBoard(vo.getBoardid(),posintion);
-                                            }
-                                        })
-                                        .show();
-                                break;
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getOrder()){
+                                case 101:
+                                    Intent intent = new Intent(activity,TeamBoardActivity.class);
+                                    intent.putExtra("boardFlag","modify");
+                                    intent.putExtra("boardid",vo.getBoardid());
+                                    activity.startActivity(intent);
+                                    break;
+                                case 102:
+                                    new MaterialDialog.Builder(activity)
+                                            .content(R.string.board_main_delete)
+                                            .contentColor(activity.getResources().getColor(R.color.color6))
+                                            .positiveText(R.string.mom_diaalog_confirm_y)
+                                            .positiveColor(activity.getResources().getColor(R.color.enabled_red))
+                                            .negativeText(R.string.mom_diaalog_cancel_n)
+                                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                @Override
+                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                                    //VeteranToast.makeToast(activity,"오잉 : " + vo.getBoardid(), Toast.LENGTH_SHORT).show();
+                                                    deleteBoard(vo.getBoardid(),posintion);
+                                                }
+                                            })
+                                            .show();
+                                    break;
+                                case 103:
+
+                                    final View positiveAction;
+                                    EditText report_content;
+
+                                    MaterialDialog dialog = new MaterialDialog.Builder(activity)
+                                            .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                            .title(R.string.mom_diaalog_board_report)
+                                            .titleColor(activity.getResources().getColor(R.color.color6))
+                                            .customView(R.layout.dialog_report_view, true)
+                                            .positiveText(R.string.momboard_edit_send)
+                                            .negativeText(R.string.cancel)
+                                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                @Override
+                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                    //신고하기는 comment으로 빼서 모듈화한다.
+                                                }
+                                            })
+                                            .build();
+
+                                    report_content = (EditText) dialog.findViewById(R.id.report_content);
+                                    positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+
+                                    report_content.addTextChangedListener(new TextWatcher() {
+                                        @Override
+                                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                                        }
+
+                                        @Override
+                                        public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                                            positiveAction.setEnabled(s.toString().trim().length() > 0);
+                                        }
+
+                                        @Override
+                                        public void afterTextChanged(Editable editable) {
+
+                                        }
+                                    });
+
+                                    dialog.show();
+                                    positiveAction.setEnabled(false);
+
+                                    break;
+                            }
+                            return false;
                         }
-                        return false;
-                    }
-                });
+                    });
 
                 popupMenu.show();
             }
@@ -144,7 +205,9 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         holder.liContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(activity,TeamBoardReply.class);
+                intent.putExtra("boardid",vo.getBoardid());
+                activity.startActivity(intent);
             }
         });
     }
@@ -153,6 +216,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
     public int getItemCount() {
         return boardList.size();
     }
+
 
     public void removeItem(int position){
         boardList.remove(position);
@@ -166,6 +230,18 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
 
         },1000);
     }
+
+    /*
+    public void remove(int position) {
+        mDataSet.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void add(String text, int position) {
+        mDataSet.add(position, text);
+        notifyItemInserted(position);
+    }
+    */
 
     public void reCallAdapter(){
         notifyDataSetChanged();
@@ -224,5 +300,11 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         inflater.inflate(R.menu.momboard_menu, menu);
         return true;
     }
+
+/*    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.getItem(0).setEnabled(true);
+        menu.getItem(1).setEnabled(false);
+        return true;
+    }*/
 
 }

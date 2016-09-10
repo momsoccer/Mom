@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/xml_back_white"
+            >
+
+                <EditText
+                    android:layout_margin="10dp"
+                    android:id="@+id/report_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="7"
+                    android:lines="7"
+                    android:gravity="top"
+                    android:hint="@string/momboard_report_send"
+                    android:textColorHint="@color/color2"
+                    android:inputType="textMultiLine"
+                    android:background="@color/mom_color1"
+                    />
+
+        </LinearLayout>
+
+
+</LinearLayout>

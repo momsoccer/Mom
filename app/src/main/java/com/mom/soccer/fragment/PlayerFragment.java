@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -39,6 +41,7 @@ import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
@@ -57,14 +60,15 @@ public class PlayerFragment extends Fragment{
     private int mPage;
     private User user = new User();
     private SlidingUpPanelLayout mLayout;
-    private List<MomBoard> momBoardList;
+    private List<MomBoard> momBoardList = new ArrayList<MomBoard>();
 
     LinearLayoutManager linearLayoutManager;
 
     ImageView slidingimg;
+    private ScrollView scroll_layout;
 
     RecyclerView recyclerView,userMissionRecyclerview,friendi_recyclerview,
-                 userMissionPassRecyclerview,searchUserMissionRecyclerview
+            userMissionPassRecyclerview,searchUserMissionRecyclerview
             ,boardRecview; //board
 
     FriendListAdapter recyclerAdapter,irecyclerAdapter;
@@ -77,15 +81,8 @@ public class PlayerFragment extends Fragment{
     TextView tx_nodata_found,tx_req_nodata_found,friend_count,friend_no_count,usermissionnocount,usermissioncount;
 
     //팀게시판기능
-    //SwipeRefreshLayout swipeRefreshLayout;    //젤리빈 17? 이하는 주석처리로 분기...
+    SwipeRefreshLayout swipeRefreshLayout;    //젤리빈 17? 이하는 주석처리로 분기...
     BoardItemAdapter boardItemAdapter;
-
-    private int previousTotal = 0;
-    private boolean loading = true;
-    private int visibleThreshold = 5;
-    int firstVisibleItem, visibleItemCount, totalItemCount;
-
-    private int mColumnCount=0;
 
     public static PlayerFragment newInstance(int page, User user){
 
@@ -113,23 +110,16 @@ public class PlayerFragment extends Fragment{
         View view = null;
 
         if(mPage==1){
-
             view = inflater.inflate(R.layout.fr_player_fragment2, container, false);
+
+            scroll_layout = (ScrollView) view.findViewById(R.id.scroll_layout);
             li_team_no_data = (LinearLayout) view.findViewById(R.id.li_team_no_data);
-
-            //swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
-
-            if(Common.teamid == 0){
-                li_team_no_data.setVisibility(View.VISIBLE);
-            }else{
-                li_team_no_data.setVisibility(View.GONE);
-            }
+            swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
 
             boardRecview = (RecyclerView) view.findViewById(R.id.boardRecview);
             linearLayoutManager = new LinearLayoutManager(getContext());
             getTeamBoarderList();
 
-/*
 
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -139,28 +129,38 @@ public class PlayerFragment extends Fragment{
                 }
             });
 
-            boardRecview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
 
-                @Override
-                public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                    if(linearLayoutManager.findFirstCompletelyVisibleItemPosition()==0){
-                        swipeRefreshLayout.setEnabled(true);
-                    }else{
-                        swipeRefreshLayout.setEnabled(false);
-                    }
-                }
-            });
+          if(Build.VERSION.SDK_INT  >= 20) {
+              boardRecview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                  @Override
+                  public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                      if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                          swipeRefreshLayout.setEnabled(true);
+                      } else {
+                          swipeRefreshLayout.setEnabled(false);
+                      }
+                  }
+              });
+          }else{
+              boardRecview.setOnScrollListener(new RecyclerView.OnScrollListener(){
+                  @Override
+                  public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                      super.onScrolled(recyclerView, dx, dy);
+                      if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                          swipeRefreshLayout.setEnabled(true);
+                      } else {
+                          swipeRefreshLayout.setEnabled(false);
+                      }
 
-*/
-
+                  }
+              });
+          }
 
         }else if(mPage==2){
 
             view = inflater.inflate(R.layout.fr_player_fragment3, container, false);
 
             li_no_found = (LinearLayout) view.findViewById(R.id.li_no_found);
-
-            //검색조건 set
 
             searchUserMissionRecyclerview = (RecyclerView) view.findViewById(R.id.searchUserMissionRecyclerview);
             UserMainVo query = new UserMainVo();
@@ -225,12 +225,9 @@ public class PlayerFragment extends Fragment{
         return view;
     }
 
-
-/*
     void onItemsLoadComplete() {
         swipeRefreshLayout.setRefreshing(false);
     }
-*/
 
     public void getUserMainData(final String passflag){
         WaitingDialog.showWaitingDialog(getActivity(),false);
@@ -294,11 +291,11 @@ public class PlayerFragment extends Fragment{
                 if(response.isSuccessful()){
                     List<UserMainVo> userMainVos = response.body();
 
-                        if(userMainVos.size()==0){
-                            li_no_found.setVisibility(View.VISIBLE);
-                        }else{
-                            li_no_found.setVisibility(View.GONE);
-                        }
+                    if(userMainVos.size()==0){
+                        li_no_found.setVisibility(View.VISIBLE);
+                    }else{
+                        li_no_found.setVisibility(View.GONE);
+                    }
                     userMissionAdapter = new UserMissionAdapter(getActivity(),user,userMainVos);
                     searchUserMissionRecyclerview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
                     searchUserMissionRecyclerview.setHasFixedSize(true);
@@ -465,6 +462,16 @@ public class PlayerFragment extends Fragment{
                 WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     momBoardList = response.body();
+
+                    if(momBoardList.size() == 0){
+                        Log.i(TAG,"보여야 하는것 아님??");
+                        li_team_no_data.setVisibility(View.VISIBLE);
+                        scroll_layout.setVisibility(View.GONE);
+                    }else{
+                        li_team_no_data.setVisibility(View.GONE);
+                        scroll_layout.setVisibility(View.VISIBLE);
+                    }
+
                     boardRecview.setHasFixedSize(true);
                     boardRecview.setLayoutManager(linearLayoutManager);
                     boardItemAdapter = new BoardItemAdapter(getActivity(),momBoardList,user);

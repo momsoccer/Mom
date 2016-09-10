@@ -25,6 +25,7 @@ public class UserMainVo {
     private int bookmarkcount;
     private String passflag;
 
+    private int missionpasscount;
     private int feedbackcount;
     private int boardcount;
     private int totalscore;
@@ -59,6 +60,7 @@ public class UserMainVo {
                 ", sequence=" + sequence +
                 ", bookmarkcount=" + bookmarkcount +
                 ", passflag='" + passflag + '\'' +
+                ", missionpasscount=" + missionpasscount +
                 ", feedbackcount=" + feedbackcount +
                 ", boardcount=" + boardcount +
                 ", totalscore=" + totalscore +
@@ -69,6 +71,14 @@ public class UserMainVo {
                 ", userdescription='" + userdescription + '\'' +
                 ", condition='" + condition + '\'' +
                 '}';
+    }
+
+    public int getMissionpasscount() {
+        return missionpasscount;
+    }
+
+    public void setMissionpasscount(int missionpasscount) {
+        this.missionpasscount = missionpasscount;
     }
 
     public String getCondition() {

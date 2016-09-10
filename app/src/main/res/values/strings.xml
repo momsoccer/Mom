@@ -676,6 +676,8 @@
     <string name="board_share">공유하기</string>
 
     <string name="board_main_delete">글을 삭제 하시겠습니까?</string>
+    <string name="board_main_coment_delete">댓글을 삭제 하시겠습니까?</string>
+    <string name="board_main_coment_modity">글이 수정 되었습니다</string>
 
     <string name="momboard_pubwrite">공지로 등록</string>
     <string name="momboard_modify">글 수정</string>
@@ -687,5 +689,11 @@
     <string name="momboard_edit">댓글을 남겨주세요</string>
     <string name="momboard_edit_send">보내기</string>
 
+    <string name="momboard_report_send">상세한 신고내용(비망,욕설,기타 등등)</string>
+
+    <string name="member_title1">미션통과 수</string>
+    <string name="member_title2">피드백 요청 수</string>
+
+    <string name="member_title3">팀 가입일</string>
 
 </resources>

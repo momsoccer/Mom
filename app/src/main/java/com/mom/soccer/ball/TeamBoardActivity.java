@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -56,24 +55,26 @@ public class TeamBoardActivity extends AppCompatActivity {
 
     @Bind(R.id.txt_pub)
     TextView txt_pub;
+
+    private MomBoard momBoard = new MomBoard();
     private int tag=1;
-
-    private String pageFlag = "non";  //write , view, modify
-    Intent intent;
-
-    @Bind(R.id.replyRecview)
-    RecyclerView replyRecview;
+    private String boardFlag="new"; //new,modify
+    private Intent intent;
+    private int boardid=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team_board_reply);
+        setContentView(R.layout.activity_team_board);
         ButterKnife.bind(this);
 
         activity = this;
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
 
+        intent = getIntent();
+        boardFlag = intent.getExtras().getString("boardFlag");
+        boardid = intent.getExtras().getInt("boardid");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,6 +96,11 @@ public class TeamBoardActivity extends AppCompatActivity {
         }
 
         getTeaminfo(user.getUid());
+
+        if(boardid !=0 ){
+            getReadBoard();
+        }
+
     }
 
     @OnClick(R.id.txt_pub)
@@ -132,43 +138,116 @@ public class TeamBoardActivity extends AppCompatActivity {
 
     @OnClick(R.id.commit)
     public void commit(){
-        if(content.getText().toString().length()==0){
-            VeteranToast.makeToast(getApplicationContext(),getString(R.string.board_team_content_vali),Toast.LENGTH_SHORT).show();
-            return;
+
+        if(boardFlag.equals("new")){
+            if(content.getText().toString().length()==0){
+                VeteranToast.makeToast(getApplicationContext(),getString(R.string.board_team_content_vali), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            WaitingDialog.showWaitingDialog(TeamBoardActivity.this,false);
+            MomBoardService boardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
+            MomBoard momBoard = new MomBoard();
+
+            momBoard.setUid(user.getUid());
+            momBoard.setContent(content.getText().toString());
+            momBoard.setBoardtype("team");
+            momBoard.setCategory("B");
+            momBoard.setBoardtypeid(team.getTeamid());
+
+            if(tag == 1){
+                momBoard.setPubtype("Y");
+            }else{
+                momBoard.setPubtype("N");
+            }
+
+            Call<ServerResult> c = boardService.saveBoardheader(momBoard);
+            c.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                    WaitingDialog.cancelWaitingDialog();
+                    if(response.isSuccessful()){
+                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.board_team_content_complate),Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(TeamBoardActivity.this,PlayerMainActivity.class);
+                        intent.putExtra(Param.FRAGMENT_COUNT,0);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        finish();
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
+                    t.printStackTrace();
+                }
+            });
+        }else{//글수정일때...
+            if(content.getText().toString().length()==0){
+                VeteranToast.makeToast(getApplicationContext(),getString(R.string.board_team_content_vali), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            WaitingDialog.showWaitingDialog(TeamBoardActivity.this,false);
+            MomBoardService boardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
+            MomBoard upvo = new MomBoard();
+
+            upvo.setBoardid(momBoard.getBoardid());
+            upvo.setUid(user.getUid());
+            upvo.setContent(content.getText().toString());
+            upvo.setBoardtype("team");
+            upvo.setCategory("B");
+            upvo.setBoardtype(momBoard.getBoardtype());
+            upvo.setBoardtypeid(team.getTeamid());
+
+            if(tag == 1){
+                upvo.setPubtype("Y");
+            }else{
+                upvo.setPubtype("N");
+            }
+
+            Call<ServerResult> c = boardService.updateBoardHeader(upvo);
+            c.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                    WaitingDialog.cancelWaitingDialog();
+                    if(response.isSuccessful()){
+                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.board_main_coment_modity),Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
+                    t.printStackTrace();
+                }
+            });
         }
-        WaitingDialog.showWaitingDialog(TeamBoardActivity.this,false);
-        MomBoardService boardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
-        MomBoard momBoard = new MomBoard();
 
-        momBoard.setUid(user.getUid());
-        momBoard.setContent(content.getText().toString());
-        momBoard.setBoardtype("team");
-        momBoard.setCategory("B");
-        momBoard.setBoardtypeid(team.getTeamid());
+    }
 
-        if(tag == 1){
-            momBoard.setPubtype("Y");
-        }else{
-            momBoard.setPubtype("N");
-        }
-
-        Call<ServerResult> c = boardService.saveBoardheader(momBoard);
-        c.enqueue(new Callback<ServerResult>() {
+    public void getReadBoard(){
+        WaitingDialog.showWaitingDialog(this,false);
+        MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
+        MomBoard query = new MomBoard();
+        query.setBoardid(boardid);
+        Call<MomBoard> c = momBoardService.getBoardHeader(query);
+        c.enqueue(new Callback<MomBoard>() {
             @Override
-            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+            public void onResponse(Call<MomBoard> call, Response<MomBoard> response) {
                 WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.board_team_content_complate),Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(TeamBoardActivity.this,PlayerMainActivity.class);
-                    intent.putExtra(Param.FRAGMENT_COUNT,0);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    finish();
-                    startActivity(intent);
+                    momBoard = response.body();
+                    content.setText(momBoard.getContent());
+                    if(momBoard.getPubtype().equals("Y")){
+                        txt_pub.setText(getString(R.string.board_pubtype_Y));
+                    }else{
+                        txt_pub.setText(getString(R.string.board_pubtype_N));
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<ServerResult> call, Throwable t) {
+            public void onFailure(Call<MomBoard> call, Throwable t) {
                 WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
             }

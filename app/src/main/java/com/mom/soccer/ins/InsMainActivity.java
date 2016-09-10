@@ -58,8 +58,6 @@ public class InsMainActivity extends AppCompatActivity {
             instructor = (Instructor) intent.getSerializableExtra(MissionCommon.INS_OBJECT);
         }
 
-
-
         viewPager = (ViewPager) findViewById(R.id.follow_viewpager);
 
         InsViewPagerAdapter pagerAdapter = new InsViewPagerAdapter(getSupportFragmentManager());

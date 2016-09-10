@@ -4,6 +4,7 @@ import com.mom.soccer.dataDto.FeedDataVo;
 import com.mom.soccer.dataDto.InsInfoVo;
 import com.mom.soccer.dataDto.MainTypeListVo;
 import com.mom.soccer.dataDto.UserLevelDataVo;
+import com.mom.soccer.dataDto.UserMainVo;
 import com.mom.soccer.dataDto.UserRangkinVo;
 import com.mom.soccer.dto.ServerResult;
 
@@ -56,4 +57,7 @@ public interface DataService {
     Call<ServerResult> getInsFileCount(@Query("uid") int uid,
                                        @Query("insid") int insid,
                                        @Query("filename") String filename);
+
+    @GET("/api/data/getTeamMemberList")
+    Call<List<UserMainVo>> getTeamMemberList(@Query("insid") int insid);
 }

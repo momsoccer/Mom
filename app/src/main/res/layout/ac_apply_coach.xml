@@ -30,195 +30,206 @@
             />
     </android.support.v7.widget.Toolbar>
 
-
-    <LinearLayout
-        android:id="@+id/li_confirm_layout"
-        android:orientation="vertical"
+    <ScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:visibility="visible"
-        >
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-            <ImageView
-                android:src="@drawable/ic_ball_subject"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-
-            <TextView
-                android:text="강사승인상태"
-                android:textSize="12sp"
-                android:textColor="@color/color6"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginLeft="30dp"
-                android:id="@+id/tx_request_status"
-                android:textSize="12sp"
-                android:textColor="@color/color6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            >
-            <ImageView
-                android:src="@drawable/ic_ball_subject"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-            <TextView
-                android:text="강사신청일시"
-                android:textSize="12sp"
-                android:textColor="@color/color6"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginLeft="30dp"
-                android:id="@+id/tx_request_date"
-                android:textSize="12sp"
-                android:textColor="@color/color6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            >
-            <ImageView
-                android:src="@drawable/ic_ball_subject"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-            <TextView
-                android:text="강사승인일시"
-                android:textSize="12sp"
-                android:textColor="@color/color6"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginLeft="30dp"
-                android:id="@+id/tx_approval_date"
-                android:textSize="12sp"
-                android:textColor="@color/color6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/li_request_layout"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp"
-        >
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/li_confirm_layout"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:visibility="visible"
                 >
 
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     >
 
                     <ImageView
-                        android:scaleType="centerCrop"
-                        android:layout_marginTop="5dp"
-                        android:id="@+id/im_ins_insimg"
-                        android:layout_width="75dp"
-                        android:layout_height="75dp"
-                        android:src="@drawable/userimg"
-                        android:adjustViewBounds="true"
-                        android:layout_gravity="center"
-                        android:background="@color/mom_color1"
-                        android:onClick="imageOnClick"
-                        />
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
 
                     <TextView
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:text="@string/coach_ins_img_hint"
-                        android:textColor="@color/color6"
+                        android:text="강사승인상태"
                         android:textSize="12sp"
-                        android:layout_width="wrap_content"
+                        android:textColor="@color/color6"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content" />
 
+                    <TextView
+                        android:layout_marginLeft="30dp"
+                        android:id="@+id/tx_request_status"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginLeft="50dp"
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:layout_marginTop="5dp"
                     >
-
                     <ImageView
-                        android:id="@+id/im_ins_teaimg"
-                        android:layout_marginTop="5dp"
-                        android:layout_gravity="center"
-                        android:layout_width="75dp"
-                        android:layout_height="75dp"
-                        android:src="@drawable/camera"
-                        android:background="@color/mom_color1"
-                        android:onClick="imageOnClick"
-                        android:scaleType="centerCrop"
-                        />
-
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:text="@string/coach_team_emblemname_header"
-                        android:textColor="@color/color6"
-                        android:textSize="12sp"
+                        android:src="@drawable/ic_ball_subject"
                         android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:text="강사신청일시"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content" />
 
+                    <TextView
+                        android:layout_marginLeft="30dp"
+                        android:id="@+id/tx_request_date"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    >
+                    <ImageView
+                        android:src="@drawable/ic_ball_subject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:text="강사승인일시"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_marginLeft="30dp"
+                        android:id="@+id/tx_approval_date"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
             </LinearLayout>
 
-            <include
-                layout="@layout/ins_modify_layout"
+            <LinearLayout
+                android:id="@+id/li_request_layout"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="0dp"
+                android:layout_weight="9"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        >
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            >
+
+                            <ImageView
+                                android:id="@+id/im_ins_insimg"
+                                android:scaleType="centerCrop"
+                                android:layout_marginTop="5dp"
+                                android:layout_width="75dp"
+                                android:layout_height="75dp"
+                                android:src="@drawable/userimg"
+                                android:adjustViewBounds="true"
+                                android:layout_gravity="center"
+                                android:background="@color/mom_color1"
+                                android:onClick="imageOnClick"
+                                />
+
+                            <TextView
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="@string/coach_ins_img_hint"
+                                android:textColor="@color/color6"
+                                android:textSize="12sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_marginLeft="50dp"
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            >
+
+                            <ImageView
+                                android:id="@+id/im_ins_teaimg"
+                                android:layout_marginTop="5dp"
+                                android:layout_gravity="center"
+                                android:layout_width="75dp"
+                                android:layout_height="75dp"
+                                android:src="@drawable/camera"
+                                android:background="@color/mom_color1"
+                                android:onClick="imageOnClick"
+                                android:scaleType="centerCrop"
+                                />
+
+                            <TextView
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="@string/coach_team_emblemname_header"
+                                android:textColor="@color/color6"
+                                android:textSize="12sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <include
+                        layout="@layout/ins_modify_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
 
-
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"

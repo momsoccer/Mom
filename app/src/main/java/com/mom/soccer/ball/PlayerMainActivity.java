@@ -139,6 +139,8 @@ public class PlayerMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                     Intent intent = new Intent(PlayerMainActivity.this,TeamBoardActivity.class);
+                    intent.putExtra("boardFlag","new");
+                    intent.putExtra("boardid",0);
                     startActivity(intent);
             }
         });
