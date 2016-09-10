@@ -6,36 +6,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-<android.support.v4.widget.SwipeRefreshLayout
-    android:id="@+id/swipeRefreshLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <!--Main Layout-->
-    <ScrollView
-        android:fillViewport="true"
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:id="@+id/li_board_no_data_found"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scroll_layout"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/mom_color1"
+        android:visibility="gone"
         >
+        <ImageView
+            android:src="@drawable/ic_info_white_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/mom_color1"
+            />
 
-        <LinearLayout
-            android:orientation="vertical"
+        <TextView
+            android:gravity="center"
+            android:text="@string/team_board_msg"
+            android:textSize="12sp"
+            android:textColor="@color/color6"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/boardRecview"
-                android:layout_marginTop="5dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/mom_color1"
-                />
-
-        </LinearLayout>
-
-    </ScrollView>
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <!--No Data Found-->
     <LinearLayout
@@ -44,6 +40,7 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         >
 
         <LinearLayout
@@ -54,6 +51,7 @@
             >
 
             <ImageButton
+                android:id="@+id/teamSearch"
                 android:src="@drawable/search"
                 android:background="@color/mom_color1"
                 android:scaleType="centerCrop"
@@ -75,7 +73,7 @@
             android:layout_marginTop="5dp"
             android:id="@+id/team_no_data"
             android:text="@string/board_no_team_msg"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textColor="@color/color8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,6 +82,36 @@
 
     </LinearLayout>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
-</android.support.v4.widget.SwipeRefreshLayout>
+        <!--Main Layout-->
+        <ScrollView
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/boardRecview"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mom_color1"
+                    />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

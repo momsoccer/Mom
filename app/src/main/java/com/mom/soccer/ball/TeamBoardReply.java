@@ -90,6 +90,8 @@ public class TeamBoardReply extends AppCompatActivity {
     private BoardLineItemAdapter boardLineItemAdapter;
     private List<MomBoard> momBoardList = new ArrayList<>();
 
+    private int lineCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,9 +141,8 @@ public class TeamBoardReply extends AppCompatActivity {
                     txt_date.setText(momBoard.getChange_creationdate());
                     content.setText(momBoard.getContent());
                     level.setText(String.valueOf(momBoard.getLevel()));
-
-                    String replayString = getString(R.string.momboard_comment_msg) +" "+ String.valueOf(momBoard.getCommentcount())+getString(R.string.momboard_comment_ea);
-                    boardlineCount.setText(replayString);
+                    lineCount = momBoard.getCommentcount();
+                    getLineCountText(lineCount);
                 }
             }
 
@@ -191,7 +192,10 @@ public class TeamBoardReply extends AppCompatActivity {
                                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                                         @Override
                                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
                                             boardLineItemAdapter.deleteLine(position);
+                                            lineCount = lineCount - 1;
+                                            getLineCountText(lineCount);
                                         }
                                     })
                                     .show();
@@ -250,6 +254,11 @@ public class TeamBoardReply extends AppCompatActivity {
         getBoardLineList();
     }
 
+    public void getLineCountText(int count){
+        String replayString = getString(R.string.momboard_comment_msg) +" "+ String.valueOf(count)+getString(R.string.momboard_comment_ea);
+        boardlineCount.setText(replayString);
+    }
+
     @OnClick(R.id.sendBtn)
     public void sendBtn(){
         WaitingDialog.showWaitingDialog(activity,false);
@@ -296,9 +305,11 @@ public class TeamBoardReply extends AppCompatActivity {
             public void onResponse(Call<List<MomBoard>> call, Response<List<MomBoard>> response) {
                 WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
-                    momBoardList = response.body();
 
-                    String replayString = getString(R.string.momboard_comment_msg) +" "+ String.valueOf(momBoardList.size())+getString(R.string.momboard_comment_ea);
+                    momBoardList = response.body();
+                    lineCount = momBoardList.size();
+
+                    String replayString = getString(R.string.momboard_comment_msg) +" "+ String.valueOf(lineCount)+getString(R.string.momboard_comment_ea);
                     boardlineCount.setText(replayString);
 
                     replyRecview.setHasFixedSize(true);
@@ -331,9 +342,23 @@ public class TeamBoardReply extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home){
+
+            Intent backIntent = new Intent();
+            backIntent.putExtra("lineCount",lineCount);
+            backIntent.putExtra("boardid",boardid);
+            setResult(RESULT_OK, backIntent);
             finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent backIntent = new Intent();
+        backIntent.putExtra("lineCount",lineCount);
+        backIntent.putExtra("boardid",boardid);
+        setResult(RESULT_OK, backIntent);
+        finish();
     }
 }

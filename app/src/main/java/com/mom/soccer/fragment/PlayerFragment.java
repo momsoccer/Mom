@@ -1,6 +1,7 @@
 package com.mom.soccer.fragment;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,8 +17,8 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -26,6 +27,7 @@ import com.mom.soccer.adapter.BoardItemAdapter;
 import com.mom.soccer.adapter.FriendListAdapter;
 import com.mom.soccer.adapter.UserMissionAdapter;
 import com.mom.soccer.ball.PlayerMainActivity;
+import com.mom.soccer.bottommenu.SearchActivity;
 import com.mom.soccer.common.Common;
 import com.mom.soccer.dataDto.FeedDataVo;
 import com.mom.soccer.dataDto.UserMainVo;
@@ -38,6 +40,7 @@ import com.mom.soccer.retrofitdao.FriendService;
 import com.mom.soccer.retrofitdao.MomBoardService;
 import com.mom.soccer.retrofitdao.UserMainService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -61,11 +64,11 @@ public class PlayerFragment extends Fragment{
     private User user = new User();
     private SlidingUpPanelLayout mLayout;
     private List<MomBoard> momBoardList = new ArrayList<MomBoard>();
+    private static final int COMMENT_LINE_CODE = 201;
 
     LinearLayoutManager linearLayoutManager;
 
     ImageView slidingimg;
-    private ScrollView scroll_layout;
 
     RecyclerView recyclerView,userMissionRecyclerview,friendi_recyclerview,
             userMissionPassRecyclerview,searchUserMissionRecyclerview
@@ -83,6 +86,8 @@ public class PlayerFragment extends Fragment{
     //팀게시판기능
     SwipeRefreshLayout swipeRefreshLayout;    //젤리빈 17? 이하는 주석처리로 분기...
     BoardItemAdapter boardItemAdapter;
+    ImageButton teamSearch;
+    LinearLayout li_board_no_data_found;
 
     public static PlayerFragment newInstance(int page, User user){
 
@@ -110,16 +115,24 @@ public class PlayerFragment extends Fragment{
         View view = null;
 
         if(mPage==1){
+
             view = inflater.inflate(R.layout.fr_player_fragment2, container, false);
 
-            scroll_layout = (ScrollView) view.findViewById(R.id.scroll_layout);
             li_team_no_data = (LinearLayout) view.findViewById(R.id.li_team_no_data);
             swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
-
+            teamSearch = (ImageButton) view.findViewById(R.id.teamSearch);
             boardRecview = (RecyclerView) view.findViewById(R.id.boardRecview);
-            linearLayoutManager = new LinearLayoutManager(getContext());
-            getTeamBoarderList();
+            li_board_no_data_found = (LinearLayout) view.findViewById(R.id.li_board_no_data_found);
 
+            if(Common.teamid==0){
+                li_team_no_data.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setVisibility(View.GONE);
+            }else{
+                li_team_no_data.setVisibility(View.GONE);
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
+                linearLayoutManager = new LinearLayoutManager(getContext());
+                getTeamBoarderList();
+            }
 
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -129,6 +142,15 @@ public class PlayerFragment extends Fragment{
                 }
             });
 
+            teamSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(),SearchActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("goPage",1);
+                    startActivity(intent);
+                }
+            });
 
           if(Build.VERSION.SDK_INT  >= 20) {
               boardRecview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
@@ -151,7 +173,6 @@ public class PlayerFragment extends Fragment{
                       } else {
                           swipeRefreshLayout.setEnabled(false);
                       }
-
                   }
               });
           }
@@ -453,6 +474,7 @@ public class PlayerFragment extends Fragment{
 
         MomBoard query = new MomBoard();
         query.setBoardtypeid(Common.teamid);
+
         query.setCategory("B");
 
         Call<List<MomBoard>> c = momBoardService.getBoardHeaderList(query);
@@ -463,13 +485,10 @@ public class PlayerFragment extends Fragment{
                 if(response.isSuccessful()){
                     momBoardList = response.body();
 
-                    if(momBoardList.size() == 0){
-                        Log.i(TAG,"보여야 하는것 아님??");
-                        li_team_no_data.setVisibility(View.VISIBLE);
-                        scroll_layout.setVisibility(View.GONE);
+                    if(momBoardList.size()==0){
+                        li_board_no_data_found.setVisibility(View.VISIBLE);
                     }else{
-                        li_team_no_data.setVisibility(View.GONE);
-                        scroll_layout.setVisibility(View.VISIBLE);
+                        li_board_no_data_found.setVisibility(View.GONE);
                     }
 
                     boardRecview.setHasFixedSize(true);
@@ -485,7 +504,6 @@ public class PlayerFragment extends Fragment{
                     AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(boardItemAdapter);
                     alphaAdapter.setDuration(500);
                     boardRecview.setAdapter(boardItemAdapter);
-
                 }
             }
 
@@ -497,4 +515,12 @@ public class PlayerFragment extends Fragment{
         });
     }
 
+    public  void setUpdateItem(int lineCount){
+        boardItemAdapter.updateLineItemCount(1,lineCount);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        VeteranToast.makeToast(getActivity(),"값은 : " + requestCode, Toast.LENGTH_SHORT).show();
+    }
 }

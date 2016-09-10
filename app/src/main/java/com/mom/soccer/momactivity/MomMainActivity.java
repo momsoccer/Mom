@@ -365,6 +365,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         }else if(id == R.id.mn_item_search){
 
             Intent intent = new Intent(getApplicationContext(),SearchActivity.class);
+            intent.putExtra("goPage",0);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //스택에 쌓이는 것을 방지 한다. 필수
             startActivity(intent);
             //overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);

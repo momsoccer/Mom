@@ -50,7 +50,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
         super(context,attrs);
         this.context = context;
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.main_bottom_bar,this,true);
         imageBtnHome    = (ImageButton) findViewById(R.id.ib_appbar_home);
         imageBtnProfile = (ImageButton) findViewById(R.id.ib_appbar_profile);
@@ -111,6 +111,7 @@ public class TabNaviComplaintBase extends RelativeLayout {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,SearchActivity.class);
+                intent.putExtra("goPage",0);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 

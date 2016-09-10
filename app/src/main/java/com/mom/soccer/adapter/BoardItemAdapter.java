@@ -50,12 +50,14 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
     private Activity activity;
     private List<MomBoard> boardList;
     private User user;
+    private static final int COMMENT_LINE_CODE = 201;
 
     public BoardItemAdapter(Activity activity, List<MomBoard> boardList,User user) {
         this.activity = activity;
         this.boardList = boardList;
         this.user = user;
     }
+
 
     @Override
     public BoardItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -86,7 +88,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
             public void onClick(View view) {
                 Intent intent = new Intent(activity, TeamBoardReply.class);
                 intent.putExtra("boardid",vo.getBoardid());
-                activity.startActivity(intent);
+                activity.startActivityForResult(intent,COMMENT_LINE_CODE);
             }
         });
 
@@ -134,7 +136,6 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
                                             .onPositive(new MaterialDialog.SingleButtonCallback() {
                                                 @Override
                                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
                                                     //VeteranToast.makeToast(activity,"오잉 : " + vo.getBoardid(), Toast.LENGTH_SHORT).show();
                                                     deleteBoard(vo.getBoardid(),posintion);
                                                 }
@@ -207,7 +208,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
             public void onClick(View view) {
                 Intent intent = new Intent(activity,TeamBoardReply.class);
                 intent.putExtra("boardid",vo.getBoardid());
-                activity.startActivity(intent);
+                activity.startActivityForResult(intent,COMMENT_LINE_CODE);
             }
         });
     }
@@ -217,6 +218,17 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         return boardList.size();
     }
 
+    public void updateLineItemCount(int position,int lineCount){
+        boardList.get(position).setCommentcount(lineCount);
+        notifyItemRemoved(position);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                reCallAdapter();
+            }
+        },1000);
+    }
 
     public void removeItem(int position){
         boardList.remove(position);

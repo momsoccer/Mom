@@ -1,5 +1,6 @@
 package com.mom.soccer.bottommenu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +27,8 @@ public class SearchActivity extends AppCompatActivity {
 
     PrefUtil prefUtil;
     User user;
+    private Intent intent;
+    private int goPage = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +46,16 @@ public class SearchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(R.drawable.back_arrow);
 
+        intent = getIntent();
+        goPage = intent.getExtras().getInt("goPage");
+
         viewPager = (ViewPager) findViewById(R.id.search_viewpager);
-
         ViewFragmentPagerAdapter b = new ViewFragmentPagerAdapter(getSupportFragmentManager(),null);
-
         viewPager.setAdapter(b);
 
-        tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.search_tabs);
+        viewPager.setCurrentItem(goPage);
 
+        tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.search_tabs);
         tabsStrip.setIndicatorColor(getResources().getColor(R.color.enabled_red));
         tabsStrip.setTextColor(getResources().getColor(R.color.color6));
 

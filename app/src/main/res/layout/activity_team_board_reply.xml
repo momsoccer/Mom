@@ -9,202 +9,204 @@
     tools:context="com.mom.soccer.ball.TeamBoardActivity"
     android:fillViewport="true"
     android:background="@color/mom_color1">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/toolbar"
-        app:titleTextColor="@color/color6"
-        android:background="@color/mom_color1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
 
-        <TextView
-            android:id="@+id/action_bar_title"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar"
+            app:titleTextColor="@color/color6"
+            android:background="@color/mom_color1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:textColor="@color/color6"
-            android:layout_gravity="center"
-            />
+            >
 
-    </android.support.v7.widget.Toolbar>
-    <LinearLayout
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/action_bar_title"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:textColor="@color/color6"
+                android:layout_gravity="center"
+                />
 
+        </android.support.v7.widget.Toolbar>
         <LinearLayout
-            android:orientation="horizontal"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/userimg"
-                    android:src="@drawable/userimg"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/userimg"
+                        android:src="@drawable/userimg"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" />
+
+                    <TextView
+                        android:id="@+id/level"
+                        android:layout_marginTop="28dp"
+                        android:layout_marginLeft="-20dp"
+                        android:text="12"
+                        android:textColor="@color/color6"
+                        android:textSize="8sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/ic_levelmark"
+                        android:gravity="center"
+                        android:layout_width="20dp"
+                        android:layout_height="22dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    >
+
+                    <TextView
+                        android:id="@+id/txt_username"
+                        android:text="User Name"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="@color/color6"
+                        android:layout_gravity="left"
+                        />
+
+                    <TextView
+                        android:id="@+id/txt_date"
+                        android:text="2015년 12월 12일 오후 12시 11분"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="10sp"
+                        android:textColor="@color/color6"
+                        android:layout_gravity="left"
+                        android:gravity="center"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/level"
-                    android:layout_marginTop="28dp"
-                    android:layout_marginLeft="-20dp"
-                    android:text="12"
+                    android:id="@+id/content"
+                    android:layout_marginTop="20dp"
                     android:textColor="@color/color6"
-                    android:textSize="8sp"
-                    android:textStyle="bold"
-                    android:background="@drawable/ic_levelmark"
-                    android:gravity="center"
-                    android:layout_width="20dp"
-                    android:layout_height="22dp" />
+                    android:textSize="20sp"
+                    android:gravity="top"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mom_color1" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center"
-                >
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/txt_username"
-                    android:text="User Name"
-                    android:layout_marginLeft="10dp"
+                    android:id="@+id/boardlineCount"
+                    android:text="reply 1 ea"
+                    android:textSize="12sp"
+                    android:textColor="@color/color8"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:textColor="@color/color6"
-                    android:layout_gravity="left"
-                    />
+                    android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/txt_date"
-                    android:text="2015년 12월 12일 오후 12시 11분"
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/replyRecview"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="10sp"
-                    android:textColor="@color/color6"
-                    android:layout_gravity="left"
-                    android:gravity="center"
-                    />
+                    android:background="@color/mom_color1" />
             </LinearLayout>
+
         </LinearLayout>
-
-
-
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/content"
-                android:layout_marginTop="20dp"
-                android:textColor="@color/color6"
-                android:textSize="20sp"
-                android:gravity="top"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/mom_color1" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/boardlineCount"
-                android:text="reply 1 ea"
-                android:textSize="12sp"
-                android:textColor="@color/color8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/replyRecview"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/mom_color1" />
-        </LinearLayout>
-
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        >
-
-        <LinearLayout
-            android:background="@drawable/xml_back_white"
-            android:layout_margin="5dp"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
             android:gravity="center"
             >
 
-            <EditText
-                android:id="@+id/comment"
+            <LinearLayout
+                android:background="@drawable/xml_back_white"
                 android:layout_margin="5dp"
-                android:hint="@string/momboard_edit"
-                android:textColorHint="@color/color2"
-                android:textSize="15sp"
-                android:textColor="@color/color6"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="center"
+                >
+
+                <EditText
+                    android:id="@+id/comment"
+                    android:layout_margin="5dp"
+                    android:hint="@string/momboard_edit"
+                    android:textColorHint="@color/color2"
+                    android:textSize="15sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/xml_edit_back"
+                    />
+
+            </LinearLayout>
+
+            <Button
+                android:layout_margin="5dp"
+                android:id="@+id/sendBtn"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:background="@drawable/xml_edit_back"
-                />
+                android:text="@string/momboard_edit_send"
+                android:textColorHint="@color/color8"
+                style="@style/btnStylePaprika"
+                android:layout_width="0dp"
+                android:layout_weight=".2"
+                android:layout_height="35dp" />
 
         </LinearLayout>
-
-        <Button
-            android:layout_margin="5dp"
-            android:id="@+id/sendBtn"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="@string/momboard_edit_send"
-            android:textColorHint="@color/color8"
-            style="@style/btnStylePaprika"
-            android:layout_width="0dp"
-            android:layout_weight=".2"
-            android:layout_height="35dp" />
-
-    </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

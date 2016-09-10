@@ -30,6 +30,8 @@ public class PlayerMainActivity extends AppCompatActivity {
 
     private static final String TAG = "PlayerMainActivity";
 
+    private static final int COMMENT_LINE_CODE = 201;
+
     ViewPager viewPager;
     PagerSlidingTabStrip tabsStrip;
 
@@ -206,4 +208,23 @@ public class PlayerMainActivity extends AppCompatActivity {
         super.onDestroy();
         Log.i(TAG,"====================== onDestroy() ======================");
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+    }
+/*    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case COMMENT_LINE_CODE:
+                if(RESULT_OK == resultCode){
+                    int lineCount = data.getExtras().getInt("lineCount");
+                    int boardid = data.getExtras().getInt("boardid");
+
+                    Log.i(TAG,"카운트 : "+lineCount +" : "+ " 아이디는 : "+ boardid);
+                    Fragment fragment = getSupportFragmentManager().findFragmentByTag("");
+                    fragment.onActivityResult(request, resultCode, data);
+                }
+                break;
+        }
+    }*/
 }
