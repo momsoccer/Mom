@@ -68,6 +68,7 @@ public class PlayerFragment extends Fragment{
     private SlidingUpPanelLayout mLayout;
     private List<MomBoard> momBoardList = new ArrayList<MomBoard>();
     private static final int COMMENT_LINE_CODE = 201;
+    private boolean mLockrecyclerView;
 
     LinearLayoutManager linearLayoutManager;
 
@@ -92,9 +93,10 @@ public class PlayerFragment extends Fragment{
     ImageButton teamSearch;
     LinearLayout li_board_no_data_found;
 
-    private int page=1;
+    private int page=0;
     private int offset=0;
-    private int limit =5;
+    private int limit =20;
+    private boolean lastData = false;
 
     public static PlayerFragment newInstance(int page, User user){
 
@@ -131,6 +133,7 @@ public class PlayerFragment extends Fragment{
         View view = null;
 
         if(mPage==1){
+            mLockrecyclerView = true;
 
             view = inflater.inflate(R.layout.fr_player_fragment2, container, false);
             li_team_no_data = (LinearLayout) view.findViewById(R.id.li_team_no_data);
@@ -146,13 +149,13 @@ public class PlayerFragment extends Fragment{
                 li_team_no_data.setVisibility(View.GONE);
                 swipeRefreshLayout.setVisibility(View.VISIBLE);
                 linearLayoutManager = new LinearLayoutManager(getContext());
-                getTeamBoarderList();
+                getTeamBoarderList("first");
             }
 
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    getTeamBoarderList();
+                    getTeamBoarderList("first");
                     swipeRefreshLayout.setRefreshing(false);
                 }
             });
@@ -196,12 +199,15 @@ public class PlayerFragment extends Fragment{
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
-                    Log.i(TAG,"스크롤~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" + linearLayoutManager.findLastVisibleItemPosition());
-                    Log.i(TAG,"스크롤~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" +  momBoardList.size());
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        if (linearLayoutManager.findLastVisibleItemPosition() == momBoardList.size()-1) {
-                            VeteranToast.makeToast(getContext(),"여기가 마지막?", Toast.LENGTH_SHORT).show();
 
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        if (linearLayoutManager.findLastVisibleItemPosition() == momBoardList.size()) {
+
+                            Log.i(TAG," 불린 값은 " + lastData);
+                            if(!lastData){
+                                VeteranToast.makeToast(getActivity(),"테이터를 불러옵니다 " + offset, Toast.LENGTH_SHORT).show();
+                                getTeamBoarderList("next");
+                            }
                         }
                     }
                 }
@@ -498,13 +504,19 @@ public class PlayerFragment extends Fragment{
     }
 
 
-    public void getTeamBoarderList(){
+    public void getTeamBoarderList(final String pageFlag){
         WaitingDialog.showWaitingDialog(getActivity(),false);
         MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getContext(),user);
 
         MomBoard query = new MomBoard();
         query.setBoardtypeid(Common.teamid);
 
+        if(pageFlag.equals("first")) {
+            offset = 0;
+        }else{
+            page = page + 1;
+            offset = 20 * page;
+        }
         query.setCategory("B");
         query.setOffset(offset);
         query.setLimit(limit);
@@ -513,29 +525,52 @@ public class PlayerFragment extends Fragment{
         c.enqueue(new Callback<List<MomBoard>>() {
             @Override
             public void onResponse(Call<List<MomBoard>> call, Response<List<MomBoard>> response) {
-                WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
-                    momBoardList = response.body();
+                    if(pageFlag.equals("first")) {
+                        WaitingDialog.cancelWaitingDialog();
+                        momBoardList = response.body();
+                        if (momBoardList.size() == 0) {
+                            li_board_no_data_found.setVisibility(View.VISIBLE);
+                        } else {
+                            li_board_no_data_found.setVisibility(View.GONE);
+                        }
 
-                    if(momBoardList.size()==0){
-                        li_board_no_data_found.setVisibility(View.VISIBLE);
+                        boardRecview.setHasFixedSize(true);
+                        boardRecview.setLayoutManager(linearLayoutManager);
+                        boardItemAdapter = new BoardItemAdapter(getActivity(), momBoardList, user);
+
+                        boardRecview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                        boardRecview.getItemAnimator().setAddDuration(300);
+                        boardRecview.getItemAnimator().setRemoveDuration(300);
+                        boardRecview.getItemAnimator().setMoveDuration(300);
+                        boardRecview.getItemAnimator().setChangeDuration(300);
+                        boardRecview.setHasFixedSize(true);
+                        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(boardItemAdapter);
+                        alphaAdapter.setDuration(500);
+                        boardRecview.setAdapter(boardItemAdapter);
+
                     }else{
-                        li_board_no_data_found.setVisibility(View.GONE);
+                        Log.i(TAG,"데이터를 담습니다");
+                        final List<MomBoard> addBoardList = response.body();
+
+                        for(int i = 0 ; i < addBoardList.size() ; i++)
+                        {
+                            momBoardList.add(addBoardList.get(i));
+                        }
+
+                        boardItemAdapter.notifyDataSetChanged();
+
+                        //if geting data size is 20 less... it's end
+                        Log.i(TAG,"모지모지 : " + addBoardList.size());
+
+
+                        if(addBoardList.size() != 20){
+                            lastData = true;
+                        }
+                        WaitingDialog.cancelWaitingDialog();
                     }
-
-                    boardRecview.setHasFixedSize(true);
-                    boardRecview.setLayoutManager(linearLayoutManager);
-                    boardItemAdapter = new BoardItemAdapter(getActivity(),momBoardList,user);
-
-                    boardRecview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
-                    boardRecview.getItemAnimator().setAddDuration(300);
-                    boardRecview.getItemAnimator().setRemoveDuration(300);
-                    boardRecview.getItemAnimator().setMoveDuration(300);
-                    boardRecview.getItemAnimator().setChangeDuration(300);
-                    boardRecview.setHasFixedSize(true);
-                    AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(boardItemAdapter);
-                    alphaAdapter.setDuration(500);
-                    boardRecview.setAdapter(boardItemAdapter);
+                }else{
+                    WaitingDialog.cancelWaitingDialog();
                 }
             }
 
@@ -557,6 +592,7 @@ public class PlayerFragment extends Fragment{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
 
+    /*
     @Override
     public void onStart() {
         super.onStart();
@@ -576,4 +612,5 @@ public class PlayerFragment extends Fragment{
     public void onStop() {
         super.onStop();
     }
+    */
 }

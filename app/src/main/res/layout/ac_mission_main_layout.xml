@@ -12,8 +12,6 @@
 
     <Button
         android:id="@+id/btn_mission_upload"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
         style="@style/btnStylePaprika"
         android:text="@string/mission_upload"
         android:layout_gravity="bottom"

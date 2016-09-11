@@ -3,6 +3,7 @@ package com.mom.soccer.retrofitdao;
 import com.mom.soccer.dataDto.FeedDataVo;
 import com.mom.soccer.dataDto.InsInfoVo;
 import com.mom.soccer.dataDto.MainTypeListVo;
+import com.mom.soccer.dataDto.TeamRankingVo;
 import com.mom.soccer.dataDto.UserLevelDataVo;
 import com.mom.soccer.dataDto.UserMainVo;
 import com.mom.soccer.dataDto.UserRangkinVo;
@@ -60,4 +61,8 @@ public interface DataService {
 
     @GET("/api/data/getTeamMemberList")
     Call<List<UserMainVo>> getTeamMemberList(@Query("insid") int insid);
+
+    @GET("/api/data/getTeamRankingScore")
+    Call<List<TeamRankingVo>> getTeamRankingScore(@Query("count") int count);
+
 }

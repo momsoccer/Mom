@@ -208,11 +208,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                     .into(navHeaderImage);
         }
 
-
-
-
-        //팀명 셋팅 조건이 필요
-
         /*****************************************************************************
          * 뷰 페이저 설정 부분
          ****************************************************************************/
@@ -227,6 +222,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                 R.layout.mom_main_slide1,
                 R.layout.mom_main_slide3,
                 R.layout.mom_main_slide2,
+                R.layout.mom_main_slide4
         };
 
         addBottomDots(0);

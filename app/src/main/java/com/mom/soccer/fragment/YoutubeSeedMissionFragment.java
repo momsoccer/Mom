@@ -57,13 +57,16 @@ public class YoutubeSeedMissionFragment extends Fragment {
                 if (!b) {
                     //youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
                     youTubePlayer.cueVideo(youtubeVideoAddr);
+                    youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL); //landscape do not change
                 }
             }
 
             @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
             }
+
+
+
         });
 
 
