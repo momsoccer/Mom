@@ -125,43 +125,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/mom_color1" />
-
-                    <LinearLayout
-                        android:layout_alignParentBottom="true"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        >
-
-                        <ImageView
-                            android:id="@+id/imageBtnCamera1"
-                            android:src="@drawable/instagram"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="45dp"
-                            android:background="@color/mom_color1"
-                            />
-
-                        <ImageView
-                            android:id="@+id/imageBtnCamera2"
-                            android:src="@drawable/instagram"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="45dp"
-                            android:background="@color/mom_color1"
-                            />
-
-                        <ImageView
-                            android:id="@+id/imageBtnCamera3"
-                            android:src="@drawable/instagram"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="45dp"
-                            android:background="@color/mom_color1"
-                            />
-                    </LinearLayout>
-
                 </RelativeLayout>
 
         </LinearLayout>

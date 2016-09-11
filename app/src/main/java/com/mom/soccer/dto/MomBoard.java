@@ -37,6 +37,10 @@ public class MomBoard {
     private int likecount;
     private String formatDataSign;
 
+    private int limit;
+    private int offset;
+    private int pagenum;
+
     public MomBoard(){}
 
     @Override
@@ -50,6 +54,7 @@ public class MomBoard {
                 ", boardtypeid=" + boardtypeid +
                 ", pubtype='" + pubtype + '\'' +
                 ", change_creationdate='" + change_creationdate + '\'' +
+                ", change_updatedate='" + change_updatedate + '\'' +
                 ", category='" + category + '\'' +
                 ", lineid=" + lineid +
                 ", likeid=" + likeid +
@@ -65,7 +70,34 @@ public class MomBoard {
                 ", commentcount=" + commentcount +
                 ", likecount=" + likecount +
                 ", formatDataSign='" + formatDataSign + '\'' +
+                ", limit=" + limit +
+                ", offset=" + offset +
+                ", pagenum=" + pagenum +
                 '}';
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public int getPagenum() {
+        return pagenum;
+    }
+
+    public void setPagenum(int pagenum) {
+        this.pagenum = pagenum;
     }
 
     public String getChange_updatedate() {

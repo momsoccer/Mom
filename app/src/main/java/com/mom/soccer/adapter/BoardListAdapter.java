@@ -3,7 +3,10 @@ package com.mom.soccer.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,21 +14,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.RoundedCornersTransformation;
+import com.mom.soccer.dataDto.Report;
 import com.mom.soccer.dto.Board;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.mission.UserMissionActivity;
+import com.mom.soccer.pubretropit.PubReport;
 import com.mom.soccer.retrofitdao.BoardService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -48,6 +55,9 @@ public class BoardListAdapter extends BaseAdapter {
     private List<Board> boardList = new ArrayList<Board>();
     private int currentUid = 0;
     UserMission usermission;
+
+    View positiveAction;
+    EditText report_content;
 
     private int writeuid = 0;
 
@@ -99,8 +109,7 @@ public class BoardListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View currentRow = convertView;
-        BoardHolder boardHolder;
-
+        final BoardHolder boardHolder;
         final Board board = boardList.get(position);
         writeuid = board.getWriteuid();
         i  = position;
@@ -108,7 +117,6 @@ public class BoardListAdapter extends BaseAdapter {
 
         if(convertView==null){
             currentRow = inflater.inflate(R.layout.board_list_item_layout, parent, false);
-
             boardHolder = new BoardHolder();
 
             //내가 쓴글은 파란색으로
@@ -237,14 +245,51 @@ public class BoardListAdapter extends BaseAdapter {
                                 break;
 
                             case 102:
-                                new MaterialDialog.Builder(activity)
+
+                                MaterialDialog dialog = new MaterialDialog.Builder(activity)
                                         .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
-                                        .title(R.string.mom_diaalog_alert)
+                                        .title(R.string.mom_diaalog_board_report)
                                         .titleColor(activity.getResources().getColor(R.color.color6))
-                                        .content("기능을 준비 중입니다. \n조금만 기다려 주세요")
-                                        .contentColor(activity.getResources().getColor(R.color.color6))
-                                        .positiveText(R.string.mom_diaalog_confirm)
-                                        .show();
+                                        .customView(R.layout.dialog_report_view, true)
+                                        .positiveText(R.string.momboard_edit_send)
+                                        .negativeText(R.string.cancel)
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                Report report = new Report();
+                                                report.setType(PubReport.REPORTTYPE_MISSION_COMMENT);
+                                                report.setUid(user.getUid());
+                                                report.setReason(report_content.getText().toString());
+                                                report.setContent(board.getComment());
+                                                report.setPublisherid(board.getWriteuid());
+                                                PubReport.doReport(activity,report,user);
+                                            }
+                                        })
+                                        .build();
+
+                                report_content = (EditText) dialog.findViewById(R.id.report_content);
+                                positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+
+                                report_content.addTextChangedListener(new TextWatcher() {
+                                    @Override
+                                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                                    }
+
+                                    @Override
+                                    public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                                        positiveAction.setEnabled(s.toString().trim().length() > 0);
+                                    }
+
+                                    @Override
+                                    public void afterTextChanged(Editable editable) {
+
+                                    }
+                                });
+
+                                dialog.show();
+                                positiveAction.setEnabled(false);
+
                                 break;
                         }
 

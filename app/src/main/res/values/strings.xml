@@ -697,4 +697,7 @@
     <string name="member_title3">팀 가입일</string>
     <string name="team_board_msg">등록된 글이 없습니다</string>
 
+    <string name="report_title">신고를 접수 등록하는 중입니다</string>
+    <string name="report_title2">신고가 접수 되었습니다 \n검토 후 신속히 연락 드리겠습니다</string>
+
 </resources>

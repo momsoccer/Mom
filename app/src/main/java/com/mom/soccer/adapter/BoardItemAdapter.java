@@ -26,14 +26,19 @@ import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.ball.TeamBoardActivity;
 import com.mom.soccer.ball.TeamBoardReply;
+import com.mom.soccer.common.ActivityResultEvent;
 import com.mom.soccer.common.Compare;
+import com.mom.soccer.common.EventBus;
 import com.mom.soccer.common.RoundedCornersTransformation;
+import com.mom.soccer.dataDto.Report;
 import com.mom.soccer.dto.MomBoard;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.pubretropit.PubReport;
 import com.mom.soccer.retrofitdao.MomBoardService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
@@ -52,10 +57,14 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
     private User user;
     private static final int COMMENT_LINE_CODE = 201;
 
+    View positiveAction;
+    EditText report_content;
+
     public BoardItemAdapter(Activity activity, List<MomBoard> boardList,User user) {
         this.activity = activity;
         this.boardList = boardList;
         this.user = user;
+        EventBus.getInstance().register(this);
     }
 
 
@@ -67,7 +76,6 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
 
     @Override
     public void onBindViewHolder(BoardItemViewHolder holder, int i) {
-
         final MomBoard vo = boardList.get(i);
         final int posintion = i;
 
@@ -88,6 +96,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
             public void onClick(View view) {
                 Intent intent = new Intent(activity, TeamBoardReply.class);
                 intent.putExtra("boardid",vo.getBoardid());
+                intent.putExtra("posintion",posintion);
                 activity.startActivityForResult(intent,COMMENT_LINE_CODE);
             }
         });
@@ -144,9 +153,10 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
                                     break;
                                 case 103:
 
-                                    final View positiveAction;
-                                    EditText report_content;
-
+                                    /*
+                                        View positiveAction;
+                                        EditText report_content;
+                                     */
                                     MaterialDialog dialog = new MaterialDialog.Builder(activity)
                                             .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
                                             .title(R.string.mom_diaalog_board_report)
@@ -157,7 +167,13 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
                                             .onPositive(new MaterialDialog.SingleButtonCallback() {
                                                 @Override
                                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                    //신고하기는 comment으로 빼서 모듈화한다.
+                                                    Report report = new Report();
+                                                    report.setType(PubReport.REPORTTYPE_MOMBOARD_HEADER);
+                                                    report.setUid(user.getUid());
+                                                    report.setReason(report_content.getText().toString());
+                                                    report.setContent(vo.getContent());
+                                                    report.setPublisherid(vo.getUid());
+                                                    PubReport.doReport(activity,report,user);
                                                 }
                                             })
                                             .build();
@@ -184,7 +200,6 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
 
                                     dialog.show();
                                     positiveAction.setEnabled(false);
-
                                     break;
                             }
                             return false;
@@ -208,6 +223,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
             public void onClick(View view) {
                 Intent intent = new Intent(activity,TeamBoardReply.class);
                 intent.putExtra("boardid",vo.getBoardid());
+                intent.putExtra("posintion",posintion);
                 activity.startActivityForResult(intent,COMMENT_LINE_CODE);
             }
         });
@@ -220,14 +236,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
 
     public void updateLineItemCount(int position,int lineCount){
         boardList.get(position).setCommentcount(lineCount);
-        notifyItemRemoved(position);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                reCallAdapter();
-            }
-        },1000);
+        notifyDataSetChanged();
     }
 
     public void removeItem(int position){
@@ -243,17 +252,6 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         },1000);
     }
 
-    /*
-    public void remove(int position) {
-        mDataSet.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    public void add(String text, int position) {
-        mDataSet.add(position, text);
-        notifyItemInserted(position);
-    }
-    */
 
     public void reCallAdapter(){
         notifyDataSetChanged();
@@ -307,6 +305,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         });
     }
 
+    //about Menu attach
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = activity.getMenuInflater();
         inflater.inflate(R.menu.momboard_menu, menu);
@@ -318,5 +317,22 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         menu.getItem(1).setEnabled(false);
         return true;
     }*/
+
+    @Subscribe
+    public void onActivityResult(ActivityResultEvent activityResultEvent){
+        onActivityResult(activityResultEvent.getRequestCode(), activityResultEvent.getResultCode(), activityResultEvent.getData());
+    }
+
+    private void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case COMMENT_LINE_CODE:
+                if(resultCode == activity.RESULT_OK){
+                    int lineCount = data.getExtras().getInt("lineCount");
+                    int posintion = data.getExtras().getInt("posintion");
+                    updateLineItemCount(posintion,lineCount);
+                }
+                break;
+        }
+    }
 
 }

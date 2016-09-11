@@ -22,15 +22,13 @@
             android:visibility="visible"
             >
 
-            <ListView
-                android:layout_marginTop="10dp"
-                android:id="@+id/list_total_ranking"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/totalRecyclerView"
+                android:layout_gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:dividerHeight="1dp"
-                android:divider="@color/color8"
-                >
-                </ListView>
+                android:background="@color/mom_color1"
+                />
 
             <Button
                 android:id="@+id/btn_more_total_ranking"
@@ -42,37 +40,6 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/li_main_slid_ranking_no_data"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:visibility="gone"
-            >
-
-            <ImageView
-                android:src="@drawable/ic_wifi_notification"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
-
-            <TextView
-                android:text="@string/network_nodata_error"
-                android:textColor="@color/color6"
-                android:textSize="12dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/btn_refresh_ranking"
-                android:layout_marginTop="10dp"
-                android:text="@string/page_refresh"
-                style="@style/btnRefresh"
-                />
-
         </LinearLayout>
 
     </LinearLayout>

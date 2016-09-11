@@ -1,10 +1,13 @@
 package com.mom.soccer.retrofitdao;
 
 import com.mom.soccer.dataDto.MomMessage;
+import com.mom.soccer.dataDto.Report;
 import com.mom.soccer.dto.ServerResult;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -15,9 +18,10 @@ public interface MomComService {
     Call<ServerResult> logOut();
 
     @GET("/api/mission/getCommonInfo")
-    Call<MomMessage> getCommonInfo(@Query("name") String name
+    Call<MomMessage> getCommonInfo(@Query("name") String name);
 
-    );
+    @POST("/all/saveReport")
+    Call<ServerResult> saveReport(@Body Report report);
 
 }
 

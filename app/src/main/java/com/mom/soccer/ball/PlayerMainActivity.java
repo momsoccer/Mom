@@ -16,7 +16,9 @@ import android.widget.ImageView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.mom.soccer.R;
+import com.mom.soccer.common.ActivityResultEvent;
 import com.mom.soccer.common.Common;
+import com.mom.soccer.common.EventBus;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.fragment.PlayerFragment;
@@ -189,7 +191,9 @@ public class PlayerMainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return PlayerFragment.newInstance(position + 1,user);
+
+            PlayerFragment playerFragment = PlayerFragment.newInstance(position + 1,user);
+            return playerFragment;
         }
 
         @Override
@@ -208,23 +212,9 @@ public class PlayerMainActivity extends AppCompatActivity {
         super.onDestroy();
         Log.i(TAG,"====================== onDestroy() ======================");
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-    }
-/*    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
-            case COMMENT_LINE_CODE:
-                if(RESULT_OK == resultCode){
-                    int lineCount = data.getExtras().getInt("lineCount");
-                    int boardid = data.getExtras().getInt("boardid");
 
-                    Log.i(TAG,"카운트 : "+lineCount +" : "+ " 아이디는 : "+ boardid);
-                    Fragment fragment = getSupportFragmentManager().findFragmentByTag("");
-                    fragment.onActivityResult(request, resultCode, data);
-                }
-                break;
-        }
-    }*/
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        EventBus.getInstance().post(ActivityResultEvent.create(requestCode, resultCode, data));
+    }
 }

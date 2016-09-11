@@ -28,7 +28,9 @@ import com.mom.soccer.adapter.FriendListAdapter;
 import com.mom.soccer.adapter.UserMissionAdapter;
 import com.mom.soccer.ball.PlayerMainActivity;
 import com.mom.soccer.bottommenu.SearchActivity;
+import com.mom.soccer.common.ActivityResultEvent;
 import com.mom.soccer.common.Common;
+import com.mom.soccer.common.EventBus;
 import com.mom.soccer.dataDto.FeedDataVo;
 import com.mom.soccer.dataDto.UserMainVo;
 import com.mom.soccer.dto.FriendReqVo;
@@ -43,6 +45,7 @@ import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +92,10 @@ public class PlayerFragment extends Fragment{
     ImageButton teamSearch;
     LinearLayout li_board_no_data_found;
 
+    private int page=1;
+    private int offset=0;
+    private int limit =5;
+
     public static PlayerFragment newInstance(int page, User user){
 
         Log.i(TAG,"PlayerFragment newInstance : ==========================");
@@ -104,20 +111,28 @@ public class PlayerFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG,"fragment onCreate() ===========================================");
         mPage = getArguments().getInt(ARG_PAGE);
         user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
+    }
+
+    @Override
+    public void onDestroyView() {
+        EventBus.getInstance().unregister(this);
+        super.onDestroyView();
+
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-
+        Log.i(TAG,"fragment onCreateView() ===========================================");
+        EventBus.getInstance().register(this);
         View view = null;
 
         if(mPage==1){
 
             view = inflater.inflate(R.layout.fr_player_fragment2, container, false);
-
             li_team_no_data = (LinearLayout) view.findViewById(R.id.li_team_no_data);
             swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
             teamSearch = (ImageButton) view.findViewById(R.id.teamSearch);
@@ -152,30 +167,45 @@ public class PlayerFragment extends Fragment{
                 }
             });
 
-          if(Build.VERSION.SDK_INT  >= 20) {
-              boardRecview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                  @Override
-                  public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                      if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                          swipeRefreshLayout.setEnabled(true);
-                      } else {
-                          swipeRefreshLayout.setEnabled(false);
-                      }
-                  }
-              });
-          }else{
-              boardRecview.setOnScrollListener(new RecyclerView.OnScrollListener(){
-                  @Override
-                  public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                      super.onScrolled(recyclerView, dx, dy);
-                      if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                          swipeRefreshLayout.setEnabled(true);
-                      } else {
-                          swipeRefreshLayout.setEnabled(false);
-                      }
-                  }
-              });
-          }
+            if(Build.VERSION.SDK_INT  >= 20) {
+                boardRecview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                    @Override
+                    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            swipeRefreshLayout.setEnabled(true);
+                        } else {
+                            swipeRefreshLayout.setEnabled(false);
+                        }
+                    }
+                });
+            }else{
+                boardRecview.setOnScrollListener(new RecyclerView.OnScrollListener(){
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            swipeRefreshLayout.setEnabled(true);
+                        } else {
+                            swipeRefreshLayout.setEnabled(false);
+                        }
+                    }
+                });
+            }
+
+            boardRecview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    Log.i(TAG,"스크롤~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" + linearLayoutManager.findLastVisibleItemPosition());
+                    Log.i(TAG,"스크롤~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" +  momBoardList.size());
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        if (linearLayoutManager.findLastVisibleItemPosition() == momBoardList.size()-1) {
+                            VeteranToast.makeToast(getContext(),"여기가 마지막?", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                }
+            });
 
         }else if(mPage==2){
 
@@ -476,6 +506,8 @@ public class PlayerFragment extends Fragment{
         query.setBoardtypeid(Common.teamid);
 
         query.setCategory("B");
+        query.setOffset(offset);
+        query.setLimit(limit);
 
         Call<List<MomBoard>> c = momBoardService.getBoardHeaderList(query);
         c.enqueue(new Callback<List<MomBoard>>() {
@@ -515,12 +547,33 @@ public class PlayerFragment extends Fragment{
         });
     }
 
-    public  void setUpdateItem(int lineCount){
-        boardItemAdapter.updateLineItemCount(1,lineCount);
+
+    @Subscribe
+    public void onActivityResult(ActivityResultEvent activityResultEvent){
+        onActivityResult(activityResultEvent.getRequestCode(), activityResultEvent.getResultCode(), activityResultEvent.getData());
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        VeteranToast.makeToast(getActivity(),"값은 : " + requestCode, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,12 +25,14 @@ import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.RoundedCornersTransformation;
+import com.mom.soccer.dataDto.Report;
 import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.MissionPass;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.mission.MissionMainActivity;
+import com.mom.soccer.pubretropit.PubReport;
 import com.mom.soccer.retrofitdao.MissionPassService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
@@ -50,6 +55,9 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
     String missionPassFlag;
     int i = 0;
     Mission mission;
+
+    View positiveAction;
+    EditText report_content;
 
     private String getViewFlag = "N";
 
@@ -159,9 +167,6 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
                             case 101:
 
                                 if(pass.getStatus().equals("REQUEST")){
-                                    //VeteranToast.makeToast(activity,"1:" + pass.toString(),Toast.LENGTH_SHORT).show();
-                                    //Log.i(TAG,"2 : " + pass.toString());
-
                                     new MaterialDialog.Builder(activity)
                                             .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
                                             .title(R.string.mom_diaalog_pass_apply_cancel_msg)
@@ -209,7 +214,50 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
 
                                 break;
                             case 102:
-                                VeteranToast.makeToast(activity,"준비중입니다", Toast.LENGTH_SHORT).show();
+                                MaterialDialog dialog = new MaterialDialog.Builder(activity)
+                                        .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                        .title(R.string.mom_diaalog_board_report)
+                                        .titleColor(activity.getResources().getColor(R.color.color6))
+                                        .customView(R.layout.dialog_report_view, true)
+                                        .positiveText(R.string.momboard_edit_send)
+                                        .negativeText(R.string.cancel)
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                Report report = new Report();
+                                                report.setType(PubReport.REPORTTYPE_MISSION_PASS);
+                                                report.setUid(user.getUid());
+                                                report.setReason(report_content.getText().toString());
+                                                report.setContent("Mission Pass complain : " + pass.getPassid());
+                                                report.setPublisherid(pass.getInstructorid());
+                                                PubReport.doReport(activity,report,user);
+                                            }
+                                        })
+                                        .build();
+
+                                report_content = (EditText) dialog.findViewById(R.id.report_content);
+                                positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+
+                                report_content.addTextChangedListener(new TextWatcher() {
+                                    @Override
+                                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                                    }
+
+                                    @Override
+                                    public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                                        positiveAction.setEnabled(s.toString().trim().length() > 0);
+                                    }
+
+                                    @Override
+                                    public void afterTextChanged(Editable editable) {
+
+                                    }
+                                });
+
+                                dialog.show();
+                                positiveAction.setEnabled(false);
+
                                 break;
                         }
 

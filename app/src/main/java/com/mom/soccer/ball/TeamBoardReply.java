@@ -27,10 +27,12 @@ import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.common.RecyclerItemClickListener;
 import com.mom.soccer.common.RoundedCornersTransformation;
+import com.mom.soccer.dataDto.Report;
 import com.mom.soccer.dto.MomBoard;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.Team;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.pubretropit.PubReport;
 import com.mom.soccer.retrofitdao.MomBoardService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -54,6 +56,10 @@ public class TeamBoardReply extends AppCompatActivity {
     private PrefUtil prefUtil;
     private User user;
     private Team team;
+    private int posintion=0;
+
+    View positiveAction;
+    EditText report_content;
 
     @Bind(R.id.action_bar_title)
     TextView action_bar_title;
@@ -103,6 +109,7 @@ public class TeamBoardReply extends AppCompatActivity {
 
         intent = getIntent();
         boardid = intent.getExtras().getInt("boardid");
+        posintion = intent.getExtras().getInt("posintion");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -182,7 +189,7 @@ public class TeamBoardReply extends AppCompatActivity {
 
                     //삭제하기
                     @Override public void onLongItemClick(View view, final int position) {
-                        MomBoard vo = boardLineItemAdapter.getBoardLine(position);
+                        final MomBoard vo = boardLineItemAdapter.getBoardLine(position);
 
                         if(user.getUid()==vo.getUid()){
                             new MaterialDialog.Builder(activity)
@@ -200,9 +207,6 @@ public class TeamBoardReply extends AppCompatActivity {
                                     })
                                     .show();
                         }else{
-                            final View positiveAction;
-                            EditText report_content;
-
                             MaterialDialog dialog = new MaterialDialog.Builder(activity)
                                     .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
                                     .title(R.string.mom_diaalog_board_report)
@@ -213,7 +217,13 @@ public class TeamBoardReply extends AppCompatActivity {
                                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                                         @Override
                                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                            //신고하기는 comment으로 빼서 모듈화한다.
+                                            Report report = new Report();
+                                            report.setType(PubReport.REPORTTYPE_MOMBOARD_COMMENT);
+                                            report.setUid(user.getUid());
+                                            report.setReason(report_content.getText().toString());
+                                            report.setContent(vo.getContent());
+                                            report.setPublisherid(vo.getUid());
+                                            PubReport.doReport(activity,report,user);
                                         }
                                     })
                                     .build();
@@ -357,7 +367,7 @@ public class TeamBoardReply extends AppCompatActivity {
     public void onBackPressed() {
         Intent backIntent = new Intent();
         backIntent.putExtra("lineCount",lineCount);
-        backIntent.putExtra("boardid",boardid);
+        backIntent.putExtra("posintion",posintion);
         setResult(RESULT_OK, backIntent);
         finish();
     }

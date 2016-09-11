@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/mom_color1"
+    >
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/mom_color1"
         >
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            android:background="@color/color2"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             />
 
         <LinearLayout
             android:layout_marginTop="-10dp"
+            android:layout_marginBottom="5dp"
             android:id="@+id/layoutDots"
             android:layout_width="match_parent"
             android:layout_height="30dp"
@@ -35,81 +36,82 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             >
 
             <LinearLayout
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 >
 
                 <ImageButton
-                    android:layout_margin="7dp"
                     android:id="@+id/main_btn_drible"
                     android:background="@drawable/main_page_drible"
-                    android:layout_width="105dp"
-                    android:layout_height="110dp"
-                    android:scaleType="fitCenter"
-                    android:onClick="OnClickMission"/>
-
-                <ImageButton
-                    android:layout_margin="7dp"
-                    android:id="@+id/main_btn_trapping"
-                    android:background="@drawable/main_page_traping"
-                    android:layout_width="105dp"
-                    android:layout_height="110dp"
-                    android:scaleType="fitCenter"
-                    android:onClick="OnClickMission"/>
-
-                <ImageButton
-                    android:layout_margin="7dp"
-                    android:id="@+id/main_btn_lifting"
-                    android:background="@drawable/main_page_lifting"
-                    android:layout_width="105dp"
-                    android:layout_height="110dp"
-                    android:scaleType="fitCenter"
-                    android:onClick="OnClickMission"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                >
-
-                <ImageButton
-                    android:layout_margin="7dp"
-                    android:id="@+id/main_btn_around"
-                    android:background="@drawable/main_page_around"
-                    android:layout_width="105dp"
-                    android:layout_height="110dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:scaleType="fitCenter"
                     android:onClick="OnClickMission"
                     />
 
                 <ImageButton
-                    android:layout_margin="7dp"
-                    android:id="@+id/main_btn_flick"
-                    android:background="@drawable/main_page_flib"
-                    android:layout_width="105dp"
-                    android:layout_height="110dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/main_btn_trapping"
+                    android:background="@drawable/main_page_traping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:scaleType="fitCenter"
                     android:onClick="OnClickMission"/>
 
                 <ImageButton
-                    android:layout_margin="7dp"
+                    android:id="@+id/main_btn_lifting"
+                    android:background="@drawable/main_page_lifting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:onClick="OnClickMission"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                >
+
+                <ImageButton
+                    android:id="@+id/main_btn_around"
+                    android:background="@drawable/main_page_around"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:onClick="OnClickMission"
+                    />
+
+                <ImageButton
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/main_btn_flick"
+                    android:background="@drawable/main_page_flib"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:onClick="OnClickMission"/>
+
+                <ImageButton
                     android:id="@+id/main_btn_crosbar"
                     android:background="@drawable/main_page_cross"
-                    android:layout_width="105dp"
-                    android:layout_height="110dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:scaleType="fitCenter"
                     android:onClick="OnClickMission" />
             </LinearLayout>
+
         </LinearLayout>
+
     </LinearLayout>
+
 </ScrollView>

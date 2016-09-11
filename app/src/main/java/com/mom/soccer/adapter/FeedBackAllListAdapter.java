@@ -5,19 +5,24 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -28,6 +33,7 @@ import com.mom.soccer.common.Auth;
 import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.RoundedCornersTransformation;
+import com.mom.soccer.dataDto.Report;
 import com.mom.soccer.dto.FeedbackHeader;
 import com.mom.soccer.dto.FeedbackLine;
 import com.mom.soccer.dto.Mission;
@@ -35,6 +41,7 @@ import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.mission.MissionMainActivity;
+import com.mom.soccer.pubretropit.PubReport;
 import com.mom.soccer.retrofitdao.FeedBackService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
@@ -57,6 +64,9 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
     User user;
     Mission mission;
     private String getViewFlag = "N";
+
+    View positiveAction;
+    EditText report_content;
 
     public FeedBackAllListAdapter(Activity context, List<FeedbackHeader> feedbackHeaders,User user,Mission mission) {
         this.activity = context;
@@ -279,14 +289,51 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
                                 break;
 
                             case 102:
-                                new MaterialDialog.Builder(activity)
+
+                                MaterialDialog dialog = new MaterialDialog.Builder(activity)
                                         .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
-                                        .title(R.string.mom_diaalog_alert)
+                                        .title(R.string.mom_diaalog_board_report)
                                         .titleColor(activity.getResources().getColor(R.color.color6))
-                                        .content("기능을 준비 중입니다. \n조금만 기다려 주세요")
-                                        .contentColor(activity.getResources().getColor(R.color.color6))
-                                        .positiveText(R.string.mom_diaalog_confirm)
-                                        .show();
+                                        .customView(R.layout.dialog_report_view, true)
+                                        .positiveText(R.string.momboard_edit_send)
+                                        .negativeText(R.string.cancel)
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                Report report = new Report();
+                                                report.setType(PubReport.REPORTTYPE_FEEDBACK);
+                                                report.setUid(user.getUid());
+                                                report.setReason(report_content.getText().toString());
+                                                report.setContent(vo.getContent());
+                                                report.setPublisherid(vo.getInstructorid());
+                                                PubReport.doReport(activity,report,user);
+                                            }
+                                        })
+                                        .build();
+
+                                report_content = (EditText) dialog.findViewById(R.id.report_content);
+                                positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+
+                                report_content.addTextChangedListener(new TextWatcher() {
+                                    @Override
+                                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                                    }
+
+                                    @Override
+                                    public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                                        positiveAction.setEnabled(s.toString().trim().length() > 0);
+                                    }
+
+                                    @Override
+                                    public void afterTextChanged(Editable editable) {
+
+                                    }
+                                });
+
+                                dialog.show();
+                                positiveAction.setEnabled(false);
+
                                 break;
 
                         }

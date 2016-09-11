@@ -43,13 +43,13 @@
         android:background="@drawable/ranking"
         >
 
-        <ListView
-            android:layout_marginTop="10dp"
-            android:id="@+id/rankingpage_total_ranking"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/totalRecyclerView"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="1dp"
-            android:divider="@color/line_color1"
+            android:layout_height="wrap_content"
+            android:background="@color/mom_color1"
             />
 
     </LinearLayout>

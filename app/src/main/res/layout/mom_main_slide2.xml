@@ -20,13 +20,12 @@
             android:visibility="visible"
             >
 
-            <ListView
-                android:layout_marginTop="10dp"
-                android:id="@+id/list_friend_ranking"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/friendRecyclerView"
+                android:layout_gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:divider="@color/color8"
-                android:dividerHeight="1dp"
+                android:background="@color/mom_color1"
                 />
 
             <Button
@@ -39,24 +38,6 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/li_main_noData_layout"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:visibility="gone"
-            >
-
-            <TextView
-                android:textSize="12sp"
-                android:textColor="@color/color6"
-                android:text="@string/nodata_found_friend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
         </LinearLayout>
 
     </LinearLayout>

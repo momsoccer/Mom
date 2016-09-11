@@ -25,9 +25,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -36,11 +37,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +55,7 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.mom.soccer.MainActivity;
 import com.mom.soccer.R;
 import com.mom.soccer.Ranking.UserRankingActivity;
-import com.mom.soccer.adapter.MainRankingAdapter;
+import com.mom.soccer.adapter.RankingItemAdapter;
 import com.mom.soccer.besideactivity.AlramActivity;
 import com.mom.soccer.besideactivity.ApplyCoachActivity;
 import com.mom.soccer.besideactivity.FavoriteMissionActivity;
@@ -87,10 +88,12 @@ import com.mom.soccer.widget.WaitingDialog;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -106,7 +109,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
     private Instructor instructor;
     private ViewPager viewPager;
     private MomViewPagerAdapter momViewPagerAdapter;
-    private MainRankingAdapter mainRankingAdapter;
 
     private LinearLayout dotsLayout;
     private TextView[] dots;
@@ -122,7 +124,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
     ImageView navHeaderImage;
 
     public static Activity activity;
-
 
     private Bitmap photo;
     private Uri mImageCaptureUri;
@@ -143,6 +144,10 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
     //버젼 체크를 위한...private final int MY_PERMISSION_REQUEST_STORAGE = 100;
     private final int MY_PERMISSION_REQUEST_STORAGE = 100;
 
+    //상단 순위
+    RecyclerView totalRecyclerView,friendRecyclerView,teamRecyclerView;
+    RankingItemAdapter rankingItemAdapter;
+
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,12 +159,10 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
 
-        Log.d(TAG,"onCreate() missiontype : " + user.toString());
 
         Intent intent = getIntent();
         instructor = (Instructor) intent.getSerializableExtra("INS");
 
-        Log.d(TAG, "onCreate ===========================================================");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -280,7 +283,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG,"on Start ======================================================");
 
         //만약 앱을 연 상태에서 설정을 했다면 다시 불러오기
         if(user.getUseremail() != null){
@@ -418,17 +420,17 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
     public void logOut(){
 
         if(user.getSnstype().equals("facebook")){
-            Log.d(TAG,"페이스북 회원가입 유저 로그아웃을 합니다");
+
 
             //페이스북 토큰 및 세션 끈기
             FacebookSdk.sdkInitialize(getApplicationContext());
             LoginManager.getInstance().logOut();
 
         }else if(user.getSnstype().equals("kakao")){
-            Log.d(TAG,"카카오 회원가입 유저 로그아웃을 합니다");
+
             onClickLogout();
         }else if(user.getSnstype().equals("app")){
-            Log.d(TAG,"자체 회원가입 유저 로그아웃을 합니다");
+
         }
         prefUtil.clearPrefereance();
 
@@ -472,8 +474,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                     @Override
                     public void onFailure(Call<ServerResult> call, Throwable t) {
                         WaitingDialog.cancelWaitingDialog();
-                        Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가" + t.getMessage());
-                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.app_logout), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent);
@@ -498,10 +498,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
     @TargetApi(Build.VERSION_CODES.M)
     private void checkPermission() {
-        //현재 퍼미션..
-
-        Log.i(TAG,"퍼미션 체크를 합니다--------------------------------------------------");
-
         // Should we show an explanation?
             /*if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 // Explain to the user why we need to write the permission.
@@ -528,7 +524,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                             Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
                     }, MY_PERMISSION_REQUEST_STORAGE);
-            Log.e(TAG, "permission deny");
         }
 
         //2.구글계정사용
@@ -651,7 +646,14 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         dotsLayout.removeAllViews();
         for (int i = 0; i < dots.length; i++) {
             dots[i] = new TextView(this);
-            dots[i].setText(Html.fromHtml("&#8226;"));
+
+            if(i==0){
+                dots[i].setText(Html.fromHtml("&#8226;"));
+            }else if(i==1){
+                dots[i].setText(Html.fromHtml("&#8226;"));
+            }else if(i==2){
+                dots[i].setText(Html.fromHtml("&#8226;"));
+            }
             dots[i].setTextSize(35);
             dots[i].setTextColor(colorsInactive[currentPage]);
             dotsLayout.addView(dots[i]);
@@ -697,49 +699,33 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
 
             if(position == 0){
-                //전체랭킹
-                Log.i(TAG,"뷰 페이저 값을 갱신 합니다");
-                final LinearLayout li_main_slid_ranking,li_main_slid_ranking_no_data;
-                li_main_slid_ranking = (LinearLayout) view.findViewById(R.id.li_main_slid_ranking);
-                li_main_slid_ranking_no_data = (LinearLayout) view.findViewById(R.id.li_main_slid_ranking_no_data);
-
-                UserRangkinVo userRangkinVo = new UserRangkinVo();
-                userRangkinVo.setQueryRow(3);
-                userRangkinVo.setOrderbytype("totalscore");
+                UserRangkinVo query = new UserRangkinVo();
+                query.setQueryRow(3);
+                query.setOrderbytype("totalscore");
 
                 WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
                 DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
-                final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(userRangkinVo);
+                final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(query);
                 call.enqueue(new Callback<List<UserRangkinVo>>() {
-
 
                     @Override
                     public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
+                        WaitingDialog.cancelWaitingDialog();
                         if(response.isSuccessful()){
-                            WaitingDialog.cancelWaitingDialog();
-                            li_main_slid_ranking.setVisibility(View.VISIBLE);
-                            li_main_slid_ranking_no_data.setVisibility(View.GONE);
-
-                            List<UserRangkinVo> listVos = response.body();
-                            MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(activity, R.layout.adabter_mainlist_layout,listVos,user);
-                            ListView listView = (ListView) container.findViewById(R.id.list_total_ranking);
-                            listView.setAdapter(mainRankingAdapter);
-                        }else{
-                            WaitingDialog.cancelWaitingDialog();
-                            li_main_slid_ranking.setVisibility(View.GONE);
-                            li_main_slid_ranking_no_data.setVisibility(View.VISIBLE);
-                            btnMethodAllRanking(view);
+                            List<UserRangkinVo> userRangkinVos = new ArrayList<UserRangkinVo>();
+                            userRangkinVos = response.body();
+                            totalRecyclerView = (RecyclerView) findViewById(R.id.totalRecyclerView);
+                            rankingItemAdapter = new RankingItemAdapter(activity,userRangkinVos,user);
+                            totalRecyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                            totalRecyclerView.setHasFixedSize(true);
+                            totalRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            totalRecyclerView.setAdapter(rankingItemAdapter);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
                         WaitingDialog.cancelWaitingDialog();
-                        li_main_slid_ranking.setVisibility(View.GONE);
-                        li_main_slid_ranking_no_data.setVisibility(View.VISIBLE);
-                        btnMethodAllRanking(view);
-
-                        Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
                         t.printStackTrace();
                     }
                 });
@@ -756,43 +742,30 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
 
             }else if(position==1){
-                //팀랭킹
-                final LinearLayout li_main_team_layout,li_main_noData_layout;
-
-                li_main_team_layout = (LinearLayout) view.findViewById(R.id.li_main_team_layout);
-                li_main_noData_layout = (LinearLayout) view.findViewById(R.id.li_main_noData_layout);
-
                 WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
                 DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
 
                 //parameter
-                UserRangkinVo userRangkinVo = new UserRangkinVo();
-                userRangkinVo.setUid(user.getUid());
-                userRangkinVo.setQueryRow(3);
-                userRangkinVo.setOrderbytype("totalscore");
+                UserRangkinVo query = new UserRangkinVo();
+                query.setUid(user.getUid());
+                query.setQueryRow(3);
+                query.setOrderbytype("totalscore");
 
-                Call<List<UserRangkinVo>> c = dataService.getTeamRanking(userRangkinVo);
+                Call<List<UserRangkinVo>> c = dataService.getTeamRanking(query);
                 c.enqueue(new Callback<List<UserRangkinVo>>() {
                     @Override
                     public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
+                        WaitingDialog.cancelWaitingDialog();
                         if(response.isSuccessful()){
-                            List<UserRangkinVo> listVos = response.body();
-                            WaitingDialog.cancelWaitingDialog();
+                            List<UserRangkinVo> userRangkinVos = new ArrayList<UserRangkinVo>();
+                            userRangkinVos = response.body();
+                            teamRecyclerView = (RecyclerView) findViewById(R.id.teamRecyclerView);
+                            rankingItemAdapter = new RankingItemAdapter(activity,userRangkinVos,user);
 
-                            if(listVos.size()==0){
-                                li_main_noData_layout.setVisibility(View.VISIBLE);
-                                li_main_team_layout.setVisibility(View.GONE);
-                            }else{
-                                li_main_noData_layout.setVisibility(View.GONE);
-                                li_main_team_layout.setVisibility(View.VISIBLE);
-                                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(activity, R.layout.adabter_mainlist_layout,listVos,user);
-                                //데이터를 읽어 들여 뿌리는 작업을 한다
-                                ListView listView = (ListView) container.findViewById(R.id.list_team_ranking);
-                                listView.setAdapter(mainRankingAdapter);
-                            }
-
-                        }else{
-                            WaitingDialog.cancelWaitingDialog();
+                            teamRecyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                            teamRecyclerView.setHasFixedSize(true);
+                            teamRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            teamRecyclerView.setAdapter(rankingItemAdapter);
                         }
                     }
 
@@ -814,43 +787,30 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                 });
 
             }else if(position==2){
-                //친구랭킹
-                final LinearLayout li_main_friend_layout,li_main_noData_layout;
-
-                li_main_friend_layout = (LinearLayout) view.findViewById(R.id.li_main_friend_layout);
-                li_main_noData_layout = (LinearLayout) view.findViewById(R.id.li_main_noData_layout);
 
                 WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
                 DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
-
                 //parameter
-                UserRangkinVo userRangkinVo = new UserRangkinVo();
-                userRangkinVo.setUid(user.getUid());
-                userRangkinVo.setQueryRow(3);
-                userRangkinVo.setOrderbytype("totalscore");
+                UserRangkinVo query = new UserRangkinVo();
+                query.setUid(user.getUid());
+                query.setQueryRow(3);
+                query.setOrderbytype("totalscore");
 
-                Call<List<UserRangkinVo>> c = dataService.getFriendRanking(userRangkinVo);
+                Call<List<UserRangkinVo>> c = dataService.getFriendRanking(query);
                 c.enqueue(new Callback<List<UserRangkinVo>>() {
                     @Override
                     public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
+                        WaitingDialog.cancelWaitingDialog();
                         if(response.isSuccessful()){
-                            List<UserRangkinVo> listVos = response.body();
-                            WaitingDialog.cancelWaitingDialog();
+                            List<UserRangkinVo> userRangkinVos = new ArrayList<UserRangkinVo>();
+                            userRangkinVos = response.body();
+                            friendRecyclerView = (RecyclerView) findViewById(R.id.friendRecyclerView);
+                            rankingItemAdapter = new RankingItemAdapter(activity,userRangkinVos,user);
 
-                            if(listVos.size()==0){
-                                li_main_noData_layout.setVisibility(View.VISIBLE);
-                                li_main_friend_layout.setVisibility(View.GONE);
-                            }else{
-                                li_main_noData_layout.setVisibility(View.GONE);
-                                li_main_friend_layout.setVisibility(View.VISIBLE);
-                                MainRankingAdapter mainRankingAdapter = new MainRankingAdapter(activity, R.layout.adabter_mainlist_layout,listVos,user);
-                                //데이터를 읽어 들여 뿌리는 작업을 한다
-                                ListView listView = (ListView) container.findViewById(R.id.list_friend_ranking);
-                                listView.setAdapter(mainRankingAdapter);
-                            }
-
-                        }else{
-                            WaitingDialog.cancelWaitingDialog();
+                            friendRecyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                            friendRecyclerView.setHasFixedSize(true);
+                            friendRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            friendRecyclerView.setAdapter(rankingItemAdapter);
                         }
                     }
 
@@ -873,18 +833,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             }
 
             return view;
-        }
-
-        public void btnMethodAllRanking(View view){
-            Button btn_refresh = (Button) view.findViewById(R.id.btn_refresh_ranking);
-            btn_refresh.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MomMainActivity.this,MomMainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-            });
         }
 
         @Override
@@ -920,12 +868,9 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         super.onResume();
 
         if(!Compare.isEmpty(RealFilePath)){
-            Log.i(TAG,"onResume 2");
             navHeaderImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             navHeaderImage.setImageBitmap(photo);
         }
-
-
     }
 
     /******************************
@@ -1016,7 +961,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                         editor.commit();
 
                     }
-                    Log.i(TAG,"강사정보는 : " + instructor.toString());
                 }
             }
 
@@ -1083,8 +1027,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
         switch (requestCode){
             case PICK_FROM_ALBUM:
-
-                Log.d(TAG,"사진선택");
                 mImageCaptureUri = data.getData();
                 Intent intenti = new Intent("com.android.camera.action.CROP");
                 intenti.setDataAndType(mImageCaptureUri, "image/*");
@@ -1118,13 +1060,10 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                 if(resultCode != RESULT_OK){
                     return;
                 }
-
                 final Bundle extras = data.getExtras();
 
                 //크롭된 이미지를 저장하기 위한 file 경로
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()+ Common.IMAGE_MOM_PATH+System.currentTimeMillis()+".jpg";
-
-                Log.d(TAG,"파일 경로는 : " + filePath);
 
                 RealFilePath = filePath;
                 fileName    = System.currentTimeMillis()+".jpg";
@@ -1169,7 +1108,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             //이미지 업로드
             navHeaderImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             navHeaderImage.setImageBitmap(bitmap);
-            Log.d(TAG,"User Upload End===================================================================");
             UserTRService userTRService = new UserTRService(this,user);
             userTRService.updateUserImage(String.valueOf(user.getUid()),fileName,RealFilePath,imgtype);
 

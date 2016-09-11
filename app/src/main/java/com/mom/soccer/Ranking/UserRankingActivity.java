@@ -4,15 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mom.soccer.R;
-import com.mom.soccer.adapter.MainRankingAdapter;
+import com.mom.soccer.adapter.RankingItemAdapter;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dataDto.UserRangkinVo;
 import com.mom.soccer.dto.User;
@@ -20,10 +22,12 @@ import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,8 +37,6 @@ public class UserRankingActivity extends AppCompatActivity {
     private static final String TAG = "UserRankingActivity";
 
     String pageFlag= null;
-    MainRankingAdapter mainRankingAdapter;
-    ListView listView;
 
     User user;
     PrefUtil prefUtil;
@@ -46,6 +48,9 @@ public class UserRankingActivity extends AppCompatActivity {
     LinearLayout li_bacground_lyout;
 
     private Activity activity;
+
+    RecyclerView totalRecyclerView;
+    RankingItemAdapter rankingItemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,15 +93,15 @@ public class UserRankingActivity extends AppCompatActivity {
 
         if(pageFlag.equals("total")){
             li_bacground_lyout.setBackground(getResources().getDrawable(R.drawable.ranking));
-            listView = (ListView) findViewById(R.id.rankingpage_total_ranking);
+            totalRecyclerView = (RecyclerView) findViewById(R.id.totalRecyclerView);
             getTotalRankingList();
         }else if((pageFlag.equals("team"))){
             li_bacground_lyout.setBackground(getResources().getDrawable(R.drawable.team_ranking));
-            listView = (ListView) findViewById(R.id.rankingpage_total_ranking);
+            totalRecyclerView = (RecyclerView) findViewById(R.id.totalRecyclerView);
             getTotalRankingList();
         }else if((pageFlag.equals("friend"))){
             li_bacground_lyout.setBackground(getResources().getDrawable(R.drawable.freind_ranking));
-            listView = (ListView) findViewById(R.id.rankingpage_total_ranking);
+            totalRecyclerView = (RecyclerView) findViewById(R.id.totalRecyclerView);
             getTotalRankingList();
         }
 
@@ -105,68 +110,89 @@ public class UserRankingActivity extends AppCompatActivity {
     public void getTotalRankingList(){
 
         DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
-        UserRangkinVo userRangkinVo = new UserRangkinVo();
-        userRangkinVo.setQueryRow(30);
-        userRangkinVo.setOrderbytype("totalscore");
-        userRangkinVo.setUid(user.getUid());
+        UserRangkinVo query = new UserRangkinVo();
+        query.setQueryRow(30);
+        query.setOrderbytype("totalscore");
+        query.setUid(user.getUid());
 
         if(pageFlag.equals("total")){
-            final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(userRangkinVo);
+            final Call<List<UserRangkinVo>> call = dataService.getTotalRanking(query);
             call.enqueue(new Callback<List<UserRangkinVo>>() {
                 @Override
                 public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
+                    WaitingDialog.cancelWaitingDialog();
                     if(response.isSuccessful()){
-                        List<UserRangkinVo> listVos = response.body();
-                        mainRankingAdapter = new MainRankingAdapter(activity, R.layout.adabter_mainlist_layout,listVos,user);
-                        listView.setAdapter(mainRankingAdapter);
-                    }else{
+                        List<UserRangkinVo> userRangkinVos = new ArrayList<UserRangkinVo>();
+                        userRangkinVos = response.body();
+                        totalRecyclerView = (RecyclerView) findViewById(R.id.totalRecyclerView);
+                        rankingItemAdapter = new RankingItemAdapter(activity,userRangkinVos,user);
+
+                        totalRecyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                        totalRecyclerView.setHasFixedSize(true);
+                        totalRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        totalRecyclerView.setAdapter(rankingItemAdapter);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
-                    Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
+                    WaitingDialog.cancelWaitingDialog();
                     t.printStackTrace();
                 }
             });
         }else if((pageFlag.equals("team"))){
-            final Call<List<UserRangkinVo>> call = dataService.getTeamRanking(userRangkinVo);
+            final Call<List<UserRangkinVo>> call = dataService.getTeamRanking(query);
             call.enqueue(new Callback<List<UserRangkinVo>>() {
                 @Override
                 public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
+                    WaitingDialog.cancelWaitingDialog();
                     if(response.isSuccessful()){
-                        List<UserRangkinVo> listVos = response.body();
-                        mainRankingAdapter = new MainRankingAdapter(activity, R.layout.adabter_mainlist_layout,listVos,user);
-                        listView.setAdapter(mainRankingAdapter);
-                    }else{
+                        List<UserRangkinVo> userRangkinVos = new ArrayList<UserRangkinVo>();
+                        userRangkinVos = response.body();
+                        totalRecyclerView = (RecyclerView) findViewById(R.id.totalRecyclerView);
+                        rankingItemAdapter = new RankingItemAdapter(activity,userRangkinVos,user);
+
+                        totalRecyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                        totalRecyclerView.setHasFixedSize(true);
+                        totalRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        totalRecyclerView.setAdapter(rankingItemAdapter);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
-                    Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
+                    WaitingDialog.cancelWaitingDialog();
                     t.printStackTrace();
                 }
             });
         }else if((pageFlag.equals("friend"))) {
             WaitingDialog.showWaitingDialog(UserRankingActivity.this,false);
-            final Call<List<UserRangkinVo>> call = dataService.getFriendRanking(userRangkinVo);
+            final Call<List<UserRangkinVo>> call = dataService.getFriendRanking(query);
             call.enqueue(new Callback<List<UserRangkinVo>>() {
                 @Override
                 public void onResponse(Call<List<UserRangkinVo>> call, Response<List<UserRangkinVo>> response) {
                     WaitingDialog.cancelWaitingDialog();
                     if (response.isSuccessful()) {
-                        List<UserRangkinVo> listVos = response.body();
-                        mainRankingAdapter = new MainRankingAdapter(activity, R.layout.adabter_mainlist_layout, listVos, user);
-                        listView.setAdapter(mainRankingAdapter);
-                    } else {
+                        List<UserRangkinVo> userRangkinVos = new ArrayList<UserRangkinVo>();
+                        userRangkinVos = response.body();
+
+                        if(userRangkinVos.size()!=0){
+                            totalRecyclerView = (RecyclerView) findViewById(R.id.totalRecyclerView);
+                            rankingItemAdapter = new RankingItemAdapter(activity,userRangkinVos,user);
+
+                            totalRecyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                            totalRecyclerView.setHasFixedSize(true);
+                            totalRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            totalRecyclerView.setAdapter(rankingItemAdapter);
+                        }
+
+
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<UserRangkinVo>> call, Throwable t) {
                     WaitingDialog.cancelWaitingDialog();
-                    Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
                     t.printStackTrace();
                 }
             });
