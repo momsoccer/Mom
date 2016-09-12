@@ -33,6 +33,8 @@ public class InsMainActivity extends AppCompatActivity {
     Intent intent;
     Instructor instructor;
 
+    private int goPage =0 ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +60,14 @@ public class InsMainActivity extends AppCompatActivity {
             instructor = (Instructor) intent.getSerializableExtra(MissionCommon.INS_OBJECT);
         }
 
+        goPage = intent.getExtras().getInt("gopage");
+
         viewPager = (ViewPager) findViewById(R.id.follow_viewpager);
 
         InsViewPagerAdapter pagerAdapter = new InsViewPagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setCurrentItem(goPage);
 
         tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.follow_tabs);
 

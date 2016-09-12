@@ -9,14 +9,19 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.mom.soccer.R;
+import com.mom.soccer.ball.TeamBoardActivity;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.pubactivity.Param;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -35,6 +40,11 @@ public class InsDashboardActivity extends AppCompatActivity {
     private Intent intent;
     private int pageCall = 0;
 
+    @Bind(R.id.ic_board_write)
+    ImageButton ic_board_write;
+
+    @Bind(R.id.im_point)
+    ImageView im_point;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +58,6 @@ public class InsDashboardActivity extends AppCompatActivity {
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
         instructor = prefUtil.getIns();
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.dash_toolbar);
         setSupportActionBar(toolbar);
@@ -72,14 +81,59 @@ public class InsDashboardActivity extends AppCompatActivity {
         tabsStrip.setTextColor(getResources().getColor(R.color.color6));
         tabsStrip.setViewPager(viewPager);
 
+        //팀 게시판 기능
+        ic_board_write.setVisibility(View.VISIBLE);
+        im_point.setVisibility(View.GONE);
+
+        tabsStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position==0) {
+                    ic_board_write.setVisibility(View.VISIBLE);
+                    im_point.setVisibility(View.GONE);
+                }else if(position==1){
+                    ic_board_write.setVisibility(View.GONE);
+                    im_point.setVisibility(View.VISIBLE);
+                }else if(position==2){
+                    ic_board_write.setVisibility(View.GONE);
+                    im_point.setVisibility(View.VISIBLE);
+                }else if(position==3){
+                    ic_board_write.setVisibility(View.GONE);
+                    im_point.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        //상단글쓰기 버튼 클릭시
+        ic_board_write.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(InsDashboardActivity.this,TeamBoardActivity.class);
+                intent.putExtra("boardFlag","new");
+                intent.putExtra("boardid",0);
+                intent.putExtra("callpage","ins");
+                startActivity(intent);
+            }
+        });
+
     }
 
     public class insDashPagerAdapter extends FragmentStatePagerAdapter {
 
-        final int PAGE_COUNT = 3;
+        final int PAGE_COUNT = 4;
 
         private String tabTitles[] = new String[] {
-                getString(R.string.my_fragment_title5),getString(R.string.ins_pass_title),getString(R.string.ins_common_title)
+                getString(R.string.my_fragment_title2),getString(R.string.my_fragment_title5),getString(R.string.ins_pass_title),getString(R.string.ins_common_title)
         };
 
         public insDashPagerAdapter(FragmentManager fm) {

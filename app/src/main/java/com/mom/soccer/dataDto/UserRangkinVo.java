@@ -14,8 +14,26 @@ public class UserRangkinVo {
     private int sequence;
     private int queryRow;
     private String orderbytype;  // 대량목록 조회시 sort 순서 해당 컬럼에 한해서 사용
+    private int limit;
+    private int offset;
 
     public UserRangkinVo(){};
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
 
     public int getLevel() {
         return level;

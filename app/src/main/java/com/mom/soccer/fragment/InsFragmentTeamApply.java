@@ -290,6 +290,7 @@ public class InsFragmentTeamApply extends Fragment{
                         Intent intent = new Intent(getContext(), InsMainActivity.class);
                         intent.putExtra("inspath","search");
                         intent.putExtra(MissionCommon.INS_OBJECT,ins);
+                        intent.putExtra("gopage",0);
                         getActivity().finish();
                         startActivity(intent);
 
@@ -360,6 +361,7 @@ public class InsFragmentTeamApply extends Fragment{
                         Intent intent = new Intent(getContext(), InsMainActivity.class);
                         intent.putExtra("inspath","search");
                         intent.putExtra(MissionCommon.INS_OBJECT,ins);
+                        intent.putExtra("gopage",0);
                         getActivity().finish();
                         startActivity(intent);
 

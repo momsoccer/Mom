@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.mom.soccer.Ranking.UserRankingActivity"
     android:background="@color/mom_color1"
+    android:id="@+id/rootview"
     >
 
     <android.support.v7.widget.Toolbar
@@ -43,15 +44,21 @@
         android:background="@drawable/ranking"
         >
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/totalRecyclerView"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center_horizontal"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/mom_color1"
-            />
+            android:layout_height="match_parent"
+            >
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/totalRecyclerView"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/mom_color1"
+                />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
     <LinearLayout

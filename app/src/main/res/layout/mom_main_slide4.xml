@@ -9,10 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@drawable/team_ranking"
         >
 
         <LinearLayout
-            android:id="@+id/li_main_friend_layout"
+            android:id="@+id/li_main_team_layout"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,7 +21,7 @@
             >
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/allteamRecyclerView"
+                android:id="@+id/teamAllRecyclerView"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
@@ -28,7 +29,7 @@
                 />
 
             <Button
-                android:id="@+id/btnAllteam"
+                android:id="@+id/btnAllteamRanking"
                 style="@style/btnStylePaprika"
                 android:text="@string/moreview"
                 android:layout_width="150dp"

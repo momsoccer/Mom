@@ -31,6 +31,7 @@ import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.EventBus;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dataDto.Report;
+import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.MomBoard;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
@@ -55,15 +56,19 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
     private Activity activity;
     private List<MomBoard> boardList;
     private User user;
+    private Instructor instructor;
     private static final int COMMENT_LINE_CODE = 201;
+    String callpage = "";
 
     View positiveAction;
     EditText report_content;
 
-    public BoardItemAdapter(Activity activity, List<MomBoard> boardList,User user) {
+    public BoardItemAdapter(Activity activity, List<MomBoard> boardList,User user,Instructor instructor,String callpage) {
         this.activity = activity;
         this.boardList = boardList;
         this.user = user;
+        this.instructor = instructor;
+        this.callpage = callpage;
         EventBus.getInstance().register(this);
     }
 
@@ -111,17 +116,39 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         holder.btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(activity,view);
+                final PopupMenu popupMenu = new PopupMenu(activity,view);
                 activity.getMenuInflater().inflate(R.menu.momboard_menu, popupMenu.getMenu());
 
                 if(user.getUid()==vo.getUid()){
-                    popupMenu.getMenu().getItem(0).setVisible(true);
+                    popupMenu.getMenu().getItem(0).setVisible(false);
                     popupMenu.getMenu().getItem(1).setVisible(true);
-                    popupMenu.getMenu().getItem(2).setVisible(false);
+                    popupMenu.getMenu().getItem(2).setVisible(true);
+                    popupMenu.getMenu().getItem(3).setVisible(false);
+                    popupMenu.getMenu().getItem(4).setVisible(false);
+
+                    if(instructor.getInstructorid()!=0){
+                        if(vo.getCategory().equals("A")){
+                            popupMenu.getMenu().getItem(4).setVisible(true);
+                            popupMenu.getMenu().getItem(0).setVisible(false);
+                        }else{
+                            popupMenu.getMenu().getItem(4).setVisible(false);
+                            popupMenu.getMenu().getItem(0).setVisible(true);
+                        }
+
+                    }else{
+
+                        popupMenu.getMenu().getItem(0).setVisible(false);
+
+                    }
+
                 }else{
                     popupMenu.getMenu().getItem(0).setVisible(false);
                     popupMenu.getMenu().getItem(1).setVisible(false);
-                    popupMenu.getMenu().getItem(2).setVisible(true);
+                    popupMenu.getMenu().getItem(2).setVisible(false);
+
+                    popupMenu.getMenu().getItem(3).setVisible(true);
+
+                    popupMenu.getMenu().getItem(4).setVisible(false);
                 }
 
 
@@ -129,13 +156,24 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getOrder()){
-                                case 101:
+                                case 101:  //공지글로 변경
                                     Intent intent = new Intent(activity,TeamBoardActivity.class);
                                     intent.putExtra("boardFlag","modify");
                                     intent.putExtra("boardid",vo.getBoardid());
+                                    intent.putExtra("callpage",callpage);
                                     activity.startActivity(intent);
+
+                                    /* event bus
+
+                                                  Intent intent = new Intent(activity,TeamBoardReply.class);
+                intent.putExtra("boardid",vo.getBoardid());
+                intent.putExtra("posintion",posintion);
+                activity.startActivityForResult(intent,COMMENT_LINE_CODE);
+
+                                     */
+
                                     break;
-                                case 102:
+                                case 102:  //수정
                                     new MaterialDialog.Builder(activity)
                                             .content(R.string.board_main_delete)
                                             .contentColor(activity.getResources().getColor(R.color.color6))
@@ -150,6 +188,15 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
                                                 }
                                             })
                                             .show();
+
+                                    /* event bus
+                                                  Intent intent = new Intent(activity,TeamBoardReply.class);
+                intent.putExtra("boardid",vo.getBoardid());
+                intent.putExtra("posintion",posintion);
+                activity.startActivityForResult(intent,COMMENT_LINE_CODE);
+                                     */
+
+
                                     break;
                                 case 103:
 
@@ -201,6 +248,10 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
                                     dialog.show();
                                     positiveAction.setEnabled(false);
                                     break;
+
+                                case 100: //글을 공지로 A 타입으로 바꾸어준다 header_update
+
+                                    break;
                             }
                             return false;
                         }
@@ -227,6 +278,13 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
                 activity.startActivityForResult(intent,COMMENT_LINE_CODE);
             }
         });
+
+        if(vo.getCategory().equals("A")){
+         holder.viewType.setBackground(activity.getResources().getDrawable(R.drawable.xml_list_divider_red));
+        }else{
+            holder.viewType.setBackground(activity.getResources().getDrawable(R.drawable.xml_list_divider));
+        }
+
     }
 
     @Override
@@ -263,6 +321,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         public TextView username,content,commentCount,formatingdate,teamname,txbtnview;
         private LinearLayout liWriteBtn,liShareBtn,liContent;
         private ImageButton btnMenu;
+        private View viewType;
 
         public BoardItemViewHolder(View itemView) {
             super(itemView);
@@ -276,6 +335,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
             btnMenu = (ImageButton) itemView.findViewById(R.id.btnMenu);
             liContent = (LinearLayout) itemView.findViewById(R.id.liContent);
             txbtnview = (TextView) itemView.findViewById(R.id.txbtnview);
+            viewType = itemView.findViewById(R.id.viewType);
         }
     }
 

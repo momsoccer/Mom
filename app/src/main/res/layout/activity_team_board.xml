@@ -85,20 +85,41 @@
                     android:textColor="@color/color6"
                     android:layout_gravity="left"
                     />
-
-                <TextView
-                    android:id="@+id/txt_pub"
-                    android:background="@drawable/xml_boder_input"
-                    android:text="@string/board_pubtype_Y"
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="80dp"
-                    android:layout_height="25dp"
-                    android:textStyle="bold"
-                    android:textSize="13sp"
-                    android:textColor="@color/color6"
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="left"
                     android:gravity="center"
-                    />
+                    >
+
+                    <TextView
+                        android:id="@+id/txt_pub"
+                        android:background="@drawable/xml_boder_input"
+                        android:text="@string/board_pubtype_Y"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="80dp"
+                        android:layout_height="25dp"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:textColor="@color/color6"
+                        android:gravity="center"
+                        />
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id="@+id/categoryType"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center"
+                        android:text="@string/bottom_msg5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/color6"
+                        android:buttonTint="@color/color6"
+                        />
+
+                </LinearLayout>
+
 
             </LinearLayout>
         </LinearLayout>

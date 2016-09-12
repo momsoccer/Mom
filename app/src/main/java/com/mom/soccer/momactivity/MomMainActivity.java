@@ -56,6 +56,7 @@ import com.mom.soccer.MainActivity;
 import com.mom.soccer.R;
 import com.mom.soccer.Ranking.UserRankingActivity;
 import com.mom.soccer.adapter.RankingItemAdapter;
+import com.mom.soccer.adapter.TeamRankingItemAdapter;
 import com.mom.soccer.besideactivity.AlramActivity;
 import com.mom.soccer.besideactivity.ApplyCoachActivity;
 import com.mom.soccer.besideactivity.FavoriteMissionActivity;
@@ -65,9 +66,10 @@ import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.bottommenu.SearchActivity;
 import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
-import com.mom.soccer.common.CropCircleTransformation;
 import com.mom.soccer.common.PrefUtil;
+import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.common.SettingActivity;
+import com.mom.soccer.dataDto.TeamRankingVo;
 import com.mom.soccer.dataDto.UserRangkinVo;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.ServerResult;
@@ -80,6 +82,7 @@ import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.InstructorService;
 import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retrofitdao.TeamService;
+import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.trservice.UserTRService;
 import com.mom.soccer.widget.VeteranToast;
@@ -120,7 +123,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
     //public GridView mGridView;
 
     //네비게이션 상단 아이템
-    TextView navHeaderUserName,navHeaderUserEmail,navHeaderCoachName,navHeaderTeamName;
+    TextView navHeaderUserName,navHeaderUserEmail,userLevel,navHeaderCoachName,navHeaderTeamName;
     ImageView navHeaderImage;
 
     public static Activity activity;
@@ -145,8 +148,9 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
     private final int MY_PERMISSION_REQUEST_STORAGE = 100;
 
     //상단 순위
-    RecyclerView totalRecyclerView,friendRecyclerView,teamRecyclerView;
+    RecyclerView totalRecyclerView,friendRecyclerView,teamRecyclerView,teamAllRecyclerView; //전체,친구,팀,전팀 합산
     RankingItemAdapter rankingItemAdapter;
+    TeamRankingItemAdapter teamRankingItemAdapter;
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -198,13 +202,14 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         navHeaderImage  = (ImageView) header.findViewById(R.id.nav_header_image);
         navHeaderUserName.setText(user.getUsername());
         navHeaderUserEmail.setText(user.getUseremail());
+        userLevel = (TextView) header.findViewById(R.id.userLevel);
 
 
         //일반 회원 가입시 이미지가 없기 때문에..초기 셋팅
         if(!Compare.isEmpty(user.getProfileimgurl())){
             Glide.with(MomMainActivity.this)
                     .load(user.getProfileimgurl())
-                    .asBitmap().transform(new CropCircleTransformation(this))
+                    .asBitmap().transform(new RoundedCornersTransformation(activity,10,5))
                     .into(navHeaderImage);
         }
 
@@ -292,8 +297,11 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         //강사정보 셋팅
         getInstructorInfo();
 
-        //팀아이디 구하기
-        getTeamid(user.getUid());
+        //팀아이디 구하기, 유저 레벨
+        //getTeamid(user.getUid());
+
+        //userLevel 유저 레벨 가져오기
+        getUserLevel();
     }
 
     public void getTeamid(int uid){
@@ -696,7 +704,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
             if(position == 0){
                 UserRangkinVo query = new UserRangkinVo();
-                query.setQueryRow(3);
+                query.setLimit(3);
                 query.setOrderbytype("totalscore");
 
                 WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
@@ -826,6 +834,46 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                         startActivity(intent);
                     }
                 });
+
+            }else if(position==3){
+                WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
+                DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
+                Call<List<TeamRankingVo>> c = dataService.getTeamRankingScore(3);
+                c.enqueue(new Callback<List<TeamRankingVo>>() {
+                    @Override
+                    public void onResponse(Call<List<TeamRankingVo>> call, Response<List<TeamRankingVo>> response) {
+                        WaitingDialog.cancelWaitingDialog();
+                        if(response.isSuccessful()){
+                            List<TeamRankingVo> teamRankingVos = new ArrayList<TeamRankingVo>();
+                            teamRankingVos = response.body();
+
+                            teamRankingItemAdapter = new TeamRankingItemAdapter(activity,teamRankingVos,user,0);
+
+                            teamAllRecyclerView = (RecyclerView) findViewById(R.id.teamAllRecyclerView);
+                            teamAllRecyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                            teamAllRecyclerView.setHasFixedSize(true);
+                            teamAllRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            teamAllRecyclerView.setAdapter(teamRankingItemAdapter);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<TeamRankingVo>> call, Throwable t) {
+                        WaitingDialog.cancelWaitingDialog();
+                        t.printStackTrace();
+                    }
+                });
+
+                Button btnAllteamRanking = (Button) view.findViewById(R.id.btnAllteamRanking);
+                btnAllteamRanking.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(),UserRankingActivity.class);
+                        intent.putExtra("pageparam","allteam");
+                        startActivity(intent);
+                    }
+                });
+
             }
 
             return view;
@@ -1123,6 +1171,30 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
     public void im_batch(){
         PubActivity pubActivity = new PubActivity(this,user,user.getUid());
         pubActivity.showDialog();
+    }
+
+    public void getUserLevel(){
+        WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
+        UserService userService = ServiceGenerator.createService(UserService.class,getApplicationContext(),user);
+        Call<User> c = userService.getLevel(user.getUid());
+        c.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    User levelUser = response.body();
+                    userLevel.setText(String.valueOf(levelUser.getLevel()));
+                    Common.teamid = levelUser.getTeamid();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+
     }
 
 }

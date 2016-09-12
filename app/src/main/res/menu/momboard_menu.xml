@@ -1,6 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/board_private"
+        android:title="@string/board_private"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        />
+
     <item android:id="@+id/action_modify"
         android:title="@string/momboard_modify"
         android:orderInCategory="101"
@@ -16,6 +22,12 @@
     <item android:id="@+id/board_report"
         android:title="@string/board_report"
         android:orderInCategory="103"
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/board_private_cancel"
+        android:title="@string/board_private_cancel"
+        android:orderInCategory="104"
         app:showAsAction="always"
         />
 

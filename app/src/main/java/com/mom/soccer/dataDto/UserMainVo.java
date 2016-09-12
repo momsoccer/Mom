@@ -1,5 +1,7 @@
 package com.mom.soccer.dataDto;
 
+import java.util.List;
+
 /**
  * Created by sungbo on 2016-09-06.
  */
@@ -37,7 +39,70 @@ public class UserMainVo {
     private String userdescription;
     private String condition;
 
+    //pageing
+    private int limit;
+    private int offset;
+
+    private String friendcheck;
+    private String teamcheck;
+    private String passyescheck;
+    private String passnocheck;
+
+    //in 조회 조건을 위한....
+    private List<String> typename;
+    private int listCount;
+
+
     public UserMainVo(){}
+
+    public String getFriendcheck() {
+        return friendcheck;
+    }
+
+    public void setFriendcheck(String friendcheck) {
+        this.friendcheck = friendcheck;
+    }
+
+    public String getTeamcheck() {
+        return teamcheck;
+    }
+
+    public void setTeamcheck(String teamcheck) {
+        this.teamcheck = teamcheck;
+    }
+
+    public String getPassyescheck() {
+        return passyescheck;
+    }
+
+    public void setPassyescheck(String passyescheck) {
+        this.passyescheck = passyescheck;
+    }
+
+    public String getPassnocheck() {
+        return passnocheck;
+    }
+
+    public void setPassnocheck(String passnocheck) {
+        this.passnocheck = passnocheck;
+    }
+
+    public List<String> getTypename() {
+        return typename;
+    }
+
+    public void setTypename(List<String> typename) {
+        this.typename = typename;
+    }
+
+    public int getListCount() {
+        return listCount;
+    }
+
+    public void setListCount(int listCount) {
+        this.listCount = listCount;
+    }
+
 
     @Override
     public String toString() {
@@ -70,7 +135,25 @@ public class UserMainVo {
                 ", usersubject='" + usersubject + '\'' +
                 ", userdescription='" + userdescription + '\'' +
                 ", condition='" + condition + '\'' +
+                ", limit=" + limit +
+                ", offset=" + offset +
                 '}';
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
     public int getMissionpasscount() {

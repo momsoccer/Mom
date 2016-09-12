@@ -21,6 +21,9 @@ import retrofit2.http.Query;
  */
 public interface UserService {
 
+    @GET("/all/getLevel")
+    Call<User> getLevel(@Query("uid") int uid);
+
     @POST("/all/insert")
     Call<ServerResult> createUser(@Body User user);
 

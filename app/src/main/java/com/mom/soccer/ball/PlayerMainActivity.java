@@ -20,6 +20,7 @@ import com.mom.soccer.common.ActivityResultEvent;
 import com.mom.soccer.common.Common;
 import com.mom.soccer.common.EventBus;
 import com.mom.soccer.common.PrefUtil;
+import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.fragment.PlayerFragment;
 import com.mom.soccer.pubactivity.Param;
@@ -38,6 +39,7 @@ public class PlayerMainActivity extends AppCompatActivity {
     PagerSlidingTabStrip tabsStrip;
 
     private User user;
+    private Instructor instructor;
     private PrefUtil prefUtil;
     private Intent intent;
 
@@ -57,6 +59,7 @@ public class PlayerMainActivity extends AppCompatActivity {
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
+        instructor = prefUtil.getIns();
 
         intent = getIntent();
         PageCall = intent.getExtras().getInt(Param.FRAGMENT_COUNT);
@@ -145,6 +148,7 @@ public class PlayerMainActivity extends AppCompatActivity {
                     Intent intent = new Intent(PlayerMainActivity.this,TeamBoardActivity.class);
                     intent.putExtra("boardFlag","new");
                     intent.putExtra("boardid",0);
+                intent.putExtra("callpage","user");
                     startActivity(intent);
             }
         });
@@ -192,7 +196,7 @@ public class PlayerMainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
 
-            PlayerFragment playerFragment = PlayerFragment.newInstance(position + 1,user);
+            PlayerFragment playerFragment = PlayerFragment.newInstance(position + 1,user,instructor);
             return playerFragment;
         }
 

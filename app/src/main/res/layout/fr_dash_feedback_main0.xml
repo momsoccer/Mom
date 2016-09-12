@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:divider="?android:dividerHorizontal"
-    android:horizontalSpacing="10dp"
-    android:orientation="vertical"
-    android:showDividers="middle"
-    android:verticalSpacing="10dp"
-    android:background="@color/mom_color1"
     >
 
     <LinearLayout
         android:layout_marginTop="5dp"
-        android:id="@+id/li_no_found"
+        android:id="@+id/li_board_no_data_found"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:background="@color/mom_color1"
+        android:visibility="gone"
         >
         <ImageView
             android:src="@drawable/ic_info_white_24dp"
@@ -29,12 +26,13 @@
 
         <TextView
             android:gravity="center"
-            android:text="데이터가 없습니다"
+            android:text="@string/team_board_msg"
             android:textSize="12sp"
             android:textColor="@color/color6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -42,13 +40,30 @@
         android:layout_height="match_parent"
         >
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/searchUserMissionRecyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/mom_color1"
-        />
+        <!--Main Layout-->
+        <ScrollView
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/boardRecview"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mom_color1"
+                    />
+
+            </LinearLayout>
+
+        </ScrollView>
+
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

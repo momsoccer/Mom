@@ -30,6 +30,8 @@ public class Instructor implements Serializable {
     //private Date teamcreationdate;
     private String change_teamcreationdate;
     private int teamid;
+    private int membercount;
+    private int totalscore;
 
     private int queryRow;
     private String orderbytype;  // 대량목록 조회시 sort 순서 해당 컬럼에 한해서 사용
@@ -60,9 +62,27 @@ public class Instructor implements Serializable {
                 ", emblem='" + emblem + '\'' +
                 ", change_teamcreationdate='" + change_teamcreationdate + '\'' +
                 ", teamid=" + teamid +
+                ", membercount=" + membercount +
+                ", totalcount=" + totalscore +
                 ", queryRow=" + queryRow +
                 ", orderbytype='" + orderbytype + '\'' +
                 '}';
+    }
+
+    public int getMembercount() {
+        return membercount;
+    }
+
+    public void setMembercount(int membercount) {
+        this.membercount = membercount;
+    }
+
+    public int getTotalscore() {
+        return totalscore;
+    }
+
+    public void setTotalscore(int totalscore) {
+        this.totalscore = totalscore;
     }
 
     public int getTeamid() {

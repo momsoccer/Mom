@@ -1,232 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/mom_color1"
+    >
 
     <LinearLayout
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:orientation="vertical"
         >
 
-        <ImageView
-            android:src="@drawable/ic_video_library_white_24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_marginLeft="5dp"
-            android:text="@string/usermain_misison_filter1"
-            android:textSize="18sp"
-            android:textColor="@color/color6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/card_rectangle"
-        />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        >
-
-        <CheckBox
-            android:id="@+id/drible_check"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/drrible"
-            android:textColor="@color/color6"
-            android:textSize="18dp"
-            android:buttonTint="@color/mission_color_dribble"
-            />
-
-        <CheckBox
-            android:layout_marginLeft="3dp"
-            android:id="@+id/traping_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/trapping"
-            android:textColor="@color/color6"
-            android:textSize="18dp"
-            android:buttonTint="@color/mission_color_trraping"
-            />
-
-        <CheckBox
-            android:layout_marginLeft="3dp"
-            android:id="@+id/lifting_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lifting"
-            android:textColor="@color/color6"
-            android:textSize="18dp"
-            android:buttonTint="@color/mission_color_lifting"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <CheckBox
-            android:id="@+id/around_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/around"
-            android:textColor="@color/color6"
-            android:textSize="18dp"
-            android:buttonTint="@color/mission_color_around"
-            />
-
-        <CheckBox
-            android:layout_marginLeft="3dp"
-            android:id="@+id/flick_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/flick"
-            android:textColor="@color/color6"
-            android:textSize="18dp"
-            android:buttonTint="@color/mission_color_flick"
-            />
-
-        <CheckBox
-            android:layout_marginLeft="3dp"
-            android:id="@+id/complex_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/crossbar"
-            android:textColor="@color/color6"
-            android:textSize="18dp"
-            android:buttonTint="@color/mission_color_complex"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        >
-
-        <ImageView
-            android:src="@drawable/ic_account_box_white_24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_marginLeft="5dp"
-            android:text="@string/usermain_misison_filter2"
-            android:textSize="18sp"
-            android:textColor="@color/color6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/card_rectangle"
-        />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <CheckBox
-            android:id="@+id/friedn_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/usermain_misison_filter4"
-            android:textColor="@color/color6"
-            android:textSize="18dp"
-            android:buttonTint="@color/color6"
-            />
-
-        <CheckBox
-            android:layout_marginLeft="3dp"
-            android:id="@+id/team_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/usermain_misison_filter5"
-            android:textColor="@color/color6"
-            android:textSize="18dp"
-            android:buttonTint="@color/color6"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        >
-
-        <ImageView
-            android:src="@drawable/ic_verified_user_white_24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_marginLeft="5dp"
             android:gravity="center"
-            android:text="@string/usermain_misison_filter3"
-            android:textSize="18sp"
-            android:textColor="@color/color6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            >
 
-    <View
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/card_rectangle"
-        />
+            <ImageView
+                android:src="@drawable/ic_video_library_white_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:text="@string/usermain_misison_filter1"
+                android:textSize="18sp"
+                android:textColor="@color/color6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <CheckBox
-            android:id="@+id/passyes_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/usermain_misison_filter6"
-            android:textColor="@color/color6"
-            android:textSize="18dp"
-            android:buttonTint="@color/color6"
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/card_rectangle"
             />
 
-        <CheckBox
-            android:id="@+id/passno_check"
-            android:layout_marginLeft="3dp"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/usermain_misison_filter7"
-            android:textColor="@color/color6"
-            android:textSize="18dp"
-            android:buttonTint="@color/color6"
-            />
-    </LinearLayout>
+            >
 
-</LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                >
+
+                <CheckBox
+                    android:id="@+id/drible_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/drrible"
+                    android:textColor="@color/color6"
+                    android:textSize="15sp"
+                    android:buttonTint="@color/mission_color_dribble"
+                    />
+
+                <CheckBox
+                    android:id="@+id/traping_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/trapping"
+                    android:textColor="@color/color6"
+                    android:textSize="15sp"
+                    android:buttonTint="@color/mission_color_trraping"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                >
+
+                <CheckBox
+                    android:id="@+id/lifting_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lifting"
+                    android:textColor="@color/color6"
+                    android:textSize="15sp"
+                    android:buttonTint="@color/mission_color_lifting"
+                    />
+
+                <CheckBox
+                    android:id="@+id/around_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/around"
+                    android:textColor="@color/color6"
+                    android:textSize="15sp"
+                    android:buttonTint="@color/mission_color_around"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <CheckBox
+                    android:id="@+id/flick_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/flick"
+                    android:textColor="@color/color6"
+                    android:textSize="15sp"
+                    android:buttonTint="@color/mission_color_flick"
+                    />
+
+                <CheckBox
+                    android:id="@+id/complex_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/crossbar"
+                    android:textColor="@color/color6"
+                    android:textSize="15sp"
+                    android:buttonTint="@color/mission_color_complex"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            >
+
+            <ImageView
+                android:src="@drawable/ic_account_box_white_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:text="@string/usermain_misison_filter2"
+                android:textSize="18sp"
+                android:textColor="@color/color6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/card_rectangle"
+            />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <CheckBox
+                android:id="@+id/friedn_check"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/usermain_misison_filter4"
+                android:textColor="@color/color6"
+                android:textSize="15sp"
+                android:buttonTint="@color/color6"
+                />
+
+            <CheckBox
+                android:id="@+id/team_check"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/usermain_misison_filter5"
+                android:textColor="@color/color6"
+                android:textSize="15sp"
+                android:buttonTint="@color/color6"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            >
+
+            <ImageView
+                android:src="@drawable/ic_verified_user_white_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:text="@string/usermain_misison_filter3"
+                android:textSize="18sp"
+                android:textColor="@color/color6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/card_rectangle"
+            />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <CheckBox
+                android:id="@+id/passyes_check"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/usermain_misison_filter6"
+                android:textColor="@color/color6"
+                android:textSize="15sp"
+                android:buttonTint="@color/color6"
+                />
+
+            <CheckBox
+                android:id="@+id/passno_check"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/usermain_misison_filter7"
+                android:textColor="@color/color6"
+                android:textSize="15sp"
+                android:buttonTint="@color/color6"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:gravity="center"
+                android:text="@string/usermain_misison_filter8"
+                android:textSize="18sp"
+                android:textColor="@color/color6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/card_rectangle"
+            />
+
+    </LinearLayout>
+</ScrollView>

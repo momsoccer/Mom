@@ -128,6 +128,7 @@
     <string name="toolbar_ranking_all">랭킹 전체</string>
     <string name="toolbar_ranking_friend">랭킹 친구</string>
     <string name="toolbar_ranking_team">랭킹 팀</string>
+    <string name="toolbar_ranking_allteam">랭킹 팀전체</string>
 
     <string name="toolbar_ins_page">강사전용</string>
     <string name="toolbar_ins_point_page_title">강사포인트 수입내역</string>
@@ -247,6 +248,8 @@
 
     <string name="board_delete">댓글삭제</string>
     <string name="board_report">신고하기</string>
+    <string name="board_private">공지글로 변경</string>
+    <string name="board_private_cancel">공지내리기</string>
     <string name="board_title">미션댓글</string>
     <string name="board_delete_msg">댓글이 삭제 되었습니다</string>
     <string name="board_caustion">자신이 작성한 글만 삭제가 가능합니다</string>
@@ -639,11 +642,11 @@
     <string name="usermain_misison_filter1">미션구분</string>
     <string name="usermain_misison_filter2">유저구분</string>
     <string name="usermain_misison_filter3">심사구분</string>
-
     <string name="usermain_misison_filter4">친구</string>
     <string name="usermain_misison_filter5">팀원</string>
     <string name="usermain_misison_filter6">심사통과</string>
     <string name="usermain_misison_filter7">심사대기</string>
+    <string name="usermain_misison_filter8">팀</string>
 
     <string name="ins_feedback_msg1">영상선택</string>
     <string name="ins_feedback_msg2">영상업로드 유의 사항</string>
@@ -690,6 +693,12 @@
     <string name="momboard_edit_send">보내기</string>
 
     <string name="momboard_report_send">상세한 신고내용(비망,욕설,기타 등등)</string>
+    <string name="bottom_msg1">더 이상 게시글이 없습니다</string>
+    <string name="bottom_msg2">더 이상 유저 미션 데이터가 없습니다</string>
+    <string name="bottom_msg3">더 이상 목록이 없습니다</string>
+    <string name="bottom_msg4">새로 고침 했습니다</string>
+
+    <string name="bottom_msg5">공지글로 등록</string>
 
     <string name="member_title1">미션통과 수</string>
     <string name="member_title2">피드백 요청 수</string>
@@ -699,5 +708,7 @@
 
     <string name="report_title">신고를 접수 등록하는 중입니다</string>
     <string name="report_title2">신고가 접수 되었습니다 \n검토 후 신속히 연락 드리겠습니다</string>
+
+
 
 </resources>

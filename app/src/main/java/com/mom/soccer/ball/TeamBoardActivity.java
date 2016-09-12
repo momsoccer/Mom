@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ import com.mom.soccer.dto.MomBoard;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.Team;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.ins.InsDashboardActivity;
 import com.mom.soccer.pubactivity.Param;
 import com.mom.soccer.retrofitdao.MomBoardService;
 import com.mom.soccer.retrofitdao.TeamService;
@@ -56,11 +60,16 @@ public class TeamBoardActivity extends AppCompatActivity {
     @Bind(R.id.txt_pub)
     TextView txt_pub;
 
+    @Bind(R.id.categoryType)
+    CheckBox categoryType;
+
     private MomBoard momBoard = new MomBoard();
     private int tag=1;
     private String boardFlag="new"; //new,modify
     private Intent intent;
     private int boardid=0;
+    private String callpage = "";
+    private String tx_categoryType ="B";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +84,7 @@ public class TeamBoardActivity extends AppCompatActivity {
         intent = getIntent();
         boardFlag = intent.getExtras().getString("boardFlag");
         boardid = intent.getExtras().getInt("boardid");
+        callpage = intent.getExtras().getString("callpage");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -100,6 +110,23 @@ public class TeamBoardActivity extends AppCompatActivity {
         if(boardid !=0 ){
             getReadBoard();
         }
+
+        if(callpage.equals("ins")){
+            categoryType.setVisibility(View.VISIBLE);
+        }else{
+            categoryType.setVisibility(View.GONE);
+        }
+
+        categoryType.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if(checked){
+                    tx_categoryType ="A";
+                }else{
+                    tx_categoryType ="B";
+                }
+            }
+        });
 
     }
 
@@ -151,7 +178,7 @@ public class TeamBoardActivity extends AppCompatActivity {
             momBoard.setUid(user.getUid());
             momBoard.setContent(content.getText().toString());
             momBoard.setBoardtype("team");
-            momBoard.setCategory("B");
+            momBoard.setCategory(tx_categoryType);
             momBoard.setBoardtypeid(team.getTeamid());
 
             if(tag == 1){
@@ -166,12 +193,23 @@ public class TeamBoardActivity extends AppCompatActivity {
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                     WaitingDialog.cancelWaitingDialog();
                     if(response.isSuccessful()){
+
                         VeteranToast.makeToast(getApplicationContext(),getString(R.string.board_team_content_complate),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(TeamBoardActivity.this,PlayerMainActivity.class);
-                        intent.putExtra(Param.FRAGMENT_COUNT,0);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        finish();
-                        startActivity(intent);
+
+                        if(callpage.equals("user")){
+                            Intent intent = new Intent(TeamBoardActivity.this,PlayerMainActivity.class);
+                            intent.putExtra(Param.FRAGMENT_COUNT,0);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            finish();
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(TeamBoardActivity.this,InsDashboardActivity.class);
+                            intent.putExtra(Param.FRAGMENT_COUNT,0);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            finish();
+                            startActivity(intent);
+                        }
+
                     }
                 }
 
@@ -194,7 +232,7 @@ public class TeamBoardActivity extends AppCompatActivity {
             upvo.setUid(user.getUid());
             upvo.setContent(content.getText().toString());
             upvo.setBoardtype("team");
-            upvo.setCategory("B");
+            upvo.setCategory(tx_categoryType);
             upvo.setBoardtype(momBoard.getBoardtype());
             upvo.setBoardtypeid(team.getTeamid());
 
@@ -269,5 +307,15 @@ public class TeamBoardActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        /*        Intent backIntent = new Intent();
+        backIntent.putExtra("lineCount",lineCount);
+        backIntent.putExtra("posintion",posintion);
+        setResult(RESULT_OK, backIntent);
+        finish();*/
     }
 }

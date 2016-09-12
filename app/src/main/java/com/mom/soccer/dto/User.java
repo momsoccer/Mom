@@ -27,12 +27,31 @@ public class User implements Serializable{
 	private String wifi;
 	private String backimage;
 
+	private int totalscore;
+	private int level;
+
 	//DB
 	private String fcmToken;
 	private int queryRow;
 	private String orderbytype;
 
 	public User() {
+	}
+
+	public int getTotalscore() {
+		return totalscore;
+	}
+
+	public void setTotalscore(int totalscore) {
+		this.totalscore = totalscore;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 	public String getBackimage() {
@@ -255,6 +274,8 @@ public class User implements Serializable{
 				", teamid=" + teamid +
 				", wifi='" + wifi + '\'' +
 				", backimage='" + backimage + '\'' +
+				", totalscore=" + totalscore +
+				", level=" + level +
 				", fcmToken='" + fcmToken + '\'' +
 				", queryRow=" + queryRow +
 				", orderbytype='" + orderbytype + '\'' +

@@ -14,11 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -31,9 +32,11 @@ import com.mom.soccer.bottommenu.SearchActivity;
 import com.mom.soccer.common.ActivityResultEvent;
 import com.mom.soccer.common.Common;
 import com.mom.soccer.common.EventBus;
+import com.mom.soccer.common.MomSnakBar;
 import com.mom.soccer.dataDto.FeedDataVo;
 import com.mom.soccer.dataDto.UserMainVo;
 import com.mom.soccer.dto.FriendReqVo;
+import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.MomBoard;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
@@ -42,7 +45,6 @@ import com.mom.soccer.retrofitdao.FriendService;
 import com.mom.soccer.retrofitdao.MomBoardService;
 import com.mom.soccer.retrofitdao.UserMainService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.otto.Subscribe;
@@ -64,7 +66,10 @@ public class PlayerFragment extends Fragment{
     private static final String TAG = "PlayerFragment";
     public static final String ARG_PAGE = "ARG_PAGE";
     private int mPage;
+
     private User user = new User();
+    private Instructor instructor= new Instructor();
+
     private SlidingUpPanelLayout mLayout;
     private List<MomBoard> momBoardList = new ArrayList<MomBoard>();
     private static final int COMMENT_LINE_CODE = 201;
@@ -93,18 +98,32 @@ public class PlayerFragment extends Fragment{
     ImageButton teamSearch;
     LinearLayout li_board_no_data_found;
 
-    private int page=0;
-    private int offset=0;
-    private int limit =20;
+    private int page= 0;
+    private int offset = 0;
+    private int limit = 40;
     private boolean lastData = false;
 
-    public static PlayerFragment newInstance(int page, User user){
+    //query
+    private boolean queryExecute = false;
+
+    //2page find usermission condition
+    CheckBox drible_check,traping_check,lifting_check,around_check,flick_check,complex_check,
+            friedn_check,team_check,passyes_check,passno_check;
+
+    UserMainVo query = new UserMainVo();
+    List<String> typename = new ArrayList<>();
+
+    List<UserMainVo> userMainVos = new ArrayList<UserMainVo>();
+
+
+    public static PlayerFragment newInstance(int page, User user,Instructor instructor){
 
         Log.i(TAG,"PlayerFragment newInstance : ==========================");
 
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         args.putSerializable(MissionCommon.USER_OBJECT,user);
+        args.putSerializable(MissionCommon.INS_OBJECT,instructor);
         PlayerFragment fragment = new PlayerFragment();
         fragment.setArguments(args);
         return fragment;
@@ -116,6 +135,7 @@ public class PlayerFragment extends Fragment{
         Log.i(TAG,"fragment onCreate() ===========================================");
         mPage = getArguments().getInt(ARG_PAGE);
         user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
+        instructor = (Instructor) getArguments().getSerializable(MissionCommon.INS_OBJECT);
     }
 
     @Override
@@ -152,10 +172,13 @@ public class PlayerFragment extends Fragment{
                 getTeamBoarderList("first");
             }
 
+            //1.스와이프 이벤트 설정
+            final View finalView2 = view;
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
                     getTeamBoarderList("first");
+                    MomSnakBar.show(finalView2,getActivity(),getString(R.string.bottom_msg4));
                     swipeRefreshLayout.setRefreshing(false);
                 }
             });
@@ -170,6 +193,7 @@ public class PlayerFragment extends Fragment{
                 }
             });
 
+            //2.스와이프 이벤트 버전별
             if(Build.VERSION.SDK_INT  >= 20) {
                 boardRecview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
@@ -195,37 +219,114 @@ public class PlayerFragment extends Fragment{
                 });
             }
 
+            //3.스와이프 이벤트 페이징
+            final View finalView = view;
             boardRecview.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
 
                     if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        if (linearLayoutManager.findLastVisibleItemPosition() == momBoardList.size()) {
 
-                            Log.i(TAG," 불린 값은 " + lastData);
+                        if (linearLayoutManager.findLastVisibleItemPosition() == momBoardList.size()-1) {
+
                             if(!lastData){
-                                VeteranToast.makeToast(getActivity(),"테이터를 불러옵니다 " + offset, Toast.LENGTH_SHORT).show();
                                 getTeamBoarderList("next");
+                            }else{
+                                MomSnakBar.show(finalView,getActivity(),getActivity().getResources().getString(R.string.bottom_msg1));
                             }
                         }
                     }
                 }
             });
 
+
         }else if(mPage==2){
 
             view = inflater.inflate(R.layout.fr_player_fragment3, container, false);
-
+            swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
             li_no_found = (LinearLayout) view.findViewById(R.id.li_no_found);
-
+            linearLayoutManager = new LinearLayoutManager(getContext());
             searchUserMissionRecyclerview = (RecyclerView) view.findViewById(R.id.searchUserMissionRecyclerview);
-            UserMainVo query = new UserMainVo();
-            getSearchUserMission(query);
 
+            getSearchUserMission(query,"new");
+
+            //1.스와이프 이벤트 설정
+            final View finalView1 = view;
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    getSearchUserMission(query,"new");
+                    MomSnakBar.show(finalView1,getActivity(),getString(R.string.bottom_msg4));
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+
+            //2
+            if(Build.VERSION.SDK_INT  >= 20) {
+                searchUserMissionRecyclerview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                    @Override
+                    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            swipeRefreshLayout.setEnabled(true);
+                        } else {
+                            swipeRefreshLayout.setEnabled(false);
+                        }
+                    }
+                });
+            }else{
+                searchUserMissionRecyclerview.setOnScrollListener(new RecyclerView.OnScrollListener(){
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            swipeRefreshLayout.setEnabled(true);
+                        } else {
+                            swipeRefreshLayout.setEnabled(false);
+                        }
+                    }
+                });
+            }
+
+
+            //3
+            final View finalView = view;
+            searchUserMissionRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+
+                        if (linearLayoutManager.findLastVisibleItemPosition() == userMainVos.size()-1) {
+
+                            if(!lastData){
+                                getSearchUserMission(query,"next");
+                            }else{
+                                MomSnakBar.show(finalView,getActivity(),getActivity().getResources().getString(R.string.bottom_msg2));
+                            }
+                        }
+                    }
+                }
+            });
+
+
+            //쿼리조건
             PlayerMainActivity.rightLowerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    query = new UserMainVo();
+                    if(queryExecute){
+                        typename.remove("DRIBLE");
+                        typename.remove("TRAPING");
+                        typename.remove("LIFTING");
+                        typename.remove("AROUND");
+                        typename.remove("COMPLEX");
+                        typename.remove("FLICK");
+                    }
+
+
                     MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                             .icon(getActivity().getResources().getDrawable(R.drawable.ic_search_white_36dp))
                             .title(R.string.usermain_misison_filter)
@@ -237,10 +338,143 @@ public class PlayerFragment extends Fragment{
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
+                                    query.setTypename(typename);
+                                    query.setListCount(typename.size());
+                                    getSearchUserMission(query,"new");
+                                    queryExecute = true;
                                 }
                             })
                             .build();
                     dialog.show();
+
+                    drible_check = (CheckBox) dialog.getCustomView().findViewById(R.id.drible_check);
+                    traping_check = (CheckBox) dialog.getCustomView().findViewById(R.id.traping_check);
+                    lifting_check = (CheckBox) dialog.getCustomView().findViewById(R.id.lifting_check);
+                    around_check = (CheckBox) dialog.getCustomView().findViewById(R.id.around_check);
+                    flick_check = (CheckBox) dialog.getCustomView().findViewById(R.id.flick_check);
+                    complex_check = (CheckBox) dialog.getCustomView().findViewById(R.id.complex_check);
+
+                    friedn_check = (CheckBox) dialog.getCustomView().findViewById(R.id.friedn_check);
+                    team_check = (CheckBox) dialog.getCustomView().findViewById(R.id.team_check);
+                    passyes_check = (CheckBox) dialog.getCustomView().findViewById(R.id.passyes_check);
+                    passno_check = (CheckBox) dialog.getCustomView().findViewById(R.id.passno_check);
+
+                    drible_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            if(isChecked){
+                                typename.add("DRIBLE");
+                            }else{
+                                typename.remove("DRIBLE");
+                            }
+                        }
+                    });
+
+                    traping_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            if(isChecked){
+                                typename.add("TRAPING");
+                            }else{
+                                typename.remove("TRAPING");
+                            }
+                        }
+                    });
+
+                    lifting_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            if(isChecked){
+                                typename.add("LIFTING");
+                            }else{
+                                typename.remove("LIFTING");
+                            }
+                        }
+                    });
+
+                    around_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            if(isChecked){
+                                typename.add("AROUND");
+                            }else{
+                                typename.remove("AROUND");
+                            }
+                        }
+                    });
+
+                    flick_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            if(isChecked){
+                                typename.add("FLICK");
+                            }else{
+                                typename.remove("FLICK");
+                            }
+                        }
+                    });
+
+                    complex_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            if(isChecked){
+                                typename.add("COMPLEX");
+                            }else{
+                                typename.remove("COMPLEX");
+                            }
+                        }
+                    });
+
+                    friedn_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            if(isChecked){
+                                query.setFriendcheck("Y");
+                                query.setUid(user.getUid());
+                            }else{
+                                query.setFriendcheck("N");
+                                query.setUid(0);
+                            }
+                        }
+                    });
+
+                    team_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            if(isChecked){
+                                query.setTeamcheck("Y");
+                                query.setTeamid(Common.teamid);
+                            }else{
+                                query.setTeamcheck("N");
+                                query.setTeamid(0);
+                            }
+                        }
+                    });
+
+                    passyes_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            if(isChecked){
+                                query.setPassflag("Y");
+                                passno_check.setChecked(false);
+                            }else{
+                                query.setPassflag("N");
+                            }
+                        }
+                    });
+
+                    passno_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                            if(isChecked){
+                                query.setPassflag("N");
+                                passyes_check.setChecked(false);
+                            }else{
+                                query.setPassflag(null);
+                            }
+                        }
+                    });
+
                 }
             });
 
@@ -337,28 +571,73 @@ public class PlayerFragment extends Fragment{
     }
 
     //친구들과 팀원들의 미션을 본다.
-    public void getSearchUserMission(UserMainVo query){
+    public void getSearchUserMission(UserMainVo query, final String queryStatus){
         WaitingDialog.showWaitingDialog(getActivity(),false);
         UserMainService userMainService = ServiceGenerator.createService(UserMainService.class,getContext(),user);
         Call<List<UserMainVo>> c = userMainService.getUserMainList(query);
+
+        if(queryStatus.equals("new")) {
+            offset = 0;
+        }else{
+            page = page + 1;
+            offset = limit * page;
+        }
+        query.setOffset(offset);
+        query.setLimit(limit);
+
         c.enqueue(new Callback<List<UserMainVo>>() {
             @Override
             public void onResponse(Call<List<UserMainVo>> call, Response<List<UserMainVo>> response) {
                 WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
-                    List<UserMainVo> userMainVos = response.body();
 
-                    if(userMainVos.size()==0){
-                        li_no_found.setVisibility(View.VISIBLE);
+                    if(queryStatus.equals("new")){
+                        userMainVos = response.body();
+
+                        Log.i(TAG,"!#!##!#! : " + userMainVos.size());
+
+                        if(userMainVos.size()==0){
+                            li_no_found.setVisibility(View.VISIBLE);
+                        }else{
+                            li_no_found.setVisibility(View.GONE);
+                        }
+
+                        searchUserMissionRecyclerview.setHasFixedSize(true);
+                        searchUserMissionRecyclerview.setLayoutManager(linearLayoutManager);
+                        userMissionAdapter = new UserMissionAdapter(getActivity(),user,userMainVos);
+
+                        searchUserMissionRecyclerview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                        searchUserMissionRecyclerview.getItemAnimator().setAddDuration(300);
+                        searchUserMissionRecyclerview.getItemAnimator().setRemoveDuration(300);
+                        searchUserMissionRecyclerview.getItemAnimator().setMoveDuration(300);
+                        searchUserMissionRecyclerview.getItemAnimator().setChangeDuration(300);
+                        searchUserMissionRecyclerview.setHasFixedSize(true);
+                        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(userMissionAdapter);
+                        alphaAdapter.setDuration(500);
+                        searchUserMissionRecyclerview.setAdapter(userMissionAdapter);
+
+                        //페이징 초기화
+                        lastData = false;
+                        offset  = 0;
+                        page    = 0;
+
+
                     }else{
-                        li_no_found.setVisibility(View.GONE);
-                    }
-                    userMissionAdapter = new UserMissionAdapter(getActivity(),user,userMainVos);
-                    searchUserMissionRecyclerview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
-                    searchUserMissionRecyclerview.setHasFixedSize(true);
-                    searchUserMissionRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
-                    searchUserMissionRecyclerview.setAdapter(userMissionAdapter);
+                        List<UserMainVo> userMainVoList = response.body();
 
+                        for(int i = 0 ; i < userMainVoList.size() ; i++)
+                        {
+                            userMainVos.add(userMainVoList.get(i));
+                        }
+
+                        userMissionAdapter.notifyDataSetChanged();
+
+                        if(userMainVoList.size() != limit){
+                            lastData = true;
+                            userMainVoList = new ArrayList<UserMainVo>();
+                        }
+                        WaitingDialog.cancelWaitingDialog();
+                    }
                 }
             }
 
@@ -515,9 +794,8 @@ public class PlayerFragment extends Fragment{
             offset = 0;
         }else{
             page = page + 1;
-            offset = 20 * page;
+            offset = limit * page;
         }
-        query.setCategory("B");
         query.setOffset(offset);
         query.setLimit(limit);
 
@@ -537,7 +815,7 @@ public class PlayerFragment extends Fragment{
 
                         boardRecview.setHasFixedSize(true);
                         boardRecview.setLayoutManager(linearLayoutManager);
-                        boardItemAdapter = new BoardItemAdapter(getActivity(), momBoardList, user);
+                        boardItemAdapter = new BoardItemAdapter(getActivity(), momBoardList, user,instructor,"user");
 
                         boardRecview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
                         boardRecview.getItemAnimator().setAddDuration(300);
@@ -549,9 +827,13 @@ public class PlayerFragment extends Fragment{
                         alphaAdapter.setDuration(500);
                         boardRecview.setAdapter(boardItemAdapter);
 
+                        //페이징 초기화
+                        lastData = false;
+                        offset  = 0;
+                        page    = 0;
+
                     }else{
-                        Log.i(TAG,"데이터를 담습니다");
-                        final List<MomBoard> addBoardList = response.body();
+                        List<MomBoard> addBoardList = response.body();
 
                         for(int i = 0 ; i < addBoardList.size() ; i++)
                         {
@@ -560,12 +842,9 @@ public class PlayerFragment extends Fragment{
 
                         boardItemAdapter.notifyDataSetChanged();
 
-                        //if geting data size is 20 less... it's end
-                        Log.i(TAG,"모지모지 : " + addBoardList.size());
-
-
-                        if(addBoardList.size() != 20){
+                        if(addBoardList.size() != limit){
                             lastData = true;
+                            addBoardList = new ArrayList<MomBoard>();
                         }
                         WaitingDialog.cancelWaitingDialog();
                     }

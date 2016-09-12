@@ -54,7 +54,6 @@ import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 import com.mom.soccer.youtubeplayer.YoutubePlayerActivity;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,6 +187,9 @@ public class UserMissionActivity extends AppCompatActivity
 
     @Bind(R.id.mission_medal)
     ImageView mission_medal;
+
+    @Bind(R.id.ic_board_write)
+    ImageButton ic_board_write;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -333,6 +335,7 @@ public class UserMissionActivity extends AppCompatActivity
         });
 
         //floating button
+        /*
         final ImageView fabIconNew = new ImageView(this);
 
         fabIconNew.setImageDrawable(getResources().getDrawable(R.drawable.ic_border_color_white_24dp));
@@ -361,7 +364,16 @@ public class UserMissionActivity extends AppCompatActivity
                 startActivity(intent1);
             }
         });
-
+        */
+        ic_board_write.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(UserMissionActivity.this, BoardMainActivity.class);
+                intent1.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMission);
+                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent1);
+            }
+        });
     }
 
     public void tabChangeClick(View v){

@@ -44,6 +44,7 @@ public class PrefUtil {
         pre.putInt("ins_uid",ins.getUid());
 
         pre.putString("ins_teamname",ins.getTeamname());
+        pre.putInt("ins_teamid",ins.getTeamid());
         pre.putString("ins_emblem",ins.getEmblem());
         pre.putString("change_teamcreationdate",ins.getChange_teamcreationdate());
 
@@ -74,6 +75,7 @@ public class PrefUtil {
         instructor.setEmblem(sp.getString("ins_emblem",null));
         instructor.setChange_teamcreationdate(sp.getString("change_teamcreationdate",null));
         instructor.setUid(sp.getInt("ins_uid",0));
+        instructor.setTeamid(sp.getInt("ins_teamid",0));
 
         return instructor;
     }

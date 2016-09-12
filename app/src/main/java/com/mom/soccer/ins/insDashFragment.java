@@ -1,7 +1,10 @@
 package com.mom.soccer.ins;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,30 +14,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mom.soccer.R;
+import com.mom.soccer.adapter.BoardItemAdapter;
 import com.mom.soccer.adapter.FeedBackEndAdapter;
 import com.mom.soccer.adapter.FeedBackReqAdapter;
 import com.mom.soccer.adapter.PassListInsAdapter;
 import com.mom.soccer.adapter.PassResultListInsAdapter;
 import com.mom.soccer.adapter.TeamApplyAdapter;
+import com.mom.soccer.common.MomSnakBar;
 import com.mom.soccer.dataDto.FeedBackDataVo;
 import com.mom.soccer.dataDto.FeedDataVo;
 import com.mom.soccer.dto.FeedbackHeader;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.MissionPass;
+import com.mom.soccer.dto.MomBoard;
 import com.mom.soccer.dto.TeamApply;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.FeedBackService;
 import com.mom.soccer.retrofitdao.MissionPassService;
+import com.mom.soccer.retrofitdao.MomBoardService;
 import com.mom.soccer.retrofitdao.TeamService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -60,7 +69,8 @@ public class insDashFragment extends Fragment {
 
     private RecyclerView feedback_req_recyclerview,pass_req_recyclerview
                           ,passRecyclerView,feedbackrecyclerview
-                        ,teamApplyRecyclerview,appRecyclerview;
+                        ,teamApplyRecyclerview,appRecyclerview
+            ,boardRecview;
 
     private FeedBackReqAdapter feedBackReqAdapter;
     private FeedBackEndAdapter feedBackEndAdapter;
@@ -80,6 +90,19 @@ public class insDashFragment extends Fragment {
     //2번 페이지 심사관련
     private List<MissionPass> missionPasses;
     private GridLayoutManager gaggeredGridLayoutManager;
+
+    //팀 게시판
+    SwipeRefreshLayout swipeRefreshLayout;    //젤리빈 17? 이하는 주석처리로 분기...
+    BoardItemAdapter boardItemAdapter;
+
+    private int page= 0;
+    private int offset = 0;
+    private int limit = 40;
+    private boolean lastData = false;
+    LinearLayoutManager linearLayoutManager;
+    private List<MomBoard> momBoardList = new ArrayList<MomBoard>();
+
+    private LinearLayout li_board_no_data_found;
 
     public static insDashFragment newInstance(int page, User user, Instructor ins){
 
@@ -103,12 +126,81 @@ public class insDashFragment extends Fragment {
         ins = (Instructor) getArguments().getSerializable(MissionCommon.INS_OBJECT);
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
 
         View view = null;
 
-        if(mPage==1){  //피드백 심사
+        if(mPage == 1){
+            view = inflater.inflate(R.layout.fr_dash_feedback_main0, container, false);
+            swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+            linearLayoutManager = new LinearLayoutManager(getContext());
+            li_board_no_data_found = (LinearLayout) view.findViewById(R.id.li_board_no_data_found);
+            boardRecview = (RecyclerView) view.findViewById(R.id.boardRecview);
+
+            getTeamBoarderList("first");
+
+            final View finalView2 = view;
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    getTeamBoarderList("first");
+                    MomSnakBar.show(finalView2,getActivity(),getString(R.string.bottom_msg4));
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+
+
+            //2.스와이프 이벤트 버전별
+            if(Build.VERSION.SDK_INT  >= 20) {
+                boardRecview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                    @Override
+                    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            swipeRefreshLayout.setEnabled(true);
+                        } else {
+                            swipeRefreshLayout.setEnabled(false);
+                        }
+                    }
+                });
+            }else{
+                boardRecview.setOnScrollListener(new RecyclerView.OnScrollListener(){
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            swipeRefreshLayout.setEnabled(true);
+                        } else {
+                            swipeRefreshLayout.setEnabled(false);
+                        }
+                    }
+                });
+            }
+
+            //3.스와이프 이벤트 페이징
+            final View finalView = view;
+            boardRecview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+
+                        if (linearLayoutManager.findLastVisibleItemPosition() == momBoardList.size()-1) {
+
+                            if(!lastData){
+                                getTeamBoarderList("next");
+                            }else{
+                                MomSnakBar.show(finalView,getActivity(),getActivity().getResources().getString(R.string.bottom_msg1));
+                            }
+                        }
+                    }
+                }
+            });
+
+
+        } else if(mPage == 2 ){  //피드백 심사
             view = inflater.inflate(R.layout.fr_dash_feedback_main1, container, false);
             slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
             feedback_req_recyclerview = (RecyclerView) view.findViewById(R.id.feedback_req_recyclerview);
@@ -140,7 +232,7 @@ public class insDashFragment extends Fragment {
             //카운터 구하기
             FeedCount();
 
-        }else if(mPage == 2 ){ //심사
+        }else if(mPage == 3 ){ //심사
             view = inflater.inflate(R.layout.fr_dash_feedback_main2, container, false);
             slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
             mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
@@ -171,7 +263,7 @@ public class insDashFragment extends Fragment {
             passRecyclerView = (RecyclerView) view.findViewById(R.id.passRecyclerView);
             getPassResultData();
 
-        }else if(mPage == 3 ) {//기타 강사 메뉴
+        }else if(mPage == 4 ) {//기타 강사 메뉴
             view = inflater.inflate(R.layout.fr_dash_feedback_main3, container, false);
             slidingimg = (ImageView) view.findViewById(R.id.slidingimg);
             mLayout = (SlidingUpPanelLayout) view.findViewById(R.id.sliding_layout);
@@ -203,6 +295,89 @@ public class insDashFragment extends Fragment {
         return view;
     }
 
+
+    public void getTeamBoarderList(final String pageFlag){
+        WaitingDialog.showWaitingDialog(getActivity(),false);
+        MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getContext(),user);
+
+        MomBoard query = new MomBoard();
+        query.setBoardtypeid(ins.getTeamid());
+
+        if(pageFlag.equals("first")) {
+            offset = 0;
+        }else{
+            page = page + 1;
+            offset = limit * page;
+        }
+        query.setOffset(offset);
+        query.setLimit(limit);
+
+        Call<List<MomBoard>> c = momBoardService.getBoardHeaderList(query);
+        c.enqueue(new Callback<List<MomBoard>>() {
+            @Override
+            public void onResponse(Call<List<MomBoard>> call, Response<List<MomBoard>> response) {
+                if(response.isSuccessful()){
+                    if(pageFlag.equals("first")) {
+                        WaitingDialog.cancelWaitingDialog();
+                        momBoardList = response.body();
+
+                        Log.i(TAG,"게시판 데이터는 " + momBoardList.size());
+
+                        if (momBoardList.size() == 0) {
+                            li_board_no_data_found.setVisibility(View.VISIBLE);
+                        } else {
+                            li_board_no_data_found.setVisibility(View.GONE);
+                        }
+
+                        boardRecview.setHasFixedSize(true);
+                        boardRecview.setLayoutManager(linearLayoutManager);
+                        boardItemAdapter = new BoardItemAdapter(getActivity(), momBoardList, user,ins,"ins");
+
+                        boardRecview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                        boardRecview.getItemAnimator().setAddDuration(300);
+                        boardRecview.getItemAnimator().setRemoveDuration(300);
+                        boardRecview.getItemAnimator().setMoveDuration(300);
+                        boardRecview.getItemAnimator().setChangeDuration(300);
+                        boardRecview.setHasFixedSize(true);
+                        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(boardItemAdapter);
+                        alphaAdapter.setDuration(500);
+                        boardRecview.setAdapter(boardItemAdapter);
+
+                        //페이징 초기화
+                        lastData = false;
+                        offset  = 0;
+                        page    = 0;
+
+                    }else{
+                        List<MomBoard> addBoardList = response.body();
+
+                        for(int i = 0 ; i < addBoardList.size() ; i++)
+                        {
+                            momBoardList.add(addBoardList.get(i));
+                        }
+
+                        boardItemAdapter.notifyDataSetChanged();
+
+                        if(addBoardList.size() != limit){
+                            lastData = true;
+                            addBoardList = new ArrayList<MomBoard>();
+                        }
+                        WaitingDialog.cancelWaitingDialog();
+                    }
+                }else{
+                    WaitingDialog.cancelWaitingDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MomBoard>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+    }
+
+
     public void getTeamApplyList(){
 
         WaitingDialog.showWaitingDialog(getActivity(),false);
@@ -214,7 +389,6 @@ public class insDashFragment extends Fragment {
                 WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     List<TeamApply> applyList = response.body();
-
 
                     teamApplyAdapter = new TeamApplyAdapter(getActivity(),applyList,ins);
                     teamApplyRecyclerview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
@@ -235,7 +409,8 @@ public class insDashFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<TeamApply>> call, Throwable t) {
-
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
             }
         });
     }
@@ -273,7 +448,8 @@ public class insDashFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<TeamApply>> call, Throwable t) {
-
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
             }
         });
     }
@@ -319,11 +495,8 @@ public class insDashFragment extends Fragment {
                 public void onResponse(Call<List<FeedbackHeader>> call, Response<List<FeedbackHeader>> response) {
                     WaitingDialog.cancelWaitingDialog();
                     if(response.isSuccessful()){
-
                         feedbackHeaders = response.body();
-
                         if(feedbackHeaders.size()!=0){
-
                             feedback_req_recyclerview.setVisibility(View.VISIBLE);
 
                             feedBackReqAdapter = new FeedBackReqAdapter(getActivity(),feedbackHeaders,user,ins);
@@ -342,9 +515,6 @@ public class insDashFragment extends Fragment {
                         }else{
                             feedback_req_recyclerview.setVisibility(View.GONE);
                         }
-
-                    }else{
-
                     }
                 }
 
@@ -390,9 +560,6 @@ public class insDashFragment extends Fragment {
                         }else{
                             feedbackrecyclerview.setVisibility(View.GONE);
                         }
-
-                    }else{
-
                     }
                 }
 
@@ -408,21 +575,18 @@ public class insDashFragment extends Fragment {
 
     //페이지2 강사심사...
     public void getMissionPassList(){
+        WaitingDialog.showWaitingDialog(getActivity(),false);
         MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getContext(),user);
-
         MissionPass query  = new MissionPass();
         query.setInstructorid(ins.getInstructorid());
         query.setStatus("REQUEST");
-
         Call<List<MissionPass>> c = service.getMissionPassList(query);
         c.enqueue(new Callback<List<MissionPass>>() {
             @Override
             public void onResponse(Call<List<MissionPass>> call, Response<List<MissionPass>> response) {
+                WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     missionPasses = response.body();
-
-                    Log.i(TAG,"미션 패스 응답 값은 : " + missionPasses.toString());
-
                     passListInsAdapter = new PassListInsAdapter(getActivity(),missionPasses,ins);
                     pass_req_recyclerview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
                     pass_req_recyclerview.getItemAnimator().setAddDuration(300);
@@ -442,15 +606,16 @@ public class insDashFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<MissionPass>> call, Throwable t) {
-
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
             }
         });
     }
 
     //심사결과
     public void getPassResultData(){
+        WaitingDialog.showWaitingDialog(getActivity(),false);
         MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getContext(),user);
-
         MissionPass query  = new MissionPass();
         query.setInstructorid(ins.getInstructorid());
         query.setStatus("SUCCESS");
@@ -458,6 +623,7 @@ public class insDashFragment extends Fragment {
         c.enqueue(new Callback<List<MissionPass>>() {
             @Override
             public void onResponse(Call<List<MissionPass>> call, Response<List<MissionPass>> response) {
+                WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     List<MissionPass> pass = response.body();
 
@@ -480,7 +646,8 @@ public class insDashFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<MissionPass>> call, Throwable t) {
-
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
             }
         });
     }
@@ -555,4 +722,7 @@ public class insDashFragment extends Fragment {
        passResultListInsAdapter.notifyDataSetChanged();
   */
     }
+
+
+
 }

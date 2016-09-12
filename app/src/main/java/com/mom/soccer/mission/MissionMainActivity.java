@@ -239,6 +239,9 @@ public class MissionMainActivity extends AppCompatActivity {
     @Bind(R.id.li_another_no_data_back)
     LinearLayout li_another_no_data_back;
 
+/*    @Bind(R.id.scaleUp)
+    ImageButton scaleUp;*/
+
     @OnClick(R.id.btn_shre)
     public void btn_shre(){
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -335,6 +338,15 @@ public class MissionMainActivity extends AppCompatActivity {
                 (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         nm.cancel(UPLOAD_NOTIFICATION_ID);
         passrecyclerview = (RecyclerView)findViewById(R.id.passrecyclerview);
+
+/*        scaleUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity,YoutubePlayerActivity.class);
+                intent.putExtra(Common.YOUTUBEVIDEO,mission.getYoutubeaddr());
+                activity.startActivity(intent);
+            }
+        });*/
 
     }
 
