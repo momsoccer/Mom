@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/mom_color1"
+    android:fillViewport="true"
+    android:layout_margin="15dp"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="업로드가 안되시나요?\n영상 업로드가 안되신다면 아래 가이드를 참고 바랍니다"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/color6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:text="1.핸드폰에 설치 되어 있는 유투브 앱을 실행 합니다"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/color6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:src="@drawable/youtube_app2"
+            android:layout_width="wrap_content"
+            android:layout_height="400dp" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:text="2.유저 탭에서 유저의 프로필사진을 클릭해주세요"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/color6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:src="@drawable/youtube1"
+            android:layout_width="wrap_content"
+            android:layout_height="400dp" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:text="3.채널 만들기를 하신 후, 업로드를 해보세요"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/color6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:src="@drawable/youtube_app3"
+            android:layout_width="wrap_content"
+            android:layout_height="400dp" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:text="4.웹 페이지에서 설정 하셔도 됩니다"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/color6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:src="@drawable/webchanel"
+            android:layout_width="wrap_content"
+            android:layout_height="400dp" />
+
+    </LinearLayout>
+
+</ScrollView>

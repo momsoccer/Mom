@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,6 +26,8 @@ import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.google.android.gms.common.ConnectionResult;
@@ -63,6 +67,7 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
 
     private static final String TAG = "ReviewActivity";
 
+    private Activity activity;
     private VideoView mVideoView;
     private Uri mFileUri;
     private MediaController mc;
@@ -90,6 +95,8 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
     public static final String REQUEST_AUTHORIZATION_INTENT_PARAM = "com.mom.soccer.RequestAuth.param";
 
     public static boolean uploadPossibility = false;
+    public boolean uploadFlag = false;
+    private String upset = "N";
 
     //화면의 정보들
     @Bind(R.id.upload_mission_content)
@@ -103,7 +110,7 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_review_layout);
         ButterKnife.bind(this);
-
+        activity = this;
 
         //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         //getSupportActionBar().setTitle(getString(R.string.mission_upload_start));
@@ -111,6 +118,7 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
+        upset = prefUtil.getUploadFlag();
 
         Intent intent = getIntent();
         mFileUri = intent.getData();
@@ -141,10 +149,46 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
 
         new Async(getApplicationContext()).execute();
 
-        Log.d(TAG,"onCreate ++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //네트워크 검사
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo mobile;
+        NetworkInfo wifi;
+        mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+
+        if(!wifi.isConnected()) {
+            new MaterialDialog.Builder(activity)
+                    .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                    .title(R.string.networkcheck1)
+                    .content(R.string.networkcheck2)
+                    .contentColor(activity.getResources().getColor(R.color.color6))
+                    .positiveText(R.string.mom_diaalog_confirm_y)
+                    .negativeText(R.string.mom_diaalog_cancel_n)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            uploadFlag = true;
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            uploadFlag = false;
+                        }
+                    })
+                    .show();
+        }
+
+    }
 
     //구글 토큰값 확인해보기
     public void getAccessToken(Context mContext) {
@@ -176,13 +220,22 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
 
     @OnClick(R.id.btn_upload)
     public void uploadVideo(){
-
-/*        if(!uploadPossibility){
-            VeteranToast.makeToast(getApplicationContext(),getString(R.string.need_google_auth),Toast.LENGTH_SHORT).show();
+        if(!uploadFlag){
+            VeteranToast.makeToast(getApplicationContext(),getResources().getString(R.string.networkcheck3),Toast.LENGTH_SHORT).show();
+            finish();
             return;
-        }*/
+        }else{
+
+            if(upset.equals("N")){
+                VeteranToast.makeToast(getApplicationContext(),getResources().getString(R.string.networkcheck4),Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+
+        }
 
         if (mFileUri != null) {
+
             final Intent uploadIntent = new Intent(this, UploadService.class);
             uploadIntent.putExtra(MissionCommon.OBJECT,mission);
             uploadIntent.setData(mFileUri);
@@ -369,13 +422,13 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
                 break;
             case REQUEST_ACCOUNT_PICKER:
                 if (resultCode == Activity.RESULT_OK && data != null && data.getExtras() != null) {
-                        Log.d(TAG,"유저가 OAuth 동의를 했습니다");
-                        Auth.accountName = user.getGoogleemail();
-                        Log.d(TAG,"인증 유저 아이디는 : " + Auth.accountName);
-                        uploadPossibility=true;
+                    Log.d(TAG,"유저가 OAuth 동의를 했습니다");
+                    Auth.accountName = user.getGoogleemail();
+                    Log.d(TAG,"인증 유저 아이디는 : " + Auth.accountName);
+                    uploadPossibility=true;
                 }else{
                     Log.d(TAG,"유저가 OAuth 동의를 하지 않았습니다");
-                        uploadPossibility=false;
+                    uploadPossibility=false;
                 }
                 break;
         }
@@ -401,20 +454,15 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
         mGoogleApiClient.connect();
 
         if (broadcastReceiver == null)
-            broadcastReceiver = new UploadBroadcastReceiver();
-        IntentFilter intentFilter = new IntentFilter(
-                REQUEST_AUTHORIZATION_INTENT);
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                broadcastReceiver, intentFilter);
+            broadcastReceiver = new UploadBroadcastReceiver();IntentFilter intentFilter = new IntentFilter(REQUEST_AUTHORIZATION_INTENT);
+            LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
     }
 
     private class UploadBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(REQUEST_AUTHORIZATION_INTENT)) {
-                Log.d(TAG, "Request auth received - executing the intent");
-                Intent toRun = intent
-                        .getParcelableExtra(REQUEST_AUTHORIZATION_INTENT_PARAM);
+                Intent toRun = intent.getParcelableExtra(REQUEST_AUTHORIZATION_INTENT_PARAM);
                 startActivityForResult(toRun, REQUEST_AUTHORIZATION);
             }
         }

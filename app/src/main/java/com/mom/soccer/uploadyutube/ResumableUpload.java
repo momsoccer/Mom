@@ -61,7 +61,6 @@ public class ResumableUpload {
 
         Intent notificationIntent = new Intent(context, MissionMainActivity.class);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         notificationIntent.putExtra(MissionCommon.OBJECT,mission);
         notificationIntent.putExtra("uploadflag","Y");
         notificationIntent.putExtra(MissionCommon.MISSIONTYPE,mission.getTypename());
@@ -77,7 +76,9 @@ public class ResumableUpload {
 
         builder.setContentTitle(context.getString(R.string.upload_pre_title))
                 .setContentText( context.getString(R.string.upload_pre_title_content)+" : "+userMission.getSubject())
-                .setSmallIcon(R.drawable.ic_diarog_mom).setContentIntent(contentIntent).setStyle(new NotificationCompat.BigPictureStyle().bigPicture(thumbnail));
+                .setSound(defaultSoundUri)
+                .setSmallIcon(R.drawable.ic_diarog_mom)
+                .setContentIntent(contentIntent).setStyle(new NotificationCompat.BigPictureStyle().bigPicture(thumbnail));
                 ;
 
         notifyManager.notify(UPLOAD_NOTIFICATION_ID, builder.build());
@@ -202,21 +203,19 @@ public class ResumableUpload {
 
 
         } catch (final GooglePlayServicesAvailabilityIOException availabilityException) {
-            Log.e(TAG, "GooglePlayServicesAvailabilityIOException", availabilityException);
             notifyFailedUpload(context,"구글 서비스를 이용할 수 없습니다", notifyManager, builder);
         } catch (UserRecoverableAuthIOException userRecoverableException) {
-            Log.i(TAG, String.format("UserRecoverableAuthIOException: %s",
-                    userRecoverableException.getMessage()));
+            Log.i(TAG, String.format("UserRecoverableAuthIOException: %s", userRecoverableException.getMessage()));
             requestAuth(context, userRecoverableException);
 
         } catch (IOException e) {
-            Log.e(TAG, "IOException", e);
-            notifyFailedUpload(context, "업로드를 재시도 합니다", notifyManager, builder);
 
-            //IOException 에러시 웹뷰를 연결 유투브 계정 initial 시킨다
+            UploadService.uploadExecuteFlag = "fail";
+            Log.i(TAG,"업로드 실패 : " + e.getMessage());
+            e.printStackTrace();
+            notifyFailedUpload(context,"유투브 채널 설정이 필요합니다", notifyManager, builder);
 
         } catch (CancellationException e){
-            Log.e(TAG, "사용자 에러를 발생 시켰습니다");
             return "uploadCancel";
         }
         return videoId;
@@ -237,8 +236,8 @@ public class ResumableUpload {
     //업로드 실패시 노티로 알려준다
     private static void notifyFailedUpload(Context context, String message, NotificationManager notifyManager,
                                            NotificationCompat.Builder builder) {
-        builder.setContentTitle(context.getString(R.string.upload_error))
-                .setContentText(message);
+        builder.setContentTitle(message)
+                .setContentText(context.getString(R.string.upload_error));
         notifyManager.notify(UPLOAD_NOTIFICATION_ID, builder.build());
     }
 

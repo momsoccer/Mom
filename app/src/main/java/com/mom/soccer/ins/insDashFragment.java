@@ -681,19 +681,20 @@ public class insDashFragment extends Fragment {
 
     public void getTeamCount(){
         WaitingDialog.showWaitingDialog(getActivity(),false);
-        Log.i(TAG,"vo : ####################################");
         TeamService teamService = ServiceGenerator.createService(TeamService.class,getContext(),ins);
         Call<FeedDataVo> c = teamService.getTeamCount(ins.getInstructorid());
+
         c.enqueue(new Callback<FeedDataVo>() {
             @Override
             public void onResponse(Call<FeedDataVo> call, Response<FeedDataVo> response) {
                 WaitingDialog.cancelWaitingDialog();
-                if(response.isSuccessful()){
-                    FeedDataVo vo = response.body();
-                    Log.i(TAG,"vo : " + vo.toString());
+                if(response.isSuccessful()) {
 
+                    FeedDataVo vo = response.body();
                     feedbackCount.setText(String.valueOf(vo.getCompletecount()));
                     feedbackNonCount.setText(String.valueOf(vo.getIncompletecount()));
+                }else{
+
                 }
             }
 

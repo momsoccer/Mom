@@ -50,6 +50,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.mom.soccer.MainActivity;
@@ -71,6 +72,7 @@ import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.common.SettingActivity;
 import com.mom.soccer.dataDto.TeamRankingVo;
 import com.mom.soccer.dataDto.UserRangkinVo;
+import com.mom.soccer.dto.FcmToken;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.TeamMember;
@@ -84,6 +86,7 @@ import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retrofitdao.TeamService;
 import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.trservice.FcmTokenTRService;
 import com.mom.soccer.trservice.UserTRService;
 import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
@@ -127,6 +130,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
     ImageView navHeaderImage;
 
     public static Activity activity;
+    private static boolean tokenSet = false;
 
     private Bitmap photo;
     private Uri mImageCaptureUri;
@@ -279,6 +283,18 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
         imageBtnBall    = (ImageButton) findViewById(R.id.ib_appbar_ball);
         ib_appbar_coach = (ImageButton) findViewById(R.id.ib_appbar_coach);
+
+        //token setting 앱 활성화시 한번만 수행한다 원활한 앱 푸쉬를 위해
+        if(!tokenSet){
+            prefUtil.saveFcmToken(FirebaseInstanceId.getInstance().getToken());
+            FcmToken fcmToken = new FcmToken();
+            fcmToken.setUid(user.getUid());
+            fcmToken.setSerialnumber(user.getSerialnumber());
+            fcmToken.setFcmtoken(FirebaseInstanceId.getInstance().getToken());
+            FcmTokenTRService.setupToken(activity,user,fcmToken);
+            tokenSet = true;
+        }
+
     }
 
     @Override

@@ -1,17 +1,14 @@
 package com.mom.soccer.bookmark;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.GridMissionAdapter;
@@ -23,7 +20,7 @@ import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.mission.UserMissionActivity;
 import com.mom.soccer.retrofitdao.PickService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.List;
 
@@ -48,7 +45,7 @@ public class MyBookMarkActivity extends AppCompatActivity {
     PrefUtil prefUtil;
 
     @Bind(R.id.book_no_data_found)
-    TextView book_no_data_found;
+    LinearLayout book_no_data_found;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +70,6 @@ public class MyBookMarkActivity extends AppCompatActivity {
         videoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-                Log.i(TAG,"포지션 아이디는 : " +position);
 
                 Intent userMissionListIntent = new Intent(getApplicationContext(),UserMissionActivity.class);
                 userMissionListIntent.putExtra(MissionCommon.USER_MISSTION_OBJECT,userMissions.get(position));
@@ -106,9 +101,7 @@ public class MyBookMarkActivity extends AppCompatActivity {
 
     public void myBookMarkList(){
 
-        final ProgressDialog dialog;
-        dialog = ProgressDialog.show(this, "", getString(R.string.network_get_list), true);
-
+        WaitingDialog.showWaitingDialog(MyBookMarkActivity.this,false);
         MyBookMark myBookMark = new MyBookMark();
         myBookMark.setUid(user.getUid());
 
@@ -117,33 +110,29 @@ public class MyBookMarkActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<UserMission>>() {
             @Override
             public void onResponse(Call<List<UserMission>> call, Response<List<UserMission>> response) {
-
+                WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     userMissions = response.body();
 
                     gridMissionAdapter = new GridMissionAdapter(getApplicationContext(),R.layout.adapter_book_mark_layout,userMissions,"ME");
                     videoGridView.setAdapter(gridMissionAdapter);
-                    dialog.dismiss();
 
                     if(userMissions.size()==0){
-                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.no_data_video),Toast.LENGTH_SHORT).show();
                         book_no_data_found.setVisibility(View.VISIBLE);
-                        book_no_data_found.setText(R.string.no_data_video);
                     }else{
                         book_no_data_found.setVisibility(View.GONE);
                     }
 
                 }else{
-                    //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
+                    WaitingDialog.cancelWaitingDialog();
+
                 }
             }
 
             @Override
             public void onFailure(Call<List<UserMission>> call, Throwable t) {
-                //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
-                dialog.dismiss();
             }
         });
     }

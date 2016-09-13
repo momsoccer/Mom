@@ -105,6 +105,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".mission.MissionMainActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -133,6 +134,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".Ranking.UserRankingActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -194,7 +196,9 @@
             android:name=".ins.InsDashboardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".youtubeplayer.YoutubePlayerActivity" />
+        <activity
+            android:name=".youtubeplayer.YoutubePlayerActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize" />
         <activity android:name=".ins.FeedBackWrite" />
         <activity android:name=".ins.InsPointHistory" />
 
@@ -202,11 +206,20 @@
             android:name=".ins.UploadFeedService"
             android:exported="true" />
 
-        <activity android:name=".ball.TeamBoardActivity"
+        <activity
+            android:name=".ball.TeamBoardActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-        <activity android:name=".ball.TeamBoardReply"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ball.TeamBoardReply"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".exception.UploadExceptionActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_upload_exception"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".CreditLicense"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             />

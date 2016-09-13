@@ -21,9 +21,11 @@ import com.mom.soccer.common.Auth;
 import com.mom.soccer.dto.FeedbackLine;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.ServerResult;
+import com.mom.soccer.exception.UploadExceptionActivity;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.FeedBackService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.uploadyutube.UploadService;
 import com.mom.soccer.widget.WaitingDialog;
 
 import java.io.FileNotFoundException;
@@ -155,32 +157,41 @@ public class UploadFeedService extends IntentService {
     public void onDestroy() {
         super.onDestroy();
 
-        //디비 실행 및 전 화면으로 이동
-        FeedbackLine line = new FeedbackLine();
 
-        line.setFeedbackid(feedbackLine.getFeedbackid());
-        line.setType("ins");
-        line.setContent(feedbackLine.getContent());
-        line.setVideoaddr(videoId);
-        line.setFilename(feedbackLine.getFilename());
+        if(UploadService.uploadExecuteFlag.equals("fail")){
+            Intent intent = new Intent(getApplicationContext(),UploadExceptionActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
 
-        FeedBackService feedBackService = ServiceGenerator.createService(FeedBackService.class, getApplicationContext(), instructor);
-        Call<ServerResult> c = feedBackService.saveLine(line);
-        c.enqueue(new Callback<ServerResult>() {
-            @Override
-            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                WaitingDialog.cancelWaitingDialog();
-                if (response.isSuccessful()) {
-                    ServerResult result = response.body();
+        }else {
+            FeedbackLine line = new FeedbackLine();
+
+            line.setFeedbackid(feedbackLine.getFeedbackid());
+            line.setType("ins");
+            line.setContent(feedbackLine.getContent());
+            line.setVideoaddr(videoId);
+            line.setFilename(feedbackLine.getFilename());
+
+            FeedBackService feedBackService = ServiceGenerator.createService(FeedBackService.class, getApplicationContext(), instructor);
+            Call<ServerResult> c = feedBackService.saveLine(line);
+            c.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                    WaitingDialog.cancelWaitingDialog();
+                    if (response.isSuccessful()) {
+                        ServerResult result = response.body();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ServerResult> call, Throwable t) {
-                WaitingDialog.cancelWaitingDialog();
-                t.printStackTrace();
-            }
-        });
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
+                    t.printStackTrace();
+                }
+            });
+        }
+
+
     }
 
 }

@@ -13,6 +13,18 @@
             >
         </com.mom.soccer.common.MomPreference>
 
+        <com.mom.soccer.common.MomPreference
+            android:title="@string/mom_setting_creator">
+                     <intent android:targetClass="com.mom.soccer.CreditLicense"
+            android:targetPackage="com.mom.soccer" />
+        </com.mom.soccer.common.MomPreference>
+
+        <com.mom.soccer.common.MomPreference
+            android:title="@string/mom_setting_upload_set">
+                     <intent android:targetClass="com.mom.soccer.exception.UploadExceptionActivity"
+            android:targetPackage="com.mom.soccer" />
+        </com.mom.soccer.common.MomPreference>
+
 
         <com.mom.soccer.common.MomPreference
             android:title="@string/mom_setting_upload">

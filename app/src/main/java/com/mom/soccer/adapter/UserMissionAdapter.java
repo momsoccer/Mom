@@ -47,6 +47,7 @@ public class UserMissionAdapter extends RecyclerView.Adapter<UserMissionAdapter.
     List<UserMainVo> userMainVo;
     UserMission userMission;
 
+
     public UserMissionAdapter(Activity activity, User user, List<UserMainVo> userMainVo) {
         this.activity = activity;
         this.user = user;
@@ -143,6 +144,7 @@ public class UserMissionAdapter extends RecyclerView.Adapter<UserMissionAdapter.
             h.batch.setImageDrawable(activity.getResources().getDrawable(R.drawable.batch_complex_a));
         }
 
+
         h.uservideo.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
@@ -199,6 +201,8 @@ public class UserMissionAdapter extends RecyclerView.Adapter<UserMissionAdapter.
     public int getItemCount() {
         return userMainVo.size();
     }
+
+
 
     public class MissionHorder extends RecyclerView.ViewHolder {
 

@@ -18,6 +18,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -42,6 +43,7 @@ import com.mom.soccer.adapter.GridMissionAdapter;
 import com.mom.soccer.adapter.PassListAdapter;
 import com.mom.soccer.besideactivity.FavoriteMissionActivity;
 import com.mom.soccer.common.Auth;
+import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.ExpandableHeightGridView;
 import com.mom.soccer.common.PrefUtil;
@@ -80,6 +82,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MissionMainActivity extends AppCompatActivity {
+
 
     private static final String TAG = "MissionMainActivity";
     private static final int RECOVERY_DIALOG_REQUEST = 1;
@@ -339,15 +342,6 @@ public class MissionMainActivity extends AppCompatActivity {
         nm.cancel(UPLOAD_NOTIFICATION_ID);
         passrecyclerview = (RecyclerView)findViewById(R.id.passrecyclerview);
 
-/*        scaleUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(activity,YoutubePlayerActivity.class);
-                intent.putExtra(Common.YOUTUBEVIDEO,mission.getYoutubeaddr());
-                activity.startActivity(intent);
-            }
-        });*/
-
     }
 
     @Override
@@ -357,7 +351,8 @@ public class MissionMainActivity extends AppCompatActivity {
         Log.i(TAG,"onResume() =====================================");
         intent = getIntent();
         String uploadflag = intent.getStringExtra("uploadflag");
-        Log.i(TAG,"받은 값은 : " + uploadflag);
+
+
     }
 
     @Override
@@ -390,7 +385,6 @@ public class MissionMainActivity extends AppCompatActivity {
                     WaitingDialog.cancelWaitingDialog();
                     User user = response.body();
                     USER_TEAM_ID = user.getTeamid();
-                    Log.i(TAG," USER_TEAM_ID ********************** : " +  USER_TEAM_ID);
 
                     getInsInfo();
 
@@ -428,6 +422,10 @@ public class MissionMainActivity extends AppCompatActivity {
             }
         });
 
+        /*//initial youtube screen
+        if(Common.YOUTUBESCREEN_STATUS.equals("LANDSCAPE")){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }*/
     }
 
     //다른 사람들의 영상 목록
@@ -1251,17 +1249,14 @@ public class MissionMainActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     WaitingDialog.cancelWaitingDialog();
                     insInfoVo = response.body();
-                    Log.i(TAG,"********************** : " +  insInfoVo.toString());
 
                 }else{
-                    Log.i(TAG,"getInsInfo error1");
                     WaitingDialog.cancelWaitingDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<InsInfoVo> call, Throwable t) {
-                Log.i(TAG,"getInsInfo error2");
                 WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
             }
@@ -1314,30 +1309,6 @@ public class MissionMainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        //setResult(RESULT_OK);
-
-        if(actName == null ){
-            actName = "NOL";
-        }
-
-        Log.i(TAG,"onBackPressed() " + missionType);
-
-        if(actName.equals("NOL")){
-            Intent intent = new Intent(MissionMainActivity.this,MissionActivity.class);
-            intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }else{
-            Intent intent = new Intent(MissionMainActivity.this,FavoriteMissionActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
-            startActivity(intent);
-        }
-
-    }
 
     public void passHistory(){
         if(!Compare.isEmpty(userMission.getPassflag())){
@@ -1379,5 +1350,37 @@ public class MissionMainActivity extends AppCompatActivity {
                 });
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Log.i(TAG,"onBackPressed() ==================================");
+
+        if(Common.YOUTUBESCREEN_STATUS .equals("LANDSCAPE")){
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            getWindow().clearFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+
+
+        if(actName == null ){
+            actName = "NOL";
+        }
+
+        if(actName.equals("NOL")){
+            Intent intent = new Intent(MissionMainActivity.this,MissionActivity.class);
+            intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(MissionMainActivity.this,FavoriteMissionActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
+            startActivity(intent);
+        }
+
+
     }
 }

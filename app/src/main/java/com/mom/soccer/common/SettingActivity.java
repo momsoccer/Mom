@@ -8,11 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.mom.soccer.R;
 import com.mom.soccer.bottommenu.UserProfile;
-import com.mom.soccer.widget.VeteranToast;
 
 
 /**
@@ -54,9 +52,9 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         // 도움말 선택시
 
         if(preference.getKey().equals("keyhelp")) {
-            VeteranToast.makeToast(getApplicationContext(),"도움말 창으로 이동", Toast.LENGTH_SHORT).show();
-            //Intent intent = new Intent(Setting.this, appHelp.class);
-            //startActivityForResult(intent, 0);
+
+
+
         }else if(preference.getKey().equals("userprofile")) {
             Intent intent = new Intent(this, UserProfile.class);
             startActivity(intent);

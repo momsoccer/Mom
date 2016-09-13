@@ -22,6 +22,7 @@ import com.mom.soccer.common.Common;
 import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
+import com.mom.soccer.exception.UploadExceptionActivity;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.trservice.UserMissionTRService;
 
@@ -48,6 +49,8 @@ public class UploadService extends IntentService {
 
     private String videoId = null;
     private User user;
+
+    public static String uploadExecuteFlag="no";
 
     public UploadService() {
         super("UploadService");
@@ -108,14 +111,12 @@ public class UploadService extends IntentService {
             videoId = ResumableUpload.upload(youtube, fileInputStream, fileSize, mFileUri, cursor.getString(column_index), getApplicationContext(),mission,userMission);
 
         } catch (FileNotFoundException e) {
-            Log.d(TAG,"여기서 에러가 나는가요 1");
             Log.e(getApplicationContext().toString(), e.getMessage());
         } finally {
             try {
-                Log.d(TAG,"여기서 에러가 나는가요2");
+
                 fileInputStream.close();
             } catch (IOException e) {
-                Log.d(TAG,"여기서 에러가 나는가요3");
             }
         }
         return videoId;
@@ -128,7 +129,6 @@ public class UploadService extends IntentService {
 
     private void tryUploadAndShowSelectableNotification(final Uri fileUri, final YouTube youtube) throws InterruptedException {
 
-        Log.d(TAG,"여기였어 여기..tryUploadAndShowSelectableNotification");
 
         while (true) {
             Log.i(TAG, String.format("Uploading [%s] to YouTube", fileUri.toString()));
@@ -142,12 +142,12 @@ public class UploadService extends IntentService {
                 return;
 
             } else {
-                Log.e(TAG, String.format("Failed to upload %s", fileUri.toString()));
-                Log.d(TAG,"여기였어 여기..");
+
+                Log.d(TAG,"업로드 재시도 중");
+
                 if (mUploadAttemptCount++ < MAX_RETRY) {
-                    Log.i(TAG, String.format("Will retry to upload the video ([%d] out of [%d] reattempts)",
-                            mUploadAttemptCount, MAX_RETRY));
-                    zzz(UPLOAD_REATTEMPT_DELAY_SEC * 1000);
+                    Log.i(TAG, String.format("Will retry to upload the video ([%d] out of [%d] reattempts)", mUploadAttemptCount, MAX_RETRY));
+                    zzz(UPLOAD_REATTEMPT_DELAY_SEC * 100);
                 } else {
                     Log.e(TAG, String.format("Giving up on trying to upload %s after %d attempts",
                             fileUri.toString(), mUploadAttemptCount));
@@ -168,11 +168,6 @@ public class UploadService extends IntentService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "IntentService onStartCommand  ========================================");
 
-
-
-        //mission = (Mission) intent.getSerializableExtra(MissionCommon.OBJECT);
-        //Log.d(TAG, "미션 객체 정보는 : " + mission.toString());
-
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -180,46 +175,20 @@ public class UploadService extends IntentService {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "IntentService onDestroy  ========================================");
-        userMission.setYoutubeaddr(videoId);
-        userMission.setVideoaddr(Common.YOUTUBE_ADDR + videoId);
-        userMission.setPassgrade(mission.getPassgrade());
 
-        Log.d(TAG,"업 미션 정보 : " + userMission.toString());
-        Log.d(TAG,"유저 정보는? 가능? : " + user.toString());
+        if(uploadExecuteFlag.equals("fail")){
+            Intent intent = new Intent(getApplicationContext(),UploadExceptionActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
 
-        //서버에 데이터를 생성 또는 업데이트를 해준다
-        UserMissionTRService trService = new UserMissionTRService(getApplicationContext(),userMission,user);
-        trService.createUserMission();
+        }else {
+            userMission.setYoutubeaddr(videoId);
+            userMission.setVideoaddr(Common.YOUTUBE_ADDR + videoId);
+            userMission.setPassgrade(mission.getPassgrade());
+
+            UserMissionTRService trService = new UserMissionTRService(getApplicationContext(), userMission, user);
+            trService.createUserMission();
+        }
     }
-
-
-
-
-    /*
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "IntentService onDestroy  ========================================");
-
-        final Intent intent = new Intent("uploadReceiver");
-        final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
-        intent.putExtra("uploadMessage","업로드가 종료 되었습니다");
-        intent.putExtra("upflag",videoId);
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.mainmark)
-                .setContentTitle("업로드 알림")
-                .setContentText("업로드가 정상적으로 이루어 졌습니다")
-                .setColor(Color.BLUE)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                ;
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notificationBuilder.build());
-        broadcastManager.sendBroadcast(intent);
-    }
-*/
 }
 

@@ -27,6 +27,7 @@ import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Constants;
 import com.mom.soccer.dto.FeedbackLine;
 import com.mom.soccer.pubactivity.Param;
+import com.mom.soccer.uploadyutube.UploadService;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -169,9 +170,10 @@ public class ResumableFeedUpload {
                     userRecoverableException.getMessage()));
             requestAuth(context, userRecoverableException);
         } catch (IOException e) {
-            Log.e(TAG, "IOException", e);
-            notifyFailedUpload(context, "업로드를 재시도 합니다", notifyManager, builder);
-            //IOException 에러시 웹뷰를 연결 유투브 계정 initial 시킨다
+            UploadService.uploadExecuteFlag = "fail";
+            Log.i(TAG,"업로드 실패 : " + e.getMessage());
+            e.printStackTrace();
+            notifyFailedUpload(context,"유투브 채널 설정이 필요합니다", notifyManager, builder);
 
         } catch (CancellationException e){
             Log.e(TAG, "사용자 에러를 발생 시켰습니다");

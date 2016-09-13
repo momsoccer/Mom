@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.google.android.youtube.player.YouTubePlayer;
@@ -74,5 +75,13 @@ public class YoutubePlayerActivity extends YouTubeFailureRecoveryActivity implem
         return null;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            getWindow().clearFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
 
 }

@@ -311,11 +311,5 @@ public class TeamBoardActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-        /*        Intent backIntent = new Intent();
-        backIntent.putExtra("lineCount",lineCount);
-        backIntent.putExtra("posintion",posintion);
-        setResult(RESULT_OK, backIntent);
-        finish();*/
     }
 }

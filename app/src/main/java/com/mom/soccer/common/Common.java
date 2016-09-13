@@ -32,6 +32,11 @@ public class Common {
     public static String IMAGE_CHOOSE_FALG = "";
     public static String YOUTUBEVIDEO = "YOUTUBEVIDEO";
 
+    //if user use android Fullscreen.. randspace. => reset orient
+
+    public static String YOUTUBESCREEN_CONDITION = "Y"; //LANDSCAPE
+    public static String YOUTUBESCREEN_STATUS = "PORTRAIT"; //LANDSCAPE
+
     public static int teamid = 0;
 
     public static String getDeviceSerialNumber() {

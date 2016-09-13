@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bartoszlipinski.flippablestackview.FlippableStackView;
 import com.bartoszlipinski.flippablestackview.StackPageTransformer;
@@ -22,7 +22,7 @@ import com.mom.soccer.fragment.MainMissionFragment;
 import com.mom.soccer.retrofitdao.FavoriteMissionService;
 import com.mom.soccer.retrofitdao.PointService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -63,6 +63,9 @@ public class FavoriteMissionActivity extends AppCompatActivity {
 
     @Bind(R.id.discreteSeekBar)
     DiscreteSeekBar discreteSeekBar;
+
+    @Bind(R.id.li_no_found)
+    LinearLayout li_no_found;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,28 +109,29 @@ public class FavoriteMissionActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG,"onStart()===========================================");
         getUserPoint(user.getUid());
         getMissionList();
     }
 
     public void getMissionList(){
-
         Mission mission = new Mission();
         mission.setUid(user.getUid());
-
         mFlippableStack = (FlippableStackView) findViewById(R.id.user_flippable_stack_view);
 
+        WaitingDialog.showWaitingDialog(FavoriteMissionActivity.this,false);
         FavoriteMissionService fservice = ServiceGenerator.createService(FavoriteMissionService.class,this,user);
         final Call<List<Mission>> call = fservice.getFavoriteMissionList(mission);
 
         call.enqueue(new Callback<List<Mission>>() {
             @Override
             public void onResponse(Call<List<Mission>> call, Response<List<Mission>> response) {
-
+                WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     missionList = response.body();
-                    Log.d(TAG,"이곳은 missionService()");
+                    if(missionList.size()==0){
+                        li_no_found.setVisibility(View.VISIBLE);
+                    }else{
+                        li_no_found.setVisibility(View.GONE);
 
                         NUMBER_OF_FRAGMENTS = missionList.size();
                         createViewPagerFragments();
@@ -141,71 +145,70 @@ public class FavoriteMissionActivity extends AppCompatActivity {
                                 ,0.4f   //
                                 ,StackPageTransformer.Gravity.CENTER
                         );
-
                         mFlippableStack.setAdapter(mPageAdapter);
 
-                    //Seekbar apply
-                    discreteSeekBar.setMin(0);
-                    //discreteSeekBar.setProgress(NUMBER_OF_FRAGMENTS-1);
-                    discreteSeekBar.setMax(NUMBER_OF_FRAGMENTS-1);
-                    discreteSeekBar.setProgress(NUMBER_OF_FRAGMENTS);
+                        //Seekbar apply
+                        discreteSeekBar.setMin(0);
+                        //discreteSeekBar.setProgress(NUMBER_OF_FRAGMENTS-1);
+                        discreteSeekBar.setMax(NUMBER_OF_FRAGMENTS-1);
+                        discreteSeekBar.setProgress(NUMBER_OF_FRAGMENTS);
 
-                    discreteSeekBar.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
-                    discreteSeekBar.setScrubberColor(getResources().getColor(R.color.enabled_red));  //진행색
-                    discreteSeekBar.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
-                    discreteSeekBar.setRippleColor(getResources().getColor(R.color.enabled_red));
-                    discreteSeekBar.setThumbColor(getResources().getColor(R.color.enabled_red),getResources().getColor(R.color.enabled_red)); //시크바 풍선 바탕색
+                        discreteSeekBar.setTrackColor(getResources().getColor(R.color.color6)); //시크바 트랙색
+                        discreteSeekBar.setScrubberColor(getResources().getColor(R.color.enabled_red));  //진행색
+                        discreteSeekBar.setDrawingCacheBackgroundColor(getResources().getColor(R.color.enabled_red)); //시크바원
+                        discreteSeekBar.setRippleColor(getResources().getColor(R.color.enabled_red));
+                        discreteSeekBar.setThumbColor(getResources().getColor(R.color.enabled_red),getResources().getColor(R.color.enabled_red)); //시크바 풍선 바탕색
 
-                    discreteSeekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
-                        @Override
-                        public int transform(int value) {
-                            mFlippableStack.setCurrentItem(value);
-                            return value+1;
-                        }
+                        discreteSeekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+                            @Override
+                            public int transform(int value) {
+                                mFlippableStack.setCurrentItem(value);
+                                return value+1;
+                            }
 
-                        @Override
-                        public String transformToString(int value) {
-                            mFlippableStack.setCurrentItem(value);
-                            value = value + 1 ;
-                            return "";
-                        }
+                            @Override
+                            public String transformToString(int value) {
+                                mFlippableStack.setCurrentItem(value);
+                                value = value + 1 ;
+                                return "";
+                            }
 
-                        @Override
-                        public boolean useStringTransform() {
-                            return true;
-                        }
-                    });
-
+                            @Override
+                            public boolean useStringTransform() {
+                                return true;
+                            }
+                        });
                     }
+                }
             }
 
             @Override
             public void onFailure(Call<List<Mission>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
                 t.printStackTrace();
             }
         });
     }
 
     public void getUserPoint(int uid){
+        WaitingDialog.showWaitingDialog(FavoriteMissionActivity.this,false);
         PointService pointService = ServiceGenerator.createService(PointService.class,this,user);
         Call<SpBalanceHeader> call = pointService.getSelfAmt(uid);
         call.enqueue(new Callback<SpBalanceHeader>() {
             @Override
             public void onResponse(Call<SpBalanceHeader> call, Response<SpBalanceHeader> response) {
+                WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     SpBalanceHeader spBalanceHeader = response.body();
 
                     NumberFormat numberFormat = NumberFormat.getInstance();
                     tx_mission_point.setText(numberFormat.format(spBalanceHeader.getAmount()));
-                }else{
-                    //VeteranToast.makeToast(getApplicationContext(),"getPoint "+getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SpBalanceHeader> call, Throwable t) {
-                Log.d(TAG, "환경 구성 확인 필요 서버와 통신 불가 : " + t.getMessage());
-                VeteranToast.makeToast(getApplicationContext(),"getPoint "+ getString(R.string.network_error_message1),Toast.LENGTH_SHORT).show();
+                WaitingDialog.cancelWaitingDialog();
             }
         });
     }

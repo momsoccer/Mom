@@ -2,6 +2,7 @@ package com.mom.soccer.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,7 +74,7 @@ public class TeamRankingItemAdapter extends RecyclerView.Adapter<TeamRankingItem
         }else {
         }
 
-        holder.teamimg.setOnClickListener(new View.OnClickListener() {
+        holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 doMoveInsPage(vo.getInstructorid());
@@ -91,6 +92,7 @@ public class TeamRankingItemAdapter extends RecyclerView.Adapter<TeamRankingItem
 
         ImageView teamimg;
         TextView rankingnum,teamname,totalscore;
+        CardView cardview;
 
         public RankingItemViewHolder(View itemView) {
             super(itemView);
@@ -99,6 +101,7 @@ public class TeamRankingItemAdapter extends RecyclerView.Adapter<TeamRankingItem
             rankingnum = (TextView) itemView.findViewById(R.id.rankingnum);
             teamname = (TextView) itemView.findViewById(R.id.teamname);
             totalscore = (TextView) itemView.findViewById(R.id.totalscore);
+            cardview = (CardView) itemView.findViewById(R.id.cardview);
 
         }
     }

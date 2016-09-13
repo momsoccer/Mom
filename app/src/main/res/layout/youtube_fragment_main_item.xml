@@ -4,7 +4,8 @@
     android:layout_height="187dp"
     android:background="@color/mom_color1">
 
-    <FrameLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:id="@+id/youtube_player_layout"
         android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
         android:layout_width="match_parent"

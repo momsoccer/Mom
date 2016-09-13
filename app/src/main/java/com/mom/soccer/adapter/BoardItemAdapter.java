@@ -38,6 +38,7 @@ import com.mom.soccer.dto.User;
 import com.mom.soccer.pubretropit.PubReport;
 import com.mom.soccer.retrofitdao.MomBoardService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.trservice.MomBoardTRService;
 import com.mom.soccer.widget.WaitingDialog;
 import com.squareup.otto.Subscribe;
 
@@ -57,6 +58,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
     private List<MomBoard> boardList;
     private User user;
     private Instructor instructor;
+    private static final int HEADER_BOARD_CODE = 205;
     private static final int COMMENT_LINE_CODE = 201;
     String callpage = "";
 
@@ -115,9 +117,11 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
 
         holder.btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 final PopupMenu popupMenu = new PopupMenu(activity,view);
                 activity.getMenuInflater().inflate(R.menu.momboard_menu, popupMenu.getMenu());
+
+                final int i = posintion;
 
                 if(user.getUid()==vo.getUid()){
                     popupMenu.getMenu().getItem(0).setVisible(false);
@@ -152,110 +156,95 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
                 }
 
 
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            switch (item.getOrder()){
-                                case 101:  //공지글로 변경
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getOrder()){
+                            case 100: //글을 공지로 A 타입으로 바꾸어준다 header_update
+                                MomBoard momBoard = new MomBoard();
+                                momBoard.setCategory("A");
+                                momBoard.setBoardid(vo.getBoardid());
+                                MomBoardTRService.updateHeader(activity,user,momBoard,view,activity.getResources().getString(R.string.bottom_msg6));
+                                updateHeader(i,momBoard);
+                                break;
+                            case 101:
                                     Intent intent = new Intent(activity,TeamBoardActivity.class);
                                     intent.putExtra("boardFlag","modify");
                                     intent.putExtra("boardid",vo.getBoardid());
                                     intent.putExtra("callpage",callpage);
-                                    activity.startActivity(intent);
+                                    activity.startActivityForResult(intent,HEADER_BOARD_CODE);
+                                break;
+                            case 102:
+                                new MaterialDialog.Builder(activity)
+                                        .content(R.string.board_main_delete)
+                                        .contentColor(activity.getResources().getColor(R.color.color6))
+                                        .positiveText(R.string.mom_diaalog_confirm_y)
+                                        .positiveColor(activity.getResources().getColor(R.color.enabled_red))
+                                        .negativeText(R.string.mom_diaalog_cancel_n)
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                deleteBoard(vo.getBoardid(),posintion);
+                                            }
+                                        })
+                                        .show();
+                                break;
+                            case 103:
+                                MaterialDialog dialog = new MaterialDialog.Builder(activity)
+                                        .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                        .title(R.string.mom_diaalog_board_report)
+                                        .titleColor(activity.getResources().getColor(R.color.color6))
+                                        .customView(R.layout.dialog_report_view, true)
+                                        .positiveText(R.string.momboard_edit_send)
+                                        .negativeText(R.string.cancel)
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                Report report = new Report();
+                                                report.setType(PubReport.REPORTTYPE_MOMBOARD_HEADER);
+                                                report.setUid(user.getUid());
+                                                report.setReason(report_content.getText().toString());
+                                                report.setContent(vo.getContent());
+                                                report.setPublisherid(vo.getUid());
+                                                PubReport.doReport(activity,report,user);
+                                            }
+                                        })
+                                        .build();
 
-                                    /* event bus
+                                report_content = (EditText) dialog.findViewById(R.id.report_content);
+                                positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
 
-                                                  Intent intent = new Intent(activity,TeamBoardReply.class);
-                intent.putExtra("boardid",vo.getBoardid());
-                intent.putExtra("posintion",posintion);
-                activity.startActivityForResult(intent,COMMENT_LINE_CODE);
+                                report_content.addTextChangedListener(new TextWatcher() {
+                                    @Override
+                                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                                     */
+                                    }
 
-                                    break;
-                                case 102:  //수정
-                                    new MaterialDialog.Builder(activity)
-                                            .content(R.string.board_main_delete)
-                                            .contentColor(activity.getResources().getColor(R.color.color6))
-                                            .positiveText(R.string.mom_diaalog_confirm_y)
-                                            .positiveColor(activity.getResources().getColor(R.color.enabled_red))
-                                            .negativeText(R.string.mom_diaalog_cancel_n)
-                                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                                @Override
-                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                    //VeteranToast.makeToast(activity,"오잉 : " + vo.getBoardid(), Toast.LENGTH_SHORT).show();
-                                                    deleteBoard(vo.getBoardid(),posintion);
-                                                }
-                                            })
-                                            .show();
+                                    @Override
+                                    public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                                        positiveAction.setEnabled(s.toString().trim().length() > 0);
+                                    }
 
-                                    /* event bus
-                                                  Intent intent = new Intent(activity,TeamBoardReply.class);
-                intent.putExtra("boardid",vo.getBoardid());
-                intent.putExtra("posintion",posintion);
-                activity.startActivityForResult(intent,COMMENT_LINE_CODE);
-                                     */
+                                    @Override
+                                    public void afterTextChanged(Editable editable) {
 
+                                    }
+                                });
 
-                                    break;
-                                case 103:
-
-                                    /*
-                                        View positiveAction;
-                                        EditText report_content;
-                                     */
-                                    MaterialDialog dialog = new MaterialDialog.Builder(activity)
-                                            .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
-                                            .title(R.string.mom_diaalog_board_report)
-                                            .titleColor(activity.getResources().getColor(R.color.color6))
-                                            .customView(R.layout.dialog_report_view, true)
-                                            .positiveText(R.string.momboard_edit_send)
-                                            .negativeText(R.string.cancel)
-                                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                                @Override
-                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                    Report report = new Report();
-                                                    report.setType(PubReport.REPORTTYPE_MOMBOARD_HEADER);
-                                                    report.setUid(user.getUid());
-                                                    report.setReason(report_content.getText().toString());
-                                                    report.setContent(vo.getContent());
-                                                    report.setPublisherid(vo.getUid());
-                                                    PubReport.doReport(activity,report,user);
-                                                }
-                                            })
-                                            .build();
-
-                                    report_content = (EditText) dialog.findViewById(R.id.report_content);
-                                    positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
-
-                                    report_content.addTextChangedListener(new TextWatcher() {
-                                        @Override
-                                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                                        }
-
-                                        @Override
-                                        public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                                            positiveAction.setEnabled(s.toString().trim().length() > 0);
-                                        }
-
-                                        @Override
-                                        public void afterTextChanged(Editable editable) {
-
-                                        }
-                                    });
-
-                                    dialog.show();
-                                    positiveAction.setEnabled(false);
-                                    break;
-
-                                case 100: //글을 공지로 A 타입으로 바꾸어준다 header_update
-
-                                    break;
-                            }
-                            return false;
+                                dialog.show();
+                                positiveAction.setEnabled(false);
+                                break;
+                            case 104: //공지글 내리기
+                                MomBoard board = new MomBoard();
+                                board.setCategory("B");
+                                board.setBoardid(vo.getBoardid());
+                                MomBoardTRService.updateHeader(activity,user,board,view,activity.getResources().getString(R.string.bottom_msg7));
+                                updateHeader(i,board);
+                                break;
                         }
-                    });
+                        return false;
+                    }
+                });
 
                 popupMenu.show();
             }
@@ -280,7 +269,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         });
 
         if(vo.getCategory().equals("A")){
-         holder.viewType.setBackground(activity.getResources().getDrawable(R.drawable.xml_list_divider_red));
+            holder.viewType.setBackground(activity.getResources().getDrawable(R.drawable.xml_list_divider_red));
         }else{
             holder.viewType.setBackground(activity.getResources().getDrawable(R.drawable.xml_list_divider));
         }
@@ -294,6 +283,11 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
 
     public void updateLineItemCount(int position,int lineCount){
         boardList.get(position).setCommentcount(lineCount);
+        notifyDataSetChanged();
+    }
+
+    public void updateHeader(int position,MomBoard momBoard){
+        boardList.get(position).setCategory(momBoard.getCategory());
         notifyDataSetChanged();
     }
 
@@ -372,11 +366,13 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         return true;
     }
 
-/*    public boolean onPrepareOptionsMenu(Menu menu) {
+    /* 메뉴 항목 조절 메소드
+    public boolean onPrepareOptionsMenu(Menu menu) {
         menu.getItem(0).setEnabled(true);
         menu.getItem(1).setEnabled(false);
         return true;
     }*/
+
 
     @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent){

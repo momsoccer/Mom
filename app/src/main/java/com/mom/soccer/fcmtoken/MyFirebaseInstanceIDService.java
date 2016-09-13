@@ -9,7 +9,6 @@ import com.mom.soccer.dto.FcmToken;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.retrofitdao.FcmTokenService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.trservice.FcmTokenTRService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,7 +27,6 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         Log.d(TAG,"Reresh token = " + refreshedToken);
 
         //디비 저장
-        FcmTokenTRService service = new FcmTokenTRService(this);
         FcmToken token = new FcmToken();
         token.setSerialnumber(Common.getDeviceSerialNumber());
         token.setFcmtoken(FirebaseInstanceId.getInstance().getToken());
@@ -36,13 +34,14 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         token.setCommontokenid(0);
 
         FcmTokenService fcmTokenService = ServiceGenerator.createService(FcmTokenService.class);
-
         final Call<ServerResult> call = fcmTokenService.saveToken(token);
-
         call.enqueue(new Callback<ServerResult>() {
             @Override
             public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                ServerResult result = response.body();
+                if(response.isSuccessful()){
+                    ServerResult result = response.body();
+                }
+
             }
             @Override
             public void onFailure(Call<ServerResult> call, Throwable t) {

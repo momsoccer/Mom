@@ -13,6 +13,9 @@ import retrofit2.http.POST;
  */
 public interface FcmTokenService {
 
+    @POST("/fcm/token/setupToken")
+    public Call<ServerResult> setupToken(@Body FcmToken fcmToken);
+
     @POST("/all/saveToken")
     public Call<ServerResult> saveToken(@Body FcmToken fcmToken);
 

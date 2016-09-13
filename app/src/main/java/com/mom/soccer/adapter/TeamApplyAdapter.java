@@ -11,10 +11,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
+import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dto.Instructor;
@@ -24,7 +24,6 @@ import com.mom.soccer.ins.InsDashboardActivity;
 import com.mom.soccer.pubactivity.Param;
 import com.mom.soccer.retrofitdao.TeamService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.List;
@@ -85,9 +84,6 @@ public class TeamApplyAdapter extends RecyclerView.Adapter<TeamApplyAdapter.Appl
         h.teamApplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //노티 보내고 스테이터스 바꾸고 멤버테이블에 넣는다
-
-                VeteranToast.makeToast(activity,"값은 : " + vo.getUsername(), Toast.LENGTH_SHORT).show();
 
                 WaitingDialog.showWaitingDialog(activity,false);
                 TeamService t = ServiceGenerator.createService(TeamService.class,activity,instructor);
@@ -138,6 +134,17 @@ public class TeamApplyAdapter extends RecyclerView.Adapter<TeamApplyAdapter.Appl
                         t.printStackTrace();
                     }
                 });
+            }
+        });
+
+        h.userimge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity,MyPageActivity.class);
+                intent.putExtra("pageflag","friend");
+                intent.putExtra("frienduid",vo.getUid());
+                activity.finish();
+                activity.startActivity(intent);
             }
         });
 
