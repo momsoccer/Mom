@@ -1,8 +1,11 @@
 package com.mom.soccer.common;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -20,13 +23,14 @@ public class SettingVideoUploadActivity extends PreferenceActivity {
     SwitchPreference complex_upload;
     SwitchPreference wifi_upload;
     PrefUtil prefUtil;
+    Activity activity;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.videoupload_layout);
-
+        activity = this;
         prefUtil = new PrefUtil(this);
 
         LinearLayout root = (LinearLayout)findViewById(android.R.id.list).getParent().getParent().getParent();
@@ -65,10 +69,16 @@ public class SettingVideoUploadActivity extends PreferenceActivity {
                 boolean isVibrateOn = (Boolean) newValue;
                 if(isVibrateOn){
                     complex_upload.setChecked(false);
-                    prefUtil.uploadFlag("N");
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+                    SharedPreferences.Editor pre = sp.edit();
+                    pre.putString("uploadflag", "Y");
+                    pre.commit();
                 }else{
                     complex_upload.setChecked(true);
-                    prefUtil.uploadFlag("Y");
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+                    SharedPreferences.Editor pre = sp.edit();
+                    pre.putString("uploadflag", "N");
+                    pre.commit();
                 }
                 return true;
             }

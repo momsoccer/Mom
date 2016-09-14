@@ -180,6 +180,7 @@ public class TeamBoardActivity extends AppCompatActivity {
             momBoard.setBoardtype("team");
             momBoard.setCategory(tx_categoryType);
             momBoard.setBoardtypeid(team.getTeamid());
+            momBoard.setUsername(activity.getResources().getString(R.string.momboard_write)+user.getUsername());
 
             if(tag == 1){
                 momBoard.setPubtype("Y");

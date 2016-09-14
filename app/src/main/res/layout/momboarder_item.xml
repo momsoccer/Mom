@@ -60,7 +60,7 @@
                             android:id="@+id/level"
                             android:layout_marginTop="23dp"
                             android:layout_marginLeft="-20dp"
-                            android:text="12"
+                            android:text="0"
                             android:textColor="@color/color6"
                             android:textSize="8sp"
                             android:textStyle="bold"

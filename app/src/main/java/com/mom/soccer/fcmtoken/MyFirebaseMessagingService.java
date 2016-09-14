@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -29,12 +28,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
+        /*
         Log.d(TAG, "From: " + remoteMessage.getFrom());  //819984969479 발신자 ID
-        //Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
-
         Log.d(TAG,"타이틀은 : "+remoteMessage.getData().get("title"));
         Log.d(TAG,"콘텐츠는 : "+remoteMessage.getData().get("content"));
         Log.d(TAG,"메세지 : "+remoteMessage.getData().get("message"));
+        */
 
         sendNotification(remoteMessage.getData().get("title"),
                         remoteMessage.getData().get("content"),
@@ -55,10 +54,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(content)
                 .setSubText(message)
-                .setColor(getResources().getColor(R.color.color6)) //빽그라운드 컬러
+                .setColor(getResources().getColor(R.color.color8)) //빽그라운드 컬러
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
+                .setLights(0xff00ff00, 300, 100)
                 ;
 
         NotificationManager notificationManager =

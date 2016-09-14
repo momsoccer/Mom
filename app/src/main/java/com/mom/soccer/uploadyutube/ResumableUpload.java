@@ -78,11 +78,10 @@ public class ResumableUpload {
                 .setContentText( context.getString(R.string.upload_pre_title_content)+" : "+userMission.getSubject())
                 .setSound(defaultSoundUri)
                 .setSmallIcon(R.drawable.ic_diarog_mom)
+                .setAutoCancel(true)
                 .setContentIntent(contentIntent).setStyle(new NotificationCompat.BigPictureStyle().bigPicture(thumbnail));
-                ;
-
+        ;
         notifyManager.notify(UPLOAD_NOTIFICATION_ID, builder.build());
-
 
         /*******************************************************************/
 
@@ -147,8 +146,6 @@ public class ResumableUpload {
                 public void progressChanged(MediaHttpUploader uploader) throws IOException {
 
                     if (Common.isUpflag()) {
-                        //This was the only way I found to abort the download
-
                         Log.d(TAG,"업로드를 취소합니다");
                         throw new CancellationException(context.getString(R.string.upload_msg2));
                     }
@@ -156,13 +153,13 @@ public class ResumableUpload {
                     switch (uploader.getUploadState()) {
                         case INITIATION_STARTED:
                             Log.d(TAG,"INITIATION_STARTED  ========================");
-
                             builder.setContentText(context.getString(R.string.upload_start)).setProgress((int) fileSize,
                                     (int) uploader.getNumBytesUploaded(), false);
                             notifyManager.notify(UPLOAD_NOTIFICATION_ID, builder.build());
 
                             break;
                         case INITIATION_COMPLETE:
+                            builder.setSound(null);
                             Log.d(TAG,"INITIATION_COMPLETE ========================");
                             builder.setContentText(context.getString(R.string.upload_pre))
                                     .setProgress((int) fileSize, (int) uploader.getNumBytesUploaded(), false)
@@ -171,6 +168,7 @@ public class ResumableUpload {
                             notifyManager.notify(UPLOAD_NOTIFICATION_ID, builder.build());
                             break;
                         case MEDIA_IN_PROGRESS:
+                            builder.setSound(null);
                             Log.d(TAG,"MEDIA_IN_PROGRESS  ========================" + uploader.getProgress() * 100 + "%");
 
                             builder.setContentTitle(context.getString(R.string.file_upload_progress_title) + (int) (uploader.getProgress() * 100) + "%")

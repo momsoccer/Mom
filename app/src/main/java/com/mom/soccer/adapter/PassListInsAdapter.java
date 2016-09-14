@@ -220,6 +220,8 @@ public class PassListInsAdapter extends RecyclerView.Adapter<PassListInsAdapter.
                         pass.setUsermissionid(missionPass.getUsermissionid());
                         pass.setMissionid(missionPass.getMissionid());
                         pass.setUid(missionPass.getUid());
+                        pass.setUsername(missionPass.getUsername());
+                        pass.setInsname(instructor.getName()+":"+activity.getResources().getString(R.string.networkcheck5));
 
                         if(passFlag.equals("Y")){
                             pass.setInscomment(et_ins_comment.getText().toString());

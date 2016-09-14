@@ -4,7 +4,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mom.soccer.ins.FeedBackWrite">
+    tools:context="com.mom.soccer.ins.FeedBackWrite"
+    android:background="@color/mom_color1"
+    >
 
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"

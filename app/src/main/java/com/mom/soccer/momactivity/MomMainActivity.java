@@ -318,6 +318,8 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
         //userLevel 유저 레벨 가져오기
         getUserLevel();
+
+        //강사토큰검증및 셋팅
     }
 
     public void getTeamid(int uid){

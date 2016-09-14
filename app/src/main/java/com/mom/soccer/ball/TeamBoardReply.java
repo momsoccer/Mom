@@ -120,17 +120,6 @@ public class TeamBoardReply extends AppCompatActivity {
 
         userimg = (ImageView) findViewById(R.id.userimg);
 
-        if(!Compare.isEmpty(user.getProfileimgurl())){
-            Glide.with(getApplicationContext())
-                    .load(user.getProfileimgurl())
-                    .asBitmap().transform(new RoundedCornersTransformation(activity,10,5))
-                    .into(userimg);
-        }
-
-        if(!Compare.isEmpty(user.getUsername())){
-            txt_username.setText(user.getUsername());
-        }
-
         WaitingDialog.showWaitingDialog(activity,false);
         MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
 
@@ -143,6 +132,17 @@ public class TeamBoardReply extends AppCompatActivity {
                 WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     momBoard = response.body();
+
+                    if(!Compare.isEmpty(momBoard.getUserimg())){
+                        Glide.with(getApplicationContext())
+                                .load(momBoard.getUserimg())
+                                .asBitmap().transform(new RoundedCornersTransformation(activity,10,5))
+                                .into(userimg);
+                    }
+
+                    if(!Compare.isEmpty(momBoard.getUsername())){
+                        txt_username.setText(momBoard.getUsername());
+                    }
 
                     action_bar_title.setText(momBoard.getTeamname());
                     txt_date.setText(momBoard.getChange_creationdate());
@@ -261,6 +261,8 @@ public class TeamBoardReply extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        //댓글을 달았던 사람들 리스트
         getBoardLineList();
     }
 
@@ -277,6 +279,8 @@ public class TeamBoardReply extends AppCompatActivity {
         momBoard.setBoardid(boardid);
         momBoard.setUid(user.getUid());
         momBoard.setContent(comment.getText().toString());
+        momBoard.setUsername(activity.getResources().getString(R.string.momboard_write2)+user.getUsername());
+
         Call<ServerResult> c = momBoardService.saveBoardLine(momBoard);
         c.enqueue(new Callback<ServerResult>() {
             @Override
@@ -316,7 +320,7 @@ public class TeamBoardReply extends AppCompatActivity {
                 WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
 
-                    momBoardList = response.body();
+                    List<MomBoard> momBoardList = response.body();
                     lineCount = momBoardList.size();
 
                     String replayString = getString(R.string.momboard_comment_msg) +" "+ String.valueOf(lineCount)+getString(R.string.momboard_comment_ea);

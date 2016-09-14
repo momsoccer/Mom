@@ -932,6 +932,7 @@ public class MissionMainActivity extends AppCompatActivity {
 
         MissionPass query = new MissionPass();
         query.setUid(user.getUid());
+        query.setUsername(user.getUsername() +":"+getResources().getString(R.string.misison_push_title));
         query.setMissionid(userMission.getMissionid());
         query.setUsermissionid(userMission.getUsermissionid());
         query.setStatus("REQUEST");

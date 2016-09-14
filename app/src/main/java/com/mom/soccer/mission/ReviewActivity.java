@@ -120,11 +120,12 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
         user = prefUtil.getUser();
         upset = prefUtil.getUploadFlag();
 
+        Log.i(TAG,"업로드 플래그는 : " + upset);
+
         Intent intent = getIntent();
         mFileUri = intent.getData();
         mission = (Mission) intent.getSerializableExtra(MissionCommon.OBJECT);
 
-        Log.d(TAG,"미션 객체 정보는 : " + mission.toString());
 
         mVideoView = (VideoView) findViewById(R.id.videoView);
         reviewVideo(mFileUri);
@@ -186,6 +187,8 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
                         }
                     })
                     .show();
+        }else{
+            uploadFlag = true;
         }
 
     }
@@ -231,7 +234,6 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
                 finish();
                 return;
             }
-
         }
 
         if (mFileUri != null) {

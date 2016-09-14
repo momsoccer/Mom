@@ -133,6 +133,7 @@ public class FeedBackWrite extends AppCompatActivity implements GoogleApiClient.
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.feed_toolbar);
         setSupportActionBar(toolbar);
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

@@ -199,8 +199,12 @@
         <activity
             android:name=".youtubeplayer.YoutubePlayerActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize" />
-        <activity android:name=".ins.FeedBackWrite" />
-        <activity android:name=".ins.InsPointHistory" />
+        <activity android:name=".ins.FeedBackWrite"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".ins.InsPointHistory"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
 
         <service
             android:name=".ins.UploadFeedService"

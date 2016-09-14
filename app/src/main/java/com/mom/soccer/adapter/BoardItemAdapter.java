@@ -93,6 +93,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
                     .into(holder.userimg);
         }
 
+        holder.level.setText(String.valueOf(vo.getLevel()));
         holder.username.setText(vo.getUsername());
         holder.formatingdate.setText(vo.getFormatDataSign());
         holder.content.setText(vo.getContent());
@@ -312,7 +313,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
     public class BoardItemViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView userimg;
-        public TextView username,content,commentCount,formatingdate,teamname,txbtnview;
+        public TextView username,content,commentCount,formatingdate,teamname,txbtnview,level;
         private LinearLayout liWriteBtn,liShareBtn,liContent;
         private ImageButton btnMenu;
         private View viewType;
@@ -330,6 +331,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
             liContent = (LinearLayout) itemView.findViewById(R.id.liContent);
             txbtnview = (TextView) itemView.findViewById(R.id.txbtnview);
             viewType = itemView.findViewById(R.id.viewType);
+            level = (TextView) itemView.findViewById(R.id.level);
         }
     }
 

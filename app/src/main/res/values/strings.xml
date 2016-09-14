@@ -472,6 +472,7 @@
     <string name="feedback_pub_check_title">공개여부</string>
     <string name="feedback_feedback_request_subject">피드백 요청</string>
 
+    <string name="misison_push_title">미션심사요청</string>
     <string name="misison_pass_result">심사저장</string>
     <string name="feedback_req_btn">피드백 생성</string>
     <string name="feedback_req_content"> 선택하신 강사분에게 \n 미션 피드백을 요청합니다 \n 강사분 답변이 등록되면 포인트가 최종 차감됩니다 \n (강사 답변 등록 전 피드백 취소 가능)</string>
@@ -694,6 +695,9 @@
     <string name="momboard_edit">댓글을 남겨주세요</string>
     <string name="momboard_edit_send">보내기</string>
 
+    <string name="momboard_write">글게시자:</string>
+    <string name="momboard_write2">댓글 작성자:</string>
+
     <string name="momboard_report_send">상세한 신고내용(비망,욕설,기타 등등)</string>
     <string name="bottom_msg1">더 이상 게시글이 없습니다</string>
     <string name="bottom_msg2">더 이상 유저 미션 데이터가 없습니다</string>
@@ -719,5 +723,7 @@
     <string name="networkcheck2">모바일로 통신이 연결 중입니다\n통신 요금이 과다 청구 될 수 있음을 알려드립니다\n 그래도 업로드를 하시겠습니까?</string>
     <string name="networkcheck3">Wi-Fi로 변경하셔야 업로드가 가능합니다</string>
     <string name="networkcheck4">설정 -> 영상 업로드 옵션창에서\nWi-Fi만 업로드가 가능하게 설정 하셨습니다</string>
+
+    <string name="networkcheck5">(심사결과 도착)</string>
 
 </resources>
