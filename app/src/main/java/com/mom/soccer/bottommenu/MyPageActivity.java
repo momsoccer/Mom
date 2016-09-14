@@ -940,8 +940,6 @@ public class MyPageActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
     }
 
     @OnClick(R.id.mypage_image_user_image)

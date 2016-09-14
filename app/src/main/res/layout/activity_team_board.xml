@@ -51,13 +51,14 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        >
 
         <LinearLayout
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -128,26 +129,146 @@
             android:layout_marginTop="10dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
 
-                <RelativeLayout
+            <RelativeLayout
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/content"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/color6"
+                    android:textColorHint="@color/color8"
+                    android:textSize="20sp"
+                    android:hint="@string/board_team_contnet"
+                    android:gravity="top"
+                    android:layout_below="@+id/subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mom_color1" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageButton
+                android:id="@+id/upload"
+                android:src="@drawable/ic_image_camera_alt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/mom_color1"
+                />
+
+            <LinearLayout
+                android:id="@+id/li_imageview"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color1" />
+
+                <TextView
+                    android:id="@+id/textImageCount"
+                    android:text="3/3"
+                    android:textColor="@color/color6"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color1" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/content"
-                        android:layout_marginTop="20dp"
-                        android:textColor="@color/color6"
-                        android:textColorHint="@color/color8"
-                        android:textSize="20sp"
-                        android:hint="@string/board_team_contnet"
-                        android:gravity="top"
-                        android:layout_below="@+id/subject"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/mom_color1" />
-                </RelativeLayout>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/img1"
+                            android:scaleType="centerCrop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            />
 
+                        <ImageButton
+                            android:id="@+id/delete1"
+                            android:onClick="deleteImage"
+                            android:src="@drawable/ic_content_clear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/mom_color1"
+                            />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/img2"
+                            android:scaleType="centerCrop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            />
+
+                        <ImageButton
+                            android:id="@+id/delete2"
+                            android:onClick="deleteImage"
+                            android:src="@drawable/ic_content_clear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/mom_color1"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/img3"
+                            android:scaleType="centerCrop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            />
+
+                        <ImageButton
+                            android:id="@+id/delete3"
+                            android:onClick="deleteImage"
+                            android:src="@drawable/ic_content_clear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/mom_color1"
+                            />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

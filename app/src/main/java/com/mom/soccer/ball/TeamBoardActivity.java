@@ -1,20 +1,30 @@
 package com.mom.soccer.ball;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.darsh.multipleimageselect.activities.AlbumSelectActivity;
+import com.darsh.multipleimageselect.helpers.Constants;
+import com.darsh.multipleimageselect.models.Image;
 import com.mom.soccer.R;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
@@ -31,6 +41,9 @@ import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,6 +52,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TeamBoardActivity extends AppCompatActivity {
+
+    private static final String TAG = "TeamBoardActivity";
 
     private Activity activity;
     private PrefUtil prefUtil;
@@ -63,6 +78,24 @@ public class TeamBoardActivity extends AppCompatActivity {
     @Bind(R.id.categoryType)
     CheckBox categoryType;
 
+    @Bind(R.id.upload)
+    ImageButton upload;
+
+    @Bind(R.id.img1)
+    ImageView img1;
+
+    @Bind(R.id.img2)
+    ImageView img2;
+
+    @Bind(R.id.img3)
+    ImageView img3;
+
+    @Bind(R.id.li_imageview)
+    LinearLayout li_imageview;
+
+    @Bind(R.id.textImageCount)
+    TextView textImageCount;
+
     private MomBoard momBoard = new MomBoard();
     private int tag=1;
     private String boardFlag="new"; //new,modify
@@ -70,6 +103,9 @@ public class TeamBoardActivity extends AppCompatActivity {
     private int boardid=0;
     private String callpage = "";
     private String tx_categoryType ="B";
+
+    //image upload
+    ArrayList<Image> images;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +121,8 @@ public class TeamBoardActivity extends AppCompatActivity {
         boardFlag = intent.getExtras().getString("boardFlag");
         boardid = intent.getExtras().getInt("boardid");
         callpage = intent.getExtras().getString("callpage");
+
+        li_imageview.setVisibility(View.GONE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -128,6 +166,9 @@ public class TeamBoardActivity extends AppCompatActivity {
             }
         });
 
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     @OnClick(R.id.txt_pub)
@@ -293,12 +334,6 @@ public class TeamBoardActivity extends AppCompatActivity {
         });
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -310,7 +345,85 @@ public class TeamBoardActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
+    @OnClick(R.id.upload)
+    public void upload(){
+        /*
+        /storage/emulated/0/MomSoccerImage/1473860225714.jpg
+        File file = new File("/storage/emulated/0/MomSoccerImage/1473860225714.jpg");
+        if(file.exists()){
+            Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            setImageView(myBitmap,0);
+        }else{
+            Log.i(TAG,"파일이 없습니다");
+        }
+        */
+
+        Intent intent = new Intent(TeamBoardActivity.this, AlbumSelectActivity.class);
+        intent.putExtra(Constants.INTENT_EXTRA_LIMIT, 3);
+        startActivityForResult(intent, Constants.REQUEST_CODE);
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+
+            li_imageview.setVisibility(View.VISIBLE);
+
+            images = data.getParcelableArrayListExtra(Constants.INTENT_EXTRA_IMAGES);
+
+            for (int i = 0, l = images.size(); i < l; i++) {
+                    File file = new File(images.get(i).path);
+                    if(file.exists()){
+
+                        Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+
+                        if(i==0){
+                            Glide.with(activity)
+                                    .load(file)
+                                    .into(img1);
+                        }else if(i==1){
+                            Glide.with(activity)
+                                    .load(file)
+                                    .into(img2);
+                        }else if(i==2){
+                            Glide.with(activity)
+                                    .load(file)
+                                    .into(img3);
+                        }
+
+                    }else{
+                        Log.i(TAG,"파일이 없습니다");
+                    }
+
+            }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG,"onStart() ============================================");
+    }
+
+
+    public void deleteImage(View view){
+        switch (view.getId()){
+            case R.id.delete1:
+                img1.setImageResource(0);
+                images.remove(0);
+                break;
+
+            case R.id.delete2:
+                img2.setImageResource(0);
+                images.remove(1);
+                break;
+
+            case R.id.delete3:
+                img3.setImageResource(0);
+                images.remove(2);
+                break;
+        }
+    }
+
 }
