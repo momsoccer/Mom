@@ -91,4 +91,8 @@
     <color name="multiple_image_select_albumTextBackground">#99FFFFFF</color>
     <color name="multiple_image_select_imageSelectBackground">#000000</color>
 
+    <!--overrlay-->
+
+    <color name="overcolor1">#42b6b6b6</color>
+
 </resources>

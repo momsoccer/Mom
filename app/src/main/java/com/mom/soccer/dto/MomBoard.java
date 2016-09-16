@@ -1,5 +1,7 @@
 package com.mom.soccer.dto;
 
+import java.util.List;
+
 /**
  * Created by sungbo on 2016-09-08.
  * 라인 및 헤더를 동시에 사용하는 Vo
@@ -36,12 +38,32 @@ public class MomBoard {
     private int commentcount;
     private int likecount;
     private String formatDataSign;
+    private int filecount;
 
     private int limit;
     private int offset;
     private int pagenum;
 
+    private List<MomBoardFile> boardFiles;
+
     public MomBoard(){}
+
+
+    public List<MomBoardFile> getBoardFiles() {
+        return boardFiles;
+    }
+
+    public void setBoardFiles(List<MomBoardFile> boardFiles) {
+        this.boardFiles = boardFiles;
+    }
+
+    public int getFilecount() {
+        return filecount;
+    }
+
+    public void setFilecount(int filecount) {
+        this.filecount = filecount;
+    }
 
     @Override
     public String toString() {

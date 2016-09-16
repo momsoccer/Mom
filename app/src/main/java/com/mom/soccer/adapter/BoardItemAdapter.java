@@ -8,6 +8,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -275,6 +276,41 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
             holder.viewType.setBackground(activity.getResources().getDrawable(R.drawable.xml_list_divider));
         }
 
+        if(vo.getFilecount()==0){
+            holder.li_file_layout.setVisibility(View.GONE);
+        }else{
+            holder.li_file_layout.setVisibility(View.VISIBLE);
+
+            for(int j=0 ; j < vo.getBoardFiles().size(); j++){
+
+                Log.i(TAG,"파일 주소는 : " + vo.getBoardFiles().get(j).getFileaddr());
+
+                if(j==0){
+                    Glide.with(activity)
+                            .load(vo.getBoardFiles().get(j).getFileaddr())
+                            .fitCenter()
+                            .thumbnail(0.1f)
+                            .override(500,500)
+                            .into(holder.attachImage1);
+                }else if(j==1){
+                    Glide.with(activity)
+                            .load(vo.getBoardFiles().get(j).getFileaddr())
+                            .fitCenter()
+                            .thumbnail(0.1f)
+                            .override(500,500)
+                            .into(holder.attachImage2);
+                }else if(j==2){
+                    Glide.with(activity)
+                            .load(vo.getBoardFiles().get(j).getFileaddr())
+                            .fitCenter()
+                            .thumbnail(0.1f)
+                            .override(500,500)
+                            .into(holder.attachImage3);
+                }
+            }
+
+        }
+
     }
 
     @Override
@@ -312,9 +348,9 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
 
     public class BoardItemViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView userimg;
+        public ImageView userimg,attachImage1,attachImage2,attachImage3;
         public TextView username,content,commentCount,formatingdate,teamname,txbtnview,level;
-        private LinearLayout liWriteBtn,liShareBtn,liContent;
+        private LinearLayout liWriteBtn,liShareBtn,liContent,li_file_layout;
         private ImageButton btnMenu;
         private View viewType;
 
@@ -332,6 +368,11 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
             txbtnview = (TextView) itemView.findViewById(R.id.txbtnview);
             viewType = itemView.findViewById(R.id.viewType);
             level = (TextView) itemView.findViewById(R.id.level);
+            li_file_layout = (LinearLayout) itemView.findViewById(R.id.li_file_layout);
+
+            attachImage1 = (ImageView) itemView.findViewById(R.id.attachImage1);
+            attachImage2 = (ImageView) itemView.findViewById(R.id.attachImage2);
+            attachImage3 = (ImageView) itemView.findViewById(R.id.attachImage3);
         }
     }
 

@@ -139,7 +139,38 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     />
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/li_file_layout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="center"
+                android:background="@color/overcolor1"
+                >
+
+                <ImageView
+                    android:layout_margin="2dp"
+                    android:id="@+id/attachImage1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    />
+
+                <ImageView
+                    android:layout_margin="2dp"
+                    android:id="@+id/attachImage2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:layout_margin="2dp"
+                    android:id="@+id/attachImage3"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <RelativeLayout

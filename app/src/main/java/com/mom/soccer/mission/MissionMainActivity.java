@@ -583,12 +583,12 @@ public class MissionMainActivity extends AppCompatActivity {
     public void changeImage(){
         new MaterialDialog.Builder(MissionMainActivity.this)
                 .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
-                .title("영상선택")
+                .title(R.string.ins_feedback_msg1)
                 .titleColor(getResources().getColor(R.color.color6))
-                .content("영상 업로드 유의 사항")
+                .content(R.string.ins_feedback_msg2)
                 .contentColor(getResources().getColor(R.color.color6))
-                .positiveText("영상 갤러리")
-                .neutralText("촬영하기")
+                .positiveText(R.string.ins_feedback_msg3)
+                .neutralText(R.string.ins_feedback_msg4)
                 .negativeText(R.string.mom_diaalog_cancel)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override

@@ -16,6 +16,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -98,6 +99,11 @@ public class TeamBoardReply extends AppCompatActivity {
 
     private int lineCount;
 
+    @Bind(R.id.li_attach_image_group)
+    LinearLayout li_attach_image_group;
+
+    ImageView attchimageFile1,attchimageFile2,attchimageFile3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +125,10 @@ public class TeamBoardReply extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.back_arrow);
 
         userimg = (ImageView) findViewById(R.id.userimg);
+
+        attchimageFile1 = (ImageView) findViewById(R.id.attchimageFile1);
+        attchimageFile2 = (ImageView) findViewById(R.id.attchimageFile2);
+        attchimageFile3 = (ImageView) findViewById(R.id.attchimageFile3);
 
         WaitingDialog.showWaitingDialog(activity,false);
         MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
@@ -150,6 +160,40 @@ public class TeamBoardReply extends AppCompatActivity {
                     level.setText(String.valueOf(momBoard.getLevel()));
                     lineCount = momBoard.getCommentcount();
                     getLineCountText(lineCount);
+
+
+                    if(momBoard.getFilecount()!=0){
+
+                        li_attach_image_group.setVisibility(View.VISIBLE);
+
+                        for(int i=0; i < momBoard.getBoardFiles().size() ; i++){
+
+                            if(i==0){
+                                Glide.with(activity)
+                                        .load(momBoard.getBoardFiles().get(i).getFileaddr())
+                                        .fitCenter()
+                                        .crossFade()
+                                        .into(attchimageFile1);
+                            }else if(i==1){
+                                Glide.with(activity)
+                                        .load(momBoard.getBoardFiles().get(i).getFileaddr())
+                                        .fitCenter()
+                                        .crossFade()
+                                        .into(attchimageFile2);
+                            }else if(i==2){
+                                Glide.with(activity)
+                                        .load(momBoard.getBoardFiles().get(i).getFileaddr())
+                                        .fitCenter()
+                                        .crossFade()
+                                        .into(attchimageFile3);
+                            }
+
+                        }
+
+                    }else{
+                        li_attach_image_group.setVisibility(View.GONE);
+                    }
+
                 }
             }
 

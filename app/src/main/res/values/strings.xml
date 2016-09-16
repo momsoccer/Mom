@@ -726,4 +726,8 @@
 
     <string name="networkcheck5">(심사결과 도착)</string>
 
+    <string name="fileupload">사진 크기가 7Mb가 이상일 경우 \n업로드 할 수 가 없습니다 \n리사이징 부탁드립니다</string>
+
+    <string name="image_pick_msg1">이미지 추가시 기존 첨부 이미지가 모두 삭제 됩니다</string>
+
 </resources>
