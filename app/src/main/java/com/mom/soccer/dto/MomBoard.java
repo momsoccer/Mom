@@ -48,6 +48,16 @@ public class MomBoard {
 
     public MomBoard(){}
 
+    //if adapter change
+    private int position;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     public List<MomBoardFile> getBoardFiles() {
         return boardFiles;
@@ -92,9 +102,12 @@ public class MomBoard {
                 ", commentcount=" + commentcount +
                 ", likecount=" + likecount +
                 ", formatDataSign='" + formatDataSign + '\'' +
+                ", filecount=" + filecount +
                 ", limit=" + limit +
                 ", offset=" + offset +
                 ", pagenum=" + pagenum +
+                ", boardFiles=" + boardFiles +
+                ", position=" + position +
                 '}';
     }
 

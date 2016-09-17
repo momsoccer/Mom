@@ -3,7 +3,9 @@ package com.mom.soccer.ball;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +31,7 @@ import com.darsh.multipleimageselect.helpers.Constants;
 import com.darsh.multipleimageselect.models.Image;
 import com.mom.soccer.R;
 import com.mom.soccer.common.Compare;
+import com.mom.soccer.common.EventBus;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dto.MomBoard;
@@ -127,6 +130,11 @@ public class TeamBoardActivity extends AppCompatActivity {
     private boolean onlyImageUpdate = false;
     private boolean deleteImg = false;
     private int imageCount=0;
+
+
+    private int position = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,6 +149,9 @@ public class TeamBoardActivity extends AppCompatActivity {
         boardFlag = intent.getExtras().getString("boardFlag");
         boardid = intent.getExtras().getInt("boardid");
         callpage = intent.getExtras().getString("callpage");
+        position = intent.getExtras().getInt("position");
+
+        Log.i(TAG,"포지션 넘버는 : " + position);
 
         li_imageview.setVisibility(View.GONE);
 
@@ -211,6 +222,12 @@ public class TeamBoardActivity extends AppCompatActivity {
         }
     }
 
+/*    @OnClick(R.id.action_bar_title)
+    public void test(){
+        InputMethodManager imm= (InputMethodManager)getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
+    }*/
+
     public void getTeaminfo(int uid){
         WaitingDialog.showWaitingDialog(TeamBoardActivity.this,false);
         TeamService teamService = ServiceGenerator.createService(TeamService.class,getApplicationContext(),user);
@@ -235,6 +252,11 @@ public class TeamBoardActivity extends AppCompatActivity {
 
     @OnClick(R.id.commit)
     public void commit(){
+
+        InputMethodManager mInputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        mInputMethodManager.hideSoftInputFromWindow(content.getWindowToken(), 0);
+
+
         if(boardFlag.equals("new")){
             if(content.getText().toString().length()==0){
                 VeteranToast.makeToast(getApplicationContext(),getString(R.string.board_team_content_vali), Toast.LENGTH_SHORT).show();
@@ -263,8 +285,6 @@ public class TeamBoardActivity extends AppCompatActivity {
                 momBoard.setPubtype("N");
             }
 
-            InputMethodManager mInputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            mInputMethodManager.hideSoftInputFromWindow(content.getWindowToken(), 0);
 
             Call<ServerResult> c = boardService.saveBoardheader(momBoard);
             c.enqueue(new Callback<ServerResult>() {
@@ -335,8 +355,7 @@ public class TeamBoardActivity extends AppCompatActivity {
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                     WaitingDialog.cancelWaitingDialog();
                     if(response.isSuccessful()){
-                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.board_main_coment_modity),Toast.LENGTH_SHORT).show();
-
+                        Log.i(TAG,"xxxxx event 1");
                         if(deleteImg==true){
                             if(images.size()!=0){
                                 //기존자료 삭제 후 다시 업로드 파일 첨부
@@ -345,6 +364,8 @@ public class TeamBoardActivity extends AppCompatActivity {
                         }
 
                         if(onlyImageUpdate){
+
+
                             WaitingDialog.showWaitingDialog(TeamBoardActivity.this,false);
                             MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
                             Call<ServerResult> c = momBoardService.deleteBoardFileList(momBoardFiles);
@@ -365,7 +386,34 @@ public class TeamBoardActivity extends AppCompatActivity {
                             });
                         }
 
-                        finish();
+                        VeteranToast.makeToast(getApplicationContext(),getString(R.string.board_main_coment_modity),Toast.LENGTH_SHORT).show();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run()
+                            {
+                                if(Build.VERSION.SDK_INT  >= 20) {
+                                    momBoard.setPosition(position);
+                                    EventBus.getInstance().post(momBoard);
+                                    finish();
+                                }else{
+                                    //새로고침 리싸이클뷰 이벤트 버스 안먹음..???
+
+                                    if(callpage.equals("user")){
+                                        Intent intent = new Intent(TeamBoardActivity.this,PlayerMainActivity.class);
+                                        intent.putExtra(Param.FRAGMENT_COUNT,0);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        finish();
+                                        startActivity(intent);
+                                    }else{
+                                        Intent intent = new Intent(TeamBoardActivity.this,InsDashboardActivity.class);
+                                        intent.putExtra(Param.FRAGMENT_COUNT,0);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        finish();
+                                        startActivity(intent);
+                                    }
+                                }
+                            }
+                        }, 2000);
                     }
                 }
 
@@ -400,6 +448,7 @@ public class TeamBoardActivity extends AppCompatActivity {
                     }
 
                     if(momBoard.getFilecount()!=0){
+
                         li_imageview.setVisibility(View.VISIBLE);
 
                         for(int i=0; i < momBoard.getBoardFiles().size();i++){
@@ -571,8 +620,6 @@ public class TeamBoardActivity extends AppCompatActivity {
 
     public void removeImage(View view){
 
-        Log.i(TAG,"boardFlag : " + boardFlag);
-        Log.i(TAG,"deleteImg : " + deleteImg);
 
         //수정일때 첨부 전 삭제 , 모두삭제
         if(boardFlag.equals("modify") && deleteImg){
@@ -647,16 +694,14 @@ public class TeamBoardActivity extends AppCompatActivity {
 
             onlyImageUpdate = true;
 
-            for(int i =0 ; i < momBoard.getBoardFiles().size();i++){
-
-                Log.i(TAG, "파일 값은 " + momBoard.getBoardFiles().get(i).getFileid());
-                Log.i(TAG, "파일 값은 " + momBoard.getBoardFiles().get(i).getFilename());
-
-            }
+            MomBoardFile setfile = new MomBoardFile();
 
             switch (view.getId()){
                 case R.id.closebtn1:
-                    //momBoardFiles.get(0).setFileid(momBoard.getBoardFiles().get(0).getFileid());
+
+                    setfile =   momBoard.getBoardFiles().get(0);
+                    momBoardFiles.add(setfile);
+
                     li_image1.setVisibility(View.GONE);
                     img1.setImageResource(0);
                     existImageA = true;
@@ -664,7 +709,9 @@ public class TeamBoardActivity extends AppCompatActivity {
                     imageCountText();
                     break;
                 case R.id.closebtn2:
-                    //momBoardFiles.get(1).setFileid(momBoard.getBoardFiles().get(1).getFileid());
+                    setfile =   momBoard.getBoardFiles().get(1);
+                    momBoardFiles.add(setfile);
+
                     li_image2.setVisibility(View.GONE);
                     img2.setImageResource(0);
                     existImageB = true;
@@ -672,7 +719,10 @@ public class TeamBoardActivity extends AppCompatActivity {
                     imageCount = 1+imageCount;
                     break;
                 case R.id.closebtn3:
-                    //momBoardFiles.get(2).setFileid(momBoard.getBoardFiles().get(2).getFileid());
+
+                    setfile =   momBoard.getBoardFiles().get(2);
+                    momBoardFiles.add(setfile);
+
                     li_image3.setVisibility(View.GONE);
                     img3.setImageResource(0);
                     existImageC = true;

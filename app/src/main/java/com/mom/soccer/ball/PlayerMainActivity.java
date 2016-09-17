@@ -148,7 +148,8 @@ public class PlayerMainActivity extends AppCompatActivity {
                     Intent intent = new Intent(PlayerMainActivity.this,TeamBoardActivity.class);
                     intent.putExtra("boardFlag","new");
                     intent.putExtra("boardid",0);
-                intent.putExtra("callpage","user");
+                    intent.putExtra("callpage","user");
+                    intent.putExtra("position",0);
                     startActivity(intent);
             }
         });

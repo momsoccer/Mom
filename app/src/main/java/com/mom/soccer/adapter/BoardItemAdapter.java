@@ -174,6 +174,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
                                     intent.putExtra("boardFlag","modify");
                                     intent.putExtra("boardid",vo.getBoardid());
                                     intent.putExtra("callpage",callpage);
+                                    intent.putExtra("position",posintion);
                                     activity.startActivityForResult(intent,HEADER_BOARD_CODE);
                                 break;
                             case 102:
@@ -325,6 +326,13 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
 
     public void updateHeader(int position,MomBoard momBoard){
         boardList.get(position).setCategory(momBoard.getCategory());
+        notifyDataSetChanged();
+    }
+
+    //변경된 파일 보내기?
+    public void updateHeaderImage(int position, MomBoard momBoard){
+        boardList.remove(position);
+        boardList.add(position,momBoard);
         notifyDataSetChanged();
     }
 

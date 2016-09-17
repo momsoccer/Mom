@@ -468,8 +468,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         MomComService momComService = ServiceGenerator.createService(MomComService.class,this,user);
         final Call<ServerResult> logOutCall = momComService.logOut();
 
-        new Handler().postDelayed(new Runnable()
-        {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run()
             {

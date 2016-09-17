@@ -2,7 +2,6 @@ package com.mom.soccer.common;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import com.squareup.otto.Bus;
 
@@ -15,8 +14,6 @@ public class EventBus extends Bus {
 
     public static EventBus getInstance() {
 
-        Log.i("EventBus","이벤트 버스가 발생1");
-
         if (instance == null) {
             synchronized (EventBus.class) {
                 if (instance == null) {
@@ -26,6 +23,7 @@ public class EventBus extends Bus {
         }
         return instance;
     }
+
 
     private Handler handler = new Handler(Looper.getMainLooper());
 

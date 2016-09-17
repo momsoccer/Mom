@@ -122,6 +122,7 @@ public class InsDashboardActivity extends AppCompatActivity {
                 intent.putExtra("boardFlag","new");
                 intent.putExtra("boardid",0);
                 intent.putExtra("callpage","ins");
+                intent.putExtra("position",0);
                 startActivity(intent);
             }
         });

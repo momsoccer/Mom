@@ -1,6 +1,5 @@
 package com.mom.soccer.fragment;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -145,7 +144,7 @@ public class PlayerFragment extends Fragment{
 
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
+    //@TargetApi(Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         Log.i(TAG,"fragment onCreateView() ===========================================");
@@ -195,16 +194,18 @@ public class PlayerFragment extends Fragment{
 
             //2.스와이프 이벤트 버전별
             if(Build.VERSION.SDK_INT  >= 20) {
-                boardRecview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                    @Override
-                    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                            swipeRefreshLayout.setEnabled(true);
-                        } else {
-                            swipeRefreshLayout.setEnabled(false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    boardRecview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                        @Override
+                        public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                            if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                                swipeRefreshLayout.setEnabled(true);
+                            } else {
+                                swipeRefreshLayout.setEnabled(false);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }else{
                 boardRecview.setOnScrollListener(new RecyclerView.OnScrollListener(){
                     @Override
@@ -264,16 +265,18 @@ public class PlayerFragment extends Fragment{
 
             //2
             if(Build.VERSION.SDK_INT  >= 20) {
-                searchUserMissionRecyclerview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                    @Override
-                    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                            swipeRefreshLayout.setEnabled(true);
-                        } else {
-                            swipeRefreshLayout.setEnabled(false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    searchUserMissionRecyclerview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                        @Override
+                        public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                            if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                                swipeRefreshLayout.setEnabled(true);
+                            } else {
+                                swipeRefreshLayout.setEnabled(false);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }else{
                 searchUserMissionRecyclerview.setOnScrollListener(new RecyclerView.OnScrollListener(){
                     @Override
@@ -863,6 +866,35 @@ public class PlayerFragment extends Fragment{
 
 
     @Subscribe
+    public void recevedUpdateBoardFile(final MomBoard momBoard){
+        if(mPage==1){
+            Log.i(TAG,"버스 이벤트 : " +momBoard.toString());
+            WaitingDialog.showWaitingDialog(getActivity(),false);
+            MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getContext(),user);
+
+            MomBoard query = new MomBoard();
+            query.setBoardid(momBoard.getBoardid());
+            Call<MomBoard> momBoardCall = momBoardService.getBoardHeader(query);
+            momBoardCall.enqueue(new Callback<MomBoard>() {
+                @Override
+                public void onResponse(Call<MomBoard> call, Response<MomBoard> response) {
+                    WaitingDialog.cancelWaitingDialog();
+                    if(response.isSuccessful()){
+                        MomBoard board = response.body();
+                        boardItemAdapter.updateHeaderImage(momBoard.getPosition(),board);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MomBoard> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
+                    t.printStackTrace();
+                }
+            });
+        }
+    }
+
+    @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent){
         onActivityResult(activityResultEvent.getRequestCode(), activityResultEvent.getResultCode(), activityResultEvent.getData());
     }
@@ -871,7 +903,7 @@ public class PlayerFragment extends Fragment{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
     }
 
-    /*
+
     @Override
     public void onStart() {
         super.onStart();
@@ -891,5 +923,5 @@ public class PlayerFragment extends Fragment{
     public void onStop() {
         super.onStop();
     }
-    */
+
 }

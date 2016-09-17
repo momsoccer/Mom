@@ -33,6 +33,7 @@
                 android:layout_gravity="center"
                 />
 
+
             <TextView
                 android:id="@+id/commit"
                 android:text="@string/board_submit"
