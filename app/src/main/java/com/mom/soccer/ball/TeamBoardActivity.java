@@ -47,6 +47,7 @@ import com.mom.soccer.widget.WaitingDialog;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -100,6 +101,7 @@ public class TeamBoardActivity extends AppCompatActivity {
     @Bind(R.id.textImageCount)
     TextView textImageCount;
 
+    private List<MomBoardFile> momBoardFiles = new ArrayList<MomBoardFile>();
 
     RelativeLayout li_image1,li_image2,li_image3;
     ImageView closebtn1,closebtn2,closebtn3;
@@ -343,7 +345,24 @@ public class TeamBoardActivity extends AppCompatActivity {
                         }
 
                         if(onlyImageUpdate){
-                            VeteranToast.makeToast(getApplicationContext(),"이미지 정보를 업데이트 합니다",Toast.LENGTH_SHORT).show();
+                            WaitingDialog.showWaitingDialog(TeamBoardActivity.this,false);
+                            MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
+                            Call<ServerResult> c = momBoardService.deleteBoardFileList(momBoardFiles);
+                            c.enqueue(new Callback<ServerResult>() {
+                                @Override
+                                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                                    WaitingDialog.cancelWaitingDialog();
+                                    if(response.isSuccessful()){
+                                        ServerResult result = response.body();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<ServerResult> call, Throwable t) {
+                                    WaitingDialog.cancelWaitingDialog();
+                                    t.printStackTrace();
+                                }
+                            });
                         }
 
                         finish();
@@ -552,6 +571,9 @@ public class TeamBoardActivity extends AppCompatActivity {
 
     public void removeImage(View view){
 
+        Log.i(TAG,"boardFlag : " + boardFlag);
+        Log.i(TAG,"deleteImg : " + deleteImg);
+
         //수정일때 첨부 전 삭제 , 모두삭제
         if(boardFlag.equals("modify") && deleteImg){
             imageCount();
@@ -625,9 +647,16 @@ public class TeamBoardActivity extends AppCompatActivity {
 
             onlyImageUpdate = true;
 
+            for(int i =0 ; i < momBoard.getBoardFiles().size();i++){
+
+                Log.i(TAG, "파일 값은 " + momBoard.getBoardFiles().get(i).getFileid());
+                Log.i(TAG, "파일 값은 " + momBoard.getBoardFiles().get(i).getFilename());
+
+            }
+
             switch (view.getId()){
                 case R.id.closebtn1:
-
+                    //momBoardFiles.get(0).setFileid(momBoard.getBoardFiles().get(0).getFileid());
                     li_image1.setVisibility(View.GONE);
                     img1.setImageResource(0);
                     existImageA = true;
@@ -635,7 +664,7 @@ public class TeamBoardActivity extends AppCompatActivity {
                     imageCountText();
                     break;
                 case R.id.closebtn2:
-
+                    //momBoardFiles.get(1).setFileid(momBoard.getBoardFiles().get(1).getFileid());
                     li_image2.setVisibility(View.GONE);
                     img2.setImageResource(0);
                     existImageB = true;
@@ -643,6 +672,7 @@ public class TeamBoardActivity extends AppCompatActivity {
                     imageCount = 1+imageCount;
                     break;
                 case R.id.closebtn3:
+                    //momBoardFiles.get(2).setFileid(momBoard.getBoardFiles().get(2).getFileid());
                     li_image3.setVisibility(View.GONE);
                     img3.setImageResource(0);
                     existImageC = true;

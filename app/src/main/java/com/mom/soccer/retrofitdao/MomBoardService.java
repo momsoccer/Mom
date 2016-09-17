@@ -69,4 +69,7 @@ public interface MomBoardService {
             @Part("profileimgurl") RequestBody profileimgurl,
             @Part MultipartBody.Part file
     );
+
+    @POST("/momboard/deleteBoardFileList")
+    Call<ServerResult> deleteBoardFileList(@Body List<MomBoardFile> momBoardFiles);
 }
