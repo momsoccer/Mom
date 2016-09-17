@@ -86,8 +86,8 @@
                     android:id="@+id/userimg"
                     android:layout_marginLeft="5dp"
                     android:src="@drawable/userimg"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
 
                 <LinearLayout
                     android:orientation="vertical"

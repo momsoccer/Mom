@@ -149,8 +149,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -164,28 +162,48 @@
                         >
 
                         <ImageView
-                            android:layout_margin="10dp"
+                            android:layout_marginTop="2dp"
                             android:id="@+id/attchimageFile1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <ImageView
-                            android:layout_margin="10dp"
+                            android:layout_marginTop="2dp"
                             android:id="@+id/attchimageFile2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
                         <ImageView
-                            android:layout_margin="10dp"
+                            android:layout_marginTop="2dp"
                             android:id="@+id/attchimageFile3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
                 </LinearLayout>
 
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color1" />
+
+                <TextView
+                    android:id="@+id/textImageCount"
+                    android:text="@string/user_mission_d_title2"
+                    android:textColor="@color/color6"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/line_color1" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/replyRecview"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

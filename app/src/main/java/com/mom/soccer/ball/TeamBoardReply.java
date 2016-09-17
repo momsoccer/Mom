@@ -103,6 +103,7 @@ public class TeamBoardReply extends AppCompatActivity {
     LinearLayout li_attach_image_group;
 
     ImageView attchimageFile1,attchimageFile2,attchimageFile3;
+    private boolean sendWrite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -334,8 +335,11 @@ public class TeamBoardReply extends AppCompatActivity {
                 if(response.isSuccessful()){
                     ServerResult result = response.body();
                     if(result.getResult().equals("S")){
+
+                        sendWrite = true;
                         getBoardLineList();
                         comment.setText(null);
+
                     }else{
 
                     }
@@ -385,6 +389,15 @@ public class TeamBoardReply extends AppCompatActivity {
                     alphaAdapter.setDuration(500);
                     replyRecview.setAdapter(boardLineItemAdapter);
                     replyRecview.scrollToPosition(momBoardList.size()-1); //입력후 맨아래 자기 자신의 글 보이기
+
+/*
+if(sendWrite){
+                        BusObject busObject = new BusObject();
+                        busObject.setPosition(posintion);
+                        busObject.setKeyid(boardid);
+                        busObject.setLineCount(lineCount);
+                        EventBus.getInstance().post(busObject);
+                    }*/
 
                 }
             }

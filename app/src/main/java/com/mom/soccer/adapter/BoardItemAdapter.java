@@ -8,7 +8,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -284,8 +283,6 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
 
             for(int j=0 ; j < vo.getBoardFiles().size(); j++){
 
-                Log.i(TAG,"파일 주소는 : " + vo.getBoardFiles().get(j).getFileaddr());
-
                 if(j==0){
                     Glide.with(activity)
                             .load(vo.getBoardFiles().get(j).getFileaddr())
@@ -323,6 +320,7 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         boardList.get(position).setCommentcount(lineCount);
         notifyDataSetChanged();
     }
+
 
     public void updateHeader(int position,MomBoard momBoard){
         boardList.get(position).setCategory(momBoard.getCategory());

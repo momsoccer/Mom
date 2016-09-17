@@ -3,7 +3,6 @@ package com.mom.soccer.ball;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -79,9 +78,6 @@ public class TeamBoardActivity extends AppCompatActivity {
 
     @Bind(R.id.userimg)
     ImageView userimg;
-
-    @Bind(R.id.txt_pub)
-    TextView txt_pub;
 
     @Bind(R.id.categoryType)
     CheckBox categoryType;
@@ -211,7 +207,7 @@ public class TeamBoardActivity extends AppCompatActivity {
         existImageC = false;
     }
 
-    @OnClick(R.id.txt_pub)
+/*    @OnClick(R.id.txt_pub)
     public void txt_pub(){
         if(tag == 1){
             txt_pub.setText(getString(R.string.board_pubtype_N));
@@ -220,7 +216,7 @@ public class TeamBoardActivity extends AppCompatActivity {
             tag=1;
             txt_pub.setText(getString(R.string.board_pubtype_Y));
         }
-    }
+    }*/
 
 /*    @OnClick(R.id.action_bar_title)
     public void test(){
@@ -391,7 +387,12 @@ public class TeamBoardActivity extends AppCompatActivity {
                             @Override
                             public void run()
                             {
-                                if(Build.VERSION.SDK_INT  >= 20) {
+
+                                momBoard.setPosition(position);
+                                EventBus.getInstance().post(momBoard);
+                                finish();
+
+/*                                if(Build.VERSION.SDK_INT  >= 20) {
                                     momBoard.setPosition(position);
                                     EventBus.getInstance().post(momBoard);
                                     finish();
@@ -411,7 +412,7 @@ public class TeamBoardActivity extends AppCompatActivity {
                                         finish();
                                         startActivity(intent);
                                     }
-                                }
+                                }*/
                             }
                         }, 2000);
                     }
@@ -441,11 +442,14 @@ public class TeamBoardActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     momBoard = response.body();
                     content.setText(momBoard.getContent());
+
+                    /*
                     if(momBoard.getPubtype().equals("Y")){
                         txt_pub.setText(getString(R.string.board_pubtype_Y));
                     }else{
                         txt_pub.setText(getString(R.string.board_pubtype_N));
                     }
+                    */
 
                     if(momBoard.getFilecount()!=0){
 

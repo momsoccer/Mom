@@ -28,7 +28,7 @@
             <View
                 android:background="@drawable/xml_list_divider"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"/>
+                android:layout_height="5dp"/>
 
             <LinearLayout
                 android:layout_marginTop="5dp"
@@ -186,6 +186,10 @@
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
+            <View
+                android:background="@drawable/xml_list_divider"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.mom.soccer.fragment;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -144,7 +145,7 @@ public class PlayerFragment extends Fragment{
 
     }
 
-    //@TargetApi(Build.VERSION_CODES.M)
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         Log.i(TAG,"fragment onCreateView() ===========================================");
@@ -194,18 +195,16 @@ public class PlayerFragment extends Fragment{
 
             //2.스와이프 이벤트 버전별
             if(Build.VERSION.SDK_INT  >= 20) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    boardRecview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                        @Override
-                        public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                            if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                                swipeRefreshLayout.setEnabled(true);
-                            } else {
-                                swipeRefreshLayout.setEnabled(false);
-                            }
+                boardRecview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                    @Override
+                    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            swipeRefreshLayout.setEnabled(true);
+                        } else {
+                            swipeRefreshLayout.setEnabled(false);
                         }
-                    });
-                }
+                    }
+                });
             }else{
                 boardRecview.setOnScrollListener(new RecyclerView.OnScrollListener(){
                     @Override
@@ -265,18 +264,16 @@ public class PlayerFragment extends Fragment{
 
             //2
             if(Build.VERSION.SDK_INT  >= 20) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    searchUserMissionRecyclerview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                        @Override
-                        public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                            if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                                swipeRefreshLayout.setEnabled(true);
-                            } else {
-                                swipeRefreshLayout.setEnabled(false);
-                            }
+                searchUserMissionRecyclerview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                    @Override
+                    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            swipeRefreshLayout.setEnabled(true);
+                        } else {
+                            swipeRefreshLayout.setEnabled(false);
                         }
-                    });
-                }
+                    }
+                });
             }else{
                 searchUserMissionRecyclerview.setOnScrollListener(new RecyclerView.OnScrollListener(){
                     @Override

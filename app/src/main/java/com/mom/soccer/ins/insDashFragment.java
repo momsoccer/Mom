@@ -24,6 +24,7 @@ import com.mom.soccer.adapter.FeedBackReqAdapter;
 import com.mom.soccer.adapter.PassListInsAdapter;
 import com.mom.soccer.adapter.PassResultListInsAdapter;
 import com.mom.soccer.adapter.TeamApplyAdapter;
+import com.mom.soccer.common.EventBus;
 import com.mom.soccer.common.MomSnakBar;
 import com.mom.soccer.dataDto.FeedBackDataVo;
 import com.mom.soccer.dataDto.FeedDataVo;
@@ -42,6 +43,7 @@ import com.mom.soccer.retrofitdao.TeamService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,7 +131,7 @@ public class insDashFragment extends Fragment {
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-
+        EventBus.getInstance().register(this);
         View view = null;
 
         if(mPage == 1){
@@ -716,14 +718,50 @@ public class insDashFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-/*
-        feedBackReqAdapter.notifyDataSetChanged();
-        feedBackEndAdapter.notifyDataSetChanged();
-        passListInsAdapter.notifyDataSetChanged();
-       passResultListInsAdapter.notifyDataSetChanged();
-  */
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getInstance().unregister(this);
+    }
 
+    @Subscribe
+    public void recevedUpdateBoardFile(final MomBoard momBoard){
+        if(mPage==1){
+
+            Log.i(TAG,"버스 이벤트 : " +momBoard.toString());
+
+            WaitingDialog.showWaitingDialog(getActivity(),false);
+            MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getContext(),user);
+
+            MomBoard query = new MomBoard();
+            query.setBoardid(momBoard.getBoardid());
+            Call<MomBoard> momBoardCall = momBoardService.getBoardHeader(query);
+            momBoardCall.enqueue(new Callback<MomBoard>() {
+                @Override
+                public void onResponse(Call<MomBoard> call, Response<MomBoard> response) {
+                    WaitingDialog.cancelWaitingDialog();
+                    if(response.isSuccessful()){
+                        MomBoard board = response.body();
+                        boardItemAdapter.updateHeaderImage(momBoard.getPosition(),board);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MomBoard> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
+                    t.printStackTrace();
+                }
+            });
+        }
+    }
+
+/*
+    @Subscribe
+    public void getReplyReceved(BusObject busObject){
+        boardItemAdapter.updateLineItemCount(busObject.getPosition(),0);
+    }
+*/
 
 }
