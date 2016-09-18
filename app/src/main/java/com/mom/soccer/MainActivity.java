@@ -3,6 +3,7 @@ package com.mom.soccer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -10,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -17,15 +19,12 @@ import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.Toast;
 
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
-import com.mom.soccer.dto.FcmToken;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.login.LoginActivity;
 import com.mom.soccer.momactivity.MomMainActivity;
-import com.mom.soccer.trservice.FcmTokenTRService;
 import com.mom.soccer.widget.VeteranToast;
 
 import java.security.MessageDigest;
@@ -53,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     MediaController mc;
     MyVideoView videoView;
 
+    String upset ="N";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +63,25 @@ public class MainActivity extends AppCompatActivity {
         activity = this;
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
+
+        upset = prefUtil.getUploadFlag();
+        String getPushcheck = prefUtil.getPushcheck();
+        String getSoundCheck = prefUtil.getSoundCheck();
+
+        if(upset==null){
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+            SharedPreferences.Editor pre = sp.edit();
+            pre.putString("uploadflag", "Y");
+            pre.commit();
+        }
+
+        if(getPushcheck==null){
+            prefUtil.setPushcheck("Y");
+        }
+
+        if(getSoundCheck==null){
+            prefUtil.setSoundCheck("Y");
+        }
 
         FirebaseMessaging.getInstance().subscribeToTopic("news");
 
@@ -96,15 +116,16 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         videoView.start();
         user = prefUtil.getUser();
-        String shToken = prefUtil.getFcmToken();
 
-        prefUtil.saveFcmToken(FirebaseInstanceId.getInstance().getToken());
-
-        FcmToken fcmToken = new FcmToken();
-        fcmToken.setUid(user.getUid());
-        fcmToken.setSerialnumber(user.getSerialnumber());
-        fcmToken.setFcmtoken(FirebaseInstanceId.getInstance().getToken());
-        FcmTokenTRService.setupToken(activity,user,fcmToken);
+/*        if(!Compare.isEmpty(user.getUseremail())){
+            String shToken = prefUtil.getFcmToken();
+            prefUtil.saveFcmToken(FirebaseInstanceId.getInstance().getToken());
+            FcmToken fcmToken = new FcmToken();
+            fcmToken.setUid(user.getUid());
+            fcmToken.setSerialnumber(user.getSerialnumber());
+            fcmToken.setFcmtoken(FirebaseInstanceId.getInstance().getToken());
+            FcmTokenTRService.setupToken(activity,user,fcmToken);
+        }*/
 
         if (!Compare.isEmpty(user.getUseremail())){
             Intent intent = new Intent(this, MomMainActivity.class); //유저라면 메인 화면으로 이동시킨다

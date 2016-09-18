@@ -109,7 +109,7 @@ public class UserMissionAdapter extends RecyclerView.Adapter<UserMissionAdapter.
         h.grade.setText(String.valueOf(vo.getGrade()));
         h.passgrade.setText(String.valueOf(vo.getPassgrade()));
         h.username.setText(vo.getUsername());
-        h.sequence.setText("Lv."+vo.getSequence());
+        h.sequence.setText("Level."+vo.getSequence());
         h.date.setText(vo.getChange_creationdate());
 
         if(vo.getMissiontype().equals("DRIBLE")){

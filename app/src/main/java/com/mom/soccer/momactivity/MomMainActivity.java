@@ -29,6 +29,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -189,6 +190,8 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
 
+
+        Log.i(TAG,"Fire base key :" + FirebaseInstanceId.getInstance().getToken());
 
         Intent intent = getIntent();
         instructor = (Instructor) intent.getSerializableExtra("INS");

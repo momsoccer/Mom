@@ -122,11 +122,6 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
 
         Log.i(TAG,"업로드 플래그는 : " + upset);
 
-        if(upset == null){
-            Log.i(TAG,"업로드 플래그 초기 설정 : ");
-            upset="Y";
-        }
-
         Intent intent = getIntent();
         mFileUri = intent.getData();
         mission = (Mission) intent.getSerializableExtra(MissionCommon.OBJECT);

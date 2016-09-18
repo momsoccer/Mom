@@ -155,5 +155,30 @@ public class PrefUtil {
         String upFlag = sp.getString("uploadflag", null);
         return upFlag;
     }
+    public String getPushcheck(){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        String pushcheck = sp.getString("pushcheck", null);
+        return pushcheck;
+    }
+
+    public void setPushcheck(String check){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences.Editor pre = sp.edit();
+        pre.putString("pushcheck",check);
+        pre.commit();
+    }
+
+    public String getSoundCheck(){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        String pushcheck = sp.getString("soundcheck", null);
+        return pushcheck;
+    }
+
+    public void setSoundCheck(String check){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences.Editor pre = sp.edit();
+        pre.putString("soundcheck",check);
+        pre.commit();
+    }
 
 }

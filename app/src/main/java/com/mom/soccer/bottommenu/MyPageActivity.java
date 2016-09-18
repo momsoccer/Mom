@@ -655,6 +655,7 @@ public class MyPageActivity extends AppCompatActivity {
             FriendService service = ServiceGenerator.createService(FriendService.class,getApplicationContext(),user);
 
             FriendApply apply = new FriendApply();
+            apply.setRequsername(user.getUsername());
             apply.setRequid(user.getUid());
             apply.setResuid(findUser.getUid());
             apply.setFlag("REQUEST");

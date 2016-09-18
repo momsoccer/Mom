@@ -234,15 +234,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".company.UsingPage"
+        <activity
+            android:name=".company.UsingPage"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-        <activity android:name=".company.UserSafe"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".company.UserSafe"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".alluser.AllUserMainActivity"></activity>
     </application>
 
 </manifest>

@@ -27,6 +27,11 @@ public class MomSwitchPreference extends SwitchPreference {
     @Override
     protected void onBindView(View view) {
         super.onBindView(view);
+
+        TextView textView = (TextView) view.findViewById(android.R.id.summary);
+        textView.setTextColor(view.getResources().getColor(R.color.color8));
+        textView.setTextSize(10);
+
         TextView titleView = (TextView) view.findViewById(android.R.id.title);
         titleView.setTextColor(view.getResources().getColor(R.color.color6));
         titleView.setTextSize(12);

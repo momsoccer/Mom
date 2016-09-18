@@ -41,7 +41,7 @@
         </com.mom.soccer.common.MomPreference>
 
 
-        <com.mom.soccer.common.MomPreference
+<!--        <com.mom.soccer.common.MomPreference
             android:key="keyhelp"
             android:title="@string/mom_setting_help" />
 
@@ -53,6 +53,7 @@
                 android:data="mailto:momsoccer@naver.com"
                 />
         </com.mom.soccer.common.MomPreference>
+-->
 
         <com.mom.soccer.common.MomPreference
             android:key="keyevaluation"
@@ -64,23 +65,30 @@
         </com.mom.soccer.common.MomPreference>
 
         <com.mom.soccer.common.MomSwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="autoUpdate"
             android:switchTextOff="OFF"
             android:switchTextOn="ON"
             android:title="@string/mom_setting_update" />
 
-        <com.mom.soccer.common.MomCheckBoxPreference
-            android:defaultValue="false"
-            android:dependency="autoUpdate"
-            android:key="useUpdateNofiti"
-            android:title="@string/mom_setting_update_alert" />
+        <com.mom.soccer.common.MomSwitchPreference
+            android:defaultValue="true"
+            android:key="arlim_check"
+            android:switchTextOff="OFF"
+            android:switchTextOn="ON"
+            android:summary="@string/all_user_page_btn31"
+            android:title="@string/all_user_page_btn3" />
 
-        <com.mom.soccer.common.MomRingtonePreference
-            android:defaultValue="content://settings/system/notification_sound"
-            android:dependency="useUpdateNofiti"
-            android:key="autoUpdate_ringtone"
-            android:ringtoneType="notification"
-            android:showSilent="true"
-            android:title="@string/mom_setting_update_alert_bell" />
+        <com.mom.soccer.common.MomSwitchPreference
+            android:defaultValue="true"
+            android:key="sound_check"
+            android:switchTextOff="OFF"
+            android:switchTextOn="ON"
+            android:summary="@string/all_user_page_btn41"
+            android:title="@string/all_user_page_btn4">
+
+            </com.mom.soccer.common.MomSwitchPreference>
+
+
+
 </PreferenceScreen>

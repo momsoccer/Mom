@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.mom.soccer.R;
+import com.mom.soccer.alluser.AllUserMainActivity;
 import com.mom.soccer.ball.PlayerMainActivity;
 import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.bottommenu.SearchActivity;
@@ -121,19 +122,13 @@ public class TabNaviComplaintBase extends RelativeLayout {
         ib_board.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(context,AllUserMainActivity.class);
+                intent.putExtra(Param.FRAGMENT_COUNT,0);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         });
 
-/*        imageBtnSetup.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context,SettingActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-
-            }
-        });*/
 
     }
 

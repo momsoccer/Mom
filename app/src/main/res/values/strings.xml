@@ -511,7 +511,7 @@
     <!--mymenu-->
     <string name="my_fragment_title1">미션</string>
     <string name="my_fragment_title2">팀게시판</string>
-    <string name="my_fragment_title3">친구/팀 미션</string>
+    <string name="my_fragment_title3">유저들 미션</string>
     <string name="my_fragment_title4">친구관리</string>
     <string name="my_fragment_title5">피드백</string>
 
@@ -637,7 +637,7 @@
     <string name="usermain_misison_feedback">피드백</string>
     <string name="usermain_misison_title1">미션제목</string>
     <string name="usermain_misison_title2">미션설명</string>
-    <string name="usermain_misison_title3">심사상태</string>
+    <string name="usermain_misison_title3">심사상태:</string>
     <string name="usermain_misison_title4">업로드 점수:</string>
     <string name="usermain_misison_title5">심사통과 점수:</string>
     <string name="usermain_misison_title6">오픈미션:</string>
@@ -798,5 +798,18 @@
 
     <!--main level sign-->
     <string name="categoty_user_level">Level</string>
+
+    <!--all user Menu-->
+    <string name="all_user_page_title1">오픈보드</string>
+    <string name="all_user_page_title2">오픈FeedBack</string>
+    <string name="all_user_page_title3">이벤트보드</string>
+
+    <string name="all_user_page_btn1">작성</string>
+    <string name="all_user_page_btn2">요청</string>
+
+    <string name="all_user_page_btn3">푸쉬알림</string>
+    <string name="all_user_page_btn4">알림 소리/진동</string>
+    <string name="all_user_page_btn31">*팀 게시판 글등록, 친구요청, 피드백, 미션 심사 알림을 받아 볼 수 있습니다</string>
+    <string name="all_user_page_btn41">*푸쉬알림을 받을때 소리(on)/진동(off)을 설정 합니다</string>
 
 </resources>

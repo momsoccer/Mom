@@ -130,9 +130,6 @@ public class PlayerMainActivity extends AppCompatActivity {
                 }else if(position==2){
                     ic_board_write.setVisibility(View.GONE);
                     rightLowerButton.setVisibility(View.GONE);
-                }else if(position==3){
-                    ic_board_write.setVisibility(View.GONE);
-                    rightLowerButton.setVisibility(View.GONE);
                 }
             }
 

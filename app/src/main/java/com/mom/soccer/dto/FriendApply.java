@@ -13,22 +13,20 @@ public class FriendApply {
     private String creationdate;
     private String updatedate;
 
+    private String requsername;
+
     //non DB
     private String change_creationdate;
     private String change_updatedate;
 
     public FriendApply(){}
 
-    public FriendApply(int applyid, int requid, int resuid, String flag, String requestmessage, String creationdate, String updatedate, String change_creationdate, String change_updatedate) {
-        this.applyid = applyid;
-        this.requid = requid;
-        this.resuid = resuid;
-        this.flag = flag;
-        this.requestmessage = requestmessage;
-        this.creationdate = creationdate;
-        this.updatedate = updatedate;
-        this.change_creationdate = change_creationdate;
-        this.change_updatedate = change_updatedate;
+    public String getRequsername() {
+        return requsername;
+    }
+
+    public void setRequsername(String requsername) {
+        this.requsername = requsername;
     }
 
     public int getApplyid() {

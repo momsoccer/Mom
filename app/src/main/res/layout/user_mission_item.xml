@@ -22,6 +22,8 @@
         card_view:cardBackgroundColor="@color/mom_color3"
         >
 
+
+
         <RelativeLayout
             android:id="@+id/ri_back_ground"
             android:layout_width="match_parent"
@@ -119,18 +121,13 @@
                                 android:orientation="vertical"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
+                                android:layout_gravity="center"
                                 >
-
-                                <ImageView
-                                    android:src="@drawable/ic_send_white_24dp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:text="@string/usermain_misison_feedback"
                                     android:textStyle="bold"
-                                    android:textSize="8sp"
+                                    android:textSize="10sp"
                                     android:textColor="@color/color6"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content" />
@@ -154,21 +151,17 @@
                                 android:orientation="vertical"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
+                                android:layout_gravity="center"
                                 >
-
-                                <ImageView
-                                    android:src="@drawable/ic_verified_user_white_24dp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:text="@string/usermain_misison_title3"
                                     android:textStyle="bold"
-                                    android:textSize="8sp"
+                                    android:textSize="10sp"
                                     android:textColor="@color/color6"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    />
                             </LinearLayout>
 
 
@@ -212,7 +205,7 @@
                         <com.google.android.youtube.player.YouTubeThumbnailView
                             android:id="@+id/uservideo"
                             android:layout_width="132dp"
-                            android:layout_height="75dp"
+                            android:layout_height="wrap_content"
                             android:background="@color/color8"
                             />
 
@@ -286,7 +279,7 @@
                             <TextView
                                 android:text="@string/usermain_misison_title4"
                                 android:textColor="@color/color6"
-                                android:textSize="8sp"
+                                android:textSize="10sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
 
@@ -295,7 +288,7 @@
                                 android:id="@+id/grade"
                                 android:text="30"
                                 android:textColor="@color/color6"
-                                android:textSize="8sp"
+                                android:textSize="10sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
 
@@ -309,7 +302,7 @@
                             <TextView
                                 android:text="@string/usermain_misison_title5"
                                 android:textColor="@color/color6"
-                                android:textSize="8sp"
+                                android:textSize="10sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
 
@@ -318,7 +311,7 @@
                                 android:id="@+id/passgrade"
                                 android:text="50"
                                 android:textColor="@color/color6"
-                                android:textSize="8sp"
+                                android:textSize="10sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
 
@@ -341,7 +334,7 @@
                             <TextView
                                 android:text="@string/usermain_misison_title1"
                                 android:textColor="@color/color6"
-                                android:textSize="8sp"
+                                android:textSize="10sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
@@ -371,7 +364,7 @@
                             <TextView
                                 android:text="@string/usermain_misison_title2"
                                 android:textColor="@color/color6"
-                                android:textSize="8sp"
+                                android:textSize="10sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
@@ -407,8 +400,8 @@
                         <ImageView
                             android:id="@+id/batch"
                             android:src="@drawable/batch_around_a"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_width="35sp"
+                            android:layout_height="35sp" />
 
                         <TextView
                             android:id="@+id/sequence"
@@ -430,7 +423,7 @@
                             android:layout_marginLeft="3dp"
                             android:id="@+id/date"
                             android:text="2015년 12월 31일 오후 12시 30분"
-                            android:textSize="8sp"
+                            android:textSize="10sp"
                             android:textColor="@color/color8"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />

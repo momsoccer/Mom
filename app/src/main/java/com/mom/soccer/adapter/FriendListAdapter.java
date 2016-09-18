@@ -104,6 +104,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
                             ServerResult result = response.body();
                             Intent intent = new Intent(activity,PlayerMainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra(Param.FRAGMENT_COUNT,2);
                             activity.startActivity(intent);
                         }else{
 
@@ -141,7 +142,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
                                 ServerResult result = response.body();
                                 Intent intent = new Intent(activity,PlayerMainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra(Param.FRAGMENT_COUNT,3);
+                                intent.putExtra(Param.FRAGMENT_COUNT,2);
                                 activity.startActivity(intent);
                             }else{
 
@@ -172,7 +173,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Fr
                                 ServerResult result = response.body();
                                 Intent intent = new Intent(activity,PlayerMainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra(Param.FRAGMENT_COUNT,3);
+                                intent.putExtra(Param.FRAGMENT_COUNT,2);
                                 activity.startActivity(intent);
                             }else{
 

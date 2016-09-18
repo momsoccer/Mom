@@ -4,15 +4,6 @@ import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
-import com.mom.soccer.common.Common;
-import com.mom.soccer.dto.FcmToken;
-import com.mom.soccer.dto.ServerResult;
-import com.mom.soccer.retrofitdao.FcmTokenService;
-import com.mom.soccer.retropitutil.ServiceGenerator;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by sungbo on 2016-06-29.
@@ -24,8 +15,8 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG,"Reresh token = " + refreshedToken);
-
+        Log.i(TAG,"Reresh token = " + refreshedToken);
+ /*
         //디비 저장
         FcmToken token = new FcmToken();
         token.setSerialnumber(Common.getDeviceSerialNumber());
@@ -49,7 +40,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
             }
         });
 
-    /*
+
         final Intent intent = new Intent("tokenReceiver");
         final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
         intent.putExtra("token",refreshedToken);

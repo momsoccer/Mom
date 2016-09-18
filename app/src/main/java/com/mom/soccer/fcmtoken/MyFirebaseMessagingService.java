@@ -20,6 +20,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMessaging";
 
+
     // 호출시 (푸시 리시버에서 호출)
     //Intent intent_ = new Intent(context, SOSPopupActivity.class);
     //intent_.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);   // 이거 안해주면 안됨
@@ -27,13 +28,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-
-        /*
-        Log.d(TAG, "From: " + remoteMessage.getFrom());  //819984969479 발신자 ID
-        Log.d(TAG,"타이틀은 : "+remoteMessage.getData().get("title"));
-        Log.d(TAG,"콘텐츠는 : "+remoteMessage.getData().get("content"));
-        Log.d(TAG,"메세지 : "+remoteMessage.getData().get("message"));
-        */
 
         sendNotification(remoteMessage.getData().get("title"),
                         remoteMessage.getData().get("content"),
@@ -54,7 +48,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(content)
                 .setSubText(message)
-                .setColor(getResources().getColor(R.color.color8)) //빽그라운드 컬러
+                .setColor(getResources().getColor(R.color.color8))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
