@@ -87,7 +87,7 @@ public class MyPageActivity extends AppCompatActivity {
 
     @Bind(R.id.mypage_user_name)
     TextView tx_user_name;
-
+/*
     @Bind(R.id.mypage_total_ranking)
     TextView mypage_total_ranking;
 
@@ -104,7 +104,7 @@ public class MyPageActivity extends AppCompatActivity {
     TextView mypage_team_ranking;
 
     @Bind(R.id.mypage_team_count)
-    TextView mypage_team_count;
+    TextView mypage_team_count;*/
 
     //종목별 점수 및 레벨
     @Bind(R.id.mypage_lifting_level)  // 1.리프팅

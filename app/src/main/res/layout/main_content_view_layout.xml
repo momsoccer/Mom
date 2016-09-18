@@ -46,32 +46,108 @@
                 android:gravity="center_horizontal"
                 >
 
-                <ImageButton
+                <LinearLayout
                     android:id="@+id/main_btn_drible"
-                    android:background="@drawable/main_page_drible"
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
+                    android:gravity="center"
+                    android:background="@drawable/main_level_drible"
                     android:onClick="OnClickMission"
-                    />
+                    >
 
-                <ImageButton
+                    <TextView
+                        android:id="@+id/drible_level"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/non_mission"
+                        android:textColor="@color/mission_color_dribble"
+                        android:textSize="10sp"
+                        android:layout_width="55dp"
+                        android:layout_height="18dp"
+                        android:gravity="center"
+                        android:background="@drawable/xml_main_level_back_drible"
+                        />
+
+                    <TextView
+                        android:layout_marginTop="65dp"
+                        android:text="@string/drrible"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:id="@+id/main_btn_trapping"
-                    android:background="@drawable/main_page_traping"
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
-                    android:onClick="OnClickMission"/>
+                    android:gravity="center"
+                    android:background="@drawable/main_level_traping"
+                    android:onClick="OnClickMission"
+                    >
 
-                <ImageButton
+                    <TextView
+                        android:id="@+id/traping_level"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/non_mission"
+                        android:textColor="@color/mission_color_trraping"
+                        android:textSize="10sp"
+                        android:layout_width="55dp"
+                        android:layout_height="18dp"
+                        android:gravity="center"
+                        android:background="@drawable/xml_main_level_back_traping"
+                        />
+
+                    <TextView
+                        android:layout_marginTop="65dp"
+                        android:text="@string/trapping"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
                     android:id="@+id/main_btn_lifting"
-                    android:background="@drawable/main_page_lifting"
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
-                    android:onClick="OnClickMission"/>
+                    android:gravity="center"
+                    android:background="@drawable/main_level_lifting"
+                    android:onClick="OnClickMission"
+                    >
+
+                    <TextView
+                        android:id="@+id/lifting_level"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/non_mission"
+                        android:textColor="@color/mission_color_lifting"
+                        android:textSize="10sp"
+                        android:layout_width="55dp"
+                        android:layout_height="18dp"
+                        android:gravity="center"
+                        android:background="@drawable/xml_main_level_back_lifting"
+                        />
+
+                    <TextView
+                        android:layout_marginTop="65dp"
+                        android:text="@string/lifting"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -82,32 +158,110 @@
                 android:gravity="center_horizontal"
                 >
 
-                <ImageButton
+                <LinearLayout
                     android:id="@+id/main_btn_around"
-                    android:background="@drawable/main_page_around"
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
+                    android:gravity="center"
+                    android:background="@drawable/main_level_around"
                     android:onClick="OnClickMission"
-                    />
+                    >
 
-                <ImageButton
+                    <TextView
+                        android:id="@+id/around_level"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/non_mission"
+                        android:textColor="@color/mission_color_around"
+                        android:textSize="10sp"
+                        android:layout_width="55dp"
+                        android:layout_height="18dp"
+                        android:gravity="center"
+                        android:background="@drawable/xml_main_level_back_around"
+                        />
+
+                    <TextView
+                        android:layout_marginTop="65dp"
+                        android:text="@string/around"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:id="@+id/main_btn_flick"
-                    android:background="@drawable/main_page_flib"
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
-                    android:onClick="OnClickMission"/>
+                    android:gravity="center"
+                    android:background="@drawable/main_level_flick"
+                    android:onClick="OnClickMission"
+                    >
 
-                <ImageButton
+                    <TextView
+                        android:id="@+id/flick_level"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/non_mission"
+                        android:textColor="@color/mission_color_flick"
+                        android:textSize="10sp"
+                        android:layout_width="55dp"
+                        android:layout_height="18dp"
+                        android:gravity="center"
+                        android:background="@drawable/xml_main_level_back_flick"
+                        />
+
+                    <TextView
+                        android:layout_marginTop="65dp"
+                        android:text="@string/flick"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:id="@+id/main_btn_crosbar"
-                    android:background="@drawable/main_page_cross"
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
-                    android:onClick="OnClickMission" />
+                    android:gravity="center"
+                    android:background="@drawable/main_level_complex"
+                    android:onClick="OnClickMission"
+                    >
+
+                    <TextView
+                        android:id="@+id/complex_level"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/non_mission"
+                        android:textColor="@color/mission_color_complex"
+                        android:textSize="10sp"
+                        android:layout_width="55dp"
+                        android:layout_height="18dp"
+                        android:gravity="center"
+                        android:background="@drawable/xml_main_level_back_complex"
+                        />
+
+                    <TextView
+                        android:layout_marginTop="65dp"
+                        android:text="@string/crossbar"
+                        android:textSize="12sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        />
+
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

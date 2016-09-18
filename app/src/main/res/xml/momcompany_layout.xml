@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <com.mom.soccer.common.MomPreference
+        android:title="@string/mom_preference_title1">
+             <intent android:targetClass="com.mom.soccer.exception.UploadExceptionActivity"
+        android:targetPackage="com.mom.soccer" />
+    </com.mom.soccer.common.MomPreference>
+
+    <com.mom.soccer.common.MomPreference
+        android:title="@string/mom_preference_title2">
+             <intent android:targetClass="com.mom.soccer.exception.UploadExceptionActivity"
+        android:targetPackage="com.mom.soccer" />
+    </com.mom.soccer.common.MomPreference>
+
+    <com.mom.soccer.common.MomPreference
+        android:title="@string/mom_preference_title3">
+             <intent android:targetClass="com.mom.soccer.exception.UploadExceptionActivity"
+        android:targetPackage="com.mom.soccer" />
+    </com.mom.soccer.common.MomPreference>
+
+</PreferenceScreen>

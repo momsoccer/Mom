@@ -415,12 +415,9 @@ public class UserMissionActivity extends AppCompatActivity
                     }else{
                         li_board_no_found.setVisibility(View.GONE);
                     }
-
                     boardListAdapter = new BoardListAdapter(UserMissionActivity.this,boardList,user.getUid(),user,userMission);
                     board_list_view.setExpanded(true);
                     board_list_view.setAdapter(boardListAdapter);
-                }else{
-                    VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful),Toast.LENGTH_SHORT).show();
                 }
             }
 

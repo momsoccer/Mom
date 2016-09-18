@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
         fcmToken.setFcmtoken(FirebaseInstanceId.getInstance().getToken());
         FcmTokenTRService.setupToken(activity,user,fcmToken);
 
-
         if (!Compare.isEmpty(user.getUseremail())){
             Intent intent = new Intent(this, MomMainActivity.class); //유저라면 메인 화면으로 이동시킨다
             startActivity(intent);

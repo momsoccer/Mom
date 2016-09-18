@@ -71,6 +71,7 @@ import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.common.SettingActivity;
 import com.mom.soccer.dataDto.TeamRankingVo;
+import com.mom.soccer.dataDto.UserLevelDataVo;
 import com.mom.soccer.dataDto.UserRangkinVo;
 import com.mom.soccer.dto.FcmToken;
 import com.mom.soccer.dto.Instructor;
@@ -97,6 +98,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
@@ -155,6 +157,26 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
     RecyclerView totalRecyclerView,friendRecyclerView,teamRecyclerView,teamAllRecyclerView; //전체,친구,팀,전팀 합산
     RankingItemAdapter rankingItemAdapter;
     TeamRankingItemAdapter teamRankingItemAdapter;
+
+    //main level text
+
+    @Bind(R.id.traping_level)
+    TextView traping_level;
+
+    @Bind(R.id.drible_level)
+    TextView drible_level;
+
+    @Bind(R.id.lifting_level)
+    TextView lifting_level;
+
+    @Bind(R.id.around_level)
+    TextView around_level;
+
+    @Bind(R.id.flick_level)
+    TextView flick_level;
+
+    @Bind(R.id.complex_level)
+    TextView complex_level;
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -319,7 +341,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         //userLevel 유저 레벨 가져오기
         getUserLevel();
 
-        //강사토큰검증및 셋팅
+        getUserMainKindLevel();
     }
 
     public void getTeamid(int uid){
@@ -589,7 +611,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         switch (v.getId()){
             case R.id.mom_hd_mk:
 
-                VeteranToast.makeToast(getApplicationContext(),"퍼미션",Toast.LENGTH_SHORT).show();
+                //VeteranToast.makeToast(getApplicationContext(),"퍼미션",Toast.LENGTH_SHORT).show();
 
 
                 break;
@@ -674,7 +696,10 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                 dots[i].setText(Html.fromHtml("&#8226;"));
             }else if(i==2){
                 dots[i].setText(Html.fromHtml("&#8226;"));
+            }else if(i==3) {
+                dots[i].setText(Html.fromHtml("&#8226;"));
             }
+
             dots[i].setTextSize(35);
             dots[i].setTextColor(colorsInactive[currentPage]);
             dotsLayout.addView(dots[i]);
@@ -1212,6 +1237,46 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             }
         });
 
+    }
+
+    public void getUserMainKindLevel(){
+        WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
+        DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
+        Call<List<UserLevelDataVo>> c = dataService.getUserLevelDataList(user.getUid());
+        c.enqueue(new Callback<List<UserLevelDataVo>>() {
+            @Override
+            public void onResponse(Call<List<UserLevelDataVo>> call, Response<List<UserLevelDataVo>> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    List<UserLevelDataVo> dataVos = response.body();
+
+                    for(int i = 0 ; i < dataVos.size() ; i++){
+                        UserLevelDataVo levelDataVo = dataVos.get(i);
+
+                        if(levelDataVo.getMittiontype().equals("DRIBLE")){
+                            drible_level.setText(getResources().getString(R.string.categoty_user_level)+"."+levelDataVo.getLevel());
+                        }else if(levelDataVo.getMittiontype().equals("TRAPING")){
+                            traping_level.setText(getResources().getString(R.string.categoty_user_level)+"."+levelDataVo.getLevel());
+                        }else if(levelDataVo.getMittiontype().equals("LIFTING")){
+                            lifting_level.setText(getResources().getString(R.string.categoty_user_level)+"."+levelDataVo.getLevel());
+                        }else if(levelDataVo.getMittiontype().equals("AROUND")){
+                            around_level.setText(getResources().getString(R.string.categoty_user_level)+"."+levelDataVo.getLevel());
+                        }else if(levelDataVo.getMittiontype().equals("FLICK")){
+                            flick_level.setText(getResources().getString(R.string.categoty_user_level)+"."+levelDataVo.getLevel());
+                        }else if(levelDataVo.getMittiontype().equals("COMPLEX")){
+                            complex_level.setText(getResources().getString(R.string.categoty_user_level)+"."+levelDataVo.getLevel());
+                        }
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<UserLevelDataVo>> call, Throwable t) {
+
+            }
+        });
     }
 
 }

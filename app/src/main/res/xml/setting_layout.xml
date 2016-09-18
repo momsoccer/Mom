@@ -8,9 +8,17 @@
         </com.mom.soccer.common.MomPreference>
 
         <com.mom.soccer.common.MomPreference
-            android:key="mominfo"
-            android:title="@string/mom_setting_info"
-            >
+            android:key="usingpage"
+            android:title="@string/mom_preference_title1">
+                     <intent android:targetClass="com.mom.soccer.company.UsingPage"
+            android:targetPackage="com.mom.soccer" />
+        </com.mom.soccer.common.MomPreference>
+
+        <com.mom.soccer.common.MomPreference
+            android:key="usersafe"
+            android:title="@string/mom_preference_title2">
+                     <intent android:targetClass="com.mom.soccer.company.UserSafe"
+            android:targetPackage="com.mom.soccer" />
         </com.mom.soccer.common.MomPreference>
 
         <com.mom.soccer.common.MomPreference

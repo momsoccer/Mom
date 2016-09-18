@@ -57,8 +57,6 @@
                         android:gravity="center"
                         android:layout_gravity="center"
                         >
-
-
                         <ImageView
                             android:id="@+id/mission_medal"
                             android:src="@drawable/batch_complex_a"
@@ -304,7 +302,7 @@
                         android:gravity="center"
                         >
 
-                        <Button
+<!--                        <Button
                             android:id="@+id/tabBtn1"
                             android:text="@string/ball_friend_title4"
                             android:textColor="@color/color6"
@@ -316,8 +314,14 @@
                             android:paddingLeft="65dp"
                             style="@style/btnStylePaprika"
                             android:onClick="tabChangeClick"
-                            />
-
+                            />-->
+                    <Button
+                        android:background="@drawable/xml_boder"
+                        android:onClick="tabChangeClick"
+                        android:id="@+id/tabBtn1"
+                        android:text="@string/ball_friend_title4"
+                        android:layout_width="120dp"
+                        android:layout_height="35dp" />
 
                     </LinearLayout>
 
@@ -331,6 +335,14 @@
                         >
 
                         <Button
+                            android:background="@drawable/xml_boder"
+                            android:onClick="tabChangeClick"
+                            android:id="@+id/tabBtn2"
+                            android:text="@string/ball_friend_title5"
+                            android:layout_width="120dp"
+                            android:layout_height="35dp" />
+
+<!--                        <Button
                             android:id="@+id/tabBtn2"
                             android:layout_marginRight="5dp"
                             android:layout_marginLeft="5dp"
@@ -344,7 +356,7 @@
                             style="@style/btnStylePaprika"
                             android:paddingLeft="30dp"
                             android:onClick="tabChangeClick"
-                            />
+                            />-->
 
                     </LinearLayout>
 
@@ -365,25 +377,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <com.mom.soccer.common.ExpandableHeightListView
-                            android:id="@+id/board_list_view"
-                            android:layout_margin="5dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:isScrollContainer="false"
-                            android:stretchMode="columnWidth"
-                            android:horizontalSpacing="1dp"
-                            android:verticalSpacing="2dp"
-                            >
-                        </com.mom.soccer.common.ExpandableHeightListView>
-
                         <LinearLayout
+                            android:layout_marginTop="5dp"
                             android:id="@+id/li_board_no_found"
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="120dp"
                             android:gravity="center"
-                            android:visibility="gone"
                             >
                             <ImageView
                                 android:src="@drawable/ic_info_white_24dp"
@@ -401,6 +401,17 @@
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
 
+                        <com.mom.soccer.common.ExpandableHeightListView
+                            android:id="@+id/board_list_view"
+                            android:layout_margin="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:isScrollContainer="false"
+                            android:stretchMode="columnWidth"
+                            android:horizontalSpacing="1dp"
+                            android:verticalSpacing="2dp"
+                            >
+                        </com.mom.soccer.common.ExpandableHeightListView>
                     </LinearLayout>
 
 
@@ -600,6 +611,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:visibility="gone"
+                                android:layout_marginBottom="5dp"
                                 >
                                 <ImageView
                                     android:src="@drawable/ic_info_white_24dp"

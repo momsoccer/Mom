@@ -199,12 +199,12 @@
         <activity
             android:name=".youtubeplayer.YoutubePlayerActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize" />
-        <activity android:name=".ins.FeedBackWrite"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-        <activity android:name=".ins.InsPointHistory"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+        <activity
+            android:name=".ins.FeedBackWrite"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ins.InsPointHistory"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".ins.UploadFeedService"
@@ -220,14 +220,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".exception.UploadExceptionActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_upload_exception"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CreditLicense"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CreditLicense"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.darsh.multipleimageselect.activities.AlbumSelectActivity"
             android:theme="@style/MultipleImageSelectTheme">
@@ -236,6 +235,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".company.UsingPage"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".company.UserSafe"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>

@@ -18,15 +18,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <ImageButton
-            android:id="@+id/mom_hd_mk"
-            android:src="@drawable/mom_hd_mk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="OnClickHeader"
-            android:background="@color/mom_color1"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_gravity="center"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/mom_hd_mk"
+                android:src="@drawable/mom_hd_mk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="OnClickHeader"
+                android:background="@color/mom_color1"
+                />
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:text="Beta"
+                android:textColor="@color/color6"
+                android:textSize="12sp"
+                android:layout_gravity="top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/hd_bell"

@@ -39,11 +39,9 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         Preference keyhelp = (Preference)findPreference("keyhelp");
         Preference userprofile = (Preference)findPreference("userprofile");
         Preference keyMaildev = (Preference)findPreference("keyMaildev");
-        Preference mominfo = (Preference)findPreference("mominfo");
 
         keyhelp.setOnPreferenceClickListener(this);
         userprofile.setOnPreferenceClickListener(this);
-        mominfo.setOnPreferenceClickListener(this);
     }
 
 
@@ -53,17 +51,9 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
 
         if(preference.getKey().equals("keyhelp")) {
 
-
-
         }else if(preference.getKey().equals("userprofile")) {
             Intent intent = new Intent(this, UserProfile.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-        }else if(preference.getKey().equals("mominfo")) {
-            //버전정보,이용약관,개인정보 취급방지,회사소개
-            Intent intent = new Intent(this, MomInforActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
         }
         return false;
     }

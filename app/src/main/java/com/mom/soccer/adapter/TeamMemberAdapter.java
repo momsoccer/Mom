@@ -1,6 +1,8 @@
 package com.mom.soccer.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
+import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dataDto.UserMainVo;
@@ -58,6 +61,23 @@ public class TeamMemberAdapter extends RecyclerView.Adapter<TeamMemberAdapter.Te
         holder.username.setText(vo.getUsername());
         holder.level.setText(String.valueOf(vo.getLevel()));
         holder.totalscore.setText(String.valueOf(vo.getTotalscore()));
+        holder.cardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity,MyPageActivity.class);
+
+                if(user.getUid() == vo.getUid()){
+                    intent.putExtra("pageflag","me");
+                }else{
+                    intent.putExtra("pageflag","friend");
+                    intent.putExtra("frienduid",vo.getUid());
+                }
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                activity.startActivity(intent);
+                activity.overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_slide_out_top);
+            }
+        });
     }
 
     @Override
@@ -67,11 +87,13 @@ public class TeamMemberAdapter extends RecyclerView.Adapter<TeamMemberAdapter.Te
 
     public class TeamMemberItem extends RecyclerView.ViewHolder {
 
+        public CardView cardview;
         public ImageView userimg;
         public TextView username,teamname,level,totalscore,joindate,missionpasscount,feedbackcount;
 
         public TeamMemberItem(View itemView) {
             super(itemView);
+            cardview = (CardView) itemView.findViewById(R.id.cardview);
             userimg = (ImageView) itemView.findViewById(R.id.userimg);
             username = (TextView) itemView.findViewById(R.id.username);
             level = (TextView) itemView.findViewById(R.id.level);
