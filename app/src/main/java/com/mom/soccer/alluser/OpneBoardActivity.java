@@ -1,4 +1,4 @@
-package com.mom.soccer.ball;
+package com.mom.soccer.alluser;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,8 +12,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -38,7 +36,6 @@ import com.mom.soccer.dto.MomBoardFile;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.Team;
 import com.mom.soccer.dto.User;
-import com.mom.soccer.ins.InsDashboardActivity;
 import com.mom.soccer.pubactivity.Param;
 import com.mom.soccer.retrofitdao.MomBoardService;
 import com.mom.soccer.retrofitdao.TeamService;
@@ -58,7 +55,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TeamBoardActivity extends AppCompatActivity {
+public class OpneBoardActivity extends AppCompatActivity {
 
     private static final String TAG = "TeamBoardActivity";
 
@@ -78,9 +75,6 @@ public class TeamBoardActivity extends AppCompatActivity {
 
     @Bind(R.id.userimg)
     ImageView userimg;
-
-    @Bind(R.id.categoryType)
-    CheckBox categoryType;
 
     @Bind(R.id.upload)
     ImageButton upload;
@@ -130,24 +124,20 @@ public class TeamBoardActivity extends AppCompatActivity {
 
     private int position = 0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team_board);
+        setContentView(R.layout.activity_opne_board);
         ButterKnife.bind(this);
 
         activity = this;
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
-
         intent = getIntent();
         boardFlag = intent.getExtras().getString("boardFlag");
         boardid = intent.getExtras().getInt("boardid");
         callpage = intent.getExtras().getString("callpage");
         position = intent.getExtras().getInt("position");
-
-
         li_imageview.setVisibility(View.GONE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -175,27 +165,8 @@ public class TeamBoardActivity extends AppCompatActivity {
             getReadBoard();
         }
 
-        if(callpage.equals("ins")){
-            categoryType.setVisibility(View.VISIBLE);
-        }else{
-            categoryType.setVisibility(View.GONE);
-        }
-
-        categoryType.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    tx_categoryType ="A";
-                }else{
-                    tx_categoryType ="B";
-                }
-            }
-        });
-
-
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-
 
         li_image1 = (RelativeLayout) findViewById(R.id.li_image1);
         li_image2 = (RelativeLayout) findViewById(R.id.li_image2);
@@ -208,7 +179,7 @@ public class TeamBoardActivity extends AppCompatActivity {
 
 
     public void getTeaminfo(int uid){
-        WaitingDialog.showWaitingDialog(TeamBoardActivity.this,false);
+        WaitingDialog.showWaitingDialog(OpneBoardActivity.this,false);
         TeamService teamService = ServiceGenerator.createService(TeamService.class,getApplicationContext(),user);
         Call<Team> c = teamService.getMyTeaminfo(user.getUid());
         c.enqueue(new Callback<Team>() {
@@ -247,15 +218,13 @@ public class TeamBoardActivity extends AppCompatActivity {
                 return;
             }
 
-            WaitingDialog.showWaitingDialog(TeamBoardActivity.this,false);
+            WaitingDialog.showWaitingDialog(OpneBoardActivity.this,false);
             MomBoardService boardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
             MomBoard momBoard = new MomBoard();
 
             momBoard.setUid(user.getUid());
             momBoard.setContent(content.getText().toString());
-            momBoard.setBoardtype("team");
-            momBoard.setCategory(tx_categoryType);
-            momBoard.setBoardtypeid(team.getTeamid());
+            momBoard.setBoardtype("nomal");
             momBoard.setUsername(activity.getResources().getString(R.string.momboard_write)+user.getUsername());
 
             if(tag == 1){
@@ -263,7 +232,6 @@ public class TeamBoardActivity extends AppCompatActivity {
             }else{
                 momBoard.setPubtype("N");
             }
-
 
             Call<ServerResult> c = boardService.saveBoardheader(momBoard);
             c.enqueue(new Callback<ServerResult>() {
@@ -274,7 +242,6 @@ public class TeamBoardActivity extends AppCompatActivity {
 
                         ServerResult result = response.body();
 
-                        Log.i(TAG,"*** 생성된 보드 아이디는 : " + result.getCount());
 
                         if(images.size()!=0){
                             uploadImagefile(result.getCount());
@@ -282,19 +249,11 @@ public class TeamBoardActivity extends AppCompatActivity {
 
                         VeteranToast.makeToast(getApplicationContext(),getString(R.string.board_team_content_complate),Toast.LENGTH_SHORT).show();
 
-                        if(callpage.equals("user")){
-                            Intent intent = new Intent(TeamBoardActivity.this,PlayerMainActivity.class);
-                            intent.putExtra(Param.FRAGMENT_COUNT,0);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            finish();
-                            startActivity(intent);
-                        }else{
-                            Intent intent = new Intent(TeamBoardActivity.this,InsDashboardActivity.class);
-                            intent.putExtra(Param.FRAGMENT_COUNT,0);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            finish();
-                            startActivity(intent);
-                        }
+                        Intent intent = new Intent(OpneBoardActivity.this,AllUserMainActivity.class);
+                        intent.putExtra(Param.FRAGMENT_COUNT,0);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        finish();
+                        startActivity(intent);
 
                     }
                 }
@@ -310,17 +269,15 @@ public class TeamBoardActivity extends AppCompatActivity {
                 VeteranToast.makeToast(getApplicationContext(),getString(R.string.board_team_content_vali), Toast.LENGTH_SHORT).show();
                 return;
             }
-            WaitingDialog.showWaitingDialog(TeamBoardActivity.this,false);
+            WaitingDialog.showWaitingDialog(OpneBoardActivity.this,false);
             MomBoardService boardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
             MomBoard upvo = new MomBoard();
 
             upvo.setBoardid(momBoard.getBoardid());
             upvo.setUid(user.getUid());
             upvo.setContent(content.getText().toString());
-            upvo.setBoardtype("team");
-            upvo.setCategory(tx_categoryType);
+            upvo.setBoardtype("nomal");
             upvo.setBoardtype(momBoard.getBoardtype());
-            upvo.setBoardtypeid(team.getTeamid());
 
             if(tag == 1){
                 upvo.setPubtype("Y");
@@ -345,7 +302,7 @@ public class TeamBoardActivity extends AppCompatActivity {
                         if(onlyImageUpdate){
 
 
-                            WaitingDialog.showWaitingDialog(TeamBoardActivity.this,false);
+                            WaitingDialog.showWaitingDialog(OpneBoardActivity.this,false);
                             MomBoardService momBoardService = ServiceGenerator.createService(MomBoardService.class,getApplicationContext(),user);
                             Call<ServerResult> c = momBoardService.deleteBoardFileList(momBoardFiles);
                             c.enqueue(new Callback<ServerResult>() {
@@ -483,7 +440,7 @@ public class TeamBoardActivity extends AppCompatActivity {
         mInputMethodManager.hideSoftInputFromWindow(content.getWindowToken(), 0);
 
         if(boardFlag.equals("modify")){
-            new MaterialDialog.Builder(TeamBoardActivity.this)
+            new MaterialDialog.Builder(OpneBoardActivity.this)
                     .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
                     .title(R.string.mom_diaalog_alert)
                     .titleColor(getResources().getColor(R.color.color6))
@@ -506,7 +463,7 @@ public class TeamBoardActivity extends AppCompatActivity {
 
     public void pickUpImage(){
 
-        Intent intent = new Intent(TeamBoardActivity.this, AlbumSelectActivity.class);
+        Intent intent = new Intent(OpneBoardActivity.this, AlbumSelectActivity.class);
         intent.putExtra(Constants.INTENT_EXTRA_LIMIT, 3);
         startActivityForResult(intent, Constants.REQUEST_CODE);
     }

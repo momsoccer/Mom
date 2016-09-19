@@ -279,6 +279,9 @@ public class InsFragmentTeamApply extends Fragment{
             apply.setTeamid(insInfoVo.getTeamid());
             apply.setApproval("REQUEST");
             apply.setEnabled("Y");
+            apply.setUsername(user.getUsername());
+
+            Log.i(TAG,"User NAme : " +user.toString());
 
             Call<ServerResult> call = teamService.applyTeam(apply);
             call.enqueue(new Callback<ServerResult>() {
@@ -314,9 +317,6 @@ public class InsFragmentTeamApply extends Fragment{
                         WaitingDialog.cancelWaitingDialog();
                         teamApply = response.body();
 
-                        Log.i(TAG,"초기셋팅 teamApply.getTeamid() : " + teamApply.getTeamid());
-                        Log.i(TAG,"초기셋팅 insInfoVo.getTeamid() " + insInfoVo.getTeamid());
-                        Log.i(TAG,"초기셋팅 user.getUid() " + user.getUid());
 
                         //제가요청 테이블에 자료가 없다면
                         if(teamApply.getTeamid()==0){

@@ -20,11 +20,36 @@
             android:visibility="visible"
             >
 
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:id="@+id/li_no_found"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@color/mom_color1"
+                >
+                <ImageView
+                    android:src="@drawable/ic_info_white_24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mom_color1"
+                    />
+
+                <TextView
+                    android:gravity="center"
+                    android:text="@string/main__no_data_found1"
+                    android:textSize="12sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/teamRecyclerView"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="wrap_content"
                 android:background="@color/mom_color1"
                 />
 

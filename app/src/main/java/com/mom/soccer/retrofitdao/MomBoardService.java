@@ -30,6 +30,9 @@ public interface MomBoardService {
     @POST("/momboard/getBoardHeaderList")
     Call<List<MomBoard>> getBoardHeaderList(@Body MomBoard momBoard);
 
+    @POST("/momboard/getAllBoardHeaderList")
+    Call<List<MomBoard>> getAllBoardHeaderList(@Body MomBoard momBoard);
+
     @POST("/momboard/saveBoardheader")
     Call<ServerResult> saveBoardheader(@Body MomBoard momBoard);
 

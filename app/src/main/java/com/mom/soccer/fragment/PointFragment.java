@@ -1,20 +1,32 @@
 package com.mom.soccer.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.UserPointHistoryAdapter;
+import com.mom.soccer.dataDto.Report;
+import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.SpBalanceLine;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
+import com.mom.soccer.momactivity.MomMainActivity;
+import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retrofitdao.PointService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -64,12 +76,80 @@ public class PointFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fr_point_fragment_layout, container, false);
+        View view = null;
 
 
         if(mPage==1){
 
+            view = inflater.inflate(R.layout.fr_point_fragment_layout0, container, false);
+
+            final EditText text_reason = (EditText) view.findViewById(R.id.text_reason);
+            final Button btnPointReq = (Button) view.findViewById(R.id.btnPointReq);
+
+            text_reason.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    btnPointReq.setEnabled(s.toString().trim().length() > 0);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+            btnPointReq.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    WaitingDialog.showWaitingDialog(getContext(),false);
+                    MomComService momComService = ServiceGenerator.createService(MomComService.class,getActivity(),user);
+
+                    Report report = new Report();
+                    report.setType("REQ_POINT");
+                    report.setUsername(user.getUsername());
+                    report.setUid(user.getUid());
+                    report.setPublisherid(user.getUid());
+                    report.setReason(text_reason.getText().toString());
+                    report.setContent("point request");
+                    Call<ServerResult> c = momComService.saveReport(report);
+                    c.enqueue(new Callback<ServerResult>() {
+                        @Override
+                        public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                            WaitingDialog.cancelWaitingDialog();
+                            if(response.isSuccessful()){
+                                ServerResult result = response.body();
+                                if(result.getCount()==1){
+                                    new MaterialDialog.Builder(getActivity())
+                                            .content(R.string.point_reqcheck)
+                                            .positiveText(R.string.mom_diaalog_confirm)
+                                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                @Override
+                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                    Intent intent = new Intent(getContext(), MomMainActivity.class);
+                                                    getActivity().startActivity(intent);
+                                                }
+                                            })
+                                            .show();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ServerResult> call, Throwable t) {
+                            WaitingDialog.cancelWaitingDialog();
+                            t.printStackTrace();
+                        }
+                    });
+                }
+            });
+
         }else if(mPage==2){
+            view = inflater.inflate(R.layout.fr_point_fragment_layout, container, false);
             recyclerView = (RecyclerView) view.findViewById(R.id.point_recyclerview);
             WaitingDialog.showWaitingDialog(getContext(),false);
             PointService service = ServiceGenerator.createService(PointService.class,getContext(),user);

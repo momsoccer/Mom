@@ -118,6 +118,7 @@ public class BoardMainActivity extends AppCompatActivity {
         board.setWriteuid(user.getUid());
         board.setUsermissionid(userMission.getUsermissionid());
         board.setComment(editText_bd_content.getText().toString());
+        board.setUsername(user.getUsername());
 
         Call<ServerResult> call = boardService.saveBoard(board);
         call.enqueue(new Callback<ServerResult>() {

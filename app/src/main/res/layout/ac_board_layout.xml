@@ -35,9 +35,9 @@
 
 
             <Button
+                android:id="@+id/btn_boardcreate"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:id="@+id/btn_boardcreate"
                 style="@style/btnStylePaprika"
                 android:text="@string/board_createbtn"
                 android:textSize="12sp"

@@ -340,6 +340,8 @@ public class TeamBoardReply extends AppCompatActivity {
                         getBoardLineList();
                         comment.setText(null);
 
+                        replyRecview.scrollToPosition(lineCount);
+
                     }else{
 
                     }
@@ -389,16 +391,6 @@ public class TeamBoardReply extends AppCompatActivity {
                     alphaAdapter.setDuration(500);
                     replyRecview.setAdapter(boardLineItemAdapter);
                     replyRecview.scrollToPosition(momBoardList.size()-1); //입력후 맨아래 자기 자신의 글 보이기
-
-/*
-if(sendWrite){
-                        BusObject busObject = new BusObject();
-                        busObject.setPosition(posintion);
-                        busObject.setKeyid(boardid);
-                        busObject.setLineCount(lineCount);
-                        EventBus.getInstance().post(busObject);
-                    }*/
-
                 }
             }
 
@@ -412,6 +404,7 @@ if(sendWrite){
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
         if (id == android.R.id.home){
 

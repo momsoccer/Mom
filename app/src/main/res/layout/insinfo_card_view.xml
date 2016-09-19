@@ -17,15 +17,19 @@
         card_view:cardElevation="5dp"
         android:orientation="vertical"
         card_view:cardBackgroundColor="@color/mom_color3"
-        card_view:contentPadding="5dp"
         >
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
+            <View
+                android:id="@+id/viewType"
+                android:background="@color/color6"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
             <LinearLayout
+                android:layout_marginTop="3dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -40,7 +44,6 @@
                         android:src="@drawable/team_flag"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:background="@color/mom_color1"
                         />
 
                     <ImageView
@@ -472,8 +475,6 @@
             </LinearLayout>
             <Button
                 android:id="@+id/btnchoose"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:text="선택"
                 android:textColor="@color/color6"
                 android:textSize="10sp"

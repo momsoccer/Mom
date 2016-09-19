@@ -69,6 +69,13 @@ public class JoinActivity extends AppCompatActivity {
     @Bind(R.id.join_password_confirm)
     EditText joinPasswordConfirm;
 
+    @Bind(R.id.layout_username)
+    TextInputLayout layout_username;
+
+    @Bind(R.id.username)
+    EditText username;
+
+
     //@Bind(R.id.txhintpassword)
     //TextView txhintpassword;
 
@@ -159,6 +166,12 @@ public class JoinActivity extends AppCompatActivity {
             return;
         }
 
+
+        if(Compare.isEmpty(username.getText().toString())) {
+            layout_username.setError(getString(R.string.valid_username));
+            return;
+        }
+
         if(appActionFlag.equals("email_user")){
 
             if (!Compare.validatePassword(joinPassword.getText().toString())) {
@@ -174,6 +187,7 @@ public class JoinActivity extends AppCompatActivity {
                 layoutLoginEmail.setError(null);
                 layoutLoginPassword.setError(null);
                 layoutLoginPasswordConfirm.setError(null);
+                layout_username.setError(null);
                 userVo.setSnstype("app");
                 userVo.setSnsid(Common.VETERAN_SNSID);
             }
@@ -182,6 +196,7 @@ public class JoinActivity extends AppCompatActivity {
         Log.d(TAG,"문제없습니다 회원 가입을 진행합니다");
         userVo.setUseremail(joinEmail.getText().toString());
         userVo.setPassword(joinPassword.getText().toString());
+        userVo.setUsername(username.getText().toString());
         userCreate(userVo);
     }
 

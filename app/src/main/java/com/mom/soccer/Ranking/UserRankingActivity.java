@@ -180,8 +180,6 @@ public class UserRankingActivity extends AppCompatActivity {
                     }
                 }
             });
-
-
         }else{
             swipeRefreshLayout.setEnabled(false);
         }
@@ -251,6 +249,8 @@ public class UserRankingActivity extends AppCompatActivity {
                         if(pagingStatus.equals("new")){
 
                             userRangkinVos = response.body();
+
+
                             totalRecyclerView = (RecyclerView) findViewById(R.id.totalRecyclerView);
                             rankingItemAdapter = new RankingItemAdapter(activity,userRangkinVos,user);
                             totalRecyclerView.setLayoutManager(linearLayoutManager);
@@ -296,6 +296,8 @@ public class UserRankingActivity extends AppCompatActivity {
                     if(response.isSuccessful()){
                         List<UserRangkinVo> userRangkinVos = new ArrayList<UserRangkinVo>();
                         userRangkinVos = response.body();
+
+
                         totalRecyclerView = (RecyclerView) findViewById(R.id.totalRecyclerView);
                         rankingItemAdapter = new RankingItemAdapter(activity,userRangkinVos,user);
 
@@ -322,6 +324,7 @@ public class UserRankingActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         List<UserRangkinVo> userRangkinVos = new ArrayList<UserRangkinVo>();
                         userRangkinVos = response.body();
+
 
                         if(userRangkinVos.size()!=0){
                             totalRecyclerView = (RecyclerView) findViewById(R.id.totalRecyclerView);

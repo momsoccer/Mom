@@ -9,10 +9,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.astuetz.PagerSlidingTabStrip;
 import com.mom.soccer.R;
+import com.mom.soccer.common.ActivityResultEvent;
+import com.mom.soccer.common.EventBus;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.User;
@@ -36,6 +40,8 @@ public class AllUserMainActivity extends AppCompatActivity {
 
     @Bind(R.id.textWrite)
     TextView textWrite;
+
+    private int btnposition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +74,18 @@ public class AllUserMainActivity extends AppCompatActivity {
         tabsStrip.setTextColor(getResources().getColor(R.color.color6));
         tabsStrip.setViewPager(viewPager);
         viewPager.setCurrentItem(PageCall);
+        ;
 
         tabsStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                btnposition = position;
                 if(position == 0){
                     textWrite.setText(getResources().getString(R.string.all_user_page_btn1));
                 }else if(position==1){
                     textWrite.setText(getResources().getString(R.string.all_user_page_btn2));
                 }else if(position==2){
-                    textWrite.setText(getResources().getString(R.string.all_user_page_btn1));
+                    textWrite.setText(getResources().getString(R.string.all_user_page_btn8));
                 }
 
             }
@@ -91,6 +98,30 @@ public class AllUserMainActivity extends AppCompatActivity {
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+
+
+        textWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(btnposition == 2){
+                    new MaterialDialog.Builder(AllUserMainActivity.this)
+                            .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                            .title(R.string.open_page_request)
+                            .titleColor(getResources().getColor(R.color.color6))
+                            .content(R.string.open_page_request_content)
+                            .contentColor(getResources().getColor(R.color.color6))
+                            .positiveText(R.string.mom_diaalog_confirm)
+                            .show();
+                }else if(btnposition==0){
+                    Intent intent = new Intent(AllUserMainActivity.this,OpneBoardActivity.class);
+                    intent.putExtra("boardFlag","new");
+                    intent.putExtra("boardid",0);
+                    intent.putExtra("callpage","user");
+                    intent.putExtra("position",0);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -142,5 +173,11 @@ public class AllUserMainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        EventBus.getInstance().post(ActivityResultEvent.create(requestCode, resultCode, data));
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -13,15 +14,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
+import com.mom.soccer.MainActivity;
 import com.mom.soccer.R;
 import com.mom.soccer.bottommenu.UserProfile;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.retrofitdao.CommonService;
+import com.mom.soccer.retrofitdao.MomComService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 
 import retrofit2.Call;
@@ -127,7 +136,7 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    //deleteUser()
+                                deleteUser();
                             }
                         })
                         .negativeText(R.string.mom_diaalog_cancel)
@@ -162,7 +171,21 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
                 if(response.isSuccessful()){
                     ServerResult serverResult = response.body();
                     if(serverResult.getCount()==1){
-
+                        new MaterialDialog.Builder(SettingActivity.this)
+                                .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                .title(R.string.all_user_page_btn5)
+                                .titleColor(getResources().getColor(R.color.color6))
+                                .content(R.string.all_user_page_btn7)
+                                .contentColor(getResources().getColor(R.color.color6))
+                                .positiveText(R.string.mom_diaalog_confirm)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        logOut();
+                                    }
+                                })
+                                .negativeText(R.string.mom_diaalog_cancel)
+                                .show();
                     }
                 }
             }
@@ -175,5 +198,82 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         });
     }
 
+
+    public void logOut(){
+
+        if(user.getSnstype().equals("facebook")){
+
+
+            //페이스북 토큰 및 세션 끈기
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            LoginManager.getInstance().logOut();
+
+        }else if(user.getSnstype().equals("kakao")){
+
+            onClickLogout();
+        }else if(user.getSnstype().equals("app")){
+
+        }
+        prefUtil.clearPrefereance();
+
+        //강사정보 지우기
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("insinfo", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.apply();
+
+
+        //서버 세션을 초기화해준다.
+        WaitingDialog.showWaitingDialog(SettingActivity.this,false);
+        MomComService momComService = ServiceGenerator.createService(MomComService.class,this,user);
+        final Call<ServerResult> logOutCall = momComService.logOut();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run()
+            {
+                logOutCall.enqueue(new Callback<ServerResult>() {
+                    @Override
+                    public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                        if(response.isSuccessful()) {
+                            WaitingDialog.cancelWaitingDialog();
+                            VeteranToast.makeToast(getApplicationContext(),getString(R.string.app_logout), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intent);
+                            finish();
+                        }else{
+                            WaitingDialog.cancelWaitingDialog();
+                            VeteranToast.makeToast(getApplicationContext(),getString(R.string.app_logout), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(intent);
+                            finish();
+
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<ServerResult> call, Throwable t) {
+                        WaitingDialog.cancelWaitingDialog();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                });
+            }
+        }, 1000);
+
+    }
+
+    //카카오 세션 끈기 메소드
+    private void onClickLogout() {
+        UserManagement.requestLogout(new LogoutResponseCallback() {
+            @Override
+            public void onCompleteLogout() {
+            }
+        });
+    }
 
 }

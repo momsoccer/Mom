@@ -159,6 +159,7 @@ public class PlayerMainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.i(TAG,"====================== onStart() ======================");
+
     }
 
     @Override

@@ -179,6 +179,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
     @Bind(R.id.complex_level)
     TextView complex_level;
 
+
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -746,7 +747,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             final View view = layoutInflater.inflate(layouts[position],container,false);
             container.addView(view);
 
-
             if(position == 0){
                 UserRangkinVo query = new UserRangkinVo();
                 query.setLimit(3);
@@ -789,13 +789,14 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                     }
                 });
 
-
+            //팀데이터
             }else if(position==1){
                 WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
                 DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
-
+                final LinearLayout li_no_found = (LinearLayout) view.findViewById(R.id.li_no_found);
+                final Button button = (Button) container.findViewById(R.id.btn_more_team_ranking);
                 //parameter
-                UserRangkinVo query = new UserRangkinVo();
+                final UserRangkinVo query = new UserRangkinVo();
                 query.setUid(user.getUid());
                 query.setQueryRow(3);
                 query.setOrderbytype("totalscore");
@@ -808,6 +809,15 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                         if(response.isSuccessful()){
                             List<UserRangkinVo> userRangkinVos = new ArrayList<UserRangkinVo>();
                             userRangkinVos = response.body();
+
+                            if(userRangkinVos.size()==0){
+                                li_no_found.setVisibility(View.VISIBLE);
+                                button.setVisibility(View.GONE);
+                            }else{
+                                li_no_found.setVisibility(View.GONE);
+                                button.setVisibility(View.VISIBLE);
+                            }
+
                             teamRecyclerView = (RecyclerView) findViewById(R.id.teamRecyclerView);
                             rankingItemAdapter = new RankingItemAdapter(activity,userRangkinVos,user);
 
@@ -825,7 +835,6 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                     }
                 });
 
-                Button button = (Button) container.findViewById(R.id.btn_more_team_ranking);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -834,11 +843,13 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                         startActivity(intent);
                     }
                 });
-
+                //친구데이터
             }else if(position==2){
 
                 WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
                 DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
+                final LinearLayout li_no_found = (LinearLayout) view.findViewById(R.id.li_no_found);
+                final Button button = (Button) container.findViewById(R.id.btn_more_friend_ranking);
                 //parameter
                 UserRangkinVo query = new UserRangkinVo();
                 query.setUid(user.getUid());
@@ -853,6 +864,15 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                         if(response.isSuccessful()){
                             List<UserRangkinVo> userRangkinVos = new ArrayList<UserRangkinVo>();
                             userRangkinVos = response.body();
+
+                            if(userRangkinVos.size()==0){
+                                li_no_found.setVisibility(View.VISIBLE);
+                                button.setVisibility(View.GONE);
+                            }else{
+                                li_no_found.setVisibility(View.GONE);
+                                button.setVisibility(View.VISIBLE);
+                            }
+
                             friendRecyclerView = (RecyclerView) findViewById(R.id.friendRecyclerView);
                             rankingItemAdapter = new RankingItemAdapter(activity,userRangkinVos,user);
 
@@ -870,7 +890,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                     }
                 });
 
-                Button button = (Button) container.findViewById(R.id.btn_more_friend_ranking);
+
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -883,6 +903,8 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             }else if(position==3){
                 WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
                 DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
+                final LinearLayout li_no_found = (LinearLayout) view.findViewById(R.id.li_no_found);
+                final Button btnAllteamRanking = (Button) view.findViewById(R.id.btnAllteamRanking);
                 Call<List<TeamRankingVo>> c = dataService.getTeamRankingScore(3);
                 c.enqueue(new Callback<List<TeamRankingVo>>() {
                     @Override
@@ -891,6 +913,14 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                         if(response.isSuccessful()){
                             List<TeamRankingVo> teamRankingVos = new ArrayList<TeamRankingVo>();
                             teamRankingVos = response.body();
+
+                            if(teamRankingVos.size()==0){
+                                li_no_found.setVisibility(View.VISIBLE);
+                                btnAllteamRanking.setVisibility(View.GONE);
+                            }else{
+                                li_no_found.setVisibility(View.GONE);
+                                btnAllteamRanking.setVisibility(View.VISIBLE);
+                            }
 
                             teamRankingItemAdapter = new TeamRankingItemAdapter(activity,teamRankingVos,user,0);
 
@@ -909,7 +939,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                     }
                 });
 
-                Button btnAllteamRanking = (Button) view.findViewById(R.id.btnAllteamRanking);
+
                 btnAllteamRanking.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

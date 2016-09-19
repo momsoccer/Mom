@@ -29,7 +29,7 @@
 
         <TextView
             android:gravity="center"
-            android:text="데이터가 없습니다"
+            android:text="@string/main_mission_no_data_found"
             android:textSize="12sp"
             android:textColor="@color/color6"
             android:layout_width="match_parent"

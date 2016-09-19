@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -354,6 +355,20 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
             }
         });
 
+        if(vo.getUid() != user.getUid()){
+            if(vo.getPubstatus().equals("N")){
+                holder.li_no_feedback.setVisibility(View.VISIBLE);
+                holder.li_feedback.setVisibility(View.GONE);
+            }else{
+                holder.li_no_feedback.setVisibility(View.GONE);
+                holder.li_feedback.setVisibility(View.VISIBLE);
+            }
+        }else{
+            holder.li_no_feedback.setVisibility(View.GONE);
+            holder.li_feedback.setVisibility(View.VISIBLE);
+        }
+
+
 
     }
 
@@ -370,6 +385,8 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
         ImageView userimage,insimage,btnHam;
         YouTubeThumbnailView youtubefeedback;
         RatingBar ratingbar;
+
+        LinearLayout li_no_feedback,li_feedback;
 
         public ViewHoder(View v) {
             super(v);
@@ -389,6 +406,9 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
             youtubefeedback= (YouTubeThumbnailView) v.findViewById(R.id.youtubefeedback);
             ratingbar = (RatingBar) v.findViewById(R.id.ratingbar);
 
+
+            li_no_feedback = (LinearLayout) itemView.findViewById(R.id.li_no_feedback);
+            li_feedback = (LinearLayout) itemView.findViewById(R.id.li_feedback);
         }
     }
 

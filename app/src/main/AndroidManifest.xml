@@ -242,7 +242,14 @@
             android:name=".company.UserSafe"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".alluser.AllUserMainActivity"></activity>
+        <activity android:name=".alluser.AllUserMainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity
+            android:name=".alluser.OpneBoardActivity"
+            android:label="@string/title_activity_opne_board"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

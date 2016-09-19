@@ -23,6 +23,7 @@
 
     <string name="preparation">기능 준비 중입니다</string>
 
+    <string name="valid_username">유저명/닉네임을 입력해주세요</string>
     <string name="valid_useremail">이메일 형식이 맞지 않습니다</string>
     <string name="valid_password">비밀번호는 5자이상 입력해주세요</string>
     <string name="valid_user">입력하신 이메일계정 또는 비밀번호를 확인해주세요</string>
@@ -176,6 +177,8 @@
     <string name="default_mission_subject">다른 사람 미션영상(최근 등록 20개)</string>
     <string name="my_mission_subject">내 미션 영상</string>
     <string name="my_mission_feedback_subject">피드백 이력</string>
+
+    <string name="my_mission_feedback_subject1">피드백 이력 비공개 설정</string>
 
     <!--mission-->
     <string name="point_pre_word">성공시</string>
@@ -454,12 +457,12 @@
     <string name="ins_team_info_text">제자리스트</string>
     <string name="ins_team_video_text">강사영상</string>
 
-    <string name="ins_team_apply">제자요청</string>
-    <string name="ins_team_pregress">제자검토중(클릭시 취소)</string>
-    <string name="ins_team_applied">제자취소</string>
-    <string name="ins_team_join">제자 요청불가(이미 다른 강사의 제자)</string>
+    <string name="ins_team_apply">팀가입요청</string>
+    <string name="ins_team_pregress">팀가입검토중(클릭시 취소)</string>
+    <string name="ins_team_applied">팀가입취소</string>
+    <string name="ins_team_join">팀가입 요청불가(이미 다른 강사의 제자)</string>
     <string name="ins_team_duplicate_msg">제자 요청불가</string>
-    <string name="ins_team_joining">제자 요청이 가능합니다</string>
+    <string name="ins_team_joining">팀가입 요청이 가능합니다</string>
     <string name="title_activity_alram">AlramActivity</string>
 
     <!--피드백요청-->
@@ -497,8 +500,8 @@
     <string name="point_item_type_pay">포인트사용</string>
     <string name="point_item_type_reiceve">포인트충전</string>
 
-    <string name="point_fragment_title1">포인트 구매</string>
-    <string name="point_fragment_title2">포인트 이력</string>
+    <string name="point_fragment_title1">구매/충전</string>
+    <string name="point_fragment_title2">사용이력</string>
 
     <string name="point_fragment_pre_amt">이전금액</string>
     <string name="point_fragment_use_amt">충전/사용</string>
@@ -617,6 +620,7 @@
     <string name="upload_msg1">업로드 파일명 : </string>
     <string name="upload_msg2">업로드를 취소합니다</string>
 
+    <string name="ball_friend_title0">닉네임/유저명</string>
     <string name="ball_friend_title1">친구수 : </string>
     <string name="ball_friend_title2">친구요청 수 : </string>
     <string name="ball_friend_title3">내친구</string>
@@ -633,6 +637,9 @@
     <string name="ins_poin_sliding_msg4">누적 포인트 : </string>
 
     <string name="main_mission_no_data_found">등록된 데이터가 없습니다</string>
+    <string name="main__no_data_found1">팀에 가입하지 않으셨거나\n미션을 수행한 팀원이 없습니다</string>
+    <string name="main__no_data_found2">친구신청을 통해 친구들을 만들어 보세요</string>
+    <string name="main__no_data_found3">팀원들의 미션 데이터가 없습니다</string>
 
     <string name="usermain_misison_feedback">피드백</string>
     <string name="usermain_misison_title1">미션제목</string>
@@ -802,10 +809,11 @@
     <!--all user Menu-->
     <string name="all_user_page_title1">오픈보드</string>
     <string name="all_user_page_title2">오픈FeedBack</string>
-    <string name="all_user_page_title3">이벤트보드</string>
+    <string name="all_user_page_title3">강사/축구교실/소개</string>
 
     <string name="all_user_page_btn1">작성</string>
     <string name="all_user_page_btn2">요청</string>
+    <string name="all_user_page_btn8">소개요청</string>
 
 
     <string name="all_user_page_btn5">회원탈퇴</string>
@@ -819,4 +827,32 @@
         \n삭제 됩니다.
         \n또한 복구가 불가능합니다
         \n그래도 회원 탈퇴 하시겠습니까?</string>
+
+    <string name="all_user_page_btn7">회원 탈퇴가 완료 되었습니다 \n 그 동안 이용해 주셔서 감사드립니다</string>
+
+    <!--adboard-->
+    <string name="adboard_item_title1">조회수</string>
+    <string name="open_page_request">소개요청</string>
+    <string name="open_page_request_content">축구교실 소개
+        \n제품광고
+        \n이벤트등등
+        \n유저들에게 알리고 싶은
+        \n내용이 있으시면
+        \n이메일 또는 전화로 문의 바랍니다
+        \n이메일:ishimsungbo@gmail.com
+        \n전화:010-2499-1591
+    </string>
+
+    <string name="point_req">포인트신청</string>
+    <string name="point_req1"> 베타 테스트 기간 동안 포인트 신청을 하시면 \n포인트를 충전 해드립니다.
+        \n 몸싸커를 사용하시며 불편한 점, 개선될 부분에 대해 말씀해주세요
+        \n 응원에 글도 환영합니다</string>
+
+    <string name="point_reqcheck">포인트신청이 접수 되었습니다 \n확인 후 바로 충전해드리겠습니다 \n 감사합니다</string>
+    <string name="title_activity_opne_board">OpneBoardActivity</string>
+
+
+    <!--오픈보드-->
+    <string name="open_board_write_hint">유저들에게 전할 소식을 남기세요.\n(클릭후 작성해주세요)</string>
+
 </resources>

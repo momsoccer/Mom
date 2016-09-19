@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -245,6 +246,9 @@ public class MissionMainActivity extends AppCompatActivity {
 /*    @Bind(R.id.scaleUp)
     ImageButton scaleUp;*/
 
+    @Bind(R.id.scroll_layout)
+    ScrollView scroll_layout;
+
     @OnClick(R.id.btn_shre)
     public void btn_shre(){
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -255,7 +259,6 @@ public class MissionMainActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(intent, "Mom Soccer"));
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -263,6 +266,8 @@ public class MissionMainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         activity = this;
         Log.d(TAG,"onCreate() =====================================");
+
+
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
@@ -411,7 +416,6 @@ public class MissionMainActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     SpBalanceHeader spBalanceHeader = response.body();
                     myPoint = spBalanceHeader.getAmount();
-                }else{
                 }
             }
 
@@ -426,6 +430,14 @@ public class MissionMainActivity extends AppCompatActivity {
         if(Common.YOUTUBESCREEN_STATUS.equals("LANDSCAPE")){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }*/
+
+        scroll_layout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scroll_layout.fullScroll(ScrollView.FOCUS_UP);
+            }
+        }, 500);
+
     }
 
     //다른 사람들의 영상 목록
@@ -737,6 +749,7 @@ public class MissionMainActivity extends AppCompatActivity {
     @OnClick(R.id.btnMainVideo)
     public void userVideoList(){
         Intent intent = new Intent(this,UserMissionListActivity.class);
+        intent.putExtra("missionid",mission.getMissionid());
         startActivity(intent);
     }
 
