@@ -89,6 +89,9 @@
 
             </com.mom.soccer.common.MomSwitchPreference>
 
-
+        <com.mom.soccer.common.MomPreference
+            android:key="deleteuserkey"
+            android:title="@string/all_user_page_btn5" >
+        </com.mom.soccer.common.MomPreference>
 
 </PreferenceScreen>

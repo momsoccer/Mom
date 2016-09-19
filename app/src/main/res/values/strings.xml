@@ -807,9 +807,16 @@
     <string name="all_user_page_btn1">작성</string>
     <string name="all_user_page_btn2">요청</string>
 
+
+    <string name="all_user_page_btn5">회원탈퇴</string>
     <string name="all_user_page_btn3">푸쉬알림</string>
     <string name="all_user_page_btn4">알림 소리/진동</string>
     <string name="all_user_page_btn31">*팀 게시판 글등록, 친구요청, 피드백, 미션 심사 알림을 받아 볼 수 있습니다</string>
     <string name="all_user_page_btn41">*푸쉬알림을 받을때 소리(on)/진동(off)을 설정 합니다</string>
-
+    <string name="all_user_page_btn6">회원탈퇴를 하시면 \n유저미션, 게시판 글, 친구목록,
+        \n피드백 데이터, 포인트등
+        \n몸싸커에서 활동하신 모든 내역이
+        \n삭제 됩니다.
+        \n또한 복구가 불가능합니다
+        \n그래도 회원 탈퇴 하시겠습니까?</string>
 </resources>

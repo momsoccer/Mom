@@ -8,13 +8,25 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mom.soccer.R;
 import com.mom.soccer.bottommenu.UserProfile;
+import com.mom.soccer.dto.ServerResult;
+import com.mom.soccer.dto.User;
+import com.mom.soccer.retrofitdao.CommonService;
+import com.mom.soccer.retropitutil.ServiceGenerator;
+import com.mom.soccer.widget.WaitingDialog;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -23,7 +35,12 @@ import com.mom.soccer.bottommenu.UserProfile;
 public class SettingActivity  extends PreferenceActivity implements Preference.OnPreferenceClickListener {
 
     SwitchPreference autoUpdate,arlim_check,sound_check;
+    MomPreference deleteuserkey;
     Activity activity;
+
+    private User user;
+    private PrefUtil prefUtil;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -31,6 +48,9 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         addPreferencesFromResource(R.xml.setting_layout);
 
         activity = this;
+
+        prefUtil = new PrefUtil(this);
+        user = prefUtil.getUser();
 
         LinearLayout root = (LinearLayout)findViewById(android.R.id.list).getParent().getParent().getParent();
 
@@ -50,10 +70,10 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
 
         //keyhelp.setOnPreferenceClickListener(this);
         userprofile.setOnPreferenceClickListener(this);
-
-
         arlim_check = (SwitchPreference) findPreference("arlim_check");
         sound_check = (SwitchPreference) findPreference("sound_check");
+
+        deleteuserkey = (MomPreference) findPreference("deleteuserkey");
 
         arlim_check.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -94,17 +114,34 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         });
 
 
+        deleteuserkey.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                new MaterialDialog.Builder(SettingActivity.this)
+                        .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                        .title(R.string.all_user_page_btn5)
+                        .titleColor(getResources().getColor(R.color.color6))
+                        .content(R.string.all_user_page_btn6)
+                        .contentColor(getResources().getColor(R.color.color6))
+                        .positiveText(R.string.mom_diaalog_confirm)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    //deleteUser()
+                            }
+                        })
+                        .negativeText(R.string.mom_diaalog_cancel)
+                        .show();
+                return false;
+            }
+        });
     }
 
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        // 도움말 선택시
 
         if(preference.getKey().equals("keyhelp")) {
-
-
-
 
         }else if(preference.getKey().equals("userprofile")) {
             Intent intent = new Intent(this, UserProfile.class);
@@ -113,6 +150,30 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         return false;
     }
 
+
+    public void deleteUser(){
+        WaitingDialog.showWaitingDialog(SettingActivity.this,false);
+        CommonService commonService = ServiceGenerator.createService(CommonService.class,getApplicationContext(),user);
+        Call<ServerResult> serverResultCall = commonService.deleteUser(user.getUid());
+        serverResultCall.enqueue(new Callback<ServerResult>() {
+            @Override
+            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    ServerResult serverResult = response.body();
+                    if(serverResult.getCount()==1){
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResult> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+    }
 
 
 }
