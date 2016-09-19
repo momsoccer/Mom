@@ -98,6 +98,7 @@ dependencies {
     //kakao login
     compile group: project.KAKAO_SDK_GROUP, name: 'kakaotalk', version: project.KAKAO_SDK_VERSION
     compile group: project.KAKAO_SDK_GROUP, name: 'usermgmt', version: project.KAKAO_SDK_VERSION
+    compile group: 'com.kakao.sdk', name: 'kakaolink', version: project.KAKAO_SDK_VERSION
 
     //facebook
     compile 'com.facebook.android:facebook-android-sdk:4.8.2'

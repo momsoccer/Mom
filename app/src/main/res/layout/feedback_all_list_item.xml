@@ -55,7 +55,9 @@
                 android:background="@drawable/xml_list_divider"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"/>
+
             <LinearLayout
+                android:layout_marginTop="2dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:orientation="horizontal"
@@ -139,7 +141,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginLeft="5dp"
                         android:id="@+id/teamname"
-                        android:text="김볼트"
+                        android:text="서울FC"
                         android:textSize="10sp"
                         android:textColor="@color/color6"
                         android:layout_width="wrap_content"
@@ -166,7 +168,7 @@
             <View
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/view_top"
                 android:background="@color/color6"
                 android:layout_width="match_parent"
@@ -194,7 +196,7 @@
                     android:layout_marginLeft="5dp"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    android:textColor="@color/enabled_red"
+                    android:textColor="@color/color6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

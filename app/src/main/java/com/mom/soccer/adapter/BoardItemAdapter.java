@@ -23,6 +23,9 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.kakao.kakaolink.KakaoLink;
+import com.kakao.kakaolink.KakaoTalkLinkMessageBuilder;
+import com.kakao.util.KakaoParameterException;
 import com.mom.soccer.R;
 import com.mom.soccer.ball.TeamBoardActivity;
 import com.mom.soccer.ball.TeamBoardReply;
@@ -112,7 +115,20 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
         holder.liShareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
 
+                    final KakaoLink kakaoLink = KakaoLink.getKakaoLink(activity.getApplicationContext());
+                    final KakaoTalkLinkMessageBuilder builder = kakaoLink.createKakaoTalkLinkMessageBuilder();
+                    builder.addText("몸 싸커에서 공유를 합니다");
+
+                    String url = "http://192.168.0.3:8080/resources/ad/rds5.png";
+                    builder.addImage(url,500,800);
+                    builder.addAppButton("앱실행");
+                    kakaoLink.sendMessage(builder,activity);
+
+                } catch (KakaoParameterException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
