@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -91,7 +90,6 @@ public class insDashFragment extends Fragment {
 
     //2번 페이지 심사관련
     private List<MissionPass> missionPasses;
-    private GridLayoutManager gaggeredGridLayoutManager;
 
     //팀 게시판
     SwipeRefreshLayout swipeRefreshLayout;    //젤리빈 17? 이하는 주석처리로 분기...
@@ -400,8 +398,8 @@ public class insDashFragment extends Fragment {
                     teamApplyRecyclerview.getItemAnimator().setChangeDuration(300);
 
                     teamApplyRecyclerview.setHasFixedSize(true);
-                    gaggeredGridLayoutManager = new GridLayoutManager(getContext(),2);
-                    teamApplyRecyclerview.setLayoutManager(gaggeredGridLayoutManager);
+                    linearLayoutManager = new LinearLayoutManager(getContext());
+                    teamApplyRecyclerview.setLayoutManager(linearLayoutManager);
                     AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(teamApplyAdapter);
                     alphaAdapter.setDuration(500);
                     teamApplyRecyclerview.setAdapter(alphaAdapter);
@@ -439,8 +437,8 @@ public class insDashFragment extends Fragment {
                     appRecyclerview.getItemAnimator().setChangeDuration(300);
 
                     appRecyclerview.setHasFixedSize(true);
-                    gaggeredGridLayoutManager = new GridLayoutManager(getContext(),2);
-                    appRecyclerview.setLayoutManager(gaggeredGridLayoutManager);
+                    linearLayoutManager = new LinearLayoutManager(getContext());
+                    appRecyclerview.setLayoutManager(linearLayoutManager);
                     AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(approvteamApplyAdapter);
                     alphaAdapter.setDuration(500);
                     appRecyclerview.setAdapter(alphaAdapter);
@@ -509,8 +507,8 @@ public class insDashFragment extends Fragment {
                             feedback_req_recyclerview.getItemAnimator().setChangeDuration(300);
 
                             feedback_req_recyclerview.setHasFixedSize(true);
-                            gaggeredGridLayoutManager = new GridLayoutManager(getContext(),2);
-                            feedback_req_recyclerview.setLayoutManager(gaggeredGridLayoutManager);
+                            linearLayoutManager = new LinearLayoutManager(getContext());
+                            feedback_req_recyclerview.setLayoutManager(linearLayoutManager);
                             AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(feedBackReqAdapter);
                             alphaAdapter.setDuration(500);
                             feedback_req_recyclerview.setAdapter(alphaAdapter);
@@ -597,8 +595,8 @@ public class insDashFragment extends Fragment {
                     pass_req_recyclerview.getItemAnimator().setChangeDuration(300);
 
                     pass_req_recyclerview.setHasFixedSize(true);
-                    gaggeredGridLayoutManager = new GridLayoutManager(getContext(),2);
-                    pass_req_recyclerview.setLayoutManager(gaggeredGridLayoutManager);
+                    linearLayoutManager = new LinearLayoutManager(getContext());
+                    pass_req_recyclerview.setLayoutManager(linearLayoutManager);
 
                     AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(passListInsAdapter);
                     alphaAdapter.setDuration(500);
@@ -637,8 +635,8 @@ public class insDashFragment extends Fragment {
                     passRecyclerView.getItemAnimator().setChangeDuration(300);
 
                     passRecyclerView.setHasFixedSize(true);
-                    gaggeredGridLayoutManager = new GridLayoutManager(getContext(),2);
-                    passRecyclerView.setLayoutManager(gaggeredGridLayoutManager);
+                    linearLayoutManager = new LinearLayoutManager(getContext());
+                    passRecyclerView.setLayoutManager(linearLayoutManager);
 
                     AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(passResultListInsAdapter);
                     alphaAdapter.setDuration(500);

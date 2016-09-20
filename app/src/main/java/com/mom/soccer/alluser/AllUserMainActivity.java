@@ -121,6 +121,8 @@ public class AllUserMainActivity extends AppCompatActivity {
                     intent.putExtra("callpage","user");
                     intent.putExtra("position",0);
                     startActivity(intent);
+                }else if(btnposition==1){
+                    //강사강의 지원 및 의뢰
                 }
             }
         });

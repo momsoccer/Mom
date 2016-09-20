@@ -172,6 +172,13 @@ public class PlayerFragment extends Fragment{
                 getTeamBoarderList("first");
             }
 
+            if(instructor.getTeamid()!=0){
+                li_team_no_data.setVisibility(View.GONE);
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
+                linearLayoutManager = new LinearLayoutManager(getContext());
+                getTeamBoarderList("first");
+            }
+
             //1.스와이프 이벤트 설정
             final View finalView2 = view;
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -789,6 +796,10 @@ public class PlayerFragment extends Fragment{
 
         MomBoard query = new MomBoard();
         query.setBoardtypeid(Common.teamid);
+
+        if(instructor.getInstructorid()!=0){
+            query.setBoardtypeid(instructor.getTeamid());
+        }
 
         if(pageFlag.equals("first")) {
             offset = 0;

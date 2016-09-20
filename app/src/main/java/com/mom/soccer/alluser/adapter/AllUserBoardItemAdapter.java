@@ -2,6 +2,8 @@ package com.mom.soccer.alluser.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
@@ -23,9 +25,13 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.kakao.kakaolink.KakaoLink;
+import com.kakao.kakaolink.KakaoTalkLinkMessageBuilder;
+import com.kakao.util.KakaoParameterException;
 import com.mom.soccer.R;
 import com.mom.soccer.ball.TeamBoardActivity;
 import com.mom.soccer.ball.TeamBoardReply;
+import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.common.ActivityResultEvent;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.EventBus;
@@ -42,6 +48,10 @@ import com.mom.soccer.trservice.MomBoardTRService;
 import com.mom.soccer.widget.WaitingDialog;
 import com.squareup.otto.Subscribe;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 import retrofit2.Call;
@@ -110,6 +120,39 @@ public class AllUserBoardItemAdapter extends RecyclerView.Adapter<AllUserBoardIt
         holder.liShareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                try {
+
+                    final KakaoLink kakaoLink = KakaoLink.getKakaoLink(activity.getApplicationContext());
+                    final KakaoTalkLinkMessageBuilder builder = kakaoLink.createKakaoTalkLinkMessageBuilder();
+/*
+                    builder.addAppLink("자세히 보기",
+                            new AppActionBuilder()
+                                   .addActionInfo(AppActionInfoBuilder
+                                            .createAndroidActionInfoBuilder()
+                                            .setExecuteParam("execparamkey1=1111")
+                                            .setMarketParam("referrer=kakaotalklink")
+                                            .build())
+                                    .addActionInfo(AppActionInfoBuilder.createiOSActionInfoBuilder()
+                                            .setExecuteParam("execparamkey1=1111")
+                                            .build())
+                                    .setUrl("https://developers.kakao.com/docs/android") // PC 카카오톡 에서 사용하게 될 웹사이트 주소
+                                    .build());
+                                   */
+
+                    builder.addText(vo.getUsername()+":"+vo.getContent());
+
+                    if(vo.getFilecount()!=0){
+                        String url = vo.getBoardFiles().get(0).getFileaddr();
+                        builder.addImage(url,800,500);
+                    }
+
+                    builder.addAppButton("앱실행");
+                    kakaoLink.sendMessage(builder,activity);
+
+                } catch (KakaoParameterException e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -284,6 +327,22 @@ public class AllUserBoardItemAdapter extends RecyclerView.Adapter<AllUserBoardIt
 
         }
 
+        holder.userimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(vo.getUid()!=user.getUid()){
+                    Intent intent = new Intent(activity, MyPageActivity.class);
+                    intent.putExtra("pageflag","friend");
+                    intent.putExtra("frienduid",vo.getUid());
+                    activity.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(activity,MyPageActivity.class);
+                    intent.putExtra("pageflag","me");
+                    activity.startActivity(intent);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -412,6 +471,24 @@ public class AllUserBoardItemAdapter extends RecyclerView.Adapter<AllUserBoardIt
                     updateLineItemCount(posintion,lineCount);
                 }
                 break;
+        }
+    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(src);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }finally{
+            if(connection!=null)connection.disconnect();
         }
     }
 

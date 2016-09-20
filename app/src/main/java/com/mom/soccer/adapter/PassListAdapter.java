@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,8 +112,6 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
             holder.failuredisp.setVisibility(View.GONE);
             holder.title_comment.setVisibility(View.GONE);
             holder.incomment.setVisibility(View.GONE);
-            holder.top_subject1.setVisibility(View.GONE);
-            holder.top_subject2.setVisibility(View.GONE);
 
             holder.grade.setText(pass.getPassgrade()+activity.getString(R.string.missionpass_get_grade));
 
@@ -122,8 +121,6 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
             holder.title_failuredisp.setVisibility(View.VISIBLE);
             holder.failuredisp.setVisibility(View.VISIBLE);
 
-            holder.top_subject1.setVisibility(View.VISIBLE);
-            holder.top_subject2.setVisibility(View.VISIBLE);
 
             holder.grade.setText(pass.getPassgrade()+activity.getString(R.string.missionpass_get_grade3));
 
@@ -133,11 +130,22 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
             holder.title_failuredisp.setVisibility(View.GONE);
             holder.failuredisp.setVisibility(View.GONE);
 
-            holder.top_subject1.setVisibility(View.GONE);
-            holder.top_subject2.setVisibility(View.VISIBLE);
             holder.grade.setText(pass.getPassgrade()+activity.getString(R.string.missionpass_get_grade2));
         }
 
+        if(pass.getMissiontype().equals("DRIBLE")){
+            holder.li_back_color.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_drible)));
+        }else if(pass.getMissiontype().equals("LIFTING")){
+            holder.li_back_color.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_lifting)));
+        }else if(pass.getMissiontype().equals("TRAPING")){
+            holder.li_back_color.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_traping)));
+        }else if(pass.getMissiontype().equals("AROUND")){
+            holder.li_back_color.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_around)));
+        }else if(pass.getMissiontype().equals("FLICK")){
+            holder.li_back_color.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_flick)));
+        }else if(pass.getMissiontype().equals("COMPLEX")){
+            holder.li_back_color.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_complex)));
+        }
 
         holder.btnHam.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -313,8 +321,9 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
     public class PassItemHolder extends RecyclerView.ViewHolder{
 
         TextView status,grade,failuredisp,incomment,date,seq,insname,title_failuredisp,title_comment;
-        ImageView insimage,top_subject1,top_subject2;
+        ImageView insimage;
         ImageButton btnHam;
+        LinearLayout li_back_color;
 
         public PassItemHolder(View itemView) {
             super(itemView);
@@ -330,9 +339,8 @@ public class PassListAdapter extends RecyclerView.Adapter<PassListAdapter.PassIt
 
             title_failuredisp = (TextView) itemView.findViewById(R.id.title_failuredisp);
             title_comment = (TextView) itemView.findViewById(R.id.title_comment);
+            li_back_color = (LinearLayout) itemView.findViewById(R.id.li_back_color);
 
-            top_subject1  = (ImageView) itemView.findViewById(R.id.top_subject1);
-            top_subject2  = (ImageView) itemView.findViewById(R.id.top_subject2);
 
         }
     }

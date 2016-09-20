@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -97,7 +97,7 @@ public class GridSearchAdapter extends BaseAdapter {
             listHolder.user_imag = (ImageView) currentRow.findViewById(R.id.search_item_userimg);
             listHolder.user_name = (TextView) currentRow.findViewById(R.id.search_item_username);
             listHolder.team_name = (TextView) currentRow.findViewById(R.id.search_item_teamname);
-            listHolder.button = (Button) currentRow.findViewById(R.id.search_item_btn_choose);
+            listHolder.cardview = (LinearLayout) currentRow.findViewById(R.id.cardview);
 
 
             if(type.equals("user")) {
@@ -173,9 +173,10 @@ public class GridSearchAdapter extends BaseAdapter {
                 }
             }
 
+
         }
 
-        listHolder.button.setOnClickListener(new View.OnClickListener() {
+        listHolder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(type.equals("user")){
@@ -203,6 +204,6 @@ public class GridSearchAdapter extends BaseAdapter {
         TextView user_name;
         TextView team_name;
         ImageView user_imag;
-        Button button;
+        LinearLayout cardview;
     }
 }

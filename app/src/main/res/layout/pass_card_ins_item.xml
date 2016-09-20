@@ -2,112 +2,138 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/mom_color1"
     >
     <android.support.v7.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/followr_cardview"
-        android:layout_width="160dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
         card_view:cardCornerRadius="5dp"
         card_view:cardElevation="5dp"
         android:orientation="vertical"
-        card_view:contentPadding="5dp"
         card_view:cardBackgroundColor="@color/mom_color3"
         >
 
         <LinearLayout
-            android:layout_margin="1dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <View
+                android:background="@color/color8"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"/>
+
             <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                >
+                android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:orientation="vertical"
+                <TextView
+                    android:text="2015년10월11일 오후25시"
+                    android:id="@+id/date"
+                    android:textColor="@color/color8"
+                    android:textSize="8sp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    >
-                    <ImageView
-                        android:id="@+id/userimg"
-                        android:src="@drawable/userimg"
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        />
-                    <TextView
-                        android:id="@+id/level"
-                        android:text="0"
-                        android:textStyle="bold"
-                        android:textColor="@color/color6"
-                        android:gravity="center"
-                        android:background="@drawable/ic_levelmark"
-                        android:textSize="8sp"
-                        android:layout_width="18dp"
-                        android:layout_height="20dp"
-                        android:layout_marginTop="-17dp"
-                        android:layout_marginLeft="20dp"
-                        />
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-                </LinearLayout>
+            <RelativeLayout
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:layout_marginLeft="2dp"
-                    android:orientation="vertical"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    >
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:text="1회"
-                        android:id="@+id/seq"
-                        android:textColor="@color/color6"
-                        android:textSize="6sp"
+                    <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        >
+                        <ImageView
+                            android:id="@+id/userimg"
+                            android:src="@drawable/userimg"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            />
+                        <TextView
+                            android:id="@+id/level"
+                            android:text="0"
+                            android:textStyle="bold"
+                            android:textColor="@color/color6"
+                            android:gravity="center"
+                            android:background="@drawable/ic_levelmark"
+                            android:textSize="8sp"
+                            android:layout_width="20dp"
+                            android:layout_height="22dp"
+                            android:layout_marginTop="-22dp"
+                            android:layout_marginLeft="26dp"
+                            />
+                    </LinearLayout>
 
-                    <TextView
-                        android:text="안유라"
-                        android:id="@+id/username"
-                        android:textColor="@color/color6"
-                        android:textSize="6sp"
+                    <LinearLayout
+                        android:layout_marginLeft="5dp"
+                        android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        >
 
-                    <TextView
-                        android:text="서울FC"
-                        android:id="@+id/teamname"
-                        android:textColor="@color/color6"
-                        android:textSize="6sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:text="안유라"
+                            android:id="@+id/username"
+                            android:textColor="@color/color6"
+                            android:textSize="10sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
-                    <TextView
-                        android:text="2015년10월11일 오후25시"
-                        android:id="@+id/date"
-                        android:textColor="@color/color6"
-                        android:textSize="6sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:text="레벨1 리프팅 1단계 인스텝20개"
-                        android:id="@+id/missionname"
-                        android:textColor="@color/color6"
-                        android:textSize="6sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:text="서울FC"
+                            android:id="@+id/teamname"
+                            android:textColor="@color/color6"
+                            android:textSize="10sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
                 </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="1회"
+                    android:id="@+id/seq"
+                    android:textColor="@color/color6"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginLeft="30dp"
+                    android:text="레벨1 리프팅 1단계 인스텝20개"
+                    android:id="@+id/missionname"
+                    android:textColor="@color/color6"
+                    android:textSize="10sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -126,9 +152,8 @@
 
                     <com.google.android.youtube.player.YouTubeThumbnailView
                         android:id="@+id/user_video_ThumbnailView"
-                        android:layout_centerHorizontal="true"
-                        android:layout_width="60dp"
-                        android:layout_height="45dp"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
                         android:background="@color/color8"
                         />
 
@@ -141,15 +166,15 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="30dp"
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <com.google.android.youtube.player.YouTubeThumbnailView
                         android:id="@+id/mission_video_ThumbnailView"
-                        android:layout_width="60dp"
-                        android:layout_height="45dp"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
                         android:background="@color/color8"
                         android:layout_centerHorizontal="true"
                         />
@@ -163,23 +188,21 @@
                 </LinearLayout>
 
             </LinearLayout>
-            <LinearLayout
-                android:layout_marginTop="3dp"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                >
-                <Button
-                    android:id="@+id/resultbtn"
-                    android:gravity="center"
-                    android:text="@string/mission_pass_btn"
-                    android:textSize="8sp"
-                    style="@style/btnStylePaprika"
-                    android:layout_width="130dp"
-                    android:layout_height="20dp" />
-            </LinearLayout>
+
+
+            <Button
+                android:layout_marginTop="5dp"
+                android:id="@+id/resultbtn"
+                android:gravity="center"
+                android:text="@string/mission_pass_btn"
+                android:textSize="10sp"
+                style="@style/btnStylePaprika"
+                android:layout_width="match_parent"
+                android:layout_height="28dp" />
 
         </LinearLayout>
+
+
+
     </android.support.v7.widget.CardView>
 </LinearLayout>

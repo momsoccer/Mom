@@ -1,6 +1,7 @@
 package com.mom.soccer.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -58,7 +59,9 @@ public class TeamApplyAdapter extends RecyclerView.Adapter<TeamApplyAdapter.Appl
 
     @Override
     public ApplyItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.team_apply_ins_item, null);
+
+        LayoutInflater inflater=(LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflater.inflate(R.layout.team_apply_ins_item, parent,false);
         return new ApplyItemHolder(v);
     }
 

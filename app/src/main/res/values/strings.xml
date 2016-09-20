@@ -812,11 +812,11 @@
 
     <!--all user Menu-->
     <string name="all_user_page_title1">오픈보드</string>
-    <string name="all_user_page_title2">오픈FeedBack</string>
+    <string name="all_user_page_title2">강사축구강의</string>
     <string name="all_user_page_title3">강사/축구교실/소개</string>
 
     <string name="all_user_page_btn1">작성</string>
-    <string name="all_user_page_btn2">요청</string>
+    <string name="all_user_page_btn2">지원</string>
     <string name="all_user_page_btn8">소개요청</string>
 
 
@@ -859,4 +859,6 @@
     <!--오픈보드-->
     <string name="open_board_write_hint">유저들에게 전할 소식을 남기세요.\n(클릭후 작성해주세요)</string>
 
+
+    <string name="feedback_card_msg1">강사의 피드백</string>
 </resources>

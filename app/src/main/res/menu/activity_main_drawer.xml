@@ -40,6 +40,11 @@
             android:title="@string/mom_menu_title_coach_apply" />
 
         <item
+            android:id="@+id/mn_item_money"
+            android:icon="@drawable/ic_monetization_on_white_24dp"
+            android:title="@string/mom_menu_title_setup" />
+
+        <item
             android:id="@+id/mn_item_setup"
             android:icon="@drawable/side_setup"
             android:title="@string/mom_menu_title_setup" />

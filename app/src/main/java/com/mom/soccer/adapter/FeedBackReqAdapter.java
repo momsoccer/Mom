@@ -1,6 +1,7 @@
 package com.mom.soccer.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -52,8 +53,8 @@ public class FeedBackReqAdapter extends RecyclerView.Adapter<FeedBackReqAdapter.
 
     @Override
     public FeedbackItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.feedback_item, null);
-
+        LayoutInflater inflater=(LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v=inflater.inflate(R.layout.feedback_item, parent,false);
         return new FeedbackItemHolder(v);
     }
 

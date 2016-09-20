@@ -1,6 +1,7 @@
 package com.mom.soccer.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -44,7 +45,8 @@ public class FeedBackEndAdapter extends RecyclerView.Adapter<FeedBackEndAdapter.
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.feedback_result_item, null);
+        LayoutInflater inflater=(LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view=inflater.inflate(R.layout.feedback_result_item, parent,false);
         return new ItemHolder(view);
     }
 

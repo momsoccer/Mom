@@ -22,18 +22,18 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_gravity="center"
             android:layout_height="400dp">
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/pass_req_recyclerview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/mom_color1"
-            android:scrollbars="vertical"
-            />
+            <android.support.v7.widget.RecyclerView
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/pass_req_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/mom_color1"
+                android:scrollbars="vertical"
+                />
         </LinearLayout>
     </FrameLayout>
 
@@ -53,17 +53,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/mom_color1"
-            >
+            android:background="@color/mom_color1">
 
             <android.support.v7.widget.RecyclerView
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/passRecyclerView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/mom_color1"
-                android:scrollbars="vertical"
-                />
+                android:scrollbars="vertical" />
+
         </LinearLayout>
     </LinearLayout>
 

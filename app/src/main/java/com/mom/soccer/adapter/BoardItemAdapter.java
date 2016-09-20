@@ -29,6 +29,7 @@ import com.kakao.util.KakaoParameterException;
 import com.mom.soccer.R;
 import com.mom.soccer.ball.TeamBoardActivity;
 import com.mom.soccer.ball.TeamBoardReply;
+import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.common.ActivityResultEvent;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.EventBus;
@@ -119,10 +120,28 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
 
                     final KakaoLink kakaoLink = KakaoLink.getKakaoLink(activity.getApplicationContext());
                     final KakaoTalkLinkMessageBuilder builder = kakaoLink.createKakaoTalkLinkMessageBuilder();
-                    builder.addText("몸 싸커에서 공유를 합니다");
+/*
+                    builder.addAppLink("자세히 보기",
+                            new AppActionBuilder()
+                                   .addActionInfo(AppActionInfoBuilder
+                                            .createAndroidActionInfoBuilder()
+                                            .setExecuteParam("execparamkey1=1111")
+                                            .setMarketParam("referrer=kakaotalklink")
+                                            .build())
+                                    .addActionInfo(AppActionInfoBuilder.createiOSActionInfoBuilder()
+                                            .setExecuteParam("execparamkey1=1111")
+                                            .build())
+                                    .setUrl("https://developers.kakao.com/docs/android") // PC 카카오톡 에서 사용하게 될 웹사이트 주소
+                                    .build());
+                                   */
 
-                    String url = "http://192.168.0.3:8080/resources/ad/rds5.png";
-                    builder.addImage(url,500,800);
+                    builder.addText(vo.getUsername()+":"+vo.getContent());
+
+                    if(vo.getFilecount()!=0){
+                        String url = vo.getBoardFiles().get(0).getFileaddr();
+                        builder.addImage(url,800,500);
+                    }
+
                     builder.addAppButton("앱실행");
                     kakaoLink.sendMessage(builder,activity);
 
@@ -324,6 +343,22 @@ public class BoardItemAdapter extends RecyclerView.Adapter<BoardItemAdapter.Boar
             }
 
         }
+
+        holder.userimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(vo.getUid()!=user.getUid()){
+                    Intent intent = new Intent(activity, MyPageActivity.class);
+                    intent.putExtra("pageflag","friend");
+                    intent.putExtra("frienduid",vo.getUid());
+                    activity.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(activity,MyPageActivity.class);
+                    intent.putExtra("pageflag","me");
+                    activity.startActivity(intent);
+                }
+            }
+        });
 
     }
 

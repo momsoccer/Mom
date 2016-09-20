@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by sungbo on 2016-09-19.
  */
-public class AdBoardVo {
+public class AdBoardVo{
 
     private int advid;
     private String addr;

@@ -18,8 +18,17 @@ public class Board {
     private int totalscore;
     private int level;
     private String formatDataSign;
+    private String missiontype;
 
     public Board(){}
+
+    public String getMissiontype() {
+        return missiontype;
+    }
+
+    public void setMissiontype(String missiontype) {
+        this.missiontype = missiontype;
+    }
 
     public String getFormatDataSign() {
         return formatDataSign;

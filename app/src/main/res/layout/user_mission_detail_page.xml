@@ -316,12 +316,14 @@
                             android:onClick="tabChangeClick"
                             />-->
                     <Button
-                        android:background="@drawable/xml_boder"
+                        android:background="@drawable/momcolor1_btn_back_ground"
                         android:onClick="tabChangeClick"
                         android:id="@+id/tabBtn1"
                         android:text="@string/ball_friend_title4"
+                        android:textStyle="bold"
                         android:layout_width="120dp"
-                        android:layout_height="35dp" />
+                        android:layout_height="35dp"
+                        />
 
                     </LinearLayout>
 
@@ -335,9 +337,10 @@
                         >
 
                         <Button
-                            android:background="@drawable/xml_boder"
+                            android:background="@drawable/momcolor1_btn_back_ground"
                             android:onClick="tabChangeClick"
                             android:id="@+id/tabBtn2"
+                            android:textStyle="bold"
                             android:text="@string/ball_friend_title5"
                             android:layout_width="120dp"
                             android:layout_height="35dp" />
@@ -432,7 +435,7 @@
                                 android:layout_marginLeft="20dp"
                                 android:id="@+id/youtube_YouTubeThumbnailView"
                                 android:layout_width="100dp"
-                                android:layout_height="60dp"
+                                android:layout_height="wrap_content"
                                 android:background="@color/color8"
                                 />
 

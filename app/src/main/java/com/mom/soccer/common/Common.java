@@ -2,17 +2,23 @@ package com.mom.soccer.common;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 /**
  * Created by sungbo on 2016-05-27.
  */
 public class Common {
-    public static String SERVER_ADRESS = "http://192.168.10.4:8080";
+    public static String SERVER_ADRESS = "http://192.168.0.3:8080";
     //myHom 10.5
     //inition  http://192.168.0.50:8080"
     //http://14.63.220.208:16410/ 클라우드 서버
@@ -76,6 +82,24 @@ public class Common {
             output.copyTo(bitmap);
             return bitmap;
         //}
+    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(src);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }finally{
+            if(connection!=null)connection.disconnect();
+        }
     }
 
 }

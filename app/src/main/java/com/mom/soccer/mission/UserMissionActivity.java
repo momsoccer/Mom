@@ -283,12 +283,6 @@ public class UserMissionActivity extends AppCompatActivity
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(R.drawable.back_arrow);
 
-        if (!Compare.isEmpty(user.getUsername())) {
-            pageTitle = "(" + user.getUsername() + ") " + getString(R.string.toolbar_user_missionview_page);
-        } else {
-            pageTitle = getString(R.string.toolbar_user_missionview_page);
-        }
-        user_missionview_title.setText(pageTitle);
         level.setText(String.valueOf(userMission.getLevel()));
 
         //정보 적용
@@ -745,7 +739,7 @@ public class UserMissionActivity extends AppCompatActivity
             MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getApplicationContext(),user);
 
             MissionPass query = new MissionPass();
-            query.setUid(user.getUid());
+            query.setUid(userMission.getUid());
             query.setUsermissionid(userMission.getUsermissionid());
             query.setMissionid(userMission.getMissionid());
 
@@ -825,7 +819,7 @@ public class UserMissionActivity extends AppCompatActivity
         FeedBackService feedBackService = ServiceGenerator.createService(FeedBackService.class,getApplicationContext(),user);
         FeedbackHeader header = new FeedbackHeader();
 
-        header.setUid(user.getUid());
+        header.setUid(userMission.getUid());
         header.setUsermissionid(userMission.getUsermissionid());
 
         Call<List<FeedbackHeader>> c = feedBackService.getFeedAllList(header);

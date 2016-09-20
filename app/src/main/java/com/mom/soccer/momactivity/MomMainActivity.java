@@ -79,6 +79,7 @@ import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.TeamMember;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.ins.InsMoneyActivity;
 import com.mom.soccer.mission.MissionActivity;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.pubactivity.PubActivity;
@@ -436,7 +437,11 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             startActivity(intent);
             //overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
-        }else if(id == R.id.mn_item_logout){
+        }else if(id == R.id.mn_item_money){
+
+            Intent intent = new Intent(this,InsMoneyActivity.class);
+            startActivity(intent);
+        } else if(id == R.id.mn_item_logout){
 
             new MaterialDialog.Builder(this)
                     .title(R.string.mom_diaalog_title_logout)
@@ -604,18 +609,14 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                             Manifest.permission.READ_SMS
                     }, MY_PERMISSION_REQUEST_STORAGE);
         }
-
-
     }
-
-
-
 
     public void OnClickHeader(View v){
         switch (v.getId()){
             case R.id.mom_hd_mk:
 
-                //VeteranToast.makeToast(getApplicationContext(),"퍼미션",Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(this, TestActivity.class);
+                //startActivity(intent);
 
 
                 break;
@@ -1056,12 +1057,13 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                         imageBtnBall.setVisibility(View.VISIBLE);
                     }else{
                         ib_appbar_coach.setVisibility(View.VISIBLE);
-                        imageBtnBall.setVisibility(View.GONE);
+                        imageBtnBall.setVisibility(View.VISIBLE);
                     }
 
                     if(instructor.getUid()==0){
                         navigationView.getMenu().findItem(R.id.mn_item_coachreq).setTitle(getString(R.string.mom_menu_title_coach_apply));
                         navigationView.getMenu().findItem(R.id.mn_item_teammemberlist).setVisible(false);
+                        navigationView.getMenu().findItem(R.id.mn_item_money).setVisible(false);
 
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("insinfo", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
@@ -1072,6 +1074,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                     }else{
                         navigationView.getMenu().findItem(R.id.mn_item_coachreq).setTitle(getString(R.string.mom_menu_title_coach_info));
                         navigationView.getMenu().findItem(R.id.mn_item_teammemberlist).setVisible(false);
+                        navigationView.getMenu().findItem(R.id.mn_item_money).setVisible(true);
 
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("insinfo", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();

@@ -369,6 +369,26 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
         }
 
 
+        if(vo.getMissiontype().equals("DRIBLE")){
+            holder.li_feedback.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_drible)));
+            holder.view_diviline.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_drible)));
+        }else if(vo.getMissiontype().equals("LIFTING")){
+            holder.li_feedback.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_lifting)));
+            holder.view_diviline.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_lifting)));
+        }else if(vo.getMissiontype().equals("TRAPING")){
+            holder.li_feedback.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_traping)));
+            holder.view_diviline.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_traping)));
+        }else if(vo.getMissiontype().equals("AROUND")){
+            holder.li_feedback.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_around)));
+            holder.view_diviline.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_around)));
+        }else if(vo.getMissiontype().equals("FLICK")){
+            holder.li_feedback.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_flick)));
+            holder.view_diviline.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_flick)));
+        }else if(vo.getMissiontype().equals("COMPLEX")){
+            holder.li_feedback.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_complex)));
+            holder.view_diviline.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_complex)));
+        }
+
 
     }
 
@@ -386,6 +406,7 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
         YouTubeThumbnailView youtubefeedback;
         RatingBar ratingbar;
 
+        View view_diviline;
         LinearLayout li_no_feedback,li_feedback;
 
         public ViewHoder(View v) {
@@ -409,6 +430,7 @@ public class FeedBackAllListAdapter extends RecyclerView.Adapter<FeedBackAllList
 
             li_no_feedback = (LinearLayout) itemView.findViewById(R.id.li_no_feedback);
             li_feedback = (LinearLayout) itemView.findViewById(R.id.li_feedback);
+            view_diviline = itemView.findViewById(R.id.view_diviline);
         }
     }
 

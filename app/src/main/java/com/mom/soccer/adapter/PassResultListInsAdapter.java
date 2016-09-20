@@ -1,6 +1,7 @@
 package com.mom.soccer.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,7 +50,9 @@ public class PassResultListInsAdapter extends RecyclerView.Adapter<PassResultLis
 
     @Override
     public PassItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.pass_card_ins_item2, null);
+        LayoutInflater inflater=(LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflater.inflate(R.layout.pass_card_ins_item2, parent,false);
+
         return new PassItemHolder(v);
     }
 

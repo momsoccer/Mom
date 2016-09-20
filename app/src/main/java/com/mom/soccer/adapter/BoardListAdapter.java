@@ -79,6 +79,7 @@ public class BoardListAdapter extends BaseAdapter {
         TextView  text_date;
         ImageView    btnHam;
         TextView  level;
+        View li_view_line;
     }
 
     public BoardListAdapter(Activity activity, List<Board> boardList,int uid,User user,UserMission usermission
@@ -128,7 +129,7 @@ public class BoardListAdapter extends BaseAdapter {
             boardHolder.text_date = (TextView) currentRow.findViewById(R.id.txt_board_user_time);
             boardHolder.level = (TextView) currentRow.findViewById(R.id.level);
             boardHolder.txt_board_team_name = (TextView) currentRow.findViewById(R.id.txt_board_team_name);
-
+            boardHolder.li_view_line = currentRow.findViewById(R.id.li_view_line);
 
             boardHolder.text_username.setText(boardList.get(position).getUsername());
             boardHolder.text_username.setTextColor(activity.getResources().getColor(R.color.color6));
@@ -155,6 +156,20 @@ public class BoardListAdapter extends BaseAdapter {
                 boardHolder.text_username.setTextColor(activity.getResources().getColor(R.color.bg_screen3));
             }
 
+            if(boardList.get(position).getMissiontype().equals("DRIBLE")){
+                boardHolder.li_view_line.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_drible)));
+            }else if(boardList.get(position).getMissiontype().equals("LIFTING")){
+                boardHolder.li_view_line.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_lifting)));
+            }else if(boardList.get(position).getMissiontype().equals("TRAPING")){
+                boardHolder.li_view_line.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_traping)));
+            }else if(boardList.get(position).getMissiontype().equals("AROUND")){
+                boardHolder.li_view_line.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_around)));
+            }else if(boardList.get(position).getMissiontype().equals("FLICK")){
+                boardHolder.li_view_line.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_flick)));
+            }else if(boardList.get(position).getMissiontype().equals("COMPLEX")){
+                boardHolder.li_view_line.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_complex)));
+            }
+
             currentRow.setTag(boardHolder);
 
         }else{
@@ -163,7 +178,7 @@ public class BoardListAdapter extends BaseAdapter {
             if(boardList.get(position) != null){
 
                 boardHolder.text_username.setTextColor(activity.getResources().getColor(R.color.color6));
-
+                boardHolder.li_view_line = currentRow.findViewById(R.id.li_view_line);
                 boardHolder.image_userimg = (ImageView) currentRow.findViewById(R.id.board_user_img);
                 boardHolder.text_username.setText(boardList.get(position).getUsername());
                 boardHolder.text_comment.setText(boardList.get(position).getComment());
@@ -185,6 +200,20 @@ public class BoardListAdapter extends BaseAdapter {
                     boardHolder.txt_board_team_name.setText(boardList.get(position).getTeamname());
                 }else{
                     boardHolder.txt_board_team_name.setText(activity.getResources().getString(R.string.user_team_yet_join));
+                }
+
+                if(boardList.get(position).getMissiontype().equals("DRIBLE")){
+                    boardHolder.li_view_line.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_drible)));
+                }else if(boardList.get(position).getMissiontype().equals("LIFTING")){
+                    boardHolder.li_view_line.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_lifting)));
+                }else if(boardList.get(position).getMissiontype().equals("TRAPING")){
+                    boardHolder.li_view_line.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_traping)));
+                }else if(boardList.get(position).getMissiontype().equals("AROUND")){
+                    boardHolder.li_view_line.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_around)));
+                }else if(boardList.get(position).getMissiontype().equals("FLICK")){
+                    boardHolder.li_view_line.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_flick)));
+                }else if(boardList.get(position).getMissiontype().equals("COMPLEX")){
+                    boardHolder.li_view_line.setBackground(activity.getResources().getDrawable((R.drawable.xml_back_complex)));
                 }
 
             }

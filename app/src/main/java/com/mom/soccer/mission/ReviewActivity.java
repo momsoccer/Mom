@@ -227,13 +227,6 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
             VeteranToast.makeToast(getApplicationContext(),getResources().getString(R.string.networkcheck3),Toast.LENGTH_SHORT).show();
             finish();
             return;
-        }else{
-
-            if(upset.equals("N")){
-                VeteranToast.makeToast(getApplicationContext(),getResources().getString(R.string.networkcheck4),Toast.LENGTH_SHORT).show();
-                finish();
-                return;
-            }
         }
 
         if (mFileUri != null) {

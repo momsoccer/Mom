@@ -1,6 +1,7 @@
 package com.mom.soccer.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -75,7 +76,9 @@ public class PassListInsAdapter extends RecyclerView.Adapter<PassListInsAdapter.
 
     @Override
     public PassItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.pass_card_ins_item, null);
+        LayoutInflater inflater=(LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflater.inflate(R.layout.pass_card_ins_item, parent,false);
+
         return new PassItemHolder(v);
     }
 
@@ -239,7 +242,7 @@ public class PassListInsAdapter extends RecyclerView.Adapter<PassListInsAdapter.
                             public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
                                 if (response.isSuccessful()) {
                                     Intent intent = new Intent(activity,InsDashboardActivity.class);
-                                    intent.putExtra(Param.FRAGMENT_COUNT,1);
+                                    intent.putExtra(Param.FRAGMENT_COUNT,2);
                                     activity.finish();
                                     activity.startActivity(intent);
                                 }
