@@ -48,8 +48,6 @@ public class OpenFeedBackAdapter extends RecyclerView.Adapter<OpenFeedBackAdapte
 
         public OpenFeedBackViewHoder(View view) {
             super(view);
-
-
         }
     }
 

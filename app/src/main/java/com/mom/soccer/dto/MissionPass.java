@@ -23,6 +23,7 @@ public class MissionPass {
 
     private String evaltype;
     private int cashpoint;
+    private String missiontype;
 
     //non DB
     private int level;
@@ -39,6 +40,14 @@ public class MissionPass {
     private int totalscore;
 
     public MissionPass() {
+    }
+
+    public String getMissiontype() {
+        return missiontype;
+    }
+
+    public void setMissiontype(String missiontype) {
+        this.missiontype = missiontype;
     }
 
     public int getTotalscore() {

@@ -36,11 +36,20 @@ public class FeedbackHeader implements Serializable{
     private int level;
     private int replaycount;
     private String recontent;
+    private String missiontype;
 
     //Line...
     private String type;
     private String videoaddr;
     private int    feedbacklineid;
+
+    public String getMissiontype() {
+        return missiontype;
+    }
+
+    public void setMissiontype(String missiontype) {
+        this.missiontype = missiontype;
+    }
 
     public String getRecontent() {
         return recontent;
