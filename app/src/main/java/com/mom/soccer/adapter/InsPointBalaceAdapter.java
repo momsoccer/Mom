@@ -34,8 +34,8 @@ public class InsPointBalaceAdapter extends RecyclerView.Adapter<InsPointBalaceAd
 
     @Override
     public insPoinHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ins_point_balance, null);
-        return new insPoinHolder(view);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.ins_point_balance, parent, false);
+        return new insPoinHolder(v);
     }
 
     @Override

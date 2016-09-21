@@ -97,7 +97,7 @@ public class TeamBoardReply extends AppCompatActivity {
     private BoardLineItemAdapter boardLineItemAdapter;
     private List<MomBoard> momBoardList = new ArrayList<>();
 
-    private int lineCount;
+    private int lineCount = 0;
 
     @Bind(R.id.li_attach_image_group)
     LinearLayout li_attach_image_group;
@@ -309,7 +309,9 @@ public class TeamBoardReply extends AppCompatActivity {
         super.onStart();
 
         //댓글을 달았던 사람들 리스트
-        getBoardLineList();
+
+            getBoardLineList();
+
     }
 
     public void getLineCountText(int count){
@@ -340,7 +342,7 @@ public class TeamBoardReply extends AppCompatActivity {
                         getBoardLineList();
                         comment.setText(null);
 
-                        replyRecview.scrollToPosition(lineCount);
+                        replyRecview.scrollToPosition(lineCount-1);
 
                     }else{
 

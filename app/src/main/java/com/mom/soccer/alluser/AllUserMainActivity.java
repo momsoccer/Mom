@@ -20,6 +20,7 @@ import com.mom.soccer.common.EventBus;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.pubactivity.Param;
 
 import butterknife.Bind;
@@ -51,7 +52,6 @@ public class AllUserMainActivity extends AppCompatActivity {
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
         instructor = prefUtil.getIns();
-
         intent = getIntent();
         PageCall = intent.getExtras().getInt(Param.FRAGMENT_COUNT);
 
@@ -83,7 +83,12 @@ public class AllUserMainActivity extends AppCompatActivity {
                 if(position == 0){
                     textWrite.setText(getResources().getString(R.string.all_user_page_btn1));
                 }else if(position==1){
-                    textWrite.setText(getResources().getString(R.string.all_user_page_btn2));
+                    if(instructor.getInstructorid()==0){
+                        textWrite.setVisibility(View.GONE);
+                    }else{
+                        textWrite.setText(getResources().getString(R.string.all_user_page_btn2));
+                        textWrite.setVisibility(View.VISIBLE);
+                    }
                 }else if(position==2){
                     textWrite.setText(getResources().getString(R.string.all_user_page_btn8));
                 }
@@ -122,7 +127,11 @@ public class AllUserMainActivity extends AppCompatActivity {
                     intent.putExtra("position",0);
                     startActivity(intent);
                 }else if(btnposition==1){
-                    //강사강의 지원 및 의뢰
+                    Intent intent = new Intent(AllUserMainActivity.this,InsVideoActivity.class);
+                    intent.putExtra(MissionCommon.INS_OBJECT,instructor);
+                    intent.putExtra(MissionCommon.USER_OBJECT,user);
+                    intent.putExtra("viewtype","new");
+                    startActivity(intent);
                 }
             }
         });
@@ -181,5 +190,10 @@ public class AllUserMainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         EventBus.getInstance().post(ActivityResultEvent.create(requestCode, resultCode, data));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }

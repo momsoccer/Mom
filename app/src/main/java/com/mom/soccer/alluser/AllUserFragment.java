@@ -19,15 +19,18 @@ import android.widget.LinearLayout;
 import com.mom.soccer.R;
 import com.mom.soccer.alluser.adapter.AdBoardAdapter;
 import com.mom.soccer.alluser.adapter.AllUserBoardItemAdapter;
+import com.mom.soccer.alluser.adapter.InsVideoAdapter;
 import com.mom.soccer.common.ActivityResultEvent;
 import com.mom.soccer.common.EventBus;
 import com.mom.soccer.common.MomSnakBar;
 import com.mom.soccer.dto.AdBoardVo;
+import com.mom.soccer.dto.InsVideoVo;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.MomBoard;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.AdBoardService;
+import com.mom.soccer.retrofitdao.InsVideoService;
 import com.mom.soccer.retrofitdao.MomBoardService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -71,6 +74,7 @@ public class AllUserFragment extends Fragment {
     //adapter
     private AdBoardAdapter adBoardAdapter;
     private AllUserBoardItemAdapter allUserBoardItemAdapter;
+    private InsVideoAdapter insVideoAdapter;
 
     //view
     LinearLayout li_no_found;
@@ -78,12 +82,16 @@ public class AllUserFragment extends Fragment {
     //data
     private List<AdBoardVo> adBoardVos = new ArrayList<AdBoardVo>();
     private List<MomBoard> momBoardList = new ArrayList<MomBoard>();
+    private List<InsVideoVo> insVideoVos = new ArrayList<InsVideoVo>();
 
     public static AllUserFragment newInstance(int page, User user){
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         args.putSerializable(MissionCommon.USER_OBJECT,user);
         AllUserFragment fragment = new AllUserFragment();
+
+
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -94,6 +102,7 @@ public class AllUserFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
         user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
+        instructor = (Instructor) getArguments().getSerializable(MissionCommon.INS_OBJECT);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -170,13 +179,17 @@ public class AllUserFragment extends Fragment {
             });
 
         }else if(mPage==2){
+
             view = inflater.inflate(R.layout.all_user_fragment2, container, false);
             swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+            linearLayoutManager = new LinearLayoutManager(getContext());
             boardRcView = (RecyclerView) view.findViewById(R.id.boardRcView);
             li_no_found = (LinearLayout) view.findViewById(R.id.li_no_found);
 
-            final View finalView1 = view;
+            final InsVideoVo query = new InsVideoVo();
+            getInsVideoList("first",query);
 
+            final View finalView1 = view;
             //2.스와이프 이벤트 버전별
             if(Build.VERSION.SDK_INT  >= 20) {
                 boardRcView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
@@ -206,13 +219,32 @@ public class AllUserFragment extends Fragment {
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    //query
-                    // getSearchUserMission(query,"new");
-
+                    getInsVideoList("first",query);
                     MomSnakBar.show(finalView1,getActivity(),getString(R.string.bottom_msg4));
                     swipeRefreshLayout.setRefreshing(false);
                 }
             });
+
+            //3.스와이프 이벤트 페이징
+            final View finalView = view;
+            boardRcView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        if (linearLayoutManager.findLastVisibleItemPosition() == adBoardVos.size()-1) {
+                            if(!lastData){
+                                getInsVideoList("next",query);
+                            }else{
+                                MomSnakBar.show(finalView,getActivity(),getActivity().getResources().getString(R.string.bottom_msg1));
+                            }
+                        }
+                    }
+                }
+            });
+
+
 
         }else if(mPage==3) {
             view = inflater.inflate(R.layout.all_user_fragment3, container, false);
@@ -286,6 +318,79 @@ public class AllUserFragment extends Fragment {
         EventBus.getInstance().unregister(this);
     }
 
+    public void getInsVideoList(final String pageFlag, InsVideoVo videoVo){
+
+        if(pageFlag.equals("first")) {
+            offset = 0;
+        }else{
+            page = page + 1;
+            offset = limit * page;
+        }
+        videoVo.setOffset(offset);
+        videoVo.setLimit(limit);
+
+        WaitingDialog.showWaitingDialog(getActivity(),false);
+        InsVideoService insVideoService = ServiceGenerator.createService(InsVideoService.class,getContext(),user);
+        Call<List<InsVideoVo>> c = insVideoService.getVideoList(videoVo);
+        c.enqueue(new Callback<List<InsVideoVo>>() {
+            @Override
+            public void onResponse(Call<List<InsVideoVo>> call, Response<List<InsVideoVo>> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    if(pageFlag.equals("first")){
+
+                        insVideoVos = response.body();
+
+                        if(insVideoVos.size()==0){
+                            //li_no_found.setVisibility(View.VISIBLE);
+                        }else{
+                            //li_no_found.setVisibility(View.GONE);
+                        }
+
+                        insVideoAdapter = new InsVideoAdapter(getActivity(),insVideoVos,user);
+                        boardRcView.setHasFixedSize(true);
+                        boardRcView.setLayoutManager(linearLayoutManager);
+                        boardRcView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                        boardRcView.getItemAnimator().setAddDuration(300);
+                        boardRcView.getItemAnimator().setRemoveDuration(300);
+                        boardRcView.getItemAnimator().setMoveDuration(300);
+                        boardRcView.getItemAnimator().setChangeDuration(300);
+                        boardRcView.setHasFixedSize(true);
+                        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(insVideoAdapter);
+                        alphaAdapter.setDuration(300);
+                        boardRcView.setAdapter(insVideoAdapter);
+
+                        //페이징 초기화
+                        lastData = false;
+                        offset  = 0;
+                        page    = 0;
+
+                    }else{
+                        List<InsVideoVo> insVideoVos1 = response.body();
+
+                        for(int i = 0 ; i < insVideoVos1.size() ; i++)
+                        {
+                            insVideoVos.add(insVideoVos1.get(i));
+                        }
+
+                        insVideoAdapter.notifyDataSetChanged();
+
+                        if(insVideoVos.size() != limit){
+                            lastData = true;
+                            insVideoVos = new ArrayList<InsVideoVo>();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<InsVideoVo>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+
+    }
 
     public void getTeamBoarderList(final String pageFlag){
         WaitingDialog.showWaitingDialog(getActivity(),false);
@@ -431,7 +536,7 @@ public class AllUserFragment extends Fragment {
             }
         });
     }
-    
+
     @Subscribe
     public void recevedUpdateBoardFile(final MomBoard momBoard){
         if(mPage==1){

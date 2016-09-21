@@ -816,7 +816,7 @@
     <string name="all_user_page_title3">강사/축구교실/소개</string>
 
     <string name="all_user_page_btn1">작성</string>
-    <string name="all_user_page_btn2">지원</string>
+    <string name="all_user_page_btn2">강좌작성</string>
     <string name="all_user_page_btn8">소개요청</string>
 
 
@@ -855,12 +855,27 @@
     <string name="point_reqcheck">포인트신청이 접수 되었습니다 \n확인 후 바로 충전해드리겠습니다 \n 감사합니다</string>
     <string name="title_activity_opne_board">OpneBoardActivity</string>
 
-
     <!--오픈보드-->
     <string name="open_board_write_hint">유저들에게 전할 소식을 남기세요.\n(클릭후 작성해주세요)</string>
 
-
     <string name="feedback_card_msg1">강사의 피드백</string>
     <string name="team_name_prompt">팀선택</string>
+    <string name="title_activity_ins_video">InsVideoActivity</string>
+
+    <string name="ins_video_title">영상 강좌 입력</string>
+    <string name="ins_video_subject">영상 강의제목</string>
+    <string name="ins_video_content">업로드 하실 영상에 대한 소개 및 상세한 내용을 적어 주세요.\n(참고 : 직접 업로드시에는 주소를 입력치 마시고 \n업로드 버튼을 클릭하셔서 파일을 선택해 주세요.\n유튜브에 강사님의 계정으로 업로드가 됩니다)</string>
+    <string name="ins_video_btn">저장</string>
+    <string name="ins_video_youtubeaddr">이미 영상이 있다면 유투브주소를 붙여넣어주세요(https://youtu.be/xxxxx 형태)</string>
+
+    <string name="ins_video_subject_empty">제목을 입력해주세요</string>
+    <string name="ins_video_youtube_empty">영상을 업로드 하시거나, 유투브 주소를 입력해주세요</string>
+    <string name="ins_video_save">영상강의가 정상적으로 등록되었습니다 \n목록으로 이동합니다</string>
+
+    <string name="ins_video_upload">업로드</string>
+    <string name="ins_video_upload2">영상 체크</string>
+
+    <string name="ins_video_like">좋아요</string>
+    <string name="ins_video_comment">댓글이 등록 되었습니다</string>
 
 </resources>

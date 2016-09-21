@@ -3,14 +3,14 @@ package com.mom.soccer.alluser.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.alluser.AdBoardActivity;
 import com.mom.soccer.dto.AdBoardVo;
@@ -24,6 +24,7 @@ public class AdBoardAdapter extends RecyclerView.Adapter<AdBoardAdapter.AdBoardV
 
     Activity activity;
     List<AdBoardVo> adBoardVos;
+    ImageAdapter imageAdapter;
 
     public AdBoardAdapter(Activity activity, List<AdBoardVo> adBoardVos) {
         this.activity = activity;
@@ -32,7 +33,7 @@ public class AdBoardAdapter extends RecyclerView.Adapter<AdBoardAdapter.AdBoardV
 
     @Override
     public AdBoardViewHoder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.adboard_item_layout, null);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.adboard_item_layout, parent, false);
         return new AdBoardViewHoder(v);
     }
 
@@ -41,7 +42,17 @@ public class AdBoardAdapter extends RecyclerView.Adapter<AdBoardAdapter.AdBoardV
         final AdBoardVo vo = adBoardVos.get(position);
 
         if(vo.getFilecount() > 0){
-            for(int i=0;i < vo.getAdBoardFiles().size(); i++){
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
+            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            linearLayoutManager.scrollToPosition(position);
+            holder.imageRcView.setLayoutManager(linearLayoutManager);
+
+            holder.imageRcView.setHasFixedSize(true);
+            holder.imageRcView.setItemAnimator(new DefaultItemAnimator());
+            imageAdapter = new ImageAdapter(activity,vo.getAdBoardFiles());
+            holder.imageRcView.setAdapter(imageAdapter);
+
+ /*           for(int i=0;i < vo.getAdBoardFiles().size(); i++){
 
                 if(i==0){
                     Glide.with(activity)
@@ -79,7 +90,7 @@ public class AdBoardAdapter extends RecyclerView.Adapter<AdBoardAdapter.AdBoardV
                             .override(500,500)
                             .into(holder.attachImage5);
                 }
-            }
+            }*/
         }
 
         //더보기 표현
@@ -113,18 +124,19 @@ public class AdBoardAdapter extends RecyclerView.Adapter<AdBoardAdapter.AdBoardV
 
     public class AdBoardViewHoder extends RecyclerView.ViewHolder{
 
-        ImageView attachImage1,attachImage2,attachImage3,attachImage4,attachImage5;
+        //ImageView attachImage1,attachImage2,attachImage3,attachImage4,attachImage5;
         TextView introduce,content1,phone,addr,txbtnview;
         CardView cardview;
+        RecyclerView imageRcView;
 
         public AdBoardViewHoder(View view) {
             super(view);
 
-            attachImage1 = (ImageView) view.findViewById(R.id.attachImage1);
+/*            attachImage1 = (ImageView) view.findViewById(R.id.attachImage1);
             attachImage2 = (ImageView) view.findViewById(R.id.attachImage2);
             attachImage3 = (ImageView) view.findViewById(R.id.attachImage3);
             attachImage4 = (ImageView) view.findViewById(R.id.attachImage4);
-            attachImage5 = (ImageView) view.findViewById(R.id.attachImage5);
+            attachImage5 = (ImageView) view.findViewById(R.id.attachImage5);*/
 
             introduce = (TextView) view.findViewById(R.id.introduce);
             content1 = (TextView) view.findViewById(R.id.content1);
@@ -132,6 +144,9 @@ public class AdBoardAdapter extends RecyclerView.Adapter<AdBoardAdapter.AdBoardV
             addr = (TextView) view.findViewById(R.id.addr);
             cardview = (CardView) view.findViewById(R.id.cardview);
             txbtnview = (TextView) view.findViewById(R.id.txbtnview);
+            imageRcView = (RecyclerView) view.findViewById(R.id.imageRcView);
+
+
 
         }
     }

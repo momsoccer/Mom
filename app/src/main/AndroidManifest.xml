@@ -269,7 +269,13 @@
             android:name=".alluser.AdBoardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ins.InsMoneyActivity"
+        <activity
+            android:name=".ins.InsMoneyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".alluser.InsVideoActivity"
+            android:label="@string/title_activity_ins_video"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             />

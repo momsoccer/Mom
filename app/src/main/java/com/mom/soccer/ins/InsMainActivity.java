@@ -55,6 +55,7 @@ public class InsMainActivity extends AppCompatActivity {
         intent = getIntent();
 
         if(intent.getStringExtra("inspath").equals("new")){
+            //new라면 자지자신???
             instructor = prefUtil.getIns();
         }else{
             instructor = (Instructor) intent.getSerializableExtra(MissionCommon.INS_OBJECT);

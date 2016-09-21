@@ -40,7 +40,7 @@ public class InsInfoRecyclerAdapter extends RecyclerView.Adapter<InsInfoRecycler
 
     @Override
     public InsInfoItemViewHoder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.insinfo_card_view, null);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.insinfo_card_view, parent, false);
         return new InsInfoItemViewHoder(v);
     }
 

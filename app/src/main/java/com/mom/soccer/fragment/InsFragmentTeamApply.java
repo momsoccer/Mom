@@ -252,6 +252,12 @@ public class InsFragmentTeamApply extends Fragment{
                             }
                         });
                     }
+
+                    /* 선생님일경우 다른 선생님 팀에 가입하게 되면 어떤 일이 벌어질지 모른다..나중에 보완+
+                        if(ins.getInstructorid() == insInfoVo.getInstructorid()){
+                        btnTeamRequest.setVisibility(View.GONE);
+                    }*/
+
                 }else{
                     WaitingDialog.cancelWaitingDialog();
                 }

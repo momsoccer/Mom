@@ -4,20 +4,18 @@
     android:orientation="vertical"
     android:background="@color/mom_color1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
-
-        <ImageButton
-            android:id="@+id/btn_join_closed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/closedbtn"
-            android:layout_marginTop="24dp"
-            android:background="@color/mom_color1"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            />
+    <ImageButton
+        android:id="@+id/btn_join_closed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/closedbtn"
+        android:layout_marginTop="24dp"
+        android:background="@color/mom_color1"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        />
 
     <LinearLayout
         android:layout_marginTop="50dp"

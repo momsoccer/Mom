@@ -1080,6 +1080,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                         SharedPreferences.Editor editor = pref.edit();
 
                         editor.putInt("ins_id",instructor.getUid());
+                        editor.putInt("ins_teamid",instructor.getTeamid());
                         editor.commit();
 
                     }

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mom_color1"
+    tools:context="com.mom.soccer.ball.PlayerMainActivity"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        app:titleTextColor="@color/color6"
+        android:background="@color/mom_color1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:text="@string/ins_video_title"
+            android:textColor="@color/color6"
+            android:textSize="18sp"
+            android:src="@drawable/mom_hd_mk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+
+        <Button
+            android:id="@+id/ins_video_btn"
+            android:text="@string/ins_video_btn"
+            android:textSize="13sp"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:layout_gravity="right"
+            style="@style/btnStylePaprika"
+            android:layout_marginRight="10dp"
+            />
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:verticalSpacing="10dp"
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/layout_subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/TextLabelinput"
+                    >
+
+                    <EditText
+                        android:id="@+id/subject"
+                        android:hint="@string/ins_video_subject"
+                        android:inputType="text"
+                        android:textColorHint="@color/color6"
+                        android:textSize="15sp"
+                        android:singleLine="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <EditText
+                    android:layout_margin="5dp"
+                    android:id="@+id/content"
+                    android:hint="@string/ins_video_content"
+                    android:inputType="textMultiLine"
+                    android:textColorHint="@color/color6"
+                    android:textSize="15sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:gravity="top"
+                    android:padding="10dp"
+                    android:background="@drawable/xml_gray_lineback" />
+
+                <LinearLayout
+                    android:id="@+id/li_youtube_addr"
+                    android:orientation="vertical"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/layout_youtubeaddr"
+                        android:layout_centerVertical="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/TextLabelinput"
+                        >
+                        <EditText
+                            android:id="@+id/youtubeaddr"
+                            android:layout_gravity="left"
+                            android:hint="@string/ins_video_youtubeaddr"
+                            android:inputType="text"
+                            android:textColorHint="@color/color8"
+                            android:textSize="10sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/upload_video"
+                            android:text="@string/ins_video_upload"
+                            android:textSize="13sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:gravity="center"
+                            android:layout_gravity="right"
+                            style="@style/btnStylePaprika"
+                            />
+
+                        <Button
+                            android:layout_marginTop="3dp"
+                            android:id="@+id/video_check"
+                            android:text="@string/ins_video_upload2"
+                            android:textSize="13sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:gravity="center"
+                            android:layout_gravity="right"
+                            style="@style/btnStylePaprika"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/li_layout"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <FrameLayout
+                    android:id="@+id/youtube_seed_frame_layout"
+                    android:layout_margin="15dp"
+                    android:background="@color/mom_color1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true">
+                </FrameLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/li_reply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/mom_color1"
+                    >
+
+                    <LinearLayout
+                        android:background="@drawable/xml_back_white"
+                        android:layout_margin="5dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        >
+
+                        <EditText
+                            android:id="@+id/comment"
+                            android:layout_margin="5dp"
+                            android:hint="@string/momboard_edit"
+                            android:textColorHint="@color/color2"
+                            android:textSize="15sp"
+                            android:textColor="@color/color6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:background="@drawable/xml_edit_back"
+                            />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/sendBtn"
+                        android:layout_margin="5dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/momboard_edit_send"
+                        android:textColorHint="@color/color8"
+                        style="@style/btnStylePaprika"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.2"
+                        android:layout_height="35dp" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/replyRecview"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mom_color1" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
