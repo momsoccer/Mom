@@ -15,4 +15,6 @@ public class MissionCommon {
     public static String FEEDBACKHEADER = "FEEDBACKHEADER";
     public static String FEEDBACKLINE = "FEEDBACKLINE";
 
+    public static String VIDEO_OBJECT = "VIDEO_OBJECT";
+
 }

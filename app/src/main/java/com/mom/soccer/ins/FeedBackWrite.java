@@ -174,8 +174,6 @@ public class FeedBackWrite extends AppCompatActivity implements GoogleApiClient.
 
         credential.setSelectedAccountName(Auth.accountName);
 
-        //Plus.AccountApi.getAccountName(mGoogleApiClient);
-
         new Async(getApplicationContext()).execute();
 
     }

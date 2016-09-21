@@ -17,6 +17,7 @@ public class InsVideoVo implements Serializable{
     private int likecount;
     private int commentcount;
     private int linecount;
+    private String filename;
 
     //nonDb
     private String insimage;
@@ -61,6 +62,14 @@ public class InsVideoVo implements Serializable{
                 ", limit=" + limit +
                 ", offset=" + offset +
                 '}';
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public int getCommentcount() {

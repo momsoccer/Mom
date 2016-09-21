@@ -665,7 +665,7 @@
     <string name="usermain_misison_filter8">팀</string>
 
     <string name="ins_feedback_msg1">영상선택</string>
-    <string name="ins_feedback_msg2">영상업로드 유의 사항</string>
+    <string name="ins_feedback_msg2">비디오 영상을 촬영하시거나 \n 갤러리에서 선택해주세요</string>
     <string name="ins_feedback_msg3">앨범에서 선택</string>
     <string name="ins_feedback_msg4">카메라촬영</string>
     <string name="ins_feedback_msg5">영상/카메라</string>
@@ -877,5 +877,5 @@
 
     <string name="ins_video_like">좋아요</string>
     <string name="ins_video_comment">댓글이 등록 되었습니다</string>
-
+    <string name="ins_video_upload_content">업로드 하실 영상을 촬영하시거나 \n갤러리에서 선택해주세요</string>
 </resources>
