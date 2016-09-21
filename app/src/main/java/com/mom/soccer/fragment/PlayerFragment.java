@@ -14,11 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -43,6 +46,7 @@ import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.FriendService;
 import com.mom.soccer.retrofitdao.MomBoardService;
+import com.mom.soccer.retrofitdao.TeamService;
 import com.mom.soccer.retrofitdao.UserMainService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -91,6 +95,9 @@ public class PlayerFragment extends Fragment{
 
     LinearLayout li_no_found,li_req_no_found,li_team_no_data;
     TextView tx_nodata_found,tx_req_nodata_found,friend_count,friend_no_count,usermissionnocount,usermissioncount;
+
+    Spinner spinner;
+    ArrayList<String> teamsNameList = new ArrayList<>();
 
     //팀게시판기능
     SwipeRefreshLayout swipeRefreshLayout;    //젤리빈 17? 이하는 주석처리로 분기...
@@ -354,6 +361,25 @@ public class PlayerFragment extends Fragment{
                             .build();
                     dialog.show();
 
+                    spinner = (Spinner) dialog.getCustomView().findViewById(R.id.spinner);
+                    ArrayAdapter dataAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_item, teamsNameList);
+
+                    dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                    spinner.setAdapter(dataAdapter);
+
+                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            query.setTeamname(spinner.getSelectedItem().toString());
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+
+
                     drible_check = (CheckBox) dialog.getCustomView().findViewById(R.id.drible_check);
                     traping_check = (CheckBox) dialog.getCustomView().findViewById(R.id.traping_check);
                     lifting_check = (CheckBox) dialog.getCustomView().findViewById(R.id.lifting_check);
@@ -484,6 +510,8 @@ public class PlayerFragment extends Fragment{
 
                 }
             });
+
+            getTeamNameList();
 
         }else if(mPage==3){
 
@@ -906,6 +934,29 @@ public class PlayerFragment extends Fragment{
     public void onActivityResult(ActivityResultEvent activityResultEvent){
         onActivityResult(activityResultEvent.getRequestCode(), activityResultEvent.getResultCode(), activityResultEvent.getData());
     }
+
+    public void getTeamNameList(){
+        WaitingDialog.showWaitingDialog(getActivity(),false);
+        TeamService teamService = ServiceGenerator.createService(TeamService.class,getActivity(),user);
+        Call<ArrayList<String>> c = teamService.getTeamNameList();
+        c.enqueue(new Callback<ArrayList<String>>() {
+            @Override
+            public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    teamsNameList = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<String>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

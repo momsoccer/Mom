@@ -272,5 +272,18 @@
             android:background="@drawable/card_rectangle"
             />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/team_name_prompt"
+                />
+
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>

@@ -21,6 +21,12 @@ public class Team {
 
     public Team(){}
 
+
+    public Team(int teamid, String name) {
+        this.teamid = teamid;
+        this.name = name;
+    }
+
     public String getInsname() {
         return insname;
     }

@@ -6,6 +6,7 @@ import com.mom.soccer.dto.Team;
 import com.mom.soccer.dto.TeamApply;
 import com.mom.soccer.dto.TeamMember;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -62,5 +63,7 @@ public interface TeamService {
     @GET("/api/team/getMyTeaminfo")
     Call<Team> getMyTeaminfo(@Query("uid")int uid);
 
+    @GET("/api/team/getTeamNameList")
+    Call<ArrayList<String>> getTeamNameList();
 
 }

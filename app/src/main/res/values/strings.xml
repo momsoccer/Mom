@@ -861,4 +861,6 @@
 
 
     <string name="feedback_card_msg1">강사의 피드백</string>
+    <string name="team_name_prompt">팀선택</string>
+
 </resources>
