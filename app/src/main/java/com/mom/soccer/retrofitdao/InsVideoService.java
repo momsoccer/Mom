@@ -49,8 +49,8 @@ public interface InsVideoService {
     @POST("/insvideo/saveLine")
     Call<ServerResult> saveLine(@Body InsVideoVoLine insVideoVo);
 
-    @GET("/insvideo/deleteLine")
-    Call<ServerResult> deleteLine(@Query("videoid") int videoid);
+    @POST("/insvideo/deleteLine")
+    Call<ServerResult> deleteLine(@Body InsVideoVoLine insVideoVo);
 
     @GET("/insvideo/getLineList")
     Call<List<InsVideoVoLine>> getLineList(@Query("videoid") int videoid);

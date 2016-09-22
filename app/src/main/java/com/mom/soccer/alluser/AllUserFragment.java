@@ -23,6 +23,7 @@ import com.mom.soccer.alluser.adapter.InsVideoAdapter;
 import com.mom.soccer.common.ActivityResultEvent;
 import com.mom.soccer.common.EventBus;
 import com.mom.soccer.common.MomSnakBar;
+import com.mom.soccer.common.internal.BusObject;
 import com.mom.soccer.dto.AdBoardVo;
 import com.mom.soccer.dto.InsVideoVo;
 import com.mom.soccer.dto.Instructor;
@@ -568,6 +569,20 @@ public class AllUserFragment extends Fragment {
     @Subscribe
     public void onActivityResult(ActivityResultEvent activityResultEvent){
         onActivityResult(activityResultEvent.getRequestCode(), activityResultEvent.getResultCode(), activityResultEvent.getData());
+    }
+
+    //강사배열 변경시 이벤트
+    @Subscribe
+    public void receveInsObjectCommnet(BusObject busObject){
+        //페이지를 꼭 해줘야 하는거 아직 어댑터를 생성 안했기 때문
+        int i = busObject.getPosition();
+        int count = busObject.getLineCount();
+
+        Log.i(TAG,"버스 이벤트 " + busObject.toString());
+
+        if(mPage==2) {
+            insVideoAdapter.updateLineItemCount(i,count);
+        }
     }
 
     @Override

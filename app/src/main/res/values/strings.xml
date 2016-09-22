@@ -341,6 +341,7 @@
     <string name="mom_menu_title_coach_info">강사정보</string>
     <string name="mom_menu_title_setup">설정</string>
     <string name="mom_menu_title_logout">로그아웃</string>
+    <string name="mom_menu_title_setup1">포인트설정</string>
 
 
     <!--다이얼로그창-->
@@ -877,5 +878,11 @@
 
     <string name="ins_video_like">좋아요</string>
     <string name="ins_video_comment">댓글이 등록 되었습니다</string>
-    <string name="ins_video_upload_content">업로드 하실 영상을 촬영하시거나 \n갤러리에서 선택해주세요</string>
+    <string name="ins_video_upload_content">업로드 하실 영상을 촬영하시거나\n갤러리에서 선택해주세요</string>
+    <string name="ins_video_upload_start">영상강의를 유투브에 업로드 합니다</string>
+    <string name="ins_video_delete">영상 강의가 삭제 되었습니다</string>
+    <string name="ins_video_check_mag">영상체크 버튼을 꼭 눌러주세요\n 유튜부 주소가 정확한지 확인 하기 위함입니다</string>
+
+
+    <string name="ins_introduce_title1">강사경력 및 정보</string>
 </resources>

@@ -198,6 +198,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         Intent intent = getIntent();
         instructor = (Instructor) intent.getSerializableExtra("INS");
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -1070,7 +1071,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
                         editor.putInt("ins_id",0);
                         editor.commit();
-
+                        Common.INSFLAG = "USER";
                     }else{
                         navigationView.getMenu().findItem(R.id.mn_item_coachreq).setTitle(getString(R.string.mom_menu_title_coach_info));
                         navigationView.getMenu().findItem(R.id.mn_item_teammemberlist).setVisible(false);
@@ -1082,6 +1083,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                         editor.putInt("ins_id",instructor.getUid());
                         editor.putInt("ins_teamid",instructor.getTeamid());
                         editor.commit();
+                        Common.INSFLAG = "INS";
 
                     }
                 }

@@ -19,10 +19,20 @@ public class AdBoardVo{
     private int filecount;
     private int limit;
     private int offset;
+    private String youtubeaddr;
 
     private List<AdBoardFile> adBoardFiles;
 
     public AdBoardVo(){}
+
+
+    public String getYoutubeaddr() {
+        return youtubeaddr;
+    }
+
+    public void setYoutubeaddr(String youtubeaddr) {
+        this.youtubeaddr = youtubeaddr;
+    }
 
     public int getLimit() {
         return limit;
@@ -141,6 +151,9 @@ public class AdBoardVo{
                 ", change_creationdate='" + change_creationdate + '\'' +
                 ", formatDataSign='" + formatDataSign + '\'' +
                 ", filecount=" + filecount +
+                ", limit=" + limit +
+                ", offset=" + offset +
+                ", youtubeaddr='" + youtubeaddr + '\'' +
                 ", adBoardFiles=" + adBoardFiles +
                 '}';
     }

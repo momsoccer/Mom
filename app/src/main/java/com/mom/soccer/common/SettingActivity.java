@@ -93,11 +93,13 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
                     SharedPreferences.Editor pre = sp.edit();
                     pre.putString("pushcheck", "Y");
                     pre.commit();
+                    Common.PUSH ="Y";
                 }else{
                     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
                     SharedPreferences.Editor pre = sp.edit();
                     pre.putString("pushcheck", "N");
                     pre.commit();
+                    Common.PUSH ="N";
                 }
                 return true;
             }

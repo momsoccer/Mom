@@ -192,7 +192,6 @@ public class UploadFeedService extends IntentService {
             });
         }
 
-
     }
 
 }

@@ -25,6 +25,8 @@ public class PubReport {
     public static String REPORTTYPE_MOMBOARD_COMMENT = "BOARDCOMMENT";
     public static String REPORTTYPE_MISSION_COMMENT = "MISSIONCOMMENT";
     public static String REPORTTYPE_MISSION_PASS = "MISSIONPASS";
+    public static String REPORTTYPE_INS_VIDEO = "NS_VIDEO";
+    public static String REPORTTYPE_INS_VIDEO_COMMENT = "IDEO_COMMENT";
 
     public static void doReport(final Activity activity, Report report, User user){
 

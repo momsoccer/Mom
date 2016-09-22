@@ -13,6 +13,7 @@ import com.mom.soccer.alluser.AllUserMainActivity;
 import com.mom.soccer.ball.PlayerMainActivity;
 import com.mom.soccer.bottommenu.MyPageActivity;
 import com.mom.soccer.bottommenu.SearchActivity;
+import com.mom.soccer.common.Common;
 import com.mom.soccer.ins.InsDashboardActivity;
 import com.mom.soccer.momactivity.MomMainActivity;
 import com.mom.soccer.pubactivity.Param;
@@ -61,8 +62,11 @@ public class TabNaviComplaintBase extends RelativeLayout {
         ib_appbar_coach = (ImageButton) findViewById(R.id.ib_appbar_coach);
         ib_board    = (ImageButton) findViewById(R.id.ib_board);
 
-        //imageBtnSetup   = (ImageButton) findViewById(R.id.ib_appbar_setup);
-
+        if(Common.INSFLAG.equals("INS")){
+            ib_appbar_coach.setVisibility(VISIBLE);
+        }else{
+            ib_appbar_coach.setVisibility(GONE);
+        }
 
         ib_appbar_coach.setOnClickListener(new OnClickListener() {
             @Override

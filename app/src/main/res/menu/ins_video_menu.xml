@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/board_delete"
+        android:title="@string/momboard_delete"
+        android:orderInCategory="101"
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/board_report"
+        android:title="@string/board_report"
+        android:orderInCategory="102"
+        app:showAsAction="always"
+        />
+
+
+</menu>

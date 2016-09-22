@@ -1,11 +1,12 @@
 package com.mom.soccer.common.internal;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Created by sungbo on 2016-09-17.
  */
-public class BusObject {
+public class BusObject implements Serializable{
 
     private int position;
     private int keyid;
@@ -53,5 +54,16 @@ public class BusObject {
 
     public void setMap(Map<String, String> map) {
         this.map = map;
+    }
+
+    @Override
+    public String toString() {
+        return "BusObject{" +
+                "position=" + position +
+                ", keyid=" + keyid +
+                ", lineCount=" + lineCount +
+                ", keyName='" + keyName + '\'' +
+                ", map=" + map +
+                '}';
     }
 }

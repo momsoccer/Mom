@@ -98,7 +98,7 @@ public class InsFragmentTeamApply extends Fragment{
             memberRecyclerView = (RecyclerView) v.findViewById(R.id.memberRecyclerView);
             getTeamMemberList();
 
-        }else if(mPage==3){
+        /*}else if(mPage==3){*/
 
         }
         return v;
@@ -221,6 +221,25 @@ public class InsFragmentTeamApply extends Fragment{
 
                     pubpasspoint.setText(String.valueOf(insInfoVo.getPubpasspoint()));
                     teampasspoint.setText(String.valueOf(insInfoVo.getTeampasspoint()));
+
+                    TextView address,currentteamname,career1,career2,career3,career4,career5,resume;
+                    address = (TextView) v.findViewById(R.id.address);
+                    currentteamname = (TextView) v.findViewById(R.id.currentteamname);
+                    career1 = (TextView) v.findViewById(R.id.career1);
+                    career2 = (TextView) v.findViewById(R.id.career2);
+                    career3 = (TextView) v.findViewById(R.id.career3);
+                    career4 = (TextView) v.findViewById(R.id.career4);
+                    career5 = (TextView) v.findViewById(R.id.career5);
+                    resume  = (TextView) v.findViewById(R.id.resume);
+
+                    address.setText(insInfoVo.getAddress());
+                    currentteamname.setText(insInfoVo.getCurrentteamname());
+                    career1.setText(insInfoVo.getCareer1());
+                    career2.setText(insInfoVo.getCareer2());
+                    career3.setText(insInfoVo.getCareer3());
+                    career4.setText(insInfoVo.getCareer4());
+                    career5.setText(insInfoVo.getCareer5());
+                    resume.setText(insInfoVo.getResume());
 
                     //화면이 처음 실행 될때. 내가 강사라면 다른팀 지원 불가
 

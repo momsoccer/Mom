@@ -20,22 +20,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMessaging";
 
-
-    // 호출시 (푸시 리시버에서 호출)
-    //Intent intent_ = new Intent(context, SOSPopupActivity.class);
-    //intent_.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);   // 이거 안해주면 안됨
-    //context.startActivity(intent_);
-
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        sendNotification(remoteMessage.getData().get("title"),
-                        remoteMessage.getData().get("content"),
-                        remoteMessage.getData().get("message")
-        );
+            sendNotification(remoteMessage.getData().get("title"),
+                    remoteMessage.getData().get("content"),
+                    remoteMessage.getData().get("message")
+            );
+
     }
 
     private void sendNotification(String title, String content, String message) {
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,

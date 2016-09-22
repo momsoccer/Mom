@@ -107,10 +107,13 @@ public class InsVideoLineAdapter extends RecyclerView.Adapter<InsVideoLineAdapte
         }
     }
 
-    public void deleteLine(final int position,int videoid){
+    public void deleteLine(final int position,int lineid){
         WaitingDialog.showWaitingDialog(activity,false);
         InsVideoService service = ServiceGenerator.createService(InsVideoService.class,activity,user);
-        Call<ServerResult> c = service.deleteLine(videoid);
+        InsVideoVoLine insVideoVoLine = new InsVideoVoLine();
+        insVideoVoLine.setLineid(lineid);
+        Call<ServerResult> c = service.deleteLine(insVideoVoLine);
+
         c.enqueue(new Callback<ServerResult>() {
             @Override
             public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {

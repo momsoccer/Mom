@@ -20,13 +20,21 @@ import com.google.common.collect.Lists;
 import com.mom.soccer.common.Auth;
 import com.mom.soccer.dto.InsVideoVo;
 import com.mom.soccer.dto.Instructor;
+import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.exception.UploadExceptionActivity;
 import com.mom.soccer.mission.MissionCommon;
+import com.mom.soccer.retrofitdao.InsVideoService;
+import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.uploadyutube.UploadService;
+import com.mom.soccer.widget.WaitingDialog;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class VideoUploadService extends IntentService {
@@ -64,9 +72,8 @@ public class VideoUploadService extends IntentService {
         Auth.accountName = instructor.getEmail();
         String chosenAccountName = Auth.accountName;
 
-        String appName = "몸 싸커 영상피드백 업로드";
+        String appName = "몸 싸커 영상강의 업로드";
 
-        Log.i(TAG,"피드백 영상 업로드 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 1");
 
         credential = GoogleAccountCredential.usingOAuth2(getApplicationContext(), Lists.newArrayList(Auth.SCOPES));
         credential = GoogleAccountCredential.usingOAuth2(getApplicationContext(), YouTubeScopes.all());
@@ -157,7 +164,24 @@ public class VideoUploadService extends IntentService {
             startActivity(intent);
 
         }else {
+            insVideoVo.setYoutubeaddr(videoId);
+            InsVideoService insVideoService = ServiceGenerator.createService(InsVideoService.class,getApplicationContext(),instructor);
 
+            Call<ServerResult> c = insVideoService.saveVideo(insVideoVo);
+            c.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                    if(response.isSuccessful()){
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
+                    t.printStackTrace();
+                }
+            });
         }
 
 

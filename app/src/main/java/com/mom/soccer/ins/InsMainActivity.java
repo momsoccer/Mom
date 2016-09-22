@@ -81,10 +81,10 @@ public class InsMainActivity extends AppCompatActivity {
 
     public class InsViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        final int PAGE_COUNT = 3;
+        final int PAGE_COUNT = 2;
 
         private String tabTitles[] = new String[] {
-        getString(R.string.ins_toolbar_title),getString(R.string.ins_team_info_text),getString(R.string.ins_team_video_text)
+        getString(R.string.ins_toolbar_title),getString(R.string.ins_team_info_text)/*,getString(R.string.ins_team_video_text)*/
         };
 
         public InsViewPagerAdapter(FragmentManager fm) {

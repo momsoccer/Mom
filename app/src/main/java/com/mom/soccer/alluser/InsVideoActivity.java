@@ -35,6 +35,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -50,10 +51,15 @@ import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.youtube.YouTubeScopes;
 import com.mom.soccer.R;
 import com.mom.soccer.alluser.adapter.InsVideoLineAdapter;
+import com.mom.soccer.alluser.youtubeupload.VideoUploadService;
 import com.mom.soccer.common.Auth;
 import com.mom.soccer.common.Compare;
+import com.mom.soccer.common.EventBus;
 import com.mom.soccer.common.GoogleAuth;
 import com.mom.soccer.common.MomSnakBar;
+import com.mom.soccer.common.RecyclerItemClickListener;
+import com.mom.soccer.common.internal.BusObject;
+import com.mom.soccer.dataDto.Report;
 import com.mom.soccer.dto.InsVideoVo;
 import com.mom.soccer.dto.InsVideoVoLine;
 import com.mom.soccer.dto.Instructor;
@@ -62,6 +68,7 @@ import com.mom.soccer.dto.User;
 import com.mom.soccer.fragment.YoutubeSeedMissionFragment;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.pubactivity.Param;
+import com.mom.soccer.pubretropit.PubReport;
 import com.mom.soccer.retrofitdao.InsVideoService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.VeteranToast;
@@ -78,6 +85,7 @@ import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 public class InsVideoActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = "InsVideoActivity";
@@ -127,6 +135,11 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
     @Bind(R.id.replyRecview)
     RecyclerView replyRecview;
 
+    //댓글
+    @Bind(R.id.textImageCount)
+    TextView textImageCount;
+
+    private int lineCount=0;
     private InsVideoLineAdapter insVideoLineAdapter;
 
     private String youtubeAdress;
@@ -158,6 +171,7 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
     public static boolean uploadPossibility = false;
 
     private UploadBroadcastReceiver broadcastReceiver;
+    private LinearLayoutManager linearLayoutManager;
 
     @Bind(R.id.li_uploadview)
     LinearLayout li_uploadview;
@@ -167,8 +181,10 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
     private MediaController mc;
 
     private boolean uploadFlag = false;
-
-
+    private boolean copyyoutube = false;
+    private int posintion = 0;
+    View positiveAction;
+    EditText report_content;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,8 +204,11 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(R.drawable.back_arrow);
-        li_uploadview.setVisibility(View.GONE);
 
+        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+
+        li_uploadview.setVisibility(View.GONE);
         Auth.accountName = instructor.getEmail();
         GoogleAuth googleAuth = new GoogleAuth(this,credential, Auth.accountName);
         credential = googleAuth.setYutubeCredential();
@@ -236,13 +255,19 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
                 }
             });
         }else{
+
+            posintion = intent.getExtras().getInt("position");
+
+            Log.i(TAG,"posintion : " + posintion);
+
             li_reply.setVisibility(View.VISIBLE);
-
-
             comment.requestFocus();
 
             insVideoVo = (InsVideoVo) intent.getSerializableExtra(MissionCommon.OBJECT);
-            Log.i(TAG,"insVideoVo : " +insVideoVo.toString());
+
+            lineCount = insVideoVo.getCommentcount();
+            textImageCount.setText(getResources().getString(R.string.momboard_comment_msg) + "("+lineCount+")");
+
             upload_video.setVisibility(View.GONE);
             video_check.setVisibility(View.GONE);
             ins_video_btn.setVisibility(View.GONE);
@@ -282,6 +307,82 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
             sendBtn.setEnabled(false);
 
 
+            replyRecview.addOnItemTouchListener(
+                    new RecyclerItemClickListener(getApplicationContext(), replyRecview ,new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override public void onItemClick(View view, int position) {
+                            // do whatever
+                        }
+
+                        //삭제하기
+                        @Override public void onLongItemClick(View view, final int position) {
+                            final InsVideoVoLine vo = insVideoLineAdapter.getBoardLine(position);
+
+                            if(user.getUid()==vo.getUid()){
+                                new MaterialDialog.Builder(activity)
+                                        .content(R.string.board_main_coment_delete)
+                                        .contentColor(activity.getResources().getColor(R.color.color6))
+                                        .positiveText(R.string.mom_diaalog_confirm)
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                                insVideoLineAdapter.deleteLine(position,vo.getLineid());
+                                                lineCount = lineCount - 1;
+                                                textImageCount.setText(getResources().getString(R.string.momboard_comment_msg) + "("+lineCount+")");
+
+                                            }
+                                        })
+                                        .show();
+                            }else{
+                                MaterialDialog dialog = new MaterialDialog.Builder(activity)
+                                        .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                        .title(R.string.mom_diaalog_board_report)
+                                        .titleColor(getResources().getColor(R.color.color6))
+                                        .customView(R.layout.dialog_report_view, true)
+                                        .positiveText(R.string.momboard_edit_send)
+                                        .negativeText(R.string.cancel)
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                Report report = new Report();
+                                                report.setType(PubReport.REPORTTYPE_INS_VIDEO_COMMENT);
+                                                report.setUid(user.getUid());
+                                                report.setReason(report_content.getText().toString());
+                                                report.setContent(vo.getComment());
+                                                report.setPublisherid(vo.getLineid());
+                                                PubReport.doReport(activity,report,user);
+                                            }
+                                        })
+                                        .build();
+
+                                report_content = (EditText) dialog.findViewById(R.id.report_content);
+                                positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+
+                                report_content.addTextChangedListener(new TextWatcher() {
+                                    @Override
+                                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                                    }
+
+                                    @Override
+                                    public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                                        positiveAction.setEnabled(s.toString().trim().length() > 0);
+                                    }
+
+                                    @Override
+                                    public void afterTextChanged(Editable editable) {
+
+                                    }
+                                });
+
+                                dialog.show();
+                                positiveAction.setEnabled(false);
+                            }
+
+                        }
+                    })
+            );
+
         }
 
 
@@ -289,15 +390,39 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
 
     @OnClick(R.id.ins_video_btn)
     public void ins_video_btn(){
+
+        layout_subject.setError(null);
+        layout_youtubeaddr.setError(null);
+
         if(Compare.isEmpty(subject.getText().toString())) {
             layout_subject.setError(getString(R.string.ins_video_subject_empty));
             return;
         }
-        if(Compare.isEmpty(youtubeaddr.getText().toString())) {
-            layout_youtubeaddr.setError(getString(R.string.ins_video_youtube_empty));
-            return;
+
+
+        //업로드가 아니고 붙여 넣기 일 경우에는 꼭 영상체크를 누르게 한다
+       if(!uploadFlag){
+            if(Compare.isEmpty(youtubeaddr.getText().toString())) {
+                layout_youtubeaddr.setError(getString(R.string.ins_video_youtube_empty));
+                return;
+            }
+
+            if(!copyyoutube){
+                new MaterialDialog.Builder(InsVideoActivity.this)
+                        .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                        .title(R.string.mom_diaalog_alert)
+                        .titleColor(getResources().getColor(R.color.color6))
+                        .content(R.string.ins_video_check_mag)
+                        .contentColor(getResources().getColor(R.color.color6))
+                        .positiveText(R.string.mom_diaalog_confirm)
+                        .show();
+                return;
+            }
+
         }
+
         saveInsVideoContent();
+
     }
 
     //youtube upload
@@ -309,11 +434,11 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
 
     @OnClick(R.id.video_check)
     public void video_check(){
+
+        copyyoutube = true;
+
         int lastString = youtubeaddr.getText().toString().length();
         youtubeAdress = youtubeaddr.getText().toString().substring(17,lastString);
-        Log.i(TAG,"youtubeAdress : " + youtubeAdress);
-
-
         li_layout.setVisibility(View.VISIBLE);
         YoutubeSeedMissionFragment youtubeFragment = new YoutubeSeedMissionFragment(InsVideoActivity.this,youtubeAdress);
         FragmentManager fm = getSupportFragmentManager();
@@ -335,50 +460,80 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
     //network
     public void saveInsVideoContent(){
 
-        if(uploadFlag){
-
-        }
-
-        InsVideoService insVideoService = ServiceGenerator.createService(InsVideoService.class,getApplicationContext(),instructor);
-
         InsVideoVo insVideoVo = new InsVideoVo();
         insVideoVo.setInstructorid(instructor.getInstructorid());
         insVideoVo.setSubject(subject.getText().toString());
         insVideoVo.setContent(content.getText().toString());
-        insVideoVo.setYoutubeaddr(youtubeAdress);
         insVideoVo.setTeamid(instructor.getTeamid());
 
-        WaitingDialog.showWaitingDialog(InsVideoActivity.this,false);
-        Call<ServerResult> c = insVideoService.saveVideo(insVideoVo);
-        c.enqueue(new Callback<ServerResult>() {
-            @Override
-            public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
-                if(response.isSuccessful()){
-                    new MaterialDialog.Builder(InsVideoActivity.this)
-                            .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
-                            .title(R.string.mom_diaalog_alert)
-                            .titleColor(getResources().getColor(R.color.color6))
-                            .content(R.string.ins_video_save)
-                            .contentColor(getResources().getColor(R.color.color6))
-                            .positiveText(R.string.mom_diaalog_confirm)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    Intent intent = new Intent(InsVideoActivity.this, AllUserMainActivity.class);
-                                    intent.putExtra(Param.FRAGMENT_COUNT,1);
-                                    startActivity(intent);
-                                }
-                            })
-                            .show();
-                }
-            }
+        if(!uploadFlag){
+            insVideoVo.setYoutubeaddr(youtubeAdress);
 
-            @Override
-            public void onFailure(Call<ServerResult> call, Throwable t) {
-                WaitingDialog.cancelWaitingDialog();
-                t.printStackTrace();
-            }
-        });
+            Log.i(TAG,"주소는 " + youtubeAdress);
+
+            InsVideoService insVideoService = ServiceGenerator.createService(InsVideoService.class,getApplicationContext(),instructor);
+
+            WaitingDialog.showWaitingDialog(InsVideoActivity.this,false);
+            Call<ServerResult> c = insVideoService.saveVideo(insVideoVo);
+            c.enqueue(new Callback<ServerResult>() {
+                @Override
+                public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                    if(response.isSuccessful()){
+                        new MaterialDialog.Builder(InsVideoActivity.this)
+                                .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                                .title(R.string.mom_diaalog_alert)
+                                .titleColor(getResources().getColor(R.color.color6))
+                                .content(R.string.ins_video_save)
+                                .contentColor(getResources().getColor(R.color.color6))
+                                .positiveText(R.string.mom_diaalog_confirm)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        Intent intent = new Intent(InsVideoActivity.this, AllUserMainActivity.class);
+                                        intent.putExtra(Param.FRAGMENT_COUNT,1);
+                                        startActivity(intent);
+                                    }
+                                })
+                                .show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ServerResult> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
+                    t.printStackTrace();
+                }
+            });
+        }else{
+            //업로드일 경우는
+            String filename = getFileName(mFileUri);
+            insVideoVo.setFilename(filename);
+
+            final Intent uploadIntent = new Intent(this, VideoUploadService.class);
+            uploadIntent.putExtra(MissionCommon.VIDEO_OBJECT,insVideoVo);
+            uploadIntent.putExtra(MissionCommon.INS_OBJECT,instructor);
+            uploadIntent.setData(mFileUri);
+            startService(uploadIntent);
+
+            new MaterialDialog.Builder(InsVideoActivity.this)
+                    .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                    .title(R.string.mom_diaalog_alert)
+                    .titleColor(getResources().getColor(R.color.color6))
+                    .content(R.string.ins_video_upload_start)
+                    .contentColor(getResources().getColor(R.color.color6))
+                    .positiveText(R.string.mom_diaalog_confirm)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            Intent intent = new Intent(InsVideoActivity.this, AllUserMainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra(Param.FRAGMENT_COUNT,1);
+                            startActivity(intent);
+                        }
+                    })
+                    .show();
+        }
+
     }
 
     @Override
@@ -415,6 +570,16 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
                 if(response.isSuccessful()){
                     MomSnakBar.show(getWindow().getDecorView().getRootView(),activity,getResources().getString(R.string.ins_video_comment));
                     getLineList();
+                    //코멘트 바꿔 주기
+                    lineCount = lineCount + 1;
+                    textImageCount.setText(getResources().getString(R.string.momboard_comment_msg) + "("+lineCount+")");
+                    comment.setText(null);
+
+                    //posintion
+                    BusObject busObject = new BusObject();
+                    busObject.setPosition(posintion);
+                    busObject.setLineCount(lineCount);
+                    EventBus.getInstance().post(busObject);
                 }
             }
 
@@ -438,10 +603,7 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
                     insVideoVoLines = response.body();
 
                     replyRecview.setHasFixedSize(true);
-                    replyRecview.setNestedScrollingEnabled(false);
-
-                    replyRecview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
+                    replyRecview.setLayoutManager(linearLayoutManager);
                     insVideoLineAdapter = new InsVideoLineAdapter(activity,insVideoVoLines,user);
 
                     replyRecview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
@@ -452,7 +614,7 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
                     AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(insVideoLineAdapter);
                     alphaAdapter.setDuration(500);
                     replyRecview.setAdapter(insVideoLineAdapter);
-                    replyRecview.scrollToPosition(insVideoVoLines.size()-1); //입력후 맨아래 자기 자신의 글 보이기
+                    replyRecview.scrollToPosition(insVideoVoLines.size()-1);
                 }
             }
 
@@ -707,7 +869,6 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
             }
         }
     }
-
 
     private void reviewVideo(Uri mFileUri) {
         try {

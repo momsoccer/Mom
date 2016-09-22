@@ -18,11 +18,15 @@ import java.net.URL;
  * Created by sungbo on 2016-05-27.
  */
 public class Common {
-    public static String SERVER_ADRESS = "http://192.168.10.4:8080";
+    public static String SERVER_ADRESS = "http://192.168.0.3:8080";
     //myHom 10.5
     //inition  http://192.168.0.50:8080"
     //http://14.63.220.208:16410/ 클라우드 서버
     //initionGuest 0.3
+
+    public static String PUSH = "Y";
+
+    public static String INSFLAG = "USER";
 
     public static String SERVER_USER_IMGFILEADRESS = SERVER_ADRESS + "/resources/userimg/";
     public static String SERVER_INS_IMGFILEADRESS = SERVER_ADRESS + "/resources/instructorimg/";

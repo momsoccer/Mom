@@ -388,7 +388,6 @@ public class TeamBoardReply extends AppCompatActivity {
                     replyRecview.getItemAnimator().setRemoveDuration(300);
                     replyRecview.getItemAnimator().setMoveDuration(300);
                     replyRecview.getItemAnimator().setChangeDuration(300);
-                    replyRecview.setHasFixedSize(true);
                     AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(boardLineItemAdapter);
                     alphaAdapter.setDuration(500);
                     replyRecview.setAdapter(boardLineItemAdapter);

@@ -3,10 +3,15 @@ package com.mom.soccer.alluser;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -14,6 +19,7 @@ import com.mom.soccer.R;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dto.AdBoardFile;
 import com.mom.soccer.dto.AdBoardVo;
+import com.mom.soccer.fragment.YoutubeSeedMissionFragment;
 import com.mom.soccer.retrofitdao.AdBoardService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
@@ -21,6 +27,7 @@ import com.mom.soccer.widget.WaitingDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +46,9 @@ public class AdBoardActivity extends AppCompatActivity {
 
     TextView addr,phone,introduce,subcontent1,subcontent2,subcontent3;
     ImageView img1,img2,img3,img4,img5;
+
+    @Bind(R.id.li_layout)
+    LinearLayout li_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +90,29 @@ public class AdBoardActivity extends AppCompatActivity {
                 WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
                     adBoardVo = response.body();
+
+                    Log.i(TAG,"adBoardVo : " + adBoardVo.toString());
+
                     addr.setText(adBoardVo.getAddr());
                     phone.setText(adBoardVo.getPhone());
                     introduce.setText(adBoardVo.getIntroduce());
                     subcontent1.setText(adBoardVo.getSubcontent1());
                     subcontent2.setText(adBoardVo.getSubcontent2());
                     subcontent3.setText(adBoardVo.getSubcontent3());
+
+                    if(adBoardVo.getYoutubeaddr().length() > 0){
+                        li_layout.setVisibility(View.VISIBLE);
+
+                        YoutubeSeedMissionFragment youtubeFragment = new YoutubeSeedMissionFragment(AdBoardActivity.this,adBoardVo.getYoutubeaddr());
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction tc = fm.beginTransaction();
+                        tc.add(R.id.youtube_seed_frame_layout,youtubeFragment,"");
+                        tc.commit();
+
+                    }else{
+                        li_layout.setVisibility(View.GONE);
+                    }
+
 
                     adBoardFiles = adBoardVo.getAdBoardFiles();
 
