@@ -103,6 +103,7 @@ public class PrefUtil {
         pre.putString("backimage",user.getBackimage());
         pre.putInt("commontokenid",user.getCommontokenid());
         pre.putString("wifi",user.getWifi());
+        pre.putInt("teamid",user.getTeamid());
 
         pre.commit();
     }
@@ -128,6 +129,7 @@ public class PrefUtil {
         user.setWifi(sp.getString("wifi", null));
         user.setBackimage(sp.getString("backimage", null));
         user.setCommontokenid(sp.getInt("commontokenid", 0));
+        user.setTeamid(sp.getInt("teamid", 0));
         return user;
     }
 

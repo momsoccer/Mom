@@ -18,7 +18,7 @@ import java.net.URL;
  * Created by sungbo on 2016-05-27.
  */
 public class Common {
-    public static String SERVER_ADRESS = "http://192.168.0.3:8080";
+    public static String SERVER_ADRESS = "http://14.63.220.208:80";
     //myHom 10.5
     //inition  http://192.168.0.50:8080"
     //http://14.63.220.208:16410/ 클라우드 서버
@@ -40,6 +40,8 @@ public class Common {
     public static Boolean NETWORK_COOKIE = false;
 
     public static String IMAGE_MOM_PATH = "/MomSoccerImage/";
+    public static String VERSITON_CODE = "1";
+    public static String DIVICEVERSITON_CODE = "1";
 
     public static boolean upflag;
     public static String IMAGE_CHOOSE_FALG = "";

@@ -103,6 +103,8 @@ public class PointFragment extends Fragment {
                 }
             });
 
+            btnPointReq.setEnabled(false);
+
             btnPointReq.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

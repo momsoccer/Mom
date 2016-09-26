@@ -77,7 +77,7 @@
             android:singleLine="true"
             />-->
 
-        <LinearLayout
+<!--        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -85,20 +85,8 @@
             >
 
             <TextView
-                android:id="@+id/tx_find_id"
-                android:text="아이디찾기"
-                android:textColor="@color/clickable_words"
-                android:textColorHighlight="@color/clickable_words"
-                android:textColorLink="@color/clickable_words"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="textOnClick"
-                android:textSize="12sp"
-                />
-
-            <TextView
                 android:id="@+id/tx_find_pw"
-                android:text="비밀번호찾기"
+                android:text="비밀번호를 잊어 버리셨나요?"
                 android:textColor="@color/clickable_words"
                 android:textColorHighlight="@color/clickable_words"
                 android:textColorLink="@color/clickable_words"
@@ -109,7 +97,7 @@
                 android:textSize="12sp"
                 />
 
-        </LinearLayout>
+        </LinearLayout>-->
 
         <Button
             android:id="@+id/btn_kakao_login"

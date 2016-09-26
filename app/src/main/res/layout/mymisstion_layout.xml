@@ -252,12 +252,12 @@
                     >
 
                     <ImageView
+                        android:id="@+id/usermission_iv_hart"
                         android:layout_marginLeft="10dp"
                         android:layout_centerVertical="true"
-                        android:id="@+id/usermission_iv_hart"
                         android:src="@drawable/ic_white_hart"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
 
                     <TextView
                         android:id="@+id/usermission_tx_hart"
@@ -265,8 +265,8 @@
                         android:layout_marginLeft="35dp"
                         android:textSize="16sp"
                         android:textColor="@color/color6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginStart="7dp"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@+id/usermission_iv_hart" />
@@ -296,8 +296,8 @@
                     <ImageView
                         android:id="@+id/btn_shre"
                         android:src="@drawable/ic_screen_share_white_24dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_centerVertical="true"
                         android:layout_toEndOf="@+id/usermission_iv_hart"
                         android:layout_marginStart="100dp" />

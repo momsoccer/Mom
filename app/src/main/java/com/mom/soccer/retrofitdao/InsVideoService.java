@@ -38,8 +38,8 @@ public interface InsVideoService {
     @POST("/insvideo/saveVideoLike")
     Call<ServerResult> saveVideoLike(@Body InsVideoLikeVo insVideoVo);
 
-    @GET("/insvideo/deleteVideoLike")
-    Call<ServerResult> deleteVideoLike(@Query("likeid") int likeid);
+    @POST("/insvideo/deleteVideoLike")
+    Call<ServerResult> deleteVideoLike(@Body InsVideoLikeVo insVideoVo);
 
     @GET("/insvideo/getVideoLikeList")
     Call<List<InsVideoLikeVo>> getVideoLikeList(@Query("likeid") int likeid);
@@ -54,4 +54,10 @@ public interface InsVideoService {
 
     @GET("/insvideo/getLineList")
     Call<List<InsVideoVoLine>> getLineList(@Query("videoid") int videoid);
+
+    @GET("/insvideo/getLikeVideoCount")
+    Call<Integer> getLikeVideoCount(
+            @Query("uid") int uid,
+            @Query("videoid") int videoid);
+
 }

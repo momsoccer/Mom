@@ -27,6 +27,9 @@ public interface UserService {
     @POST("/all/insert")
     Call<ServerResult> createUser(@Body User user);
 
+    @POST("/all/getEmailFind")
+    Call<ServerResult> getEmailFind(@Body User user);
+
     @GET("/all/existuser")
     Call<User> getUser(
             @Query("snstype") String snstype,

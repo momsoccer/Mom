@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+
+
     @Bind(R.id.btn_login_pre)
     Button btnLogin;
 
@@ -53,12 +55,14 @@ public class MainActivity extends AppCompatActivity {
     MyVideoView videoView;
 
     String upset ="N";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        Log.i(TAG,"몸싸커 앱을 시작합니다");
+        getAppKeyHash();
 
         activity = this;
         prefUtil = new PrefUtil(this);
@@ -82,8 +86,16 @@ public class MainActivity extends AppCompatActivity {
         if(getSoundCheck==null){
             prefUtil.setSoundCheck("Y");
         }
-
         FirebaseMessaging.getInstance().subscribeToTopic("news");
+
+
+        //버전체크하기
+        //MarketVersionChecker checker = new MarketVersionChecker();
+        //checker.getMarketVersion("com.mom.soccer",activity);
+
+        /**************************************************************************
+         * 로그인 부분
+         */
 
         if (!Compare.isEmpty(user.getUseremail())){
             Intent intent = new Intent(MainActivity.this, MomMainActivity.class); //유저라면 메인 화면으로 이동시킨다
@@ -109,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
         videoView.setVideoURI(path);
         videoView.start();
 
+
+
     }
 
     @Override
@@ -116,16 +130,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         videoView.start();
         user = prefUtil.getUser();
-
-/*        if(!Compare.isEmpty(user.getUseremail())){
-            String shToken = prefUtil.getFcmToken();
-            prefUtil.saveFcmToken(FirebaseInstanceId.getInstance().getToken());
-            FcmToken fcmToken = new FcmToken();
-            fcmToken.setUid(user.getUid());
-            fcmToken.setSerialnumber(user.getSerialnumber());
-            fcmToken.setFcmtoken(FirebaseInstanceId.getInstance().getToken());
-            FcmTokenTRService.setupToken(activity,user,fcmToken);
-        }*/
 
         if (!Compare.isEmpty(user.getUseremail())){
             Intent intent = new Intent(this, MomMainActivity.class); //유저라면 메인 화면으로 이동시킨다
@@ -151,30 +155,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /***************************************************
-     * 기타 참고 사항 및 설정
-     */
-
-    //해쉬태그
-    private void getAppKeyHash() {
-        String hasykey=null;
-
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md;
-                md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String something = new String(Base64.encode(md.digest(), 0));
-                Log.d(TAG,"해시키값확인 : "+ something);
-                hasykey=something;
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            Log.e("name not found", e.toString());
-        }
-    }
-
     //외부폰트 설정
     /*
     @Override
@@ -182,4 +162,22 @@ public class MainActivity extends AppCompatActivity {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
     */
+
+    //디버그 해쉬키 구하기
+    private void getAppKeyHash() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String something = new String(Base64.encode(md.digest(), 0));
+                Log.d("Hash key", something);
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            Log.e("name not found", e.toString());
+        }
+    }
+
 }

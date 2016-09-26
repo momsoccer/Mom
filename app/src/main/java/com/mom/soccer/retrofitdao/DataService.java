@@ -65,4 +65,5 @@ public interface DataService {
     @GET("/api/data/getTeamRankingScore")
     Call<List<TeamRankingVo>> getTeamRankingScore(@Query("count") int count);
 
+
 }

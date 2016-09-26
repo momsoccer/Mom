@@ -1,7 +1,6 @@
 package com.mom.soccer.common;
 
 import android.content.Intent;
-import android.util.Log;
 
 /**
  * Created by sungbo on 2016-09-11.
@@ -17,7 +16,6 @@ public class ActivityResultEvent {
     }
 
     private ActivityResultEvent(int requestCode, int resultCode, Intent data) {
-        Log.i("EventBus","이벤트 버스가 발생2");
         this.requestCode = requestCode;
         this.resultCode = resultCode;
         this.data = data;

@@ -9,7 +9,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,7 +28,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
-import com.mom.soccer.alluser.InsVideoActivity;
+import com.mom.soccer.alluser.InsVideoAcView;
 import com.mom.soccer.common.Auth;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.EventBus;
@@ -127,15 +126,10 @@ public class InsVideoAdapter extends RecyclerView.Adapter<InsVideoAdapter.InsVid
         holder.li_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, InsVideoActivity.class);
+                Intent intent = new Intent(activity, InsVideoAcView.class);
                 intent.putExtra(MissionCommon.INS_OBJECT,instructor);
                 intent.putExtra(MissionCommon.OBJECT,vo);
-                intent.putExtra(MissionCommon.USER_OBJECT,user);
-                intent.putExtra("viewtype","view");
                 intent.putExtra("position",posintion);
-
-                Log.i(TAG,"posintion ^^^^" + posintion);
-
                 activity.startActivity(intent);
 
             }
@@ -359,7 +353,6 @@ public class InsVideoAdapter extends RecyclerView.Adapter<InsVideoAdapter.InsVid
             public void onResponse(Call<Instructor> call, Response<Instructor> response) {
                 if(response.isSuccessful()){
                     currentins = response.body();
-                    Log.i(TAG,"현재 나는 강사인가?" + currentins.toString());
                 }
             }
 
@@ -372,6 +365,11 @@ public class InsVideoAdapter extends RecyclerView.Adapter<InsVideoAdapter.InsVid
 
     public void updateLineItemCount(int position,int lineCount){
         insVideoVos.get(position).setCommentcount(lineCount);
+        notifyDataSetChanged();
+    }
+
+    public void updateLineItemLikeCount(int position,int lineCount){
+        insVideoVos.get(position).setLikecount(lineCount);
         notifyDataSetChanged();
     }
 

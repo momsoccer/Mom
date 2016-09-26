@@ -1,5 +1,6 @@
 package com.mom.soccer.bottommenu;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -33,6 +34,7 @@ import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.trservice.UserTRService;
 import com.mom.soccer.widget.VeteranToast;
+import com.mom.soccer.widget.WaitingDialog;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -51,6 +53,7 @@ public class UserProfile extends AppCompatActivity {
 
     User user;
     PrefUtil prefUtil;
+    Activity activity;
 
     TextInputLayout layoutUserNicname;
     TextInputLayout layoutUserPhone;
@@ -80,6 +83,8 @@ public class UserProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_bottom_userprofile_layout);
         ButterKnife.bind(this);
+
+        activity = this;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile_toolbar);
         setSupportActionBar(toolbar);
@@ -140,10 +145,8 @@ public class UserProfile extends AppCompatActivity {
         user.setUsername(et_nicName.getText().toString());
         user.setPhone(et_phone.getText().toString());
 
-        //final ProgressDialog dialog;
-        //dialog = ProgressDialog.show(this,"",getString(R.string.network_updating_user), true);
-        //dialog.show();
 
+        WaitingDialog.showWaitingDialog(activity,false);
         UserService userService = ServiceGenerator.createService(UserService.class,this,user);
         final Call<ServerResult> call = userService.updateUser(user);
 
@@ -155,6 +158,7 @@ public class UserProfile extends AppCompatActivity {
                 call.enqueue(new Callback<ServerResult>() {
                     @Override
                     public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                        WaitingDialog.cancelWaitingDialog();
                         if(response.isSuccessful()){
                             ServerResult serverResult = response.body();
 
@@ -165,15 +169,12 @@ public class UserProfile extends AppCompatActivity {
                             pre.putString("phone", et_phone.getText().toString());
                             pre.commit();
                             VeteranToast.makeToast(getApplicationContext(),getString(R.string.user_profile_update), Toast.LENGTH_LONG).show();
-                            //dialog.dismiss();
-                        }else{
-                            //VeteranToast.makeToast(getApplicationContext(),getString(R.string.network_error_isnotsuccessful), Toast.LENGTH_LONG).show();
-                            //dialog.dismiss();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ServerResult> call, Throwable t) {
+                        WaitingDialog.cancelWaitingDialog();
                         t.printStackTrace();
                     }
                 });

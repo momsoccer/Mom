@@ -19,6 +19,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -41,6 +42,7 @@ import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.FeedBackAllListAdapter;
 import com.mom.soccer.adapter.GridMissionAdapter;
+import com.mom.soccer.adapter.LikeUserAdapter;
 import com.mom.soccer.adapter.PassListAdapter;
 import com.mom.soccer.besideactivity.FavoriteMissionActivity;
 import com.mom.soccer.common.Auth;
@@ -53,6 +55,7 @@ import com.mom.soccer.dto.FavoriteMission;
 import com.mom.soccer.dto.FeedbackHeader;
 import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.MissionPass;
+import com.mom.soccer.dto.MyBookMark;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.SpBalanceHeader;
 import com.mom.soccer.dto.User;
@@ -64,6 +67,7 @@ import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.FavoriteMissionService;
 import com.mom.soccer.retrofitdao.FeedBackService;
 import com.mom.soccer.retrofitdao.MissionPassService;
+import com.mom.soccer.retrofitdao.PickService;
 import com.mom.soccer.retrofitdao.PointService;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retrofitdao.UserService;
@@ -78,6 +82,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -248,6 +254,13 @@ public class MissionMainActivity extends AppCompatActivity {
 
     @Bind(R.id.scroll_layout)
     ScrollView scroll_layout;
+
+    //dialog
+    RecyclerView commentRecview;
+    LikeUserAdapter likeUserAdapter;
+    LinearLayoutManager linearLayoutManager;
+    List<MyBookMark> myBookMarks = new ArrayList<MyBookMark>();
+
 
     @OnClick(R.id.btn_shre)
     public void btn_shre(){
@@ -544,7 +557,6 @@ public class MissionMainActivity extends AppCompatActivity {
                         }else{
                             usermission_iv_hart.setImageResource(R.drawable.ic_hart_red);
                         }
-
 
                         thumbnailView.initialize(Auth.KEY, new YouTubeThumbnailView.OnInitializedListener() {
                             @Override
@@ -848,9 +860,9 @@ public class MissionMainActivity extends AppCompatActivity {
                                 public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
 
                                     if(USER_TEAM_ID==0){
-                                            Intent mintent = new Intent(MissionMainActivity.this,FeedBackInsListActivity.class);
-                                            mintent.putExtra(MissionCommon.MISSIONTYPE,missionType);
-                                            startActivityForResult(mintent,REQUEST_USERMISSION_PASS_CODE);
+                                        Intent mintent = new Intent(MissionMainActivity.this,FeedBackInsListActivity.class);
+                                        mintent.putExtra(MissionCommon.MISSIONTYPE,missionType);
+                                        startActivityForResult(mintent,REQUEST_USERMISSION_PASS_CODE);
                                     }else{
                                         if(which==0){  //자기 팀 강사
                                             missionPass("myteam","save",feedbackInfo);
@@ -1327,41 +1339,41 @@ public class MissionMainActivity extends AppCompatActivity {
     public void passHistory(){
         if(!Compare.isEmpty(userMission.getPassflag())){
 
-                WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
-                MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getApplicationContext(),user);
+            WaitingDialog.showWaitingDialog(MissionMainActivity.this,false);
+            MissionPassService service = ServiceGenerator.createService(MissionPassService.class,getApplicationContext(),user);
 
-                MissionPass query = new MissionPass();
-                query.setUid(user.getUid());
-                query.setUsermissionid(userMission.getUsermissionid());
-                query.setMissionid(userMission.getMissionid());
+            MissionPass query = new MissionPass();
+            query.setUid(user.getUid());
+            query.setUsermissionid(userMission.getUsermissionid());
+            query.setMissionid(userMission.getMissionid());
 
-                Call<List<MissionPass>> c = service.getPassList(query);
-                c.enqueue(new Callback<List<MissionPass>>() {
-                    @Override
-                    public void onResponse(Call<List<MissionPass>> call, Response<List<MissionPass>> response) {
-                        WaitingDialog.cancelWaitingDialog();
-                        if(response.isSuccessful()){
-                            missionPasses = response.body();
+            Call<List<MissionPass>> c = service.getPassList(query);
+            c.enqueue(new Callback<List<MissionPass>>() {
+                @Override
+                public void onResponse(Call<List<MissionPass>> call, Response<List<MissionPass>> response) {
+                    WaitingDialog.cancelWaitingDialog();
+                    if(response.isSuccessful()){
+                        missionPasses = response.body();
 
-                            if(missionPasses.size()==0){
-                                li_mission_no_pass.setVisibility(View.VISIBLE);
-                            }else{
-                                li_mission_no_pass.setVisibility(View.GONE);
-                            }
-
-                            passListAdapter = new PassListAdapter(activity,missionPasses,user,missionPassFlag,mission);
-                            passrecyclerview.setHasFixedSize(true);
-                            passrecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                            passrecyclerview.setAdapter(passListAdapter);
+                        if(missionPasses.size()==0){
+                            li_mission_no_pass.setVisibility(View.VISIBLE);
+                        }else{
+                            li_mission_no_pass.setVisibility(View.GONE);
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<List<MissionPass>> call, Throwable t) {
-                        WaitingDialog.cancelWaitingDialog();
-                        t.printStackTrace();
+                        passListAdapter = new PassListAdapter(activity,missionPasses,user,missionPassFlag,mission);
+                        passrecyclerview.setHasFixedSize(true);
+                        passrecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        passrecyclerview.setAdapter(passListAdapter);
                     }
-                });
+                }
+
+                @Override
+                public void onFailure(Call<List<MissionPass>> call, Throwable t) {
+                    WaitingDialog.cancelWaitingDialog();
+                    t.printStackTrace();
+                }
+            });
 
         }
     }
@@ -1394,7 +1406,56 @@ public class MissionMainActivity extends AppCompatActivity {
             intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
             startActivity(intent);
         }
+    }
 
+    @OnClick(R.id.usermission_iv_hart)
+    public void usermission_iv_hart(){
+
+        MaterialDialog dialog = new MaterialDialog.Builder(activity)
+                .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                .title(R.string.bookmarck_list_title)
+                .backgroundColor(activity.getResources().getColor(R.color.mom_color1))
+                .positiveText(R.string.mom_diaalog_confirm)
+                .customView(R.layout.dialog_bookmark, true)
+                .build();
+        dialog.show();
+
+        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        commentRecview = (RecyclerView) dialog.findViewById(R.id.commentRecview);
+
+        WaitingDialog.showWaitingDialog(activity,false);
+        PickService pickService = ServiceGenerator.createService(PickService.class,activity,user);
+        MyBookMark query = new MyBookMark();
+        query.setUsermissionid(userMission.getUsermissionid());
+        Call<List<MyBookMark>> c = pickService.getMyBookMarkList(query);
+        c.enqueue(new Callback<List<MyBookMark>>() {
+            @Override
+            public void onResponse(Call<List<MyBookMark>> call, Response<List<MyBookMark>> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+
+                    myBookMarks = response.body();
+                    commentRecview.setHasFixedSize(true);
+                    commentRecview.setLayoutManager(linearLayoutManager);
+                    likeUserAdapter = new LikeUserAdapter(activity,myBookMarks);
+                    commentRecview.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                    commentRecview.getItemAnimator().setAddDuration(500);
+                    commentRecview.getItemAnimator().setRemoveDuration(500);
+                    commentRecview.getItemAnimator().setMoveDuration(500);
+                    commentRecview.getItemAnimator().setChangeDuration(500);
+                    AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(likeUserAdapter);
+                    alphaAdapter.setDuration(500);
+                    commentRecview.setAdapter(likeUserAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MyBookMark>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
 
     }
 }

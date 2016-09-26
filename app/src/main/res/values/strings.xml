@@ -382,15 +382,21 @@
     <string name="mom_diaalog_board_delelte">삭제</string>
     <string name="mom_diaalog_board_modify">수정</string>
 
+    <string name="mom_diaalog_pwd">비밀번호 찾기</string>
+
 
     <string name="mom_diaalog_confirm">확인</string>
     <string name="mom_diaalog_cancel">취소</string>
     <string name="mom_diaalog_find">찾기</string>
 
+    <string name="mom_diaalog_find1">업데이트</string>
+    <string name="mom_diaalog_find2">앱종료</string>
+
     <string name="mom_diaalog_confirm_y">예</string>
     <string name="mom_diaalog_cancel_n">아니오</string>
 
     <string name="mom_diaalog_alert">알림</string>
+    <string name="mom_diaalog_update_alert">앱업데이트 알림</string>
 
 
     <string name="mom_diaalog_content_logout">로그아웃 하시겠습니까?</string>
@@ -863,7 +869,8 @@
     <string name="team_name_prompt">팀선택</string>
     <string name="title_activity_ins_video">InsVideoActivity</string>
 
-    <string name="ins_video_title">영상 강좌 입력</string>
+    <string name="ins_video_title">영상강좌 입력</string>
+    <string name="ins_video_title1">강사영상강의</string>
     <string name="ins_video_subject">영상 강의제목</string>
     <string name="ins_video_content">업로드 하실 영상에 대한 소개 및 상세한 내용을 적어 주세요.\n(참고 : 직접 업로드시에는 주소를 입력치 마시고 \n업로드 버튼을 클릭하셔서 파일을 선택해 주세요.\n유튜브에 강사님의 계정으로 업로드가 됩니다)</string>
     <string name="ins_video_btn">저장</string>
@@ -883,6 +890,30 @@
     <string name="ins_video_delete">영상 강의가 삭제 되었습니다</string>
     <string name="ins_video_check_mag">영상체크 버튼을 꼭 눌러주세요\n 유튜부 주소가 정확한지 확인 하기 위함입니다</string>
 
+    <string name="ins_video_like_msg">좋아요를 하셨습니다</string>
+    <string name="ins_video_like_msg1">좋아요를 취소 하셨습니다</string>
+    <string name="ins_video_like_exist">회원님 포함 </string>
 
     <string name="ins_introduce_title1">강사경력 및 정보</string>
+    <string name="ins_introduce_like_title">좋아요</string>
+
+
+    <string name="logout_title">로그아웃</string>
+
+    <string name="bookmarck_list_title">북마크 리스트</string>
+
+    <string name="question_hint">몸싸커를 사용하시면서 느끼셨던 문제점, 개선사항들을 보내주세요 \n검토 후 시정 조치 하도록 하겠습니다
+        \n소중한 의견을 주시면 포인트를 충전해드리도록 하겠습니다
+    \n이용해주셔서 감사드립니다</string>
+    <string name="question_hint1">문의/개선사항</string>
+    <string name="question_hint2">소중한 의견이 접수 되었습니다 \n2일안에 답변 드리도록 하겠습니다 \n감사합니다</string>
+
+    <string name="versioncheck">앱 신규 버전이 릴리즈 되었습니다.\n 앱 업데이트를 하지 않으시면 정상적으로 앱을 이용할 수 없습니다.</string>
+
+    <string name="mission_pass_condition">클리어 조건</string>
+
+    <string name="getfind_email_title">이메일 아이디를 입력하세요</string>
+    <string name="getfind_email_title2">이메일</string>
+    <string name="getfind_email_title3">*해당 이메일로 임시 비밀번호가 전송됩니다\n 1시간 이내에 확인하셔야 정상 처리됩니다.</string>
+    <string name="getfind_email_title4">입력하신 이메일 주소로 비밀번호를 발급했습니다</string>
 </resources>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -90,6 +92,9 @@ public class TeamBoardReply extends AppCompatActivity {
 
     @Bind(R.id.level)
     TextView level;
+
+    @Bind(R.id.scroll_layout)
+    NestedScrollView scroll_layout;
 
     private Intent intent;
     private int boardid = 0;
@@ -341,8 +346,14 @@ public class TeamBoardReply extends AppCompatActivity {
                         sendWrite = true;
                         getBoardLineList();
                         comment.setText(null);
-
                         replyRecview.scrollToPosition(lineCount-1);
+
+                        scroll_layout.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                scroll_layout.fullScroll(ScrollView.FOCUS_DOWN);
+                            }
+                        }, 500);
 
                     }else{
 

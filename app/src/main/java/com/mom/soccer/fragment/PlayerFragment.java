@@ -786,6 +786,8 @@ public class PlayerFragment extends Fragment{
                 if (response.isSuccessful()) {
                     List<FriendReqVo> friendReqVos = response.body();
 
+                    Log.i(TAG,"친구 수 : " + friendReqVos.size());
+
                     if(friendReqVos.size()==0){
                         li_no_found.setVisibility(View.VISIBLE);
                         tx_nodata_found.setText(getString(R.string.friend_no_data));

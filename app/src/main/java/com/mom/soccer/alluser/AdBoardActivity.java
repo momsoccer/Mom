@@ -10,12 +10,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
+import com.mom.soccer.common.Common;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dto.AdBoardFile;
 import com.mom.soccer.dto.AdBoardVo;
@@ -119,6 +121,8 @@ public class AdBoardActivity extends AppCompatActivity {
                     if(adBoardVo.getFilecount() > 0){
                         for(int i=0;i < adBoardFiles.size(); i++){
 
+                            Log.i(TAG,"주소는 : " +adBoardFiles.get(i).getFileaddr());
+
                             if(i==0){
                                 Glide.with(activity)
                                         .load(adBoardFiles.get(i).getFileaddr())
@@ -178,5 +182,18 @@ public class AdBoardActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Log.i(TAG,"onBackPressed() ==================================");
+
+        if(Common.YOUTUBESCREEN_STATUS .equals("LANDSCAPE")){
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            getWindow().clearFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
     }
 }

@@ -82,6 +82,7 @@ public class AllUserMainActivity extends AppCompatActivity {
                 btnposition = position;
                 if(position == 0){
                     textWrite.setText(getResources().getString(R.string.all_user_page_btn1));
+                    textWrite.setVisibility(View.VISIBLE);
                 }else if(position==1){
                     if(instructor.getInstructorid()==0){
                         textWrite.setVisibility(View.GONE);
@@ -91,6 +92,7 @@ public class AllUserMainActivity extends AppCompatActivity {
                     }
                 }else if(position==2){
                     textWrite.setText(getResources().getString(R.string.all_user_page_btn8));
+                    textWrite.setVisibility(View.VISIBLE);
                 }
 
             }

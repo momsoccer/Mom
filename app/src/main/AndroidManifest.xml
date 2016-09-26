@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mom.soccer">
+    package="com.mom.soccer"
+    android:versionCode="3"
+    android:versionName="1.1.1"
+    >
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -116,7 +119,6 @@
         <service
             android:name=".alluser.youtubeupload.VideoUploadService"
             android:exported="true" />
-
         <service
             android:name=".uploadyutube.UploadService"
             android:exported="true" />
@@ -280,6 +282,13 @@
         <activity
             android:name=".alluser.InsVideoActivity"
             android:label="@string/title_activity_ins_video"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".alluser.InsVideoAcView"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".QuestionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             />

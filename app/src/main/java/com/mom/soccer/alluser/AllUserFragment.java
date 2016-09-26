@@ -574,14 +574,19 @@ public class AllUserFragment extends Fragment {
     //강사배열 변경시 이벤트
     @Subscribe
     public void receveInsObjectCommnet(BusObject busObject){
-        //페이지를 꼭 해줘야 하는거 아직 어댑터를 생성 안했기 때문
         int i = busObject.getPosition();
         int count = busObject.getLineCount();
-
-        Log.i(TAG,"버스 이벤트 " + busObject.toString());
-
         if(mPage==2) {
             insVideoAdapter.updateLineItemCount(i,count);
+        }
+    }
+
+    @Subscribe
+    public void receveInsObjectLikeCount(BusObject busObject){
+        int i = busObject.getPosition();
+        int count = busObject.getLineCount();
+        if(mPage==2) {
+            insVideoAdapter.updateLineItemLikeCount(i,count);
         }
     }
 

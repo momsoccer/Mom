@@ -60,7 +60,7 @@
             android:title="@string/mom_setting_app_evaluation" >
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="market://details?id=com.app.soccerveteranv"
+                android:data="market://details?id=com.mom.soccer"
                 />
         </com.mom.soccer.common.MomPreference>
 

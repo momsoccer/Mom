@@ -14,6 +14,8 @@
 
     <color name="mom_test_color1">#db818181</color>
 
+    <color name="toast_back_color">#cc0d0c0c</color>
+
     <color name="color1">#404040</color>
     <color name="color2">#B2B2B2</color>
     <color name="color3">#2A2A2A</color>
@@ -24,6 +26,8 @@
     <color name="color8">#c08c8c97</color>
     <color name="color9">#BDD1DC</color>
     <color name="line_color1">#666666</color>
+
+    <color name="bookmark_color">#948c8c97</color>
 
     <color name="color10">#008c8c97</color>
 

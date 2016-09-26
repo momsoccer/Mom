@@ -11,11 +11,11 @@ import butterknife.ButterKnife;
 
 public class AlramActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_alram_layout);
-
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.alram_toolbar);

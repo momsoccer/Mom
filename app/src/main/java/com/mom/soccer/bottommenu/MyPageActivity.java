@@ -44,6 +44,7 @@ import com.mom.soccer.dto.UserMission;
 import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.mission.UserMissionActivity;
 import com.mom.soccer.point.PointMainActivity;
+import com.mom.soccer.pubactivity.Param;
 import com.mom.soccer.pubactivity.PubActivity;
 import com.mom.soccer.retrofitdao.DataService;
 import com.mom.soccer.retrofitdao.FollowService;
@@ -483,6 +484,8 @@ public class MyPageActivity extends AppCompatActivity {
                     for(int i=0; i < dataVos.size(); i++){
                         UserLevelDataVo levelDataVo = dataVos.get(i);
 
+                        Log.i(TAG,"levelDataVo : " + levelDataVo.toString());
+
                         if(levelDataVo.getMittiontype().equals("DRIBLE")){
                             mypage_drible_level.setText("Lv."+String.valueOf(levelDataVo.getLevel()));
                             mypage_drible_score.setText(String.valueOf(levelDataVo.getScore()));
@@ -630,6 +633,7 @@ public class MyPageActivity extends AppCompatActivity {
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             Intent intent = new Intent(getApplicationContext(),PlayerMainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra(Param.FRAGMENT_COUNT,2);
                             finish();
                             startActivity(intent);
                             overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);

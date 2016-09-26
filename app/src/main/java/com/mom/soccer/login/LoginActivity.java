@@ -1,15 +1,14 @@
 package com.mom.soccer.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -84,10 +83,9 @@ public class LoginActivity extends AppCompatActivity {
     private User SERVERUSER;
     private PrefUtil prefUtil;
 
-    @Bind(R.id.tx_find_id)
-    TextView textView_find_id;
-    @Bind(R.id.tx_find_pw)
-    TextView textView_find_pw;
+
+    //@Bind(R.id.tx_find_pw)
+    //TextView textView_find_pw;
 
     //메일,비번
     @Bind(R.id.login_email)
@@ -96,8 +94,13 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.login_password)
     EditText et_Login_password;
 
+    Activity activity;
+
     private String tempEmail = null;
     private Instructor instructor;
+
+    View positiveAction;
+    EditText find_email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,13 +112,12 @@ public class LoginActivity extends AppCompatActivity {
         String strId = getString(R.string.member_text_id);
         String strPw = getString(R.string.member_text_pw);
 
+        activity = this;
         layoutUserEmail = (TextInputLayout) findViewById(R.id.layout_login_email);
         layoutPassword = (TextInputLayout) findViewById(R.id.layout_login_password);
 
-        textView_find_id = (TextView) findViewById(R.id.tx_find_id);
-        textView_find_pw = (TextView) findViewById(R.id.tx_find_pw);
-        textView_find_id.setText(Html.fromHtml("<u>" + strId + "</u>"));
-        textView_find_pw.setText(Html.fromHtml("<u>" + strPw + "</u>"));
+        //textView_find_pw = (TextView) findViewById(R.id.tx_find_pw);
+        //textView_find_pw.setText(Html.fromHtml("<u>" + strPw + "</u>"));
 
         prefUtil = new PrefUtil(this);
 
@@ -127,73 +129,72 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-        @OnClick(R.id.btn_kakao_login)
-        public void kakaoLogin(){
-            Session.getCurrentSession().removeCallback(kakaoCallback);
-            //카카오 세션을 초기화 해준다
-            kakaoCallback = new SessionCallback();
-            Session.getCurrentSession().addCallback(kakaoCallback);
+    @OnClick(R.id.btn_kakao_login)
+    public void kakaoLogin(){
+        Session.getCurrentSession().removeCallback(kakaoCallback);
+        //카카오 세션을 초기화 해준다
+        kakaoCallback = new SessionCallback();
+        Session.getCurrentSession().addCallback(kakaoCallback);
 
 
-            if(!Session.getCurrentSession().checkAndImplicitOpen()){
-                Session.getCurrentSession().open(AuthType.KAKAO_TALK_EXCLUDE_NATIVE_LOGIN, LoginActivity.this);
-            }
-            Log.d(TAG, "카카오 로그인 시도");
+        if(!Session.getCurrentSession().checkAndImplicitOpen()){
+            Session.getCurrentSession().open(AuthType.KAKAO_TALK_EXCLUDE_NATIVE_LOGIN, LoginActivity.this);
         }
+    }
 
-        @OnClick(R.id.btn_facebook_login)
-        public void faceBoookLogin(){
-            FacebookSdk.sdkInitialize(getApplicationContext());
-            callbackManager = CallbackManager.Factory.create();
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
-            LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+    @OnClick(R.id.btn_facebook_login)
+    public void faceBoookLogin(){
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-
-                }
-
-                @Override
-                public void onCancel() {
-
-                }
-
-                @Override
-                public void onError(FacebookException error) {
-                    error.printStackTrace();
-                }
-            });
-        }
-
-        public class SessionCallback implements ISessionCallback {
             @Override
-            public void onSessionOpened() {
-                Log.d(TAG, "카카오 SessionCallback");
-                kakaoMeCallbackInfo();
-            }
-            @Override
-            public void onSessionOpenFailed(KakaoException exception) {
-                if(exception != null) {
-                    Logger.e(exception);
-                }
-            }
-        }
+            public void onSuccess(LoginResult loginResult) {
 
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                error.printStackTrace();
+            }
+        });
+    }
+
+    public class SessionCallback implements ISessionCallback {
         @Override
-        public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            Log.d(TAG, "---------------------onActivityResult---------------------");
-            if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-                return;
-            }
-            callbackManager.onActivityResult(requestCode, resultCode, data);
-            switch (requestCode){
-                case FACEBOOK_RESULT:
-                    Log.d(TAG, "페이스북 로그인 처리 onActivityResult()");
-                    facebookMeCallbackInfo();
-                    break;
-            }
-            super.onActivityResult(requestCode, resultCode, data);
+        public void onSessionOpened() {
+            Log.d(TAG, "카카오 SessionCallback");
+            kakaoMeCallbackInfo();
         }
+        @Override
+        public void onSessionOpenFailed(KakaoException exception) {
+            if(exception != null) {
+                Logger.e(exception);
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "---------------------onActivityResult---------------------");
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case FACEBOOK_RESULT:
+                Log.d(TAG, "페이스북 로그인 처리 onActivityResult()");
+                facebookMeCallbackInfo();
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     public void facebookMeCallbackInfo(){
         GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
@@ -207,11 +208,6 @@ public class LoginActivity extends AppCompatActivity {
                     useremail = object.getString("email");
                     snsid = object.getString("id");
                     profileImgUrl = "https://graph.facebook.com/" + snsid + "/picture?type=large";
-                    Log.d(TAG,"페이스북 정보 ======================================================");
-                    Log.d(TAG,"닉네임 : " + username);
-                    Log.d(TAG,"SNS  이름 : " + snsname);
-                    Log.d(TAG,"SNS Id : " + snsid);
-                    Log.d(TAG,"이미지는 : " + profileImgUrl);
 
                     validateSnsUserID(snstype, snsid,"","");
 
@@ -236,14 +232,10 @@ public class LoginActivity extends AppCompatActivity {
                 snstype = "kakao";
                 username = userProfile.getNickname();
                 snsname = userProfile.getNickname();
-                //useremail = 카카오는 정책상 메일을 제공하지 않는다
+
                 snsid = String.valueOf(userProfile.getId());
                 profileImgUrl = userProfile.getProfileImagePath();
-                Log.d(TAG,"카카오 로그인 정보 가져오기 ======================================================");
-                Log.d(TAG,"닉네임 : " + username);
-                Log.d(TAG,"SNS  이름 : " + snsname);
-                Log.d(TAG,"SNS Id : " + snsid);
-                Log.d(TAG,"이미지는 : " + profileImgUrl);
+
 
                 validateSnsUserID(snstype, snsid,"","");
             }
@@ -301,17 +293,88 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
         Session.getCurrentSession().removeCallback(kakaoCallback);
     }
-
+/*
     public void textOnClick(View view){
         switch (view.getId()){
-            case R.id.tx_find_id:
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation), Toast.LENGTH_SHORT).show();
-                break;
             case R.id.tx_find_pw:
-                VeteranToast.makeToast(getApplicationContext(),getString(R.string.preparation), Toast.LENGTH_SHORT).show();
+
+
+                MaterialDialog dialog = new MaterialDialog.Builder(activity)
+                        .icon(activity.getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                        .title(R.string.mom_diaalog_pwd)
+                        .titleColor(activity.getResources().getColor(R.color.color6))
+                        .customView(R.layout.dialog_getpassword, true)
+                        .positiveText(R.string.momboard_edit_send)
+                        .negativeText(R.string.cancel)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                final User user = new User();
+                                user.setUsername(find_email.getText().toString());
+
+                                Random rnd =new Random();
+                                StringBuffer buf =new StringBuffer();
+
+                                for(int i=0;i<6;i++){
+                                    if(rnd.nextBoolean()){
+                                        buf.append((char)((int)(rnd.nextInt(6))+97));
+                                    }else{
+                                        buf.append((rnd.nextInt(10)));
+                                    }
+                                }
+                                user.setPassword(buf.toString());
+                                Log.i(TAG,"user pwd : " + user.toString());
+
+                                WaitingDialog.showWaitingDialog(activity,false);
+                                UserService userService = ServiceGenerator.createService(UserService.class);
+                                Call<ServerResult> c = userService.getEmailFind(user);
+                                c.enqueue(new Callback<ServerResult>() {
+                                    @Override
+                                    public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                                        WaitingDialog.cancelWaitingDialog();
+                                        if(response.isSuccessful()){
+                                            ServerResult serverResult = response.body();
+                                            VeteranToast.makeToast(activity,activity.getResources().getString(R.string.getfind_email_title4),Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ServerResult> call, Throwable t) {
+
+                                    }
+                                });
+
+                            }
+                        })
+                        .build();
+
+                find_email = (EditText) dialog.findViewById(R.id.find_email);
+                positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+
+                find_email.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                        positiveAction.setEnabled(s.toString().trim().length() > 0);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+                dialog.show();
+                positiveAction.setEnabled(false);
+
                 break;
         }
-    }
+    }*/
 
     /****************************************************************
      * 각 버튼에 대한 이벤트

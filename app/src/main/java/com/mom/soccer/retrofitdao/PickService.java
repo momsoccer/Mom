@@ -28,4 +28,7 @@ public interface PickService {
 
     @POST("/api/mission/getMyBookMark")
     Call<List<UserMission>> getMyBookMark(@Body MyBookMark myBookMark);
+
+    @POST("/api/mission/getMyBookMarkList")
+    Call<List<MyBookMark>> getMyBookMarkList(@Body MyBookMark myBookMark);
 }

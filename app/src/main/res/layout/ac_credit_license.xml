@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -7,230 +7,498 @@
     android:background="@color/mom_color1"
     tools:context="com.mom.soccer.CreditLicense">
 
-    <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/player_toolbar"
-        app:titleTextColor="@color/color6"
-        android:background="@color/mom_color1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <ImageView
-            android:id="@+id/main_image"
-            android:src="@drawable/mom_hd_mk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            />
-    </android.support.v7.widget.Toolbar>
-    <ScrollView
-        android:fillViewport="true"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <View
+            android:background="@color/enabled_red"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+        <TextView
+            android:layout_margin="5dp"
+            android:gravity="left"
+            android:text="만든 사람들"
+            android:textSize="15sp"
+            android:textColor="@color/color6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View
+            android:background="@color/enabled_red"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
 
         <LinearLayout
-            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_gravity="center"
-                    android:src="@drawable/spmark"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <TextView
-                android:gravity="center"
-                android:text="만든 사람들"
-                android:textSize="15sp"
-                android:textColor="@color/color6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
             <LinearLayout
+                android:layout_marginLeft="20dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="APP UX/UI"
-                    android:textSize="12sp"
+                    android:layout_margin="3dp"
+                    android:text="UX DESIGN"
+                    android:textSize="14sp"
                     android:textColor="@color/color6"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:layout_margin="3dp"
                     android:text="이니션"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textColor="@color/color6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="3dp"
                     android:id="@+id/inition"
                     android:text="http://www.inition.kr/"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
                     android:textColor="@color/color6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+        </LinearLayout>
 
+        <View
+            android:background="@color/color8"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <LinearLayout
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="3dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <LinearLayout
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="앱개발"
-                    android:textSize="12sp"
+                    android:layout_margin="3dp"
+                    android:text="소프트웨어개발"
+                    android:textSize="14sp"
                     android:textColor="@color/color6"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:text="심성보"
-                    android:textSize="15sp"
+                    android:layout_margin="3dp"
+                    android:text="김남현/심성보"
+                    android:textSize="14sp"
                     android:textColor="@color/color6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
-                <TextView
-                    android:layout_marginLeft="5dp"
-                    android:id="@+id/email"
-                    android:text="ishimsungbo@gmail.com"
-                    android:textSize="15sp"
-                    android:textColor="@color/color6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
             </LinearLayout>
 
+        </LinearLayout>
+        <View
+            android:background="@color/color8"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+        <LinearLayout
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="3dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <LinearLayout
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="기타개발"
-                    android:textSize="12sp"
+                    android:layout_margin="3dp"
+                    android:text="디자인"
+                    android:textSize="14sp"
                     android:textColor="@color/color6"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:text="김남현"
-                    android:textSize="15sp"
-                    android:textColor="@color/color6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="랜딩및 기타디자인"
-                    android:textSize="12sp"
-                    android:textColor="@color/color6"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
-
-                <TextView
+                    android:layout_margin="3dp"
                     android:text="최지숙"
-                    android:textSize="15sp"
-                    android:textColor="@color/color6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="시드미션 모델"
-                    android:textSize="12sp"
-                    android:textColor="@color/color6"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:text="유태풍(태풍축구교실)"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textColor="@color/color6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:background="@color/enabled_red"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+        <TextView
+            android:layout_margin="5dp"
+            android:gravity="left"
+            android:text="미션 모델 소개"
+            android:textSize="15sp"
+            android:textColor="@color/color6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View
+            android:background="@color/enabled_red"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <LinearLayout
+            android:layout_marginTop="2dp"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/teapung"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
 
             <LinearLayout
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="프리스타일 모델"
-                    android:textSize="12sp"
-                    android:textColor="@color/color6"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:text="임재훈"
-                    android:textSize="15sp"
-                    android:textColor="@color/color6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="프리스타일 공연 및 기타 문의"
-                    android:textSize="12sp"
+                    android:text="유태풍 선생님"
+                    android:textSize="14sp"
                     android:textColor="@color/color6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="미션기술:리프팅/드리블/트래핑"
+                    android:textSize="14sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="현:노원구 태풍축구교실 운영 / 청춘FC출연"
+                    android:textSize="14sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView2" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="개인레슨 및 기타문의"
+                        android:textSize="14sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:text="010-7655-7821"
+                        android:autoLink="phone"
+                        android:textSize="14sp"
+                        android:textColor="@color/bg_screen3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <View
+            android:background="@color/color8"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <LinearLayout
+            android:layout_marginTop="2dp"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:src="@drawable/jahun"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="임재훈 선생님"
+                    android:textSize="14sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="미션기술(프리스타일):어라운드/플릭/기타"
+                    android:textSize="14sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="현:축구프리스타일 니아팀대표/축구배울래 유투부 채널운영/SBS스타킹 출연"
+                    android:textSize="14sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="공연 및 행사 문의"
+                        android:textSize="14sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:text="010-4812-7790"
+                        android:textSize="14sp"
+                        android:textColor="@color/bg_screen3"
+                        android:autoLink="phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
                 <TextView
                     android:text="http://blog.naver.com/jaehun1024"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textColor="@color/color6"
                     android:autoLink="web"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+
             </LinearLayout>
 
+        </LinearLayout>
+
+        <View
+            android:background="@color/color8"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <LinearLayout
+            android:layout_marginTop="2dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/younwon"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="윤원철 선생님"
+                    android:textSize="14sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="미션기술:트래핑/리프팅"
+                    android:textSize="14sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="전)부천SK, 현)개인레슨 분당지역"
+                    android:textSize="14sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="개인레슨 및 기타문의"
+                        android:textSize="14sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:text="010-5350-1044"
+                        android:textSize="14sp"
+                        android:textColor="@color/bg_screen3"
+                        android:autoLink="phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
 
+        <View
+            android:background="@color/color8"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="2dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/applelined"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="애플라인드싸커"
+                    android:textSize="14sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="모델 의류/공 협찬"
+                    android:textSize="14sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="http://applerindsoccer.com/index.html"
+                    android:textSize="14sp"
+                    android:autoLink="web"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:background="@color/color8"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <LinearLayout
+            android:layout_marginTop="2dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/spmark"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="몸소프트"
+                    android:textSize="14sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="대표 : 심성보"
+                    android:textSize="14sp"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="ishimsungbo@gmail.com"
+                    android:textSize="14sp"
+                    android:autoLink="email"
+                    android:textColor="@color/color6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="투자/협찬/기타문의"
+                        android:textSize="14sp"
+                        android:textColor="@color/color6"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:text="010-2499-1591"
+                        android:textSize="14sp"
+                        android:textColor="@color/bg_screen3"
+                        android:autoLink="phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

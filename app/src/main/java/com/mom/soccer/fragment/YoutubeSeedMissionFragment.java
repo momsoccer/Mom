@@ -24,7 +24,7 @@ import com.mom.soccer.common.Common;
  */
 public class YoutubeSeedMissionFragment extends Fragment implements YouTubePlayer.OnInitializedListener ,YouTubePlayer.OnFullscreenListener{
 
-    private static final String TAG = "YoutubeSeedMissionFragment";
+    private static final String TAG = "YoutubeSeed";
 
     private static Context mContext;
     private static  String youtubeVideoAddr;
@@ -50,14 +50,11 @@ public class YoutubeSeedMissionFragment extends Fragment implements YouTubePlaye
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG,"onCreate() ************************************************");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.youtube_fragment_main_item, container, false);
-
-        Log.i(TAG,"onCreateView() ************************************************");
 
         youtube_player_layout = (LinearLayout) rootview.findViewById(R.id.youtube_player_layout);
         youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
@@ -65,7 +62,6 @@ public class YoutubeSeedMissionFragment extends Fragment implements YouTubePlaye
         transaction.add(R.id.youtube_player_layout, youTubePlayerFragment).commit();
 
         youTubePlayerFragment.initialize(Auth.KEY,this);
-
 
         return rootview;
     }

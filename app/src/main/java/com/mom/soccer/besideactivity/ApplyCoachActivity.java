@@ -457,10 +457,10 @@ public class ApplyCoachActivity extends AppCompatActivity {
         insApplyVo.setPhonenumber(ins_phone.getText().toString());
         insApplyVo.setResume(ins_resume.getText().toString());
         insApplyVo.setCareer1(ins_career1.getText().toString());
-        insApplyVo.setCareer1(ins_career2.getText().toString());
-        insApplyVo.setCareer1(ins_career3.getText().toString());
-        insApplyVo.setCareer1(ins_career4.getText().toString());
-        insApplyVo.setCareer1(ins_career5.getText().toString());
+        insApplyVo.setCareer2(ins_career2.getText().toString());
+        insApplyVo.setCareer3(ins_career3.getText().toString());
+        insApplyVo.setCareer4(ins_career4.getText().toString());
+        insApplyVo.setCareer5(ins_career5.getText().toString());
         insApplyVo.setAddress(ins_address.getText().toString());
         insApplyVo.setMomappteamname(ins_momteamname.getText().toString());
         insApplyVo.setApplystatus("REQUEST");

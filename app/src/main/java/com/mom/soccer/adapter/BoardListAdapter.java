@@ -332,10 +332,10 @@ public class BoardListAdapter extends BaseAdapter {
         return currentRow;
     }
 
-
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = activity.getMenuInflater();
         inflater.inflate(R.menu.board_menu, menu);
         return true;
     }
+
 }

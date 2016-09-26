@@ -43,7 +43,7 @@ import com.mom.soccer.dto.MyBookMark;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
-import com.mom.soccer.fragment.UserMissionFragment;
+import com.mom.soccer.fragment.YoutubeSeedMissionFragment;
 import com.mom.soccer.retrofitdao.BoardService;
 import com.mom.soccer.retrofitdao.FeedBackService;
 import com.mom.soccer.retrofitdao.FollowService;
@@ -554,25 +554,21 @@ public class UserMissionActivity extends AppCompatActivity
         //피드백 리스트
         getFeedBack();
 
-        //UserMissionFragment 유투브 플래그먼트
-        UserMissionFragment youtubeFragment = new UserMissionFragment(this,userMission.getYoutubeaddr());
+        YoutubeSeedMissionFragment youtubeFragment = new YoutubeSeedMissionFragment(this,userMission.getYoutubeaddr());
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction tc = fm.beginTransaction();
         tc.add(R.id.youtube_seed_frame_layout,youtubeFragment,"");
         tc.commit();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume() ============================================ ");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy() ============================================ ");
     }
 
     //관심 영상 체크 상태 확인
@@ -856,8 +852,6 @@ public class UserMissionActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
             getWindow().clearFlags(
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);

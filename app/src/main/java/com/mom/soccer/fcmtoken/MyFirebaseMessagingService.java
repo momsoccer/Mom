@@ -4,14 +4,17 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.mom.soccer.MainActivity;
 import com.mom.soccer.R;
+import com.mom.soccer.common.Compare;
 
 /**
  * Created by sungbo on 2016-06-29.
@@ -19,15 +22,37 @@ import com.mom.soccer.R;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMessaging";
+    private String sfName = "momSoccerSetup";
+    private String setupValue= null;
+
+    /*
+
+    노티를 받으면 해당 화면으로 갈 수 있게 설계가 필요함.
+
+     */
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-            sendNotification(remoteMessage.getData().get("title"),
-                    remoteMessage.getData().get("content"),
-                    remoteMessage.getData().get("message")
-            );
+            SharedPreferences sf = getSharedPreferences(sfName,0);
+            setupValue = sf.getString("push","");
 
+            Log.i(TAG,"setupValue : " + setupValue);
+
+            if(Compare.isEmpty(setupValue)){
+                sf = getSharedPreferences(sfName, 0);
+                SharedPreferences.Editor editor = sf.edit();
+                editor.putString("push", "Y"); // 입력
+                editor.commit(); // 파일에 최종 반영함
+                setupValue="Y";
+            }
+
+            if(setupValue.equals("Y")){
+                sendNotification(remoteMessage.getData().get("title"),
+                        remoteMessage.getData().get("content"),
+                        remoteMessage.getData().get("message")
+                );
+            }
     }
 
     private void sendNotification(String title, String content, String message) {

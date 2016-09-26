@@ -65,7 +65,7 @@ public class TeamBoardActivity extends AppCompatActivity {
     private Activity activity;
     private PrefUtil prefUtil;
     private User user;
-    private Team team;
+    private Team team = new Team();
 
     @Bind(R.id.action_bar_title)
     TextView action_bar_title;

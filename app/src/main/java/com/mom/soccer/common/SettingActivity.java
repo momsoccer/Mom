@@ -49,6 +49,7 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
 
     private User user;
     private PrefUtil prefUtil;
+    private String sfName = "momSoccerSetup";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -89,17 +90,18 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean isVibrateOn = (Boolean) newValue;
                 if(isVibrateOn){
-                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-                    SharedPreferences.Editor pre = sp.edit();
-                    pre.putString("pushcheck", "Y");
-                    pre.commit();
-                    Common.PUSH ="Y";
+
+
+                    SharedPreferences sf = getSharedPreferences(sfName, 0);
+                    SharedPreferences.Editor editor = sf.edit();
+                    editor.putString("push", "Y"); // 입력
+                    editor.commit(); // 파일에 최종 반영함
+
                 }else{
-                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-                    SharedPreferences.Editor pre = sp.edit();
-                    pre.putString("pushcheck", "N");
-                    pre.commit();
-                    Common.PUSH ="N";
+                    SharedPreferences sf = getSharedPreferences(sfName, 0);
+                    SharedPreferences.Editor editor = sf.edit();
+                    editor.putString("push", "N"); // 입력
+                    editor.commit();
                 }
                 return true;
             }

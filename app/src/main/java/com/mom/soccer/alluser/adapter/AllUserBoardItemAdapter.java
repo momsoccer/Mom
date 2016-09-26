@@ -25,6 +25,8 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.kakao.kakaolink.AppActionBuilder;
+import com.kakao.kakaolink.AppActionInfoBuilder;
 import com.kakao.kakaolink.KakaoLink;
 import com.kakao.kakaolink.KakaoTalkLinkMessageBuilder;
 import com.kakao.util.KakaoParameterException;
@@ -41,6 +43,7 @@ import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.MomBoard;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
+import com.mom.soccer.momactivity.MomMainActivity;
 import com.mom.soccer.pubretropit.PubReport;
 import com.mom.soccer.retrofitdao.MomBoardService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
@@ -125,20 +128,15 @@ public class AllUserBoardItemAdapter extends RecyclerView.Adapter<AllUserBoardIt
 
                     final KakaoLink kakaoLink = KakaoLink.getKakaoLink(activity.getApplicationContext());
                     final KakaoTalkLinkMessageBuilder builder = kakaoLink.createKakaoTalkLinkMessageBuilder();
-/*
+
                     builder.addAppLink("자세히 보기",
                             new AppActionBuilder()
-                                   .addActionInfo(AppActionInfoBuilder
+                                    .addActionInfo(AppActionInfoBuilder
                                             .createAndroidActionInfoBuilder()
-                                            .setExecuteParam("execparamkey1=1111")
-                                            .setMarketParam("referrer=kakaotalklink")
+                                            .setExecuteParam(activity.getResources().getString(R.string.kakao_app_key))
+                                            .setMarketParam("details?id=com.mom.soccer")
                                             .build())
-                                    .addActionInfo(AppActionInfoBuilder.createiOSActionInfoBuilder()
-                                            .setExecuteParam("execparamkey1=1111")
-                                            .build())
-                                    .setUrl("https://developers.kakao.com/docs/android") // PC 카카오톡 에서 사용하게 될 웹사이트 주소
                                     .build());
-                                   */
 
                     builder.addText(vo.getUsername()+":"+vo.getContent());
 
@@ -148,7 +146,7 @@ public class AllUserBoardItemAdapter extends RecyclerView.Adapter<AllUserBoardIt
                     }
 
                     builder.addAppButton("앱실행");
-                    kakaoLink.sendMessage(builder,activity);
+                    kakaoLink.sendMessage(builder, MomMainActivity.activity);
 
                 } catch (KakaoParameterException e) {
                     e.printStackTrace();

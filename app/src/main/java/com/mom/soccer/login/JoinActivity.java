@@ -3,6 +3,7 @@ package com.mom.soccer.login;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
@@ -198,6 +199,12 @@ public class JoinActivity extends AppCompatActivity {
         userVo.setPassword(joinPassword.getText().toString());
         userVo.setUsername(username.getText().toString());
         userCreate(userVo);
+
+        //푸쉬설정
+        SharedPreferences sf = getSharedPreferences("momSoccerSetup", 0);
+        SharedPreferences.Editor editor = sf.edit();
+        editor.putString("push", "Y"); // 입력
+        editor.commit(); // 파일에 최종 반영함
     }
 
 

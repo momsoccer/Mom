@@ -9,11 +9,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kakao.kakaolink.AppActionBuilder;
+import com.kakao.kakaolink.AppActionInfoBuilder;
+import com.kakao.kakaolink.KakaoLink;
+import com.kakao.kakaolink.KakaoTalkLinkMessageBuilder;
+import com.kakao.util.KakaoParameterException;
 import com.mom.soccer.R;
 import com.mom.soccer.alluser.AdBoardActivity;
 import com.mom.soccer.dto.AdBoardVo;
+import com.mom.soccer.momactivity.MomMainActivity;
 
 import java.util.List;
 
@@ -115,6 +122,44 @@ public class AdBoardAdapter extends RecyclerView.Adapter<AdBoardAdapter.AdBoardV
             }
         });
 
+        holder.liShareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+
+                    final KakaoLink kakaoLink = KakaoLink.getKakaoLink(activity.getApplicationContext());
+                    final KakaoTalkLinkMessageBuilder builder = kakaoLink.createKakaoTalkLinkMessageBuilder();
+
+                    builder.addAppLink("자세히 보기",
+                            new AppActionBuilder()
+                                    .addActionInfo(AppActionInfoBuilder
+                                            .createAndroidActionInfoBuilder()
+                                            .setExecuteParam(activity.getResources().getString(R.string.kakao_app_key))
+                                            .setMarketParam("details?id=com.mom.soccer")
+                                            .build())
+                                    //.addActionInfo(AppActionInfoBuilder.createiOSActionInfoBuilder()
+                                    //        .setExecuteParam("execparamkey1=1111")
+                                    //        .build())
+                                    //.setUrl("https://developers.kakao.com/docs/android") // PC 카카오톡 에서 사용하게 될 웹사이트 주소
+                                    .build());
+
+
+                    builder.addText(vo.getSubcontent1()+":"+vo.getAddr()+" : "+vo.getPhone());
+
+                    if(vo.getFilecount()!=0){
+                        String url = vo.getAdBoardFiles().get(0).getFileaddr();
+                        builder.addImage(url,800,500);
+                    }
+
+                    builder.addAppButton("앱실행");
+                    kakaoLink.sendMessage(builder, MomMainActivity.activity);
+
+                } catch (KakaoParameterException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -128,6 +173,7 @@ public class AdBoardAdapter extends RecyclerView.Adapter<AdBoardAdapter.AdBoardV
         TextView introduce,content1,phone,addr,txbtnview;
         CardView cardview;
         RecyclerView imageRcView;
+        LinearLayout liShareBtn;
 
         public AdBoardViewHoder(View view) {
             super(view);
@@ -145,7 +191,7 @@ public class AdBoardAdapter extends RecyclerView.Adapter<AdBoardAdapter.AdBoardV
             cardview = (CardView) view.findViewById(R.id.cardview);
             txbtnview = (TextView) view.findViewById(R.id.txbtnview);
             imageRcView = (RecyclerView) view.findViewById(R.id.imageRcView);
-
+            liShareBtn = (LinearLayout) view.findViewById(R.id.liShareBtn);
 
 
         }

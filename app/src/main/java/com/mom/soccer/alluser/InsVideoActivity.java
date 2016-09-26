@@ -185,6 +185,8 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
     private int posintion = 0;
     View positiveAction;
     EditText report_content;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

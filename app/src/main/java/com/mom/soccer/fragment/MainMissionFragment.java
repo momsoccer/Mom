@@ -161,7 +161,7 @@ public class MainMissionFragment extends Fragment {
         final TextView tx_mission_open = (TextView) view.findViewById(R.id.tx_mission_open);
         final TextView tx_mission_upload = (TextView) view.findViewById(R.id.tx_mission_upload);
         final TextView tx_mission_pass = (TextView) view.findViewById(R.id.tx_mission_pass);
-        final TextView tx_mission_cash_point = (TextView) view.findViewById(R.id.tx_mission_cash_point);
+        //final TextView tx_mission_cash_point = (TextView) view.findViewById(R.id.tx_mission_cash_point);
 
         tx_mission_level.setText("Lv."+mission.getSequence());
 
@@ -199,7 +199,7 @@ public class MainMissionFragment extends Fragment {
         tx_mission_open.setText(getString(R.string.mission_require_point)+" : "+mission_open_point+"P");
         tx_mission_upload.setText(getString(R.string.mission_get_upload_score)+" : "+mission_score+"점");
         tx_mission_pass.setText(getString(R.string.mission_clear_score)+" : "+mission_pass +"점");
-        tx_mission_cash_point.setText(getString(R.string.mission_clear_point)+" : "+mission_point+"P");
+        //tx_mission_cash_point.setText(getString(R.string.mission_clear_point)+" : "+mission_point+"P");
 
         /*  //업로드 했을 경우
         if(mission.getUploadcount()!=0){

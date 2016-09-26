@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -62,7 +63,13 @@ public class PlayerMainActivity extends AppCompatActivity {
         instructor = prefUtil.getIns();
 
         intent = getIntent();
-        PageCall = intent.getExtras().getInt(Param.FRAGMENT_COUNT);
+        try{
+            PageCall = intent.getExtras().getInt(Param.FRAGMENT_COUNT);
+        }catch (Exception e){
+            PageCall = 0;
+        }
+
+
 
         //템체크체
 
@@ -115,13 +122,12 @@ public class PlayerMainActivity extends AppCompatActivity {
 
         tabsStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-            @Override
-            public void onPageSelected(int position) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if(position==0) {
                     if(Common.teamid != 0){
                         ic_board_write.setVisibility(View.VISIBLE);
+                    }else{
+                        ic_board_write.setVisibility(View.GONE);
                     }
                     rightLowerButton.setVisibility(View.GONE);
                 }else if(position==1){
@@ -131,6 +137,29 @@ public class PlayerMainActivity extends AppCompatActivity {
                     ic_board_write.setVisibility(View.GONE);
                     rightLowerButton.setVisibility(View.GONE);
                 }
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                Log.i(TAG,"team id common : " + Common.teamid);
+                Log.i(TAG,"team id user : " + user.getTeamid());
+
+ /*               if(position==0) {
+                    if(Common.teamid != 0){
+                        ic_board_write.setVisibility(View.VISIBLE);
+                    }else{
+                        ic_board_write.setVisibility(View.GONE);
+                    }
+                    rightLowerButton.setVisibility(View.GONE);
+                }else if(position==1){
+                    ic_board_write.setVisibility(View.GONE);
+                    rightLowerButton.setVisibility(View.VISIBLE);
+                }else if(position==2){
+                    ic_board_write.setVisibility(View.GONE);
+                    rightLowerButton.setVisibility(View.GONE);
+                }*/
             }
 
             @Override
@@ -219,5 +248,18 @@ public class PlayerMainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         EventBus.getInstance().post(ActivityResultEvent.create(requestCode, resultCode, data));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Log.i(TAG,"onBackPressed() ==================================");
+
+        if(Common.YOUTUBESCREEN_STATUS .equals("LANDSCAPE")){
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            getWindow().clearFlags(
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
     }
 }

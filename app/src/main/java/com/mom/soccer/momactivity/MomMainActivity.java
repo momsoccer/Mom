@@ -55,11 +55,11 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.mom.soccer.MainActivity;
+import com.mom.soccer.QuestionActivity;
 import com.mom.soccer.R;
 import com.mom.soccer.Ranking.UserRankingActivity;
 import com.mom.soccer.adapter.RankingItemAdapter;
 import com.mom.soccer.adapter.TeamRankingItemAdapter;
-import com.mom.soccer.besideactivity.AlramActivity;
 import com.mom.soccer.besideactivity.ApplyCoachActivity;
 import com.mom.soccer.besideactivity.FavoriteMissionActivity;
 import com.mom.soccer.besideactivity.StudentMainActivity;
@@ -107,6 +107,8 @@ import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.mom.soccer.R.id.mn_item_money;
 
 public class  MomMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
@@ -348,6 +350,39 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         getUserLevel();
 
         getUserMainKindLevel();
+
+/*        if(VERSITON_CODE.compareTo(Common.DIVICEVERSITON_CODE) > 0){
+
+        }else{
+            new MaterialDialog.Builder(this)
+                    .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                    .title(R.string.mom_diaalog_update_alert)
+                    .titleColor(getResources().getColor(R.color.color6))
+                    .content(R.string.versioncheck)
+                    .contentColor(getResources().getColor(R.color.color6))
+                    .positiveText(R.string.mom_diaalog_find1)
+                    .negativeText(R.string.mom_diaalog_find2)
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            moveTaskToBack(true);
+                            finish();
+                            android.os.Process.killProcess(android.os.Process.myPid());
+                        }
+                    })
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=com.mom.soccer");
+                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            startActivity(intent);
+                        }
+                    })
+                    .show();
+        }*/
+
+
     }
 
     public void getTeamid(int uid){
@@ -438,13 +473,16 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
             startActivity(intent);
             //overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
-        }else if(id == R.id.mn_item_money){
+        }else if(id == mn_item_money){
 
             Intent intent = new Intent(this,InsMoneyActivity.class);
             startActivity(intent);
         } else if(id == R.id.mn_item_logout){
 
             new MaterialDialog.Builder(this)
+                    .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                    .title(getResources().getString(R.string.logout_title))
+                    .titleColor(getResources().getColor(R.color.color6))
                     .title(R.string.mom_diaalog_title_logout)
                     .titleColor(getResources().getColor(R.color.color6))
                     .content(R.string.mom_diaalog_content_logout)
@@ -616,13 +654,14 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         switch (v.getId()){
             case R.id.mom_hd_mk:
 
-                //Intent intent = new Intent(this, TestActivity.class);
-                //startActivity(intent);
-
+                Uri uri = Uri.parse("http://cafe.naver.com/momsoft");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                startActivity(intent);
 
                 break;
             case R.id.hd_bell:
-                Intent intenti = new Intent(this, AlramActivity.class);
+                Intent intenti = new Intent(this, QuestionActivity.class);
                 startActivity(intenti);
                 overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 break;
@@ -791,7 +830,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                     }
                 });
 
-            //팀데이터
+                //팀데이터
             }else if(position==1){
                 WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
                 DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
@@ -1064,7 +1103,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                     if(instructor.getUid()==0){
                         navigationView.getMenu().findItem(R.id.mn_item_coachreq).setTitle(getString(R.string.mom_menu_title_coach_apply));
                         navigationView.getMenu().findItem(R.id.mn_item_teammemberlist).setVisible(false);
-                        navigationView.getMenu().findItem(R.id.mn_item_money).setVisible(false);
+                        navigationView.getMenu().findItem(mn_item_money).setVisible(false);
 
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("insinfo", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
@@ -1075,7 +1114,7 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                     }else{
                         navigationView.getMenu().findItem(R.id.mn_item_coachreq).setTitle(getString(R.string.mom_menu_title_coach_info));
                         navigationView.getMenu().findItem(R.id.mn_item_teammemberlist).setVisible(false);
-                        navigationView.getMenu().findItem(R.id.mn_item_money).setVisible(true);
+                        navigationView.getMenu().findItem(mn_item_money).setVisible(true);
 
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("insinfo", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();

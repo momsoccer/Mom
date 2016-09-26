@@ -2,6 +2,7 @@
 <RelativeLayout android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/mom_color1"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <android.support.v7.widget.Toolbar
@@ -25,17 +26,19 @@
             android:textColor="@color/color6"
             android:layout_gravity="center"
             />
-
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll_layout"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="465dp"
+        android:layout_height="wrap_content"
         android:verticalSpacing="10dp"
         android:fillViewport="true"
         android:background="@color/mom_color1"
         android:layout_below="@+id/toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="38dp"
         >
 
         <LinearLayout
@@ -119,7 +122,9 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/mom_color1"
+                >
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -202,6 +207,7 @@
                     android:background="@color/line_color1" />
 
                 <android.support.v7.widget.RecyclerView
+                    android:layout_marginBottom="3dp"
                     android:id="@+id/replyRecview"
                     android:layout_marginTop="5dp"
                     android:layout_gravity="center_horizontal"
@@ -213,10 +219,10 @@
 
         </LinearLayout>
 
-    </ScrollView>
-
+    </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout
+        android:id="@+id/bottom"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -259,7 +265,7 @@
             style="@style/btnStylePaprika"
             android:layout_width="0dp"
             android:layout_weight="0.2"
-            android:layout_height="35dp" />
+            android:layout_height="30dp" />
 
     </LinearLayout>
 
