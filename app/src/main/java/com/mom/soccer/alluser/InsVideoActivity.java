@@ -439,14 +439,19 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
 
         copyyoutube = true;
 
-        int lastString = youtubeaddr.getText().toString().length();
-        youtubeAdress = youtubeaddr.getText().toString().substring(17,lastString);
-        li_layout.setVisibility(View.VISIBLE);
-        YoutubeSeedMissionFragment youtubeFragment = new YoutubeSeedMissionFragment(InsVideoActivity.this,youtubeAdress);
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction tc = fm.beginTransaction();
-        tc.add(R.id.youtube_seed_frame_layout,youtubeFragment,"");
-        tc.commit();
+        try {
+            int lastString = youtubeaddr.getText().toString().length();
+            youtubeAdress = youtubeaddr.getText().toString().substring(17, lastString);
+            li_layout.setVisibility(View.VISIBLE);
+            YoutubeSeedMissionFragment youtubeFragment = new YoutubeSeedMissionFragment(InsVideoActivity.this, youtubeAdress);
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction tc = fm.beginTransaction();
+            tc.add(R.id.youtube_seed_frame_layout, youtubeFragment, "");
+            tc.commit();
+        }catch (Exception e){
+            VeteranToast.makeToast(getApplicationContext(),"유투브 주소 전체를 복사해서 붙여넣어주세요",Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
@@ -480,6 +485,7 @@ public class InsVideoActivity extends AppCompatActivity implements GoogleApiClie
             c.enqueue(new Callback<ServerResult>() {
                 @Override
                 public void onResponse(Call<ServerResult> call, Response<ServerResult> response) {
+                    WaitingDialog.cancelWaitingDialog();
                     if(response.isSuccessful()){
                         new MaterialDialog.Builder(InsVideoActivity.this)
                                 .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))

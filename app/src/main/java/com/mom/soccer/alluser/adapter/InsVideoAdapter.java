@@ -234,6 +234,8 @@ public class InsVideoAdapter extends RecyclerView.Adapter<InsVideoAdapter.InsVid
 
         //현재내가 강사인지 아닌지
         getCurrent();
+
+        holder.subject.setText(vo.getSubject());
     }
 
     @Override
