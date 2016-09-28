@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -97,6 +98,7 @@ import com.mom.soccer.widget.WaitingDialog;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -189,6 +191,9 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_main_layout);
         ButterKnife.bind(this);
+
+        BackgroundThread mBackgroundThread = new BackgroundThread();
+        mBackgroundThread.start();
 
         activity = this;
         prefUtil = new PrefUtil(this);
@@ -942,6 +947,9 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                 });
 
             }else if(position==3){
+
+                Log.i(TAG,"팀랭킹 이 없음" + "팀랭킹 문제가 있나요?");
+
                 WaitingDialog.showWaitingDialog(MomMainActivity.this,false);
                 DataService dataService = ServiceGenerator.createService(DataService.class,getApplicationContext(),user);
                 final LinearLayout li_no_found = (LinearLayout) view.findViewById(R.id.li_no_found);
@@ -955,10 +963,14 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
                             List<TeamRankingVo> teamRankingVos = new ArrayList<TeamRankingVo>();
                             teamRankingVos = response.body();
 
+
+
                             if(teamRankingVos.size()==0){
+                                Log.i(TAG,"팀랭킹 이 없음" + teamRankingVos.size());
                                 li_no_found.setVisibility(View.VISIBLE);
                                 btnAllteamRanking.setVisibility(View.GONE);
                             }else{
+                                Log.i(TAG,"팀랭킹 이 있음" + teamRankingVos.size());
                                 li_no_found.setVisibility(View.GONE);
                                 btnAllteamRanking.setVisibility(View.VISIBLE);
                             }
@@ -1355,6 +1367,88 @@ public class  MomMainActivity extends AppCompatActivity implements NavigationVie
 
             }
         });
+    }
+
+    String deviceVersion;
+    String storeVersion;
+    //app version check
+    public class BackgroundThread extends Thread{
+        @Override
+        public void run() {
+            // 패키지 네임 전달
+            String storeVersion = MarketVersionChecker.getMarketVersion(getPackageName());
+            Log.i(TAG,"메인 버젼 : " + storeVersion);
+
+            // 디바이스 버전 가져옴
+            try {
+                deviceVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            deviceVersionCheckHandler.sendMessage(deviceVersionCheckHandler.obtainMessage());
+        }
+    }
+
+    private final DeviceVersionCheckHandler deviceVersionCheckHandler = new DeviceVersionCheckHandler(this);
+
+    // 핸들러 객체 만들기
+    private static class DeviceVersionCheckHandler extends Handler{
+
+        private final WeakReference<MomMainActivity> mainActivityWeakReference;
+
+        public DeviceVersionCheckHandler(MomMainActivity momMainActivity) {
+            mainActivityWeakReference = new WeakReference<MomMainActivity>(momMainActivity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            MomMainActivity activity = mainActivityWeakReference.get();
+            if (activity != null) {
+                activity.handleMessage(msg);
+            }
+        }
+    }
+
+    private void handleMessage(Message msg) {
+        //핸들러에서 넘어온 값 체크
+        //Log.i(TAG,"스토어 버젼"+storeVersion);
+        //Log.i(TAG,"장치 버젼"+deviceVersion);
+        //Log.i(TAG,"스토어 버젼"+Common.VERSITON_CODE);
+
+        try{
+
+            if (Common.VERSITON_CODE.compareTo(deviceVersion) > 0) {
+                new MaterialDialog.Builder(this)
+                        .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                        .titleColor(getResources().getColor(R.color.color6))
+                        .title(R.string.app_update)
+                        .content(R.string.app_update_msg)
+                        .positiveText(R.string.mom_diaalog_confirm)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                Intent marketLaunch = new Intent(Intent.ACTION_VIEW);
+                                marketLaunch.setData(Uri.parse("market://details?id=com.mom.soccer"));
+                                startActivity(marketLaunch);
+                            }
+                        })
+                        .negativeText(R.string.app_finish)
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                moveTaskToBack(true);
+                                finish();
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                            }
+                        })
+                        .backgroundColor(getResources().getColor(R.color.mom_color1))
+                        .show();
+            } else {
+                // 업데이트 불필요
+            }}catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

@@ -916,4 +916,9 @@
     <string name="getfind_email_title2">이메일</string>
     <string name="getfind_email_title3">*해당 이메일로 임시 비밀번호가 전송됩니다\n 1시간 이내에 확인하셔야 정상 처리됩니다.</string>
     <string name="getfind_email_title4">입력하신 이메일 주소로 비밀번호를 발급했습니다</string>
+
+    <!--앱업데이트-->
+    <string name="app_update">앱 업데이트 버젼 알림</string>
+    <string name="app_update_msg">몸싸커 앱이 업데이트 되었습니다\n 업데이트를 하셔야 정상적으로 서비스를 이용하실 수 있습니다\n업데이트 부탁드려요~</string>
+    <string name="app_finish">앱종료</string>
 </resources>

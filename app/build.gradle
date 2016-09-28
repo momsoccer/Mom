@@ -8,8 +8,8 @@ android {
         applicationId "com.mom.soccer"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 6
-        versionName "1.1.4"
+        versionCode 7
+        versionName "1.1.5"
         multiDexEnabled true
     }
 
@@ -135,6 +135,7 @@ dependencies {
     //multi Image
     compile 'com.github.darsh2:MultipleImageSelect:v0.0.4'
     compile 'org.jsoup:jsoup:1.9.2'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
