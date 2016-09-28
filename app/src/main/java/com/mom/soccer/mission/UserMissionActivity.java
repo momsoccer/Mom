@@ -445,6 +445,9 @@ public class UserMissionActivity extends AppCompatActivity
 
         //관심영상 체크
         if (pickUpFlag == "Y") {
+
+            Log.i(TAG,"클릭햇씁니다");
+
             pickService = ServiceGenerator.createService(PickService.class, this, user);
             //플래그가 Y일 경우 좋아요 한 상태입니다.
             Call<ServerResult> call = pickService.pickCancel(myBookMark);

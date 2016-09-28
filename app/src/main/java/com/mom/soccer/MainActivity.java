@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     MyVideoView videoView;
 
     String upset ="N";
+    private String sfName = "momSoccerSetup";
+    private String setupValue= null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,36 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i(TAG,"몸싸커 앱을 시작합니다");
         getAppKeyHash();
+
+
+
+        SharedPreferences sf = getSharedPreferences(sfName, 0);
+        setupValue = sf.getString("chanel","N");
+
+        if(setupValue.equals("N")){
+            SharedPreferences.Editor editor = sf.edit();
+            editor.putString("chanel", "N"); // 입력
+            editor.commit(); // 파일에 최종 반영함
+
+            //Log.i(TAG,"N 입니다");
+
+        }else{
+            //Log.i(TAG,"Y 입니다");
+        }
+
+         /*
+        //초기 유투브 도움말 페이지 셋업
+        SharedPreferences sf = getSharedPreferences(sfName, 0);
+        SharedPreferences.Editor editor = sf.edit();
+        editor.putString("chanel", "N"); // 입력
+        editor.commit(); // 파일에 최종 반영함
+
+        꺼내 쓸때는
+            private String setupValue= null;
+            SharedPreferences sf = getSharedPreferences(sfName,0);
+            setupValue = sf.getString("chanel","");
+
+         */
 
         activity = this;
         prefUtil = new PrefUtil(this);

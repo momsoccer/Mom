@@ -49,6 +49,7 @@ import com.mom.soccer.dto.Mission;
 import com.mom.soccer.dto.ServerResult;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.dto.UserMission;
+import com.mom.soccer.exception.UploadExceptionActivity;
 import com.mom.soccer.retrofitdao.UserMissionService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.uploadyutube.UploadService;
@@ -98,6 +99,10 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
     public boolean uploadFlag = false;
     private String upset = "N";
 
+    //최초 업로드라면.... 사용자에게 유투브 채널 도움말을 보내준다
+    private String setupValue= null;
+    private String sfName = "momSoccerSetup";
+
     //화면의 정보들
     @Bind(R.id.upload_mission_content)
     EditText et_content;
@@ -115,6 +120,35 @@ public class ReviewActivity extends AppCompatActivity implements GoogleApiClient
         //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         //getSupportActionBar().setTitle(getString(R.string.mission_upload_start));
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        SharedPreferences sf = getSharedPreferences(sfName,0);
+        setupValue = sf.getString("chanel","");
+
+        //채널 도움말 표시
+        if(setupValue.equals("N")){
+            SharedPreferences.Editor editor = sf.edit();
+            editor.putString("chanel", "Y"); // 입력
+            editor.commit(); // 파일에 최종 반영함
+
+            new MaterialDialog.Builder(this)
+                    .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                    .titleColor(getResources().getColor(R.color.color6))
+                    .title(R.string.youtube_upload_title1)
+                    .content(R.string.youtube_upload_title2)
+                    .positiveText(R.string.mom_diaalog_confirm)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            Intent intent = new Intent(getApplicationContext(),UploadExceptionActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+                    })
+                    .backgroundColor(getResources().getColor(R.color.mom_color1))
+                    .show();
+
+        }
+
 
         prefUtil = new PrefUtil(this);
         user = prefUtil.getUser();
