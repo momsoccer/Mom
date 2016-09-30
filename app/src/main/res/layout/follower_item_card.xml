@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     >
 
@@ -12,11 +12,10 @@
         android:id="@+id/followr_cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
+        android:layout_margin="2dp"
         card_view:cardCornerRadius="5dp"
         card_view:cardElevation="5dp"
         android:orientation="vertical"
-        card_view:contentPadding="5dp"
         card_view:cardBackgroundColor="@color/mom_color3"
         >
 
@@ -24,6 +23,12 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/viewType"
+                android:background="@drawable/xml_list_divider"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"/>
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -153,9 +158,9 @@
                         <TextView
                             android:id="@+id/score"
                             android:textColor="@color/color6"
-                            android:text="1,520"
+                            android:text="0"
                             android:textSize="10sp"
-                            android:layout_width="30dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent" />
 
                     </LinearLayout>
@@ -251,8 +256,6 @@
                             android:layout_height="match_parent" />
 
                     </LinearLayout>
-
-
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

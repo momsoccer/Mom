@@ -63,7 +63,7 @@ public class FollowerUserAdapter extends RecyclerView.Adapter<FollowerUserAdapte
         }
 
         holder.level.setText(String.valueOf(data.getLevel()));
-        holder.score.setText(String.valueOf(data.getScore()));
+        holder.score.setText(context.getString(R.string.score_title)+":"+data.getScore());
 
         holder.followercount.setText(String.valueOf(data.getFollowercount()));
         holder.followingcount.setText(String.valueOf(data.getFollowingcount()));

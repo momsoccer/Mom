@@ -54,6 +54,22 @@ public class PointMainActivity extends AppCompatActivity {
         tabsStrip.setIndicatorColor(getResources().getColor(R.color.enabled_red));
         tabsStrip.setTextColor(getResources().getColor(R.color.color6));
         tabsStrip.setViewPager(viewPager);
+
+        tabsStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
 
@@ -99,5 +115,10 @@ public class PointMainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }

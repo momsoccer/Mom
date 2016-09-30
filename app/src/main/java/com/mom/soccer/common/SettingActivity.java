@@ -85,6 +85,7 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
 
         deleteuserkey = (MomPreference) findPreference("deleteuserkey");
 
+
         arlim_check.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {

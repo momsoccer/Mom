@@ -239,13 +239,13 @@
     <string name="friedn_friend_request">친구요청</string>
     <string name="friedn_friend_request_process">친구요청중</string>
     <string name="friedn_friend_request_me">나에게 친구요청중</string>
-    <string name="friedn_friend_cancel">친구끈기</string>
+    <string name="friedn_friend_cancel">친구끊기</string>
     <string name="friedn_friend_reject">거절됨</string>
 
     <string name="friedn_req">님에게 친구요청을 했습니다</string>
     <string name="friedn_alrady_req">친구 요청을 한 상태입니다</string>
     <string name="friedn_reject_req">친구요청을 거절 했지만 다시 한번 친구 요청을 하시겠습니까?</string>
-    <string name="friedn_stop_req">친구끈기를 하시겠습니까?</string>
+    <string name="friedn_stop_req">친구끊기를 하시겠습니까?</string>
 
     <string name="tab_coach">강사</string>
     <string name="tab_user">유저</string>
@@ -571,7 +571,7 @@
     <string name="friend_re_btn">수락</string>
     <string name="friend_reject_btn">거절</string>
     <string name="friend_progressing">친구요청을 보낸 상태입니다</string>
-    <string name="friend_delete">친구끈기를 했습니다</string>
+    <string name="friend_delete">친구끊기를 했습니다</string>
 
     <string name="friend_no_data">친구가 없습니다</string>
     <string name="friend__req_no_data">친구를 신청한 사람이 없습니다</string>
@@ -857,7 +857,10 @@
     <string name="point_req">포인트신청</string>
     <string name="point_req1"> 베타 테스트 기간 동안 포인트 신청을 하시면 \n포인트를 충전 해드립니다.
         \n 몸싸커를 사용하시며 불편한 점, 개선될 부분에 대해 말씀해주세요
-        \n 응원에 글도 환영합니다</string>
+        \n 응원에 글도 환영합니다
+    \n미션영상을 업로드 하지 않으신 분은 3,000포인트 1회
+        \n미션영상을 업로드 하신 분께는 업로드 횟수에 따라 5,000포인트 이상 충전해드립니다
+    </string>
 
     <string name="point_reqcheck">포인트신청이 접수 되었습니다 \n확인 후 바로 충전해드리겠습니다 \n 감사합니다</string>
     <string name="title_activity_opne_board">OpneBoardActivity</string>
@@ -932,4 +935,14 @@
 
     <string name="search_hintname1">유저명</string>
     <string name="search_hintname2">강사명</string>
+
+
+    <string name="point_chage_title1">포인트 충전 알림</string>
+    <string name="point_chage_title2">
+        포인트가 필요하세요?
+        \n베타 테스트 기간 동안 모든 미션 영상을 시청 하실 수 있도록\n포인트를 충전해드립니다
+        \n몸싸커 응원의 글을 남기시고\n포인트를 받으세요
+        \n자신의 미션 영상을 업로드시 횟수에 따라 포인트를 더 많이 충전해드리니다
+    </string>
+
 </resources>

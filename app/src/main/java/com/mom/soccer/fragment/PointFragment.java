@@ -39,6 +39,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.mom.soccer.momactivity.MomMainActivity.activity;
+
 /**
  * Created by sungbo on 2016-08-17.
  */
@@ -149,6 +151,16 @@ public class PointFragment extends Fragment {
                     });
                 }
             });
+
+            new MaterialDialog.Builder(getActivity())
+                    .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
+                    .title(R.string.point_chage_title1)
+                    .titleColor(getResources().getColor(R.color.color6))
+                    .content(R.string.point_chage_title2)
+                    .contentColor(getResources().getColor(R.color.color6))
+                    .positiveText(R.string.mom_diaalog_confirm)
+                    .positiveColor(activity.getResources().getColor(R.color.enabled_red))
+                    .show();
 
         }else if(mPage==2){
             view = inflater.inflate(R.layout.fr_point_fragment_layout, container, false);
