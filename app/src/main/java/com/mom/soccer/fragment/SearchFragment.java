@@ -2,14 +2,14 @@ package com.mom.soccer.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.Toast;
 
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.GridSearchAdapter;
@@ -19,11 +19,11 @@ import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.InstructorService;
 import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
-import com.mom.soccer.widget.VeteranToast;
 import com.mom.soccer.widget.WaitingDialog;
 
 import java.util.List;
 
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,11 +37,16 @@ public class SearchFragment extends Fragment {
 
     public static final String ARG_PAGE = "ARG_PAGE";
     private int mPage;
-    private GridSearchAdapter gridSearchAdapter;
-    private GridView search_grid_view;
 
-    private Button search_button;
+    private Button btn_search;
+    private EditText search_word;
+
     private String mFlag = "NO";
+
+    private RecyclerView recview;
+    private GridSearchAdapter gridSearchAdapter;
+
+    private RecyclerView.LayoutManager mLayoutManager;
 
     User user;
 
@@ -60,64 +65,68 @@ public class SearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
         user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
-
-        Log.i(TAG,"user value : " + user.toString());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-        View rootview = null;
+        View rootview = inflater.inflate(R.layout.fr_search_layout, container, false);
 
-        rootview = inflater.inflate(R.layout.fr_search_layout, container, false);
+        recview = (RecyclerView) rootview.findViewById(R.id.recview);
 
-        search_grid_view = (GridView) rootview.findViewById(R.id.search_grid_view);
-        search_button = (Button) getActivity().findViewById(R.id.btn_search);
-
-        final EditText search_word = (EditText) rootview.findViewById(R.id.search_word);
-        Button button = (Button) rootview.findViewById(R.id.btn_search);
+        btn_search = (Button) rootview.findViewById(R.id.btn_search);
+        search_word = (EditText) rootview.findViewById(R.id.search_word);
 
         if (mPage == 1) {
             if(mFlag.equals("NO")){
+                //getUserList(search_word.getText().toString(),user.getUid());
                 getUserList("NO",user.getUid());
             }
-            search_word.setHint(getString(R.string.search_user_field));
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getUserList(search_word.getText().toString(),user.getUid());
-                    mFlag="Y";
-                }
-            });
-
         }else{
 
             if(mFlag.equals("NO")){
+                //getFindInsList(search_word.getText().toString(),user.getUid());
                 getFindInsList("NO",user.getUid());
             }
-            search_word.setHint(getString(R.string.search_coarch_field));
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getFindInsList(search_word.getText().toString(),user.getUid());
-                    mFlag="Y";
-                }
-            });
 
         }
+
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mPage == 1) {
+                    if(search_word.getText().toString()==null){
+                        getUserList("NO",user.getUid());
+                    }else{
+                        getUserList(search_word.getText().toString(),user.getUid());
+                    }
+
+                }else{
+
+                    if(search_word.getText().toString()==null){
+                        getFindInsList("NO",user.getUid());
+                    }else{
+                        getFindInsList(search_word.getText().toString(),user.getUid());
+                    }
+                }
+            }
+        });
+
         return rootview;
     }
 
-    public void getFindInsList(String searchWord,int uid){
+    public void getFindInsList(final String searchWord, int uid){
 
         WaitingDialog.showWaitingDialog(getContext(),false);
         InstructorService service = ServiceGenerator.createService(InstructorService.class,getContext(),user);
 
-        Instructor queryIns = new Instructor();
+        final Instructor queryIns = new Instructor();
 
         if(!searchWord.equals("NO")){
             queryIns.setName(searchWord);
         }
-        queryIns.setUid(uid); //자신은 빼고
+
+        queryIns.setUid(uid);
+
         Call<List<Instructor>> c = service.getCoachSearchList(queryIns);
         c.enqueue(new Callback<List<Instructor>>() {
             @Override
@@ -125,15 +134,22 @@ public class SearchFragment extends Fragment {
                 if(response.isSuccessful()){
 
                     List<Instructor> instructorList = response.body();
-                    gridSearchAdapter = new GridSearchAdapter(getActivity(),instructorList,R.layout.ac_search_grid_item_layout);
-                    search_grid_view.setAdapter(gridSearchAdapter);
+
                     WaitingDialog.cancelWaitingDialog();
 
                     if(instructorList.size()==0){
-                        VeteranToast.makeToast(getContext(),getString(R.string.network_nodata_found_coach), Toast.LENGTH_SHORT).show();
+
+                    }else{
+                        gridSearchAdapter = new GridSearchAdapter(getActivity(),instructorList,"ins");
+                        recview.setHasFixedSize(true);
+                        mLayoutManager = new GridLayoutManager(getContext(),2);
+                        recview.setLayoutManager(mLayoutManager);
+                        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(gridSearchAdapter);
+                        alphaAdapter.setDuration(500);
+                        recview.setAdapter(gridSearchAdapter);
                     }
-                }else{
-                    WaitingDialog.cancelWaitingDialog();
+
+                    search_word.setText(null);
                 }
             }
 
@@ -157,8 +173,7 @@ public class SearchFragment extends Fragment {
             user.setUsername(searchWord);
         }
 
-        user.setUid(uid); //자신은 빼고 조회한다
-        //user.setQueryRow(500);
+        user.setUid(uid);
 
         Call<List<User>> call = userService.getUserSearList(user);
         call.enqueue(new Callback<List<User>>() {
@@ -166,16 +181,23 @@ public class SearchFragment extends Fragment {
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if(response.isSuccessful()){
                     List<User> userList = response.body();
-                    gridSearchAdapter = new GridSearchAdapter(getActivity(),userList,R.layout.ac_search_grid_item_layout,"user");
-                    search_grid_view.setAdapter(gridSearchAdapter);
                     WaitingDialog.cancelWaitingDialog();
 
                     if(userList.size()==0){
-                        VeteranToast.makeToast(getContext(),getString(R.string.network_nodata_found_user), Toast.LENGTH_SHORT).show();
+                        Log.i(TAG,"유저가 없습니다");
+                    }else{
+
+                        gridSearchAdapter = new GridSearchAdapter(getActivity(),userList);
+
+                        recview.setHasFixedSize(true);
+                        mLayoutManager = new GridLayoutManager(getContext(),2);
+                        recview.setLayoutManager(mLayoutManager);
+                        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(gridSearchAdapter);
+                        alphaAdapter.setDuration(500);
+                        recview.setAdapter(gridSearchAdapter);
                     }
-                }else{
-                    WaitingDialog.cancelWaitingDialog();
                 }
+                search_word.setText(null);
             }
 
             @Override

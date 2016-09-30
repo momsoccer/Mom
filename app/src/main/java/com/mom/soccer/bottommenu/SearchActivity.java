@@ -17,6 +17,8 @@ import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.fragment.SearchFragment;
 
+import butterknife.ButterKnife;
+
 public class SearchActivity extends AppCompatActivity {
 
     private static final String TAG = "SearchActivity";
@@ -30,11 +32,12 @@ public class SearchActivity extends AppCompatActivity {
     private Intent intent;
     private int goPage = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_bottom_search_layout);
-
+        ButterKnife.bind(this);
         Log.i(TAG,"onCreate()======================================");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.search_toolbar);
@@ -67,7 +70,6 @@ public class SearchActivity extends AppCompatActivity {
         tabsStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -80,6 +82,7 @@ public class SearchActivity extends AppCompatActivity {
 
             }
         });
+
 
     }
 

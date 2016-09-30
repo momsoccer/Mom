@@ -34,7 +34,6 @@ public class PassResultListInsAdapter extends RecyclerView.Adapter<PassResultLis
     private Activity activity;
     private List<MissionPass> missionPasses;
     private Instructor instructor;
-    MissionPass vo;
 
     public PassResultListInsAdapter(Activity activity, List<MissionPass> missionPasses, Instructor instructor) {
         this.activity = activity;
@@ -58,7 +57,7 @@ public class PassResultListInsAdapter extends RecyclerView.Adapter<PassResultLis
 
     @Override
     public void onBindViewHolder(PassItemHolder h, int position) {
-        vo = missionPasses.get(position);
+        final MissionPass vo = missionPasses.get(position);
 
         //result_status,comment,f_content;
         if(vo.getPassflag().equals("Y")){

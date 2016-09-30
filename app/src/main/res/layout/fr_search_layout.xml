@@ -4,71 +4,47 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mom_color1"
     >
-
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="50dp"
         android:background="@color/mom_color2"
-        android:gravity="center"
-        >
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/mom_color2"
+        <EditText
+            android:id="@+id/search_word"
+            android:hint="@string/search_hintname1"
+            android:padding="2dp"
+            android:background="@drawable/xml_search"
+            android:layout_width="1dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:imeOptions="actionSearch"
+            android:textColorHint="@color/color2"
+            android:textColor="@color/toast_back_color"
+            android:layout_gravity="center"
+            />
+
+        <Button
+            android:layout_marginLeft="2dp"
+            android:textSize="13dp"
+            android:id="@+id/btn_search"
+            android:text="@string/search_btn"
+            style="@style/btnStylePaprika"
+            android:layout_width="wrap_content"
+            android:layout_height="33dp"
             android:gravity="center"
-            >
-
-            <EditText
-                android:id="@+id/search_word"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="@color/mom_color1"
-                android:gravity="center_vertical"
-                android:background="@drawable/usearch"
-                android:layout_width="265dp"
-                android:layout_height="40dp"
-                android:layout_margin="3dp"
-                android:singleLine="true"
-                android:imeOptions="actionSearch"
-                android:textColorHint="@color/color6"
-                />
-
-            <Button
-                android:id="@+id/btn_search"
-                android:text="@string/search_btn"
-                style="@style/btnStylePaprika"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_margin="3dp"
-                />
-        </LinearLayout>
-
-        <GridView
-            android:id="@+id/search_grid_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:numColumns="2"
-            android:verticalSpacing="5dp"
-            android:horizontalSpacing="5dp"
-            android:gravity="center"
-            >
-        </GridView>
+            android:layout_gravity="center"
+            />
     </LinearLayout>
-
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
-        <com.mom.soccer.tablayout.TabNaviComplaintBase
-            android:id="@+id/PageNavigationView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </com.mom.soccer.tablayout.TabNaviComplaintBase>
-    </LinearLayout>
+        android:background="@color/mom_color1"
+        />
 
 </LinearLayout>

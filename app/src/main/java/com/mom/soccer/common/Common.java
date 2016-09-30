@@ -19,10 +19,8 @@ import java.net.URL;
  */
 public class Common {
     public static String SERVER_ADRESS = "http://14.63.220.208:80";
-    //myHom 10.5
-    //inition  http://192.168.0.50:8080"
-    //http://14.63.220.208:16410/ 클라우드 서버
-    //initionGuest 0.3
+    //http://14.63.220.208:80
+    //"http://192.168.0.48:8080";
 
     public static String PUSH = "Y";
 

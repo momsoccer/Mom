@@ -928,4 +928,8 @@
         \n몸싸커 앱에서 영상 업로드를 하기위해서는 필수 절차이니 꼭 확인 부탁드립니다
         \n미션을 업로드 하기 위해서는 몸싸커 접속 구글 아이디로 유투브 채널이 있으셔야 합니다
     \n채널 만드는 방법을 안내해드립니다</string>
+
+
+    <string name="search_hintname1">유저명</string>
+    <string name="search_hintname2">강사명</string>
 </resources>

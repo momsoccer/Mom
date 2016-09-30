@@ -1,66 +1,127 @@
 package com.mom.soccer.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mom.soccer.R;
 import com.mom.soccer.bottommenu.MyPageActivity;
-import com.mom.soccer.common.Compare;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.ins.InsMainActivity;
 import com.mom.soccer.mission.MissionCommon;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by sungbo on 2016-08-02.
  */
-public class GridSearchAdapter extends BaseAdapter {
+public class GridSearchAdapter extends RecyclerView.Adapter<GridSearchAdapter.SearchItemViewHolder>{
 
     private static final String TAG = "GridSearchAdapter";
 
-
-    private Context mContext = null;
-    private LayoutInflater inflater = null;
+    private Activity activity;
     private List<User> userList;
     private List<Instructor> instructorList;
-    private HashMap<View, User> mLoaders;
-    private HashMap<View, Instructor> insLoaders;
-    private int layout = 0;
-    private String type="ins";
+    private String type = "user";
 
-    public GridSearchAdapter(Context mContext,List<User> userList,int layout,String type) {
-
-        this.mContext = mContext;
+    //유저 검색페이지
+    public GridSearchAdapter(Activity activity, List<User> userList) {
+        this.activity = activity;
         this.userList = userList;
-        this.layout = layout;
-        this.inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.type = type;
-        mLoaders = new HashMap<View, User>();
     }
 
-    public GridSearchAdapter(Context mContext,List<Instructor> instructorList,int layout) {
-
-        this.mContext = mContext;
+    //강사검색페이지
+    public GridSearchAdapter(Activity activity, List<Instructor> instructorList, String type) {
+        this.activity = activity;
         this.instructorList = instructorList;
-        this.layout = layout;
-        this.inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        insLoaders = new HashMap<View, Instructor>();
+        this.type = type;
     }
 
     @Override
-    public int getCount() {
+    public SearchItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.ac_search_grid_item_layout, parent, false);
+        return new SearchItemViewHolder(layout);
+    }
+
+    @Override
+    public void onBindViewHolder(SearchItemViewHolder holder, int position) {
+
+        if(type.equals("user")){
+
+            final User vo = userList.get(position);
+
+
+            Glide.with(activity)
+                    .load(vo.getProfileimgurl())
+                    .centerCrop()
+                    .placeholder(activity.getResources().getDrawable(R.drawable.userimg))
+                    .into(holder.search_item_userimg);
+
+            holder.search_item_name.setText(vo.getUsername());
+
+            if(vo.getTeamname()==null){
+                holder.search_item_teamname.setText(activity.getResources().getString(R.string.user_team_yet_join));
+            }else{
+                holder.search_item_teamname.setText(vo.getTeamname());
+            }
+
+            holder.cardview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(activity, MyPageActivity.class);
+                    intent.putExtra("pageflag","friend");
+                    intent.putExtra("frienduid",vo.getUid());
+                    activity.startActivity(intent);
+                }
+            });
+
+            holder.level.setVisibility(View.GONE);
+            //holder.level.setVisibility(View.VISIBLE);
+            //holder.level.setText(String.valueOf(vo.getLevel()));
+
+        }else{
+
+            final Instructor vo = instructorList.get(position);
+            holder.level.setVisibility(View.GONE);
+            Glide.with(activity)
+                    .load(vo.getProfileimgurl())
+                    .centerCrop()
+                    .placeholder(activity.getResources().getDrawable(R.drawable.userimg))
+                    .into(holder.search_item_userimg);
+
+            holder.search_item_name.setText(vo.getName());
+
+            if(vo.getTeamname()==null){
+                holder.search_item_teamname.setText(activity.getResources().getString(R.string.user_team_yet_join));
+            }else{
+                holder.search_item_teamname.setText(vo.getTeamname());
+            }
+
+            holder.cardview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(activity,InsMainActivity.class);
+                    intent.putExtra("inspath","search");
+                    intent.putExtra(MissionCommon.INS_OBJECT,vo);
+                    intent.putExtra("goPage",0);
+                    activity.startActivity(intent);
+                }
+            });
+        }
+
+
+    }
+
+    @Override
+    public int getItemCount() {
 
         if(type.equals("user")){
             return userList.size();
@@ -69,141 +130,21 @@ public class GridSearchAdapter extends BaseAdapter {
         }
     }
 
-    @Override
-    public Object getItem(int position) {
+    public class SearchItemViewHolder extends RecyclerView.ViewHolder {
 
-        if(type.equals("user")){
-            return userList.get(position).getUid();
-        }else{
-            return instructorList.get(position).getInstructorid();
+        ImageView search_item_userimg;
+        TextView search_item_name,search_item_teamname,level;
+        CardView cardview;
+
+        public SearchItemViewHolder(View itemView) {
+            super(itemView);
+
+            level = (TextView) itemView.findViewById(R.id.level);
+            search_item_userimg = (ImageView) itemView.findViewById(R.id.search_item_userimg);
+            search_item_name = (TextView) itemView.findViewById(R.id.search_item_name);
+            search_item_teamname = (TextView) itemView.findViewById(R.id.search_item_teamname);
+            cardview = (CardView) itemView.findViewById(R.id.cardview);
         }
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(final int i, View convertView, ViewGroup parent) {
-        View currentRow = convertView;
-        final ListHolder listHolder;
-
-        if(currentRow ==null){
-
-            currentRow = inflater.inflate(layout, parent, false);
-            listHolder = new ListHolder();
-
-            listHolder.user_imag = (ImageView) currentRow.findViewById(R.id.search_item_userimg);
-            listHolder.user_name = (TextView) currentRow.findViewById(R.id.search_item_username);
-            listHolder.team_name = (TextView) currentRow.findViewById(R.id.search_item_teamname);
-            listHolder.cardview = (LinearLayout) currentRow.findViewById(R.id.cardview);
-
-
-            if(type.equals("user")) {
-                listHolder.user_name.setText(userList.get(i).getUsername());
-                if (userList.get(i).getTeamname() == null) {
-                    listHolder.team_name.setText(R.string.user_team_yet_join);
-                } else {
-                    listHolder.team_name.setText(userList.get(i).getTeamname());
-                }
-
-                if(!Compare.isEmpty(userList.get(i).getProfileimgurl())){
-                    Glide.with(mContext)
-                            .load(userList.get(i).getProfileimgurl())
-                            .override(180, 120)
-                            .centerCrop()
-                            .into(listHolder.user_imag);
-                }
-
-            }else{
-                listHolder.user_name.setText(instructorList.get(i).getName());
-                listHolder.team_name.setText(instructorList.get(i).getTeamname()); //선생님은 항상 팀이 있음
-
-                if(!Compare.isEmpty(instructorList.get(i).getProfileimgurl())){
-                    Glide.with(mContext)
-                            .load(instructorList.get(i).getProfileimgurl())
-                            .override(180, 120)
-                            .centerCrop()
-                            .into(listHolder.user_imag);
-                }
-
-            }
-            currentRow.setTag(listHolder);
-
-        }else{
-
-            listHolder = (ListHolder) currentRow.getTag();
-            if(type.equals("user")){
-                if(userList.get(i) != null) {
-
-                    listHolder.user_name.setText(userList.get(i).getUsername());
-                    if(userList.get(i).getTeamname()==null){
-                        listHolder.team_name.setText(R.string.user_team_yet_join);
-                    }else{
-                        listHolder.team_name.setText(userList.get(i).getTeamname());
-                    }
-
-                    if(!Compare.isEmpty(userList.get(i).getProfileimgurl())){
-                        Glide.with(mContext)
-                                .load(userList.get(i).getProfileimgurl())
-                                .override(180, 120)
-                                .centerCrop()
-                                .into(listHolder.user_imag);
-                    }
-
-                }
-            }else{
-                if(instructorList.get(i) != null) {
-
-                    listHolder.user_name.setText(instructorList.get(i).getName());
-                    if(instructorList.get(i).getTeamname()==null){
-                        listHolder.team_name.setText(R.string.user_team_yet_join);
-                    }else{
-                        listHolder.team_name.setText(instructorList.get(i).getTeamname());
-                    }
-                    if(!Compare.isEmpty(instructorList.get(i).getProfileimgurl())){
-                        Glide.with(mContext)
-                                .load(instructorList.get(i).getProfileimgurl())
-                                .override(180, 120)
-                                .centerCrop()
-                                .into(listHolder.user_imag);
-                    }
-
-                }
-            }
-
-
-        }
-
-        listHolder.cardview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(type.equals("user")){
-                    Intent intent = new Intent(mContext, MyPageActivity.class);
-                    intent.putExtra("pageflag","friend");
-                    intent.putExtra("frienduid",userList.get(i).getUid());
-                    mContext.startActivity(intent);
-                    ((Activity) mContext).overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                }else{
-                    Intent intent = new Intent(mContext,InsMainActivity.class);
-                    intent.putExtra("inspath","search");
-                    intent.putExtra(MissionCommon.INS_OBJECT,instructorList.get(i));
-                    intent.putExtra("goPage",0);
-                    mContext.startActivity(intent);
-                    ((Activity) mContext).overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                }
-
-            }
-        });
-
-        return currentRow;
-    }
-
-    static class ListHolder {
-        TextView user_name;
-        TextView team_name;
-        ImageView user_imag;
-        LinearLayout cardview;
-    }
 }
