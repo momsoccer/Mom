@@ -78,14 +78,12 @@ public class SearchFragment extends Fragment {
 
         if (mPage == 1) {
             if(mFlag.equals("NO")){
-                //getUserList(search_word.getText().toString(),user.getUid());
-                getUserList("NO",user.getUid());
+                getFindInsList("NO",user.getUid());
             }
         }else{
 
             if(mFlag.equals("NO")){
-                //getFindInsList(search_word.getText().toString(),user.getUid());
-                getFindInsList("NO",user.getUid());
+                getUserList("NO",user.getUid());
             }
 
         }
@@ -95,17 +93,16 @@ public class SearchFragment extends Fragment {
             public void onClick(View view) {
                 if (mPage == 1) {
                     if(search_word.getText().toString()==null){
-                        getUserList("NO",user.getUid());
-                    }else{
-                        getUserList(search_word.getText().toString(),user.getUid());
-                    }
-
-                }else{
-
-                    if(search_word.getText().toString()==null){
                         getFindInsList("NO",user.getUid());
                     }else{
                         getFindInsList(search_word.getText().toString(),user.getUid());
+                    }
+
+                }else{
+                    if(search_word.getText().toString()==null){
+                        getUserList("NO",user.getUid());
+                    }else{
+                        getUserList(search_word.getText().toString(),user.getUid());
                     }
                 }
             }

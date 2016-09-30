@@ -110,7 +110,8 @@ public class SearchActivity extends AppCompatActivity {
         final int PAGE_COUNT = 2;
         final String search;
 
-        private String tabTitles[] = new String[] { getString(R.string.tab_user),getString(R.string.tab_coach)};
+        private String tabTitles[] = new String[] {
+                getString(R.string.tab_coach),getString(R.string.tab_user)};
 
         public ViewFragmentPagerAdapter(FragmentManager fm,String search) {
 
