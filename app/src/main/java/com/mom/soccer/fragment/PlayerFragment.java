@@ -364,6 +364,7 @@ public class PlayerFragment extends Fragment{
                     spinner = (Spinner) dialog.getCustomView().findViewById(R.id.spinner);
                     ArrayAdapter dataAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_item, teamsNameList);
 
+
                     dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
                     spinner.setAdapter(dataAdapter);
 
@@ -379,7 +380,7 @@ public class PlayerFragment extends Fragment{
                         }
                     });
 
-
+                    team_check = (CheckBox) dialog.getCustomView().findViewById(R.id.team_check);
                     drible_check = (CheckBox) dialog.getCustomView().findViewById(R.id.drible_check);
                     traping_check = (CheckBox) dialog.getCustomView().findViewById(R.id.traping_check);
                     lifting_check = (CheckBox) dialog.getCustomView().findViewById(R.id.lifting_check);
@@ -388,7 +389,7 @@ public class PlayerFragment extends Fragment{
                     complex_check = (CheckBox) dialog.getCustomView().findViewById(R.id.complex_check);
 
                     friedn_check = (CheckBox) dialog.getCustomView().findViewById(R.id.friedn_check);
-                    team_check = (CheckBox) dialog.getCustomView().findViewById(R.id.team_check);
+
                     passyes_check = (CheckBox) dialog.getCustomView().findViewById(R.id.passyes_check);
                     passno_check = (CheckBox) dialog.getCustomView().findViewById(R.id.passno_check);
 
@@ -946,6 +947,7 @@ public class PlayerFragment extends Fragment{
             public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
                 WaitingDialog.cancelWaitingDialog();
                 if(response.isSuccessful()){
+
                     teamsNameList = response.body();
                 }
             }

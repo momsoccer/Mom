@@ -84,8 +84,6 @@ public class GridSearchAdapter extends RecyclerView.Adapter<GridSearchAdapter.Se
             });
 
             holder.level.setVisibility(View.GONE);
-            //holder.level.setVisibility(View.VISIBLE);
-            //holder.level.setText(String.valueOf(vo.getLevel()));
 
         }else{
 

@@ -16,8 +16,8 @@
 
         <EditText
             android:id="@+id/search_word"
-            android:hint="@string/search_hintname2"
             android:padding="2dp"
+            android:hint="@string/search_hintname1"
             android:background="@drawable/xml_search"
             android:layout_width="1dp"
             android:layout_weight="1"
@@ -41,10 +41,17 @@
             />
     </LinearLayout>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/mom_color1"
             />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.animation.OvershootInterpolator;
@@ -60,8 +59,6 @@ public class FeedBackInsListActivity extends AppCompatActivity {
 
         intent = getIntent();
         missionType = intent.getExtras().getString(MissionCommon.MISSIONTYPE);
-
-        Log.i(TAG,"미션 타입은 %% : " + missionType);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.feddback_toolbar);
         setSupportActionBar(toolbar);

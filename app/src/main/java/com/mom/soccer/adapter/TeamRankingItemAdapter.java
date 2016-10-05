@@ -62,6 +62,7 @@ public class TeamRankingItemAdapter extends RecyclerView.Adapter<TeamRankingItem
             Glide.with(activity)
                     .load(vo.getEmblem())
                     .asBitmap().transform(new RoundedCornersTransformation(activity,10,5))
+                    .placeholder(activity.getResources().getDrawable(R.drawable.team_flag))
                     .into(holder.teamimg);
         }
 

@@ -84,6 +84,7 @@
                 android:inputType="textEmailAddress"
                 android:textColorHint="@color/color6"
                 android:textSize="12sp"
+                android:enabled="false"
                 />
         </android.support.design.widget.TextInputLayout>
 

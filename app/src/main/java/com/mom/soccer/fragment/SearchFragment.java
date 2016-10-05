@@ -1,8 +1,12 @@
 package com.mom.soccer.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +17,7 @@ import android.widget.EditText;
 
 import com.mom.soccer.R;
 import com.mom.soccer.adapter.GridSearchAdapter;
+import com.mom.soccer.common.MomSnakBar;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.User;
 import com.mom.soccer.mission.MissionCommon;
@@ -21,6 +26,7 @@ import com.mom.soccer.retrofitdao.UserService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
@@ -43,12 +49,21 @@ public class SearchFragment extends Fragment {
 
     private String mFlag = "NO";
 
+    private  List<User> userList = new ArrayList<User>();
+
     private RecyclerView recview;
     private GridSearchAdapter gridSearchAdapter;
 
     private RecyclerView.LayoutManager mLayoutManager;
-
+    private LinearLayoutManager linearLayoutManager;
     User user;
+
+    private int page= 0;
+    private int offset = 0;
+    private int limit = 40;
+    private boolean lastData = false;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public static SearchFragment newInstance(int page,User user) {
         Bundle args = new Bundle();
@@ -67,26 +82,109 @@ public class SearchFragment extends Fragment {
         user = (User) getArguments().getSerializable(MissionCommon.USER_OBJECT);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-        View rootview = inflater.inflate(R.layout.fr_search_layout, container, false);
+        View rootview;
 
-        recview = (RecyclerView) rootview.findViewById(R.id.recview);
+        if(mPage==1){
+            rootview =  inflater.inflate(R.layout.fr_search_layout, container, false);
+            recview = (RecyclerView) rootview.findViewById(R.id.recview);
+            btn_search = (Button) rootview.findViewById(R.id.btn_search);
+            search_word = (EditText) rootview.findViewById(R.id.search_word);
 
-        btn_search = (Button) rootview.findViewById(R.id.btn_search);
-        search_word = (EditText) rootview.findViewById(R.id.search_word);
-
-        if (mPage == 1) {
             if(mFlag.equals("NO")){
                 getFindInsList("NO",user.getUid());
             }
+
         }else{
+            rootview = inflater.inflate(R.layout.fr_search_user_layout, container, false);
+            swipeRefreshLayout = (SwipeRefreshLayout) rootview.findViewById(R.id.swipeRefreshLayout);
+            recview = (RecyclerView) rootview.findViewById(R.id.recview);
+            btn_search = (Button) rootview.findViewById(R.id.btn_search);
+            search_word = (EditText) rootview.findViewById(R.id.search_word);
 
             if(mFlag.equals("NO")){
-                getUserList("NO",user.getUid());
+                getUserList("NO",user.getUid(),"first");
             }
 
+            linearLayoutManager = new LinearLayoutManager(getContext());
+            //mLayoutManager = new GridLayoutManager(getContext(),2);
+
+            if(Build.VERSION.SDK_INT  >= 20) {
+                recview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                    @Override
+                    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            swipeRefreshLayout.setEnabled(true);
+                        } else {
+                            swipeRefreshLayout.setEnabled(false);
+                        }
+                    }
+                });
+            }else{
+                recview.setOnScrollListener(new RecyclerView.OnScrollListener(){
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            swipeRefreshLayout.setEnabled(true);
+                        } else {
+                            swipeRefreshLayout.setEnabled(false);
+                        }
+                    }
+                });
+            }
+
+            final View finalView1 = rootview;
+
+            //3스와프 이벤트 페이징
+            recview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+
+                        if (linearLayoutManager.findLastVisibleItemPosition() == userList.size()-1) {
+
+                            if(!lastData){
+
+
+                                if(search_word.getText().toString()==null){
+                                    getUserList("NO",user.getUid(),"next");
+                                }else{
+                                    getUserList(search_word.getText().toString(),user.getUid(),"next");
+                                }
+
+
+                            }else{
+                                MomSnakBar.show(finalView1,getActivity(),getActivity().getResources().getString(R.string.bottom_msg1));
+                            }
+                        }
+                    }
+                }
+            });
+
+
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+
+                    if(search_word.getText().toString()==null){
+                        getUserList("NO",user.getUid(),"first");
+                    }else{
+                        getUserList(search_word.getText().toString(),user.getUid(),"first");
+                    }
+
+                    MomSnakBar.show(finalView1,getActivity(),getString(R.string.bottom_msg4));
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+
         }
+
+
 
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,13 +198,15 @@ public class SearchFragment extends Fragment {
 
                 }else{
                     if(search_word.getText().toString()==null){
-                        getUserList("NO",user.getUid());
+                        getUserList("NO",user.getUid(),"first");
                     }else{
-                        getUserList(search_word.getText().toString(),user.getUid());
+                        getUserList(search_word.getText().toString(),user.getUid(),"first");
                     }
                 }
             }
         });
+
+
 
         return rootview;
     }
@@ -160,11 +260,25 @@ public class SearchFragment extends Fragment {
     }
 
 
-    public void getUserList(String searchWord,int uid){
+    public void getUserList(String searchWord, int uid, final String pageFlag){
+
+        Log.i(TAG,"유저 쿼리를 날립니다");
 
         WaitingDialog.showWaitingDialog(getContext(),false);
         UserService userService = ServiceGenerator.createService(UserService.class,getContext(),user);
+
         User user = new User();
+
+        if(pageFlag.equals("first")) {
+            offset = 0;
+        }else{
+            page = page + 1;
+            offset = limit * page;
+        }
+        user.setOffset(offset);
+        user.setLimit(limit);
+
+
 
         if(!searchWord.equals("NO")){
             user.setUsername(searchWord);
@@ -177,24 +291,43 @@ public class SearchFragment extends Fragment {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if(response.isSuccessful()){
-                    List<User> userList = response.body();
-                    WaitingDialog.cancelWaitingDialog();
+                    if(pageFlag.equals("first")) {
+                        userList = response.body();
+                        WaitingDialog.cancelWaitingDialog();
+                        gridSearchAdapter = new GridSearchAdapter(getActivity(),userList);
+                        linearLayoutManager = new GridLayoutManager(getContext(),2);
+                        recview.setHasFixedSize(true);
+                        recview.setLayoutManager(linearLayoutManager);
+                        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(gridSearchAdapter);
+                        alphaAdapter.setDuration(200);
+                        recview.setAdapter(gridSearchAdapter);
 
-                    if(userList.size()==0){
-                        Log.i(TAG,"유저가 없습니다");
+                        //페이징 초기화
+                        lastData = false;
+                        offset  = 0;
+                        page    = 0;
+
                     }else{
 
-                        gridSearchAdapter = new GridSearchAdapter(getActivity(),userList);
+                        List<User> addUsers = response.body();
 
-                        recview.setHasFixedSize(true);
-                        mLayoutManager = new GridLayoutManager(getContext(),2);
-                        recview.setLayoutManager(mLayoutManager);
-                        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(gridSearchAdapter);
-                        alphaAdapter.setDuration(500);
-                        recview.setAdapter(gridSearchAdapter);
+                        for(int i = 0 ; i < addUsers.size() ; i++)
+                        {
+                            userList.add(addUsers.get(i));
+                        }
+
+                        gridSearchAdapter.notifyDataSetChanged();
+
+                        if(addUsers.size() != limit){
+                            lastData = true;
+                            addUsers = new ArrayList<User>();
+                        }
+                        WaitingDialog.cancelWaitingDialog();
                     }
+
                 }
-                search_word.setText(null);
+
+                //search_word.setText(null);
             }
 
             @Override

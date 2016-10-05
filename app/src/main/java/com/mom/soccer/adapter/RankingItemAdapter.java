@@ -50,6 +50,7 @@ public class RankingItemAdapter extends RecyclerView.Adapter<RankingItemAdapter.
             Glide.with(activity)
                     .load(vo.getProfileimgurl())
                     .asBitmap().transform(new RoundedCornersTransformation(activity,10,5))
+                    .placeholder(activity.getResources().getDrawable(R.drawable.userimg))
                     .into(holder.userimg);
         }
 

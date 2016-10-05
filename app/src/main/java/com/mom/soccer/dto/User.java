@@ -29,6 +29,8 @@ public class User implements Serializable{
 
 	private int totalscore;
 	private int level;
+	private int limit;
+	private int offset;
 
 	//DB
 	private String fcmToken;
@@ -36,6 +38,22 @@ public class User implements Serializable{
 	private String orderbytype;
 
 	public User() {
+	}
+
+	public int getLimit() {
+		return limit;
+	}
+
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+
+	public int getOffset() {
+		return offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 
 	public int getTotalscore() {
