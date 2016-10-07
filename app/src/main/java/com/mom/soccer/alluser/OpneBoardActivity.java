@@ -57,7 +57,7 @@ import retrofit2.Response;
 
 public class OpneBoardActivity extends AppCompatActivity {
 
-    private static final String TAG = "TeamBoardActivity";
+    private static final String TAG = "OpneBoardActivity";
 
     private Activity activity;
     private PrefUtil prefUtil;

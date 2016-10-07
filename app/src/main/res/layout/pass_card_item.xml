@@ -222,7 +222,7 @@
                         android:textColor="@color/color6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLines="2"
+                        android:maxLines="5"
                         android:text="강사의 코멘트 입니다. 잘하셨습니다"
                         />
                 </LinearLayout>
