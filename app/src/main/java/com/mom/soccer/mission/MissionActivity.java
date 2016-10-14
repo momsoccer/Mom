@@ -68,17 +68,6 @@ public class MissionActivity extends AppCompatActivity {
     @Bind(R.id.discreteSeekBar)
     DiscreteSeekBar discreteSeekBar;
 
-/*    @Bind(R.id.btn_refresh)
-    Button btn_refresh;
-
-        @OnClick(R.id.btn_refresh)
-    public void btn_refresh(){
-        Intent intent = new Intent(this,MissionActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(MissionCommon.MISSIONTYPE,missionType);
-        startActivity(intent);
-    }*/
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -47,7 +47,7 @@ public class VideoUploadService extends IntentService {
     GoogleAccountCredential credential;
 
     private int mUploadAttemptCount;
-    private static final int MAX_RETRY = 3;
+    private static final int MAX_RETRY = 5;
     private static final int UPLOAD_REATTEMPT_DELAY_SEC = 60;
 
     private InsVideoVo insVideoVo;

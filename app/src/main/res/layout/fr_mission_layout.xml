@@ -161,11 +161,12 @@
 
                         <TextView
                             android:id="@+id/tx_mission_open"
-                            android:text="미션 오픈 1000포인트 소모(1회)"
+                            android:text="미션 오픈 포인트 0P"
                             android:textSize="12sp"
                             android:textColor="@color/color6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:visibility="gone"
                             />
 
                         <TextView

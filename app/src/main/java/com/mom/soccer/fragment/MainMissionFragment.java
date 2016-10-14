@@ -180,9 +180,12 @@ public class MainMissionFragment extends Fragment {
 
         final Button missionStartBtn = (Button) view.findViewById(R.id.btn_mission_start);
 
+        li_lock_close.setVisibility(View.GONE);
+        li_lock_open.setVisibility(View.VISIBLE);
+        missionStartBtn.setText(getString(R.string.mission_start));
 
 
-            if(mission.getOpencount()==0){
+/*            if(mission.getOpencount()==0){
 
                 //미션을 도전하지 않은 상태 레이아웃 변경
                 li_lock_close.setVisibility(View.VISIBLE);
@@ -193,7 +196,7 @@ public class MainMissionFragment extends Fragment {
                 li_lock_close.setVisibility(View.GONE);
                 li_lock_open.setVisibility(View.VISIBLE);
                 missionStartBtn.setText(getString(R.string.mission_start));
-            }
+            }*/
 
 
         tx_mission_open.setText(getString(R.string.mission_require_point)+" : "+mission_open_point+"P");
@@ -263,9 +266,11 @@ public class MainMissionFragment extends Fragment {
 
 
                                             new MaterialDialog.Builder(getContext())
+                                                    .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
                                                     .title(R.string.mom_diaalog_alert)
                                                     .titleColor(getResources().getColor(R.color.color6))
-                                                    .content(mission_open_point + getString(R.string.mission_dialg_mission_open))
+                                                    //.content(mission_open_point + getString(R.string.mission_dialg_mission_open))
+                                                    .content(getString(R.string.mission_dialg_mission_open))
                                                     .positiveText(R.string.mom_diaalog_confirm)
                                                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                                                         @Override

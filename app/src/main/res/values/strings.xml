@@ -68,7 +68,7 @@
     <string name="mission_open">미션오픈</string>
 
 
-    <string name="mission_upload">나의 실습 영상 선택</string>
+    <string name="mission_upload">내 영상 업로드</string>
     <string name="mission_upload_start">업로드</string>
     <string name="mission_upload_box1">제목</string>
     <string name="mission_upload_box2">내용</string>
@@ -195,7 +195,7 @@
     <string name="mission_clear_score">미션 클리어시 유저획득 추가점수(1회)</string>
     <string name="mission_clear_point">미션 클리어시 유저획득 포인트(1회)</string>
 
-    <string name="mission_dialg_mission_open">P가 차감 됩니다\n미션을 오픈 하시겠습니까?</string>
+    <string name="mission_dialg_mission_open">미션에 도전 하시겠습니까?</string>
     <string name="mission_open_message">미션이 정상적으로 오픈 되었습니다</string>
 
     <string name="mission_open_coach_msg">강사분들은 포인트와 관계 없이 \n 미션 서비스를 이용하실 수 있습니다.</string>

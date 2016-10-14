@@ -44,7 +44,7 @@
             android:background="@drawable/point_back_push"
             android:onClick="poinOnClick"
             android:id="@+id/li_point"
-            android:visibility="visible"
+            android:visibility="gone"
             >
 
             <ImageView
