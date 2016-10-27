@@ -124,7 +124,7 @@ public class AllUserFragment extends Fragment {
 
             final View finalView1 = view;
             //2.스와이프 이벤트 버전별
-            if(Build.VERSION.SDK_INT  >= 20) {
+            if(Build.VERSION.SDK_INT  >= 22) {  //롤리팝 5.1 이상
                 boardRcView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
                     public void onScrollChange(View view, int i, int i1, int i2, int i3) {
@@ -192,7 +192,7 @@ public class AllUserFragment extends Fragment {
 
             final View finalView1 = view;
             //2.스와이프 이벤트 버전별
-            if(Build.VERSION.SDK_INT  >= 20) {
+            if(Build.VERSION.SDK_INT  >= 22) {
                 boardRcView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
                     public void onScrollChange(View view, int i, int i1, int i2, int i3) {
@@ -255,7 +255,7 @@ public class AllUserFragment extends Fragment {
 
             getAdBoardData("new");
             final View finalView1 = view;
-            if(Build.VERSION.SDK_INT  >= 20) {
+            if(Build.VERSION.SDK_INT  >= 22) {
                 boardRcView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
                     public void onScrollChange(View view, int i, int i1, int i2, int i3) {

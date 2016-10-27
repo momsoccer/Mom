@@ -111,7 +111,7 @@ public class SearchFragment extends Fragment {
             linearLayoutManager = new LinearLayoutManager(getContext());
             //mLayoutManager = new GridLayoutManager(getContext(),2);
 
-            if(Build.VERSION.SDK_INT  >= 20) {
+            if(Build.VERSION.SDK_INT  >= 22) {
                 recview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
                     public void onScrollChange(View view, int i, int i1, int i2, int i3) {
@@ -261,8 +261,6 @@ public class SearchFragment extends Fragment {
 
 
     public void getUserList(String searchWord, int uid, final String pageFlag){
-
-        Log.i(TAG,"유저 쿼리를 날립니다");
 
         WaitingDialog.showWaitingDialog(getContext(),false);
         UserService userService = ServiceGenerator.createService(UserService.class,getContext(),user);

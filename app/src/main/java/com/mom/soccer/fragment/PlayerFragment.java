@@ -125,7 +125,7 @@ public class PlayerFragment extends Fragment{
 
     public static PlayerFragment newInstance(int page, User user,Instructor instructor){
 
-        Log.i(TAG,"PlayerFragment newInstance : ==========================");
+        Log.i(TAG,"PlayerFragment newInstance : ==========================" + Build.VERSION.SDK_INT);
 
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
@@ -208,7 +208,7 @@ public class PlayerFragment extends Fragment{
             });
 
             //2.스와이프 이벤트 버전별
-            if(Build.VERSION.SDK_INT  >= 20) {
+            if(Build.VERSION.SDK_INT  >= 22) {
                 boardRecview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
                     public void onScrollChange(View view, int i, int i1, int i2, int i3) {
@@ -277,7 +277,7 @@ public class PlayerFragment extends Fragment{
             });
 
             //2
-            if(Build.VERSION.SDK_INT  >= 20) {
+            if(Build.VERSION.SDK_INT  >= 22) {
                 searchUserMissionRecyclerview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
                     public void onScrollChange(View view, int i, int i1, int i2, int i3) {

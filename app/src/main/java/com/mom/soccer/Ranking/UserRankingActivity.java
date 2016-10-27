@@ -135,7 +135,7 @@ public class UserRankingActivity extends AppCompatActivity {
 
 
             //2.스와이프 이벤트 버전별
-            if(Build.VERSION.SDK_INT  >= 20) {
+            if(Build.VERSION.SDK_INT  >= 22) {
                 totalRecyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
                     public void onScrollChange(View view, int i, int i1, int i2, int i3) {
