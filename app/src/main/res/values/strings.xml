@@ -911,14 +911,14 @@
     <string name="question_hint1">문의/개선사항</string>
     <string name="question_hint2">소중한 의견이 접수 되었습니다 \n2일안에 답변 드리도록 하겠습니다 \n감사합니다</string>
 
-    <string name="versioncheck">앱 신규 버전이 릴리즈 되었습니다.\n 앱 업데이트를 하지 않으시면 정상적으로 앱을 이용할 수 없습니다.</string>
+    <string name="versioncheck" translatable="false">앱 신규 버전이 릴리즈 되었습니다.\n 앱 업데이트를 하지 않으시면 정상적으로 앱을 이용할 수 없습니다.</string>
 
     <string name="mission_pass_condition">클리어 조건</string>
 
     <string name="getfind_email_title">이메일 아이디를 입력하세요</string>
     <string name="getfind_email_title2">이메일</string>
-    <string name="getfind_email_title3">*해당 이메일로 임시 비밀번호가 전송됩니다\n 1시간 이내에 확인하셔야 정상 처리됩니다.</string>
-    <string name="getfind_email_title4">입력하신 이메일 주소로 비밀번호를 발급했습니다</string>
+    <string name="getfind_email_title3" translatable="false">*해당 이메일로 임시 비밀번호가 전송됩니다\n 1시간 이내에 확인하셔야 정상 처리됩니다.</string>
+    <string name="getfind_email_title4" translatable="false">입력하신 이메일 주소로 비밀번호를 발급했습니다</string>
 
     <!--앱업데이트-->
     <string name="app_update">앱 업데이트 버젼 알림</string>
@@ -926,8 +926,8 @@
     <string name="app_finish">앱종료</string>
 
     <!--업로드초기 도움말-->
-    <string name="youtube_upload_title1">유투브 채널 관련 도움말</string>
-    <string name="youtube_upload_title2">이 메세지는 앱을 설치 후, \n최초 업로드시 딱 한번만 안내해드립니다
+    <string name="youtube_upload_title1" translatable="false">유투브 채널 관련 도움말</string>
+    <string name="youtube_upload_title2" translatable="false">이 메세지는 앱을 설치 후, \n최초 업로드시 딱 한번만 안내해드립니다
         \n몸싸커 앱에서 영상 업로드를 하기위해서는 필수 절차이니 꼭 확인 부탁드립니다
         \n미션을 업로드 하기 위해서는 몸싸커 접속 구글 아이디로 유투브 채널이 있으셔야 합니다
     \n채널 만드는 방법을 안내해드립니다</string>
@@ -938,11 +938,23 @@
 
 
     <string name="point_chage_title1">포인트 충전 알림</string>
-    <string name="point_chage_title2">
+    <string name="point_chage_title2" translatable="false">
         포인트가 필요하세요?
         \n베타 테스트 기간 동안 모든 미션 영상을 시청 하실 수 있도록\n포인트를 충전해드립니다
         \n몸싸커 응원의 글을 남기시고\n포인트를 받으세요
         \n자신의 미션 영상을 업로드시 횟수에 따라 포인트를 더 많이 충전해드리니다
     </string>
 
+    <string name="lang">언어설정</string>
+    <string name="title_activity_lang" translatable="false">언어설정</string>
+    <string name="en_name">영어</string>
+    <string name="cn_name">증국어</string>
+    <string name="ko_name">한국어</string>
+
+
+    <string name="lang_test">언어팩 테스트 입니다</string>
+
+    <string name="lang_change">해당 언어로 앱을 적용하시겠습니까?</string>
+    <string name="applay_app">적용</string>
+    <string name="momhome">홈</string>
 </resources>

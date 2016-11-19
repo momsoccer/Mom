@@ -124,12 +124,15 @@ public class PlayerMainActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if(position==0) {
-                    if(Common.teamid != 0){
+
+                    if(user.getTeamid()!= 0){
                         ic_board_write.setVisibility(View.VISIBLE);
                     }else{
                         ic_board_write.setVisibility(View.GONE);
                     }
+
                     rightLowerButton.setVisibility(View.GONE);
+
                 }else if(position==1){
                     ic_board_write.setVisibility(View.GONE);
                     rightLowerButton.setVisibility(View.VISIBLE);

@@ -31,6 +31,15 @@ public class Mission implements Serializable{
     private int uploadcount;
     private int missionpasscount;
 
+    //영문 언어 추가
+    private String enname;
+    private String endescription;
+    private String enprecon;
+
+    //영문 중문
+    private String cnname;
+    private String cndescription;
+    private String cnprecon;
 
     public Mission(){}
 
@@ -244,6 +253,54 @@ public class Mission implements Serializable{
         this.missionpasscount = missionpasscount;
     }
 
+    public String getEnname() {
+        return enname;
+    }
+
+    public void setEnname(String enname) {
+        this.enname = enname;
+    }
+
+    public String getEndescription() {
+        return endescription;
+    }
+
+    public void setEndescription(String endescription) {
+        this.endescription = endescription;
+    }
+
+    public String getEnprecon() {
+        return enprecon;
+    }
+
+    public void setEnprecon(String enprecon) {
+        this.enprecon = enprecon;
+    }
+
+    public String getCnname() {
+        return cnname;
+    }
+
+    public void setCnname(String cnname) {
+        this.cnname = cnname;
+    }
+
+    public String getCndescription() {
+        return cndescription;
+    }
+
+    public void setCndescription(String cndescription) {
+        this.cndescription = cndescription;
+    }
+
+    public String getCnprecon() {
+        return cnprecon;
+    }
+
+    public void setCnprecon(String cnprecon) {
+        this.cnprecon = cnprecon;
+    }
+
     @Override
     public String toString() {
         return "Mission{" +
@@ -272,6 +329,12 @@ public class Mission implements Serializable{
                 ", uid=" + uid +
                 ", uploadcount=" + uploadcount +
                 ", missionpasscount=" + missionpasscount +
+                ", enname='" + enname + '\'' +
+                ", endescription='" + endescription + '\'' +
+                ", enprecon='" + enprecon + '\'' +
+                ", cnname='" + cnname + '\'' +
+                ", cndescription='" + cndescription + '\'' +
+                ", cnprecon='" + cnprecon + '\'' +
                 '}';
     }
 }

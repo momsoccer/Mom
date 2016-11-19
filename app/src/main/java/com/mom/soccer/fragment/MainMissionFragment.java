@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mom.soccer.R;
+import com.mom.soccer.common.Common;
 import com.mom.soccer.dataDto.PointTrVo;
 import com.mom.soccer.dto.FavoriteMission;
 import com.mom.soccer.dto.Mission;
@@ -132,7 +133,8 @@ public class MainMissionFragment extends Fragment {
             mission = reflashMission;
         }
 
-        Log.i(TAG,"Mission info : " + mission.toString());
+        //Log.i(TAG,"Mission info : " + mission.getEnname());
+        //Log.i(TAG,"Mission info : " + Common.LANGUAGE);
 
         View view = null;
         view = inflater.inflate(R.layout.fr_mission_layout, container, false);
@@ -165,9 +167,20 @@ public class MainMissionFragment extends Fragment {
 
         tx_mission_level.setText("Lv."+mission.getSequence());
 
-        tx_mission_name.setText(mission.getMissionname());
-        tx_mission_disp.setText(mission.getDescription());
-        tx_mission_precon.setText(mission.getPrecon());
+        if(Common.LANGUAGE.equals("ko")){
+            tx_mission_name.setText(mission.getMissionname());
+            tx_mission_disp.setText(mission.getDescription());
+            tx_mission_precon.setText(mission.getPrecon());
+        }else if(Common.LANGUAGE.equals("en")){
+            tx_mission_name.setText(mission.getEnname());
+            tx_mission_disp.setText(mission.getEndescription());
+            tx_mission_precon.setText(mission.getEnprecon());
+        }else if(Common.LANGUAGE.equals("zh")){
+            tx_mission_name.setText(mission.getCnname());
+            tx_mission_disp.setText(mission.getCndescription());
+            tx_mission_precon.setText(mission.getCnprecon());
+        }
+
 
         final LinearLayout li_lock_close = (LinearLayout) view.findViewById(R.id.li_lock_close);
         final LinearLayout li_lock_open = (LinearLayout) view.findViewById(R.id.li_lock_open);
@@ -199,9 +212,9 @@ public class MainMissionFragment extends Fragment {
             }*/
 
 
-        tx_mission_open.setText(getString(R.string.mission_require_point)+" : "+mission_open_point+"P");
-        tx_mission_upload.setText(getString(R.string.mission_get_upload_score)+" : "+mission_score+"점");
-        tx_mission_pass.setText(getString(R.string.mission_clear_score)+" : "+mission_pass +"점");
+        tx_mission_open.setText(getString(R.string.mission_require_point)+" : "+mission_open_point+"Point");
+        tx_mission_upload.setText(getString(R.string.mission_get_upload_score)+" : "+mission_score+"Point");
+        tx_mission_pass.setText(getString(R.string.mission_clear_score)+" : "+mission_pass +"Point");
         //tx_mission_cash_point.setText(getString(R.string.mission_clear_point)+" : "+mission_point+"P");
 
         /*  //업로드 했을 경우

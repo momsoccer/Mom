@@ -18,9 +18,12 @@ import java.net.URL;
  * Created by sungbo on 2016-05-27.
  */
 public class Common {
-    public static String SERVER_ADRESS = "http://14.63.220.208:80";
+    public static String SERVER_ADRESS = "http://192.168.0.48:8080";
     //http://14.63.220.208:80
     //"http://192.168.0.48:8080";
+
+    //언어설정
+    public static String LANGUAGE;
 
     public static String PUSH = "Y";
 

@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+        <com.mom.soccer.common.MomPreference
+            android:title="@string/lang">
+                     <intent android:targetClass="com.mom.soccer.common.LangActivity"
+            android:targetPackage="com.mom.soccer" />
+        </com.mom.soccer.common.MomPreference>
+
         <com.mom.soccer.common.MomPreference
             android:key="userprofile"
             android:title="@string/mom_setting_app_user"
@@ -40,20 +47,6 @@
             android:targetPackage="com.mom.soccer" />
         </com.mom.soccer.common.MomPreference>
 
-
-        <!--        <com.mom.soccer.common.MomPreference
-                    android:key="keyhelp"
-                    android:title="@string/mom_setting_help" />
-
-                <com.mom.soccer.common.MomPreference
-                    android:key="keyMaildev"
-                    android:title="@string/mom_setting_app_email" >
-                    <intent
-                        android:action="android.intent.action.SENDTO"
-                        android:data="mailto:momsoccer@naver.com"
-                        />
-                </com.mom.soccer.common.MomPreference>
-        -->
 
         <com.mom.soccer.common.MomPreference
             android:key="keyevaluation"

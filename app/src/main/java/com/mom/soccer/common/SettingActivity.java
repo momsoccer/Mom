@@ -51,6 +51,12 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
     private PrefUtil prefUtil;
     private String sfName = "momSoccerSetup";
 
+    /*
+    Locale locale = getResources().getConfiguration().locale;
+        String language =  locale.getLanguage();
+        Toast.makeText(getApplicationContext(),"언어 셋팅 값은 " + language,Toast.LENGTH_SHORT).show();
+    */
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -89,10 +95,10 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
         arlim_check.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
+
                 boolean isVibrateOn = (Boolean) newValue;
+
                 if(isVibrateOn){
-
-
                     SharedPreferences sf = getSharedPreferences(sfName, 0);
                     SharedPreferences.Editor editor = sf.edit();
                     editor.putString("push", "Y"); // 입력
@@ -149,6 +155,7 @@ public class SettingActivity  extends PreferenceActivity implements Preference.O
                 return false;
             }
         });
+
     }
 
 

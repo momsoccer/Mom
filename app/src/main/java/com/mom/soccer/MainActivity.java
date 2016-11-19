@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.widget.MediaController;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.PrefUtil;
 import com.mom.soccer.dto.User;
@@ -28,6 +30,7 @@ import com.mom.soccer.momactivity.MomMainActivity;
 import com.mom.soccer.widget.VeteranToast;
 
 import java.security.MessageDigest;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,8 +39,6 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-
-
 
     @Bind(R.id.btn_login_pre)
     Button btnLogin;
@@ -57,6 +58,19 @@ public class MainActivity extends AppCompatActivity {
     String upset ="N";
     private String sfName = "momSoccerSetup";
     private String setupValue= null;
+    private String langValue= null;
+    Locale locale;
+    String language;
+
+
+    public void setLocale(String charicter) {
+        Locale locale = new Locale(charicter);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,14 +84,35 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sf = getSharedPreferences(sfName, 0);
         setupValue = sf.getString("chanel","N");
+        langValue= sf.getString("lang","N");
+
+        /******************************************
+         * 언어 설정
+         */
+
+        if(langValue.equals("N")){
+            SharedPreferences.Editor editor = sf.edit();
+            editor.putString("lang", "N"); // 입력
+            editor.commit(); // 파일에 최종 반영함
+
+            locale = getResources().getConfiguration().locale;
+            language =  locale.getLanguage();
+            Common.LANGUAGE = language;
+
+        }else{
+            //N 이 아니라면 유저가 언어셋팅을 한 것임
+            Common.LANGUAGE = langValue;
+
+            setLocale(Common.LANGUAGE);
+        }
+
+        //Log.i(TAG,"설정한 언어는 : " + Common.LANGUAGE + getResources().getString(R.string.lang_test));
+
 
         if(setupValue.equals("N")){
             SharedPreferences.Editor editor = sf.edit();
             editor.putString("chanel", "N"); // 입력
             editor.commit(); // 파일에 최종 반영함
-
-            //Log.i(TAG,"N 입니다");
-
         }else{
             //Log.i(TAG,"Y 입니다");
         }
@@ -118,7 +153,9 @@ public class MainActivity extends AppCompatActivity {
         if(getSoundCheck==null){
             prefUtil.setSoundCheck("Y");
         }
+
         FirebaseMessaging.getInstance().subscribeToTopic("news");
+
 
 
         //버전체크하기
@@ -152,8 +189,6 @@ public class MainActivity extends AppCompatActivity {
         Uri path = Uri.parse("android.resource://" + getPackageName() + "/raw/splash");
         videoView.setVideoURI(path);
         videoView.start();
-
-
 
     }
 

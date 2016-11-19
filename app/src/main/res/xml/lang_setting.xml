@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="lang_stting"
+    android:title="@string/lang"
+    >
+
+        <com.mom.soccer.common.MomSwitchPreference
+            android:defaultValue="false"
+            android:key="kolang"
+            android:title="@string/ko_name"
+            android:switchTextOff="OFF"
+            android:switchTextOn="ON" />
+
+        <com.mom.soccer.common.MomSwitchPreference
+            android:defaultValue="false"
+            android:key="cnlang"
+            android:title="@string/cn_name"
+            android:switchTextOff="OFF"
+            android:switchTextOn="ON" />
+
+        <com.mom.soccer.common.MomSwitchPreference
+            android:defaultValue="false"
+            android:key="enlang"
+            android:title="@string/en_name"
+            android:switchTextOff="OFF"
+            android:switchTextOn="ON" />
+
+
+</PreferenceScreen>
