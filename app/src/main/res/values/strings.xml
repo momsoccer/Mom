@@ -23,7 +23,7 @@
     <string name="member_googleid">구글아이디 선택(필수 클릭)</string>
 
     <string name="member_pass">시작하기</string>
-
+<string name="point_alert">포인트 알림</string>
 
     <string name="preparation">기능 준비 중입니다</string>
 
@@ -911,7 +911,7 @@
     <string name="question_hint1">문의/개선사항</string>
     <string name="question_hint2">소중한 의견이 접수 되었습니다 \n2일안에 답변 드리도록 하겠습니다 \n감사합니다</string>
 
-    <string name="versioncheck" translatable="false">앱 신규 버전이 릴리즈 되었습니다.\n 앱 업데이트를 하지 않으시면 정상적으로 앱을 이용할 수 없습니다.</string>
+    <string name="versioncheck">앱 신규 버전이 릴리즈 되었습니다.\n 앱 업데이트를 하지 않으시면 정상적으로 앱을 이용할 수 없습니다.</string>
 
     <string name="mission_pass_condition">클리어 조건</string>
 
@@ -936,9 +936,7 @@
     <string name="search_hintname1">유저명</string>
     <string name="search_hintname2">강사명</string>
 
-
-    <string name="point_chage_title1">포인트 충전 알림</string>
-    <string name="point_chage_title2" translatable="false">
+    <string name="point_chage_title2">
         포인트가 필요하세요?
         \n베타 테스트 기간 동안 모든 미션 영상을 시청 하실 수 있도록\n포인트를 충전해드립니다
         \n몸싸커 응원의 글을 남기시고\n포인트를 받으세요
@@ -946,7 +944,7 @@
     </string>
 
     <string name="lang">언어설정</string>
-    <string name="title_activity_lang" translatable="false">언어설정</string>
+    <string name="title_activity_lang">언어설정</string>
     <string name="en_name">영어</string>
     <string name="cn_name">증국어</string>
     <string name="ko_name">한국어</string>

@@ -154,7 +154,7 @@ public class PointFragment extends Fragment {
 
             new MaterialDialog.Builder(getActivity())
                     .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
-                    .title(R.string.point_chage_title1)
+                    .title(R.string.point_alert)
                     .titleColor(getResources().getColor(R.color.color6))
                     .content(R.string.point_chage_title2)
                     .contentColor(getResources().getColor(R.color.color6))

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mom.soccer"
-    android:versionCode="17"
-    android:versionName="1.1.15">
+    android:versionCode="18"
+    android:versionName="1.1.16">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -41,13 +41,6 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-
-        <supports-screens
-            android:smallScreens="true"
-            android:normalScreens="true"
-            android:largeScreens="true"
-            android:anyDensity="true"
-            />
 
         <!-- Mom activity set -->
 
@@ -219,8 +212,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="@string/kakaolink_host"
-                    android:scheme="@string/kakao_scheme" />
+                    android:host="kakaolink"
+                    android:scheme="kakao4606473b4aec2daadfa87ff2cf730243" />
             </intent-filter>
         </activity>
         <activity
