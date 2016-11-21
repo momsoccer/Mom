@@ -19,6 +19,7 @@ import java.net.URL;
  */
 public class Common {
     public static String SERVER_ADRESS = "http://14.63.220.208:80";
+            //"http://14.63.220.208:80";
     //http://14.63.220.208:80
     //"http://192.168.0.48:8080";
 

@@ -314,16 +314,26 @@ public class MissionMainActivity extends AppCompatActivity {
         }
 
         tx_level.setText(String.valueOf("Lv." + mission.getSequence()));
-        tx_missionName.setText(mission.getMissionname());
-        tx_missionDisp.setText(mission.getDescription());
-        tx_missionPreCondition.setText(mission.getPrecon());
+
+        //지역화에 따른 언어
+        if(Common.LANGUAGE.equals("ko")){
+            tx_missionName.setText(mission.getMissionname());
+            tx_missionDisp.setText(mission.getDescription());
+            tx_missionPreCondition.setText(mission.getPrecon());
+        }else if(Common.LANGUAGE.equals("en")){
+            tx_missionName.setText(mission.getEnname());
+            tx_missionDisp.setText(mission.getEndescription());
+            tx_missionPreCondition.setText(mission.getCnprecon());
+        }else if(Common.LANGUAGE.equals("zh")){
+            tx_missionName.setText(mission.getCnname());
+            tx_missionDisp.setText(mission.getCndescription());
+            tx_missionPreCondition.setText(mission.getCnprecon());
+        }
 
         String advance = getString(R.string.point_upload)+" "+mission.getGrade()+getString(R.string.point_get)+", "+
                 getString(R.string.point_pre_word)+" "+mission.getPassgrade()+getString(R.string.point_get);
 
         tx_missionPoint.setText(advance);
-
-        //LocalBroadcastManager.getInstance(this).registerReceiver(uploadReceiver, new IntentFilter("uploadReceiver"));
 
         videoGridView = (ExpandableHeightGridView) findViewById(R.id.main_mission_gridview);
         videoGridView.setExpanded(true);

@@ -32,7 +32,6 @@ import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -108,13 +107,6 @@ public class MissionActivity extends AppCompatActivity {
         }else if(missionType.equals("COMPLEX")){
             textViewTitle.setText(getString(R.string.mission_toolbar_title)+getString(R.string.crossbar));
         }
-
-
-        //언어 설정 값
-        Locale locale = getResources().getConfiguration().locale;
-        String lang = locale.getLanguage();
-
-        Log.d(TAG,"국가 코드는 : " + lang);
 
     }
 
