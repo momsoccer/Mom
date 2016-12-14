@@ -668,4 +668,5 @@
     <string name="youtube_upload_title1">YouTube settings help</string>
     <string name="youtube_upload_title2">This message means that after installing the app, We will guide you only once during the first upload          Please be sure to check that this is a required procedure in order to upload videos from the bodybuilder app.          To upload a mission, you must have a YouTube channel with a bodybird access Google ID      We\'ll show you how to create a channel</string>
     <string name="toast_text_clipboard_adress">It is copy</string>
+    <string name="le_title">offline lesson</string>
 </resources>

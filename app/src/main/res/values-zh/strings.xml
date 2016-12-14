@@ -693,4 +693,6 @@
     <string name="title_activity_lang">语言设置</string>
     <string name="cn_name">中國語</string>
     <string name="applay_app">适用</string>
+    <string name="toast_text_clipboard_adress">It is copy</string>
+    <string name="le_title">offline lesson</string>
 </resources>
