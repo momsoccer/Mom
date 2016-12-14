@@ -8,8 +8,8 @@ android {
         applicationId "com.mom.soccer"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 19
-        versionName "1.1.17"
+        versionCode 21
+        versionName "1.1.19"
         multiDexEnabled true
     }
 

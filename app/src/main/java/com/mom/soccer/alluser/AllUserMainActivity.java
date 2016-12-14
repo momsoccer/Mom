@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.astuetz.PagerSlidingTabStrip;
 import com.mom.soccer.R;
 import com.mom.soccer.common.ActivityResultEvent;
@@ -84,15 +83,15 @@ public class AllUserMainActivity extends AppCompatActivity {
                     textWrite.setText(getResources().getString(R.string.all_user_page_btn1));
                     textWrite.setVisibility(View.VISIBLE);
                 }else if(position==1){
+                    textWrite.setVisibility(View.GONE);
+                }else if(position==2){
+                    //textWrite.setText(getResources().getString(R.string.all_user_page_btn8));
                     if(instructor.getInstructorid()==0){
                         textWrite.setVisibility(View.GONE);
                     }else{
                         textWrite.setText(getResources().getString(R.string.all_user_page_btn2));
                         textWrite.setVisibility(View.VISIBLE);
                     }
-                }else if(position==2){
-                    textWrite.setText(getResources().getString(R.string.all_user_page_btn8));
-                    textWrite.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -113,14 +112,21 @@ public class AllUserMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(btnposition == 2){
-                    new MaterialDialog.Builder(AllUserMainActivity.this)
+/*                    new MaterialDialog.Builder(AllUserMainActivity.this)
                             .icon(getResources().getDrawable(R.drawable.ic_alert_title_mom))
                             .title(R.string.open_page_request)
                             .titleColor(getResources().getColor(R.color.color6))
                             .content(R.string.open_page_request_content)
                             .contentColor(getResources().getColor(R.color.color6))
                             .positiveText(R.string.mom_diaalog_confirm)
-                            .show();
+                            .show();*/
+
+                    Intent intent = new Intent(AllUserMainActivity.this,InsVideoActivity.class);
+                    intent.putExtra(MissionCommon.INS_OBJECT,instructor);
+                    intent.putExtra(MissionCommon.USER_OBJECT,user);
+                    intent.putExtra("viewtype","new");
+                    startActivity(intent);
+
                 }else if(btnposition==0){
                     Intent intent = new Intent(AllUserMainActivity.this,OpneBoardActivity.class);
                     intent.putExtra("boardFlag","new");
@@ -129,11 +135,7 @@ public class AllUserMainActivity extends AppCompatActivity {
                     intent.putExtra("position",0);
                     startActivity(intent);
                 }else if(btnposition==1){
-                    Intent intent = new Intent(AllUserMainActivity.this,InsVideoActivity.class);
-                    intent.putExtra(MissionCommon.INS_OBJECT,instructor);
-                    intent.putExtra(MissionCommon.USER_OBJECT,user);
-                    intent.putExtra("viewtype","new");
-                    startActivity(intent);
+
                 }
             }
         });
@@ -146,8 +148,10 @@ public class AllUserMainActivity extends AppCompatActivity {
 
         private String tabTitles[] = new String[] {
                 getString(R.string.all_user_page_title1),
-                getString(R.string.all_user_page_title2),
-                getString(R.string.all_user_page_title3)
+                getString(R.string.le_title),
+                getString(R.string.all_user_page_title2)
+
+                //getString(R.string.all_user_page_title3)
         };
 
         public AllPageViewPagerAdapter(FragmentManager fm) {

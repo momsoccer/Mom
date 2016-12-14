@@ -1,5 +1,7 @@
 package com.mom.soccer.common;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +10,9 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.widget.Toast;
+
+import com.mom.soccer.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,8 +23,9 @@ import java.net.URL;
  * Created by sungbo on 2016-05-27.
  */
 public class Common {
-    public static String SERVER_ADRESS = "http://14.63.220.208:80";
-            //"http://14.63.220.208:80";
+    public static String SERVER_ADRESS = "http://192.168.0.48:8080";
+
+    //"http://14.63.220.208:80";
     //http://14.63.220.208:80
     //"http://192.168.0.48:8080";
 
@@ -108,6 +114,14 @@ public class Common {
         }finally{
             if(connection!=null)connection.disconnect();
         }
+    }
+
+    public static void setClipBoardLink(Context context , String link){
+
+        ClipboardManager clipboardManager = (ClipboardManager)context.getSystemService(context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("label", link);
+        clipboardManager.setPrimaryClip(clipData);
+        Toast.makeText(context, context.getString(R.string.toast_text_clipboard_adress), Toast.LENGTH_SHORT).show();
     }
 
 }

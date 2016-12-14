@@ -175,6 +175,8 @@ public class OpneBoardActivity extends AppCompatActivity {
         existImageA = false;
         existImageB = false;
         existImageC = false;
+
+
     }
 
 

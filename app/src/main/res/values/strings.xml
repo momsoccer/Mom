@@ -917,8 +917,8 @@
 
     <string name="getfind_email_title">이메일 아이디를 입력하세요</string>
     <string name="getfind_email_title2">이메일</string>
-    <string name="getfind_email_title3" translatable="false">*해당 이메일로 임시 비밀번호가 전송됩니다\n 1시간 이내에 확인하셔야 정상 처리됩니다.</string>
-    <string name="getfind_email_title4" translatable="false">입력하신 이메일 주소로 비밀번호를 발급했습니다</string>
+    <string name="getfind_email_title3">*해당 이메일로 임시 비밀번호가 전송됩니다\n 1시간 이내에 확인하셔야 정상 처리됩니다.</string>
+    <string name="getfind_email_title4">입력하신 이메일 주소로 비밀번호를 발급했습니다</string>
 
     <!--앱업데이트-->
     <string name="app_update">앱 업데이트 버젼 알림</string>
@@ -926,8 +926,8 @@
     <string name="app_finish">앱종료</string>
 
     <!--업로드초기 도움말-->
-    <string name="youtube_upload_title1" translatable="false">유투브 채널 관련 도움말</string>
-    <string name="youtube_upload_title2" translatable="false">이 메세지는 앱을 설치 후, \n최초 업로드시 딱 한번만 안내해드립니다
+    <string name="youtube_upload_title1">유투브 채널 관련 도움말</string>
+    <string name="youtube_upload_title2">이 메세지는 앱을 설치 후, \n최초 업로드시 딱 한번만 안내해드립니다
         \n몸싸커 앱에서 영상 업로드를 하기위해서는 필수 절차이니 꼭 확인 부탁드립니다
         \n미션을 업로드 하기 위해서는 몸싸커 접속 구글 아이디로 유투브 채널이 있으셔야 합니다
     \n채널 만드는 방법을 안내해드립니다</string>
@@ -946,7 +946,7 @@
     <string name="lang">언어설정</string>
     <string name="title_activity_lang">언어설정</string>
     <string name="en_name">영어</string>
-    <string name="cn_name">증국어</string>
+    <string name="cn_name">중국어</string>
     <string name="ko_name">한국어</string>
 
 
@@ -955,4 +955,11 @@
     <string name="lang_change">해당 언어로 앱을 적용하시겠습니까?</string>
     <string name="applay_app">적용</string>
     <string name="momhome">홈</string>
+    <string name="point_chage_title1">t</string>
+
+    <!--20161214-->
+    <string name="le_title">오프라인레슨</string>
+    <string name="toast_text_clipboard_adress">복사 되었습니다</string>
+
+
 </resources>

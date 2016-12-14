@@ -18,6 +18,7 @@ import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.mom.soccer.R;
 import com.mom.soccer.common.Auth;
+import com.mom.soccer.common.Common;
 import com.mom.soccer.common.Compare;
 import com.mom.soccer.common.RoundedCornersTransformation;
 import com.mom.soccer.dataDto.UserMainVo;
@@ -98,8 +99,18 @@ public class UserMissionAdapter extends RecyclerView.Adapter<UserMissionAdapter.
             h.teamname.setText(activity.getString(R.string.user_team_yet_join));
         }
 
-        h.misisonname.setText(vo.getMissionname());
-        h.description.setText(vo.getDescription());
+        //지역화에 따른 언어
+        if(Common.LANGUAGE.equals("ko")){
+            h.misisonname.setText(vo.getMissionname());
+            h.description.setText(vo.getDescription());
+        }else if(Common.LANGUAGE.equals("en")){
+            h.misisonname.setText(vo.getEnname());
+            h.description.setText(vo.getEndescription());
+        }else if(Common.LANGUAGE.equals("zh")){
+            h.misisonname.setText(vo.getCnname());
+            h.description.setText(vo.getCndescription());
+        }
+
         h.boardcount.setText(String.valueOf(vo.getBoardcount()));
         h.feedbackcount.setText(String.valueOf(vo.getFeedbackcount()));
         h.favoritecount.setText(String.valueOf(vo.getBookmarkcount()));

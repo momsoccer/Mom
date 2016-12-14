@@ -20,11 +20,13 @@ import com.mom.soccer.R;
 import com.mom.soccer.alluser.adapter.AdBoardAdapter;
 import com.mom.soccer.alluser.adapter.AllUserBoardItemAdapter;
 import com.mom.soccer.alluser.adapter.InsVideoAdapter;
+import com.mom.soccer.alluser.adapter.SoccerDayAdapter;
 import com.mom.soccer.common.ActivityResultEvent;
 import com.mom.soccer.common.EventBus;
 import com.mom.soccer.common.MomSnakBar;
 import com.mom.soccer.common.internal.BusObject;
 import com.mom.soccer.dto.AdBoardVo;
+import com.mom.soccer.dto.EventMain;
 import com.mom.soccer.dto.InsVideoVo;
 import com.mom.soccer.dto.Instructor;
 import com.mom.soccer.dto.MomBoard;
@@ -33,6 +35,7 @@ import com.mom.soccer.mission.MissionCommon;
 import com.mom.soccer.retrofitdao.AdBoardService;
 import com.mom.soccer.retrofitdao.InsVideoService;
 import com.mom.soccer.retrofitdao.MomBoardService;
+import com.mom.soccer.retrofitdao.MomSoccerDayService;
 import com.mom.soccer.retropitutil.ServiceGenerator;
 import com.mom.soccer.widget.WaitingDialog;
 import com.squareup.otto.Subscribe;
@@ -77,6 +80,9 @@ public class AllUserFragment extends Fragment {
     private AllUserBoardItemAdapter allUserBoardItemAdapter;
     private InsVideoAdapter insVideoAdapter;
 
+    //MomsoccerDay
+    private SoccerDayAdapter soccerDayAdapter;
+
     //view
     LinearLayout li_no_found;
 
@@ -85,13 +91,13 @@ public class AllUserFragment extends Fragment {
     private List<MomBoard> momBoardList = new ArrayList<MomBoard>();
     private List<InsVideoVo> insVideoVos = new ArrayList<InsVideoVo>();
 
+    private List<EventMain> eventMainList = new ArrayList<EventMain>();
+
     public static AllUserFragment newInstance(int page, User user){
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         args.putSerializable(MissionCommon.USER_OBJECT,user);
         AllUserFragment fragment = new AllUserFragment();
-
-
 
         fragment.setArguments(args);
         return fragment;
@@ -114,10 +120,11 @@ public class AllUserFragment extends Fragment {
         View view = null;
 
         if(mPage==1){
+
             view = inflater.inflate(R.layout.all_user_fragment1, container, false);
             swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
             boardRcView = (RecyclerView) view.findViewById(R.id.boardRcView);
-            //li_no_found = (LinearLayout) view.findViewById(R.id.li_no_found);
+
             linearLayoutManager = new LinearLayoutManager(getContext());
 
             getTeamBoarderList("first");
@@ -179,7 +186,7 @@ public class AllUserFragment extends Fragment {
                 }
             });
 
-        }else if(mPage==2){
+        }else if(mPage==3){
 
             view = inflater.inflate(R.layout.all_user_fragment2, container, false);
             swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
@@ -247,7 +254,18 @@ public class AllUserFragment extends Fragment {
 
 
 
-        }else if(mPage==3) {
+        }else if(mPage==2) {
+            //몸싸커데이
+            view = inflater.inflate(R.layout.all_user_fragment0, container, false);
+
+            //swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+
+            boardRcView = (RecyclerView) view.findViewById(R.id.boardRcView);
+            linearLayoutManager = new LinearLayoutManager(getContext());
+
+            getMomSoccerDayList();
+
+            /* 축구 강사 강의
             view = inflater.inflate(R.layout.all_user_fragment3, container, false);
             swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
             boardRcView = (RecyclerView) view.findViewById(R.id.boardRcView);
@@ -307,6 +325,7 @@ public class AllUserFragment extends Fragment {
                     }
                 }
             });
+            */
 
         }
         return view;
@@ -317,6 +336,49 @@ public class AllUserFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getInstance().unregister(this);
+    }
+
+
+    public void getMomSoccerDayList(){
+
+        WaitingDialog.showWaitingDialog(getActivity(),false);
+
+        MomSoccerDayService momSoccerDayService = ServiceGenerator.createService(MomSoccerDayService.class,getContext(),user);
+
+        Call<List<EventMain>> listCall = momSoccerDayService.getEventMainList();
+
+        listCall.enqueue(new Callback<List<EventMain>>() {
+            @Override
+            public void onResponse(Call<List<EventMain>> call, Response<List<EventMain>> response) {
+                if(response.isSuccessful()){
+                    eventMainList = response.body();
+                    Log.i(TAG,"값이 왔습니다 : " + eventMainList.size());
+
+                    soccerDayAdapter = new SoccerDayAdapter(getActivity(),eventMainList);
+                    boardRcView.setHasFixedSize(true);
+                    boardRcView.setLayoutManager(linearLayoutManager);
+                    boardRcView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                    boardRcView.getItemAnimator().setAddDuration(300);
+                    boardRcView.getItemAnimator().setRemoveDuration(300);
+                    boardRcView.getItemAnimator().setMoveDuration(300);
+                    boardRcView.getItemAnimator().setChangeDuration(300);
+                    boardRcView.setHasFixedSize(true);
+                    AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(soccerDayAdapter);
+                    alphaAdapter.setDuration(300);
+                    boardRcView.setAdapter(soccerDayAdapter);
+
+                }else{
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<EventMain>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+
     }
 
     public void getInsVideoList(final String pageFlag, InsVideoVo videoVo){

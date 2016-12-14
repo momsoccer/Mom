@@ -48,10 +48,66 @@ public class UserMainVo {
     private String passyescheck;
     private String passnocheck;
 
+    private String cnname;
+    private String cndescription;
+    private String cnprecon;
+
+    private String enname;
+    private String endescription;
+    private String enprecon;
+
     //in 조회 조건을 위한....
     private List<String> typename;
     private int listCount;
 
+
+    public String getCnname() {
+        return cnname;
+    }
+
+    public void setCnname(String cnname) {
+        this.cnname = cnname;
+    }
+
+    public String getCndescription() {
+        return cndescription;
+    }
+
+    public void setCndescription(String cndescription) {
+        this.cndescription = cndescription;
+    }
+
+    public String getCnprecon() {
+        return cnprecon;
+    }
+
+    public void setCnprecon(String cnprecon) {
+        this.cnprecon = cnprecon;
+    }
+
+    public String getEnname() {
+        return enname;
+    }
+
+    public void setEnname(String enname) {
+        this.enname = enname;
+    }
+
+    public String getEndescription() {
+        return endescription;
+    }
+
+    public void setEndescription(String endescription) {
+        this.endescription = endescription;
+    }
+
+    public String getEnprecon() {
+        return enprecon;
+    }
+
+    public void setEnprecon(String enprecon) {
+        this.enprecon = enprecon;
+    }
 
     public UserMainVo(){}
 
@@ -103,42 +159,6 @@ public class UserMainVo {
         this.listCount = listCount;
     }
 
-
-    @Override
-    public String toString() {
-        return "UserMainVo{" +
-                "uid=" + uid +
-                ", instructorid=" + instructorid +
-                ", missionid=" + missionid +
-                ", usermissionid=" + usermissionid +
-                ", username='" + username + '\'' +
-                ", insname='" + insname + '\'' +
-                ", teamname='" + teamname + '\'' +
-                ", profileimgurl='" + profileimgurl + '\'' +
-                ", missiontype='" + missiontype + '\'' +
-                ", missionname='" + missionname + '\'' +
-                ", description='" + description + '\'' +
-                ", uservideo='" + uservideo + '\'' +
-                ", missionvideo='" + missionvideo + '\'' +
-                ", grade=" + grade +
-                ", passgrade=" + passgrade +
-                ", sequence=" + sequence +
-                ", bookmarkcount=" + bookmarkcount +
-                ", passflag='" + passflag + '\'' +
-                ", missionpasscount=" + missionpasscount +
-                ", feedbackcount=" + feedbackcount +
-                ", boardcount=" + boardcount +
-                ", totalscore=" + totalscore +
-                ", teamid=" + teamid +
-                ", level=" + level +
-                ", change_creationdate='" + change_creationdate + '\'' +
-                ", usersubject='" + usersubject + '\'' +
-                ", userdescription='" + userdescription + '\'' +
-                ", condition='" + condition + '\'' +
-                ", limit=" + limit +
-                ", offset=" + offset +
-                '}';
-    }
 
     public int getLimit() {
         return limit;
@@ -378,5 +398,53 @@ public class UserMainVo {
 
     public void setChange_creationdate(String change_creationdate) {
         this.change_creationdate = change_creationdate;
+    }
+
+    @Override
+    public String toString() {
+        return "UserMainVo{" +
+                "uid=" + uid +
+                ", instructorid=" + instructorid +
+                ", missionid=" + missionid +
+                ", usermissionid=" + usermissionid +
+                ", username='" + username + '\'' +
+                ", insname='" + insname + '\'' +
+                ", teamname='" + teamname + '\'' +
+                ", profileimgurl='" + profileimgurl + '\'' +
+                ", missiontype='" + missiontype + '\'' +
+                ", missionname='" + missionname + '\'' +
+                ", description='" + description + '\'' +
+                ", uservideo='" + uservideo + '\'' +
+                ", missionvideo='" + missionvideo + '\'' +
+                ", grade=" + grade +
+                ", passgrade=" + passgrade +
+                ", sequence=" + sequence +
+                ", bookmarkcount=" + bookmarkcount +
+                ", passflag='" + passflag + '\'' +
+                ", missionpasscount=" + missionpasscount +
+                ", feedbackcount=" + feedbackcount +
+                ", boardcount=" + boardcount +
+                ", totalscore=" + totalscore +
+                ", teamid=" + teamid +
+                ", level=" + level +
+                ", change_creationdate='" + change_creationdate + '\'' +
+                ", usersubject='" + usersubject + '\'' +
+                ", userdescription='" + userdescription + '\'' +
+                ", condition='" + condition + '\'' +
+                ", limit=" + limit +
+                ", offset=" + offset +
+                ", friendcheck='" + friendcheck + '\'' +
+                ", teamcheck='" + teamcheck + '\'' +
+                ", passyescheck='" + passyescheck + '\'' +
+                ", passnocheck='" + passnocheck + '\'' +
+                ", cnname='" + cnname + '\'' +
+                ", cndescription='" + cndescription + '\'' +
+                ", cnprecon='" + cnprecon + '\'' +
+                ", enname='" + enname + '\'' +
+                ", endescription='" + endescription + '\'' +
+                ", enprecon='" + enprecon + '\'' +
+                ", typename=" + typename +
+                ", listCount=" + listCount +
+                '}';
     }
 }

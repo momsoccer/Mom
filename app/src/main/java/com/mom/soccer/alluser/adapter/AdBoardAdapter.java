@@ -59,45 +59,6 @@ public class AdBoardAdapter extends RecyclerView.Adapter<AdBoardAdapter.AdBoardV
             imageAdapter = new ImageAdapter(activity,vo.getAdBoardFiles());
             holder.imageRcView.setAdapter(imageAdapter);
 
- /*           for(int i=0;i < vo.getAdBoardFiles().size(); i++){
-
-                if(i==0){
-                    Glide.with(activity)
-                            .load(vo.getAdBoardFiles().get(i).getFileaddr())
-                            .fitCenter()
-                            .thumbnail(0.1f)
-                            .override(500,500)
-                            .into(holder.attachImage1);
-                }else if(i==1){
-                    Glide.with(activity)
-                            .load(vo.getAdBoardFiles().get(i).getFileaddr())
-                            .fitCenter()
-                            .thumbnail(0.1f)
-                            .override(500,500)
-                            .into(holder.attachImage2);
-                }else if(i==2){
-                    Glide.with(activity)
-                            .load(vo.getAdBoardFiles().get(i).getFileaddr())
-                            .fitCenter()
-                            .thumbnail(0.1f)
-                            .override(500,500)
-                            .into(holder.attachImage3);
-                }else if(i==3){
-                    Glide.with(activity)
-                            .load(vo.getAdBoardFiles().get(i).getFileaddr())
-                            .fitCenter()
-                            .thumbnail(0.1f)
-                            .override(500,500)
-                            .into(holder.attachImage4);
-                }else if(i==4){
-                    Glide.with(activity)
-                            .load(vo.getAdBoardFiles().get(i).getFileaddr())
-                            .fitCenter()
-                            .thumbnail(0.1f)
-                            .override(500,500)
-                            .into(holder.attachImage5);
-                }
-            }*/
         }
 
         //더보기 표현
