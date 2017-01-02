@@ -20,6 +20,7 @@ import com.mom.soccer.R;
 import com.mom.soccer.alluser.adapter.AdBoardAdapter;
 import com.mom.soccer.alluser.adapter.AllUserBoardItemAdapter;
 import com.mom.soccer.alluser.adapter.InsVideoAdapter;
+import com.mom.soccer.alluser.adapter.NewInsVideoAdapter;
 import com.mom.soccer.alluser.adapter.SoccerDayAdapter;
 import com.mom.soccer.common.ActivityResultEvent;
 import com.mom.soccer.common.EventBus;
@@ -79,6 +80,7 @@ public class AllUserFragment extends Fragment {
     private AdBoardAdapter adBoardAdapter;
     private AllUserBoardItemAdapter allUserBoardItemAdapter;
     private InsVideoAdapter insVideoAdapter;
+    private NewInsVideoAdapter newInsVideoAdapter;
 
     //MomsoccerDay
     private SoccerDayAdapter soccerDayAdapter;
@@ -188,6 +190,14 @@ public class AllUserFragment extends Fragment {
 
         }else if(mPage==3){
 
+            view = inflater.inflate(R.layout.all_user_fragment4, container, false);
+            linearLayoutManager = new LinearLayoutManager(getContext());
+            boardRcView = (RecyclerView) view.findViewById(R.id.boardRcView);
+
+            final InsVideoVo query = new InsVideoVo();
+            getNewInsVideoList(query);
+
+            /* 기존 강사 강의
             view = inflater.inflate(R.layout.all_user_fragment2, container, false);
             swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
             linearLayoutManager = new LinearLayoutManager(getContext());
@@ -251,7 +261,7 @@ public class AllUserFragment extends Fragment {
                     }
                 }
             });
-
+            */
 
 
         }else if(mPage==2) {
@@ -265,7 +275,7 @@ public class AllUserFragment extends Fragment {
 
             getMomSoccerDayList();
 
-            /* 축구 강사 강의
+            /*
             view = inflater.inflate(R.layout.all_user_fragment3, container, false);
             swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
             boardRcView = (RecyclerView) view.findViewById(R.id.boardRcView);
@@ -381,6 +391,47 @@ public class AllUserFragment extends Fragment {
 
     }
 
+
+    public void getNewInsVideoList(InsVideoVo videoVo){
+
+        videoVo.setOffset(0);
+        videoVo.setLimit(100);
+
+        WaitingDialog.showWaitingDialog(getActivity(),false);
+        InsVideoService insVideoService = ServiceGenerator.createService(InsVideoService.class,getContext(),user);
+        Call<List<InsVideoVo>> c = insVideoService.getVideoList(videoVo);
+        c.enqueue(new Callback<List<InsVideoVo>>() {
+            @Override
+            public void onResponse(Call<List<InsVideoVo>> call, Response<List<InsVideoVo>> response) {
+                WaitingDialog.cancelWaitingDialog();
+                if(response.isSuccessful()){
+                    insVideoVos = response.body();
+
+                    newInsVideoAdapter = new NewInsVideoAdapter(getActivity(),insVideoVos,user);
+
+                    boardRcView.setHasFixedSize(true);
+                    boardRcView.setLayoutManager(linearLayoutManager);
+                    boardRcView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+                    boardRcView.getItemAnimator().setAddDuration(300);
+                    boardRcView.getItemAnimator().setRemoveDuration(300);
+                    boardRcView.getItemAnimator().setMoveDuration(300);
+                    boardRcView.getItemAnimator().setChangeDuration(300);
+                    boardRcView.setHasFixedSize(true);
+                    AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(newInsVideoAdapter);
+                    alphaAdapter.setDuration(300);
+                    boardRcView.setAdapter(newInsVideoAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<InsVideoVo>> call, Throwable t) {
+                WaitingDialog.cancelWaitingDialog();
+                t.printStackTrace();
+            }
+        });
+
+    }
+
     public void getInsVideoList(final String pageFlag, InsVideoVo videoVo){
 
         if(pageFlag.equals("first")) {
@@ -484,9 +535,9 @@ public class AllUserFragment extends Fragment {
                         Log.i(TAG,"momBoardList : ** " + momBoardList.size());
 
                         if (momBoardList.size() == 0) {
-                           // li_no_found.setVisibility(View.VISIBLE);
+                            // li_no_found.setVisibility(View.VISIBLE);
                         } else {
-                           // li_no_found.setVisibility(View.GONE);
+                            // li_no_found.setVisibility(View.GONE);
                         }
 
                         boardRcView.setHasFixedSize(true);

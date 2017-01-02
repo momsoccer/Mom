@@ -58,13 +58,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String title, String content, String message,String key1,String key2) {
-        Intent intent;
+
+
+
+        Intent intent = null;
+
         if(key1.equals("lesson")){
             intent = new Intent(this, AllUserMainActivity.class);
             intent.putExtra(Param.FRAGMENT_COUNT,1);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        }else {
+        }else if(key1.equals("insvideo")) {
+            intent = new Intent(this, AllUserMainActivity.class);
+            intent.putExtra(Param.FRAGMENT_COUNT,3);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        }else if(key1.equals("default")) {
             intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }
